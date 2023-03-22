@@ -1,0 +1,61 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <style>
+        .marquee {
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            z-index: 100;
+            padding-left: 16px;
+            font-size: 20px;
+        }
+    </style>
+    <script type="text/javascript">
+        var tWidth = '1500px';                  // width (in pixels)
+        var tHeight = '30px';                  // height (in pixels)
+        var tcolour = '#12277454';               // background colour:
+        var moStop = false;                     // pause on mouseover (true or false)
+        var fontfamily = 'arial,sans-serif'; // font for content
+        var tSpeed = 5;                        // scroll speed (1 = slow, 5 = fast)
+
+        // enter your ticker content here (use \/ and \' in place of / and ' respectively)
+        var content = ` <div class="marquee">
+            <span style="color: #EFC30A;font-family: youshe;">2022年第11号超强台风轩岚诺(Hinnamnor) </span>
+            9月1日15时，风速65米/秒，移速0公里/小时，东经125.60°，北纬21.70°，气压910百帕，近中心最大风力17级以上
+        </div>`;
+
+        var cps = -tSpeed;
+        var aw, mq;
+        var fsz = parseInt(tHeight) - 4;
+        function startticker() {
+            if (document.getElementById) {
+                var tick = '<div style="position:relative;width:' + tWidth + ';height:' + tHeight + ';line-height: 30px;overflow:hidden;background-color:' + tcolour + '"';
+                if (moStop) tick += ' onmouseover="cps=0" onmouseout="cps=-tSpeed"';
+
+                tick += '><div id="mq" style="position:absolute;right:0px;top:0px;font-family:' + fontfamily + ';font-size:' + fsz + 'px;white-space:nowrap;"><\/div><\/div>';
+                document.getElementById('ticker').innerHTML = tick;
+                mq = document.getElementById("mq");
+                mq.style.left = "0px";
+                mq.innerHTML = '<div id="tx">' + content + '<\/div>';
+                aw = document.getElementById("tx").offsetWidth;
+                lefttime = setInterval("scrollticker()", 30);
+            }
+        }
+        function scrollticker() {
+            mq.style.left = (parseInt(mq.style.left) > (-10 - aw)) ?
+                mq.style.left = parseInt(mq.style.left) + cps + "px" : parseInt(tWidth) + 10 + "px";
+        }
+        window.onload = startticker;
+    </script>
+</head>
+
+<body>
+    <div id="ticker">
+
+    </div>
+</body>
+
+</html>

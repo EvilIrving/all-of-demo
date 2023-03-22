@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+<script>
+    // let arr=[2,0,1,8,6,4], sumArray(arr)返回21
+    // function sumArray(arr) {
+    //     let total = 0
+    //     for (let index = 0; index < arr.length; index++) {
+    //         total += arr[index]
+    //     }
+    //     return total
+    // }
+
+    // format(1234567), 返回 1_234_567。
+    function format(num) {
+        let result = []
+        let strArr = (num + '').split('')
+        strArr.reverse().map((item, index) => {
+            if (index !== 0 && index % 3 === 0) {
+                result.push('_')
+            }
+            result.push(item)
+        })
+        return result.reverse().join('')
+    }
+
+    // 编写一函数，随机生成1-1,000,000之间的100,000个不重复正整数，放入数组，并对数组从大到小排序，返回数组。
+    function randomNum(params) {
+        let arr = []
+        while (true) {
+            let num = parseInt((Math.random() * (1000000 - 1) + 1) + 1, 10)
+            if (!arr.includes(num)) {
+                arr.push(num)
+            }
+            if (arr.length === 100000) {
+                return arr
+            }
+        }
+        return arr
+    }
+    let test = randomNum()
+    console.log(test);
+
+</script>
+
+</html>

@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-standard-scss",
+    "stylelint-config-standard-vue/scss"
+  ],
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "rules": {
+    "at-rule-no-unknown": null,
+    "no-descending-specificity": null,
+    "property-no-unknown": null,
+    "font-family-no-missing-generic-family-keyword": null,
+    "selector-class-pattern": null,
+    "max-line-length": null,
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": [
+          "v-bind",
+          "map-get",
+          "lighten",
+          "darken"
+        ]
+      }
+    ],
+    "scss/double-slash-comment-empty-line-before": null,
+    "scss/no-global-function-names": null
+  }
+}
