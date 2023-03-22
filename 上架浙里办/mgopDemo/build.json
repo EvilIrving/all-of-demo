@@ -1,0 +1,14 @@
+{
+  "inlineStyle": false,
+  "publicPath":"../web/",
+  "plugins": [
+    [
+      "build-plugin-rax-app",
+      {
+        "targets": [
+          "web"
+        ]
+      }
+    ]
+  ]
+}

@@ -1,0 +1,84 @@
+---
+title: Windows10 装机
+date: 2023-03-06
+update: 2020-03-06
+tags:
+- Windows
+categories: 
+- 知识库
+---
+
+
+- 装系统
+  - [Windows 10 Enterprise LTSC 2021](https://next.itellyou.cn/Identity/Account/Login)：[ed2k地址](ed2k://|file|SW_DVD9_WIN_ENT_LTSC_2021_64BIT_ChnSimp_MLF_X22-84402.ISO|5044211712|1555B7DCA052B5958EE68DB58A42408D|/)
+  - Office Professional Plus 2016：[ed2k地址](ed2k://|file|cn_office_professional_plus_2016_x86_x64_dvd_6969182.iso|2588266496|27EEA4FE4BB13CD0ECCDFC24167F9E01|/)
+  - [rufus](https://rufus.ie/zh/)：制作启动盘
+- 改设置
+  - 改文档地址
+- 装软件
+  - [微信](https://windows.weixin.qq.com/?lang=zh_CN)
+  - [QQ](https://im.qq.com/pcqq)
+  - [telegram](https://desktop.telegram.org/?setln=en)
+  - [Chrome](https://www.google.com/intl/en_hk/chrome/)
+  - [阿里云盘](https://www.aliyundrive.com/)
+  - 缤纷批量修改文件名
+  - [PotPlayer 64 bit](https://potplayer.daum.net/)
+  - [Everything](https://www.voidtools.com/zh-cn/downloads/)
+  - Bandicam
+  - JiJiDownForWPF
+  - [Dism++x64](https://dism.cf/)
+  - 百度网盘
+  - Thunder
+  - [小丸工具箱](https://maruko.appinn.me/)
+  - [ZoomIt](https://zoomit.en.softonic.com/)
+  - [Twinkle Tray](https://twinkletray.com/)
+  - Shadowfly
+  - [EveryonePiano](https://www.everyonepiano.cn/)
+  - [腾讯会议](https://meeting.tencent.com/download/)
+  - [EarTrumpet](https://eartrumpet.app/)
+  - [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor)
+  - [7-zip](https://www.7-zip.org/download.html)
+  - SumatraPDF
+  - [clash_for_windows](https://github.com/Fndroid/clash_for_windows_pkg/releases)：[如何配置](https://docs.cfw.lbyczf.com/)
+  - 网易云音乐
+  - 搜狗输入法
+  - ITunes
+  -
+- 装开发环境
+  - [VS Code](https://code.visualstudio.com/download)
+    - Markdown All in One
+  - Android Studio
+  - Idea：破解教程
+  - Java JDK
+  - Python
+  - Nvm -> Node
+  - Git
+- 浏览器装插件
+    > `改下载地址`,
+  - 油猴插件
+    - AC-baidu
+    - Bilibili Evolved
+    - CSDN 去广告沉浸阅读模式
+    - ddrk低端影视助手
+    - Github 增强 - 高速下载
+    - Open the F**king URL Right Now
+    - Youtube 双语字幕下载 v12 (中文+任选的一门双语,比如英语)
+    - 屏蔽所有Youtube广告
+    - 沉浸式翻译
+    - 知乎增强
+    - 自动无缝翻页
+    - 隐藏youtube google广告
+    - 文本选中复制
+    - 贴吧页面
+    - 精简jQuery API 中文文档
+    - 计时器掌控者|视频广告跳过|视频广告加速器
+    - 阅读全文、自动展开全文、自动移除万恶弹框
+- Windows操作
+  - 快速定位目录进入cmd命令
+    - `tree /f >tree.txt` “`f`”参数显示子文件夹中文件名
+    - `dir /s >dir.txt`  “`/s`”显示指定目录和所有子目录中的文件
+    - `shutdown -s -t 30`，电脑会在30秒后关机， `at 19:30`，指定时间，`shutdown -a`，取消关机输入
+  - Win+R 输入
+    - `explorer.exe` 恢复桌面图标
+    - `msconfig`查看电脑配置
+    - `charmap` 打开字符映射表

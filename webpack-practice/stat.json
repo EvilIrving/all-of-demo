@@ -1,0 +1,46 @@
+body {
+    background: green;
+    padding: 0;
+  }
+assets by path [1m[32m*.jpg[39m[22m 66.4 KiB
+  asset [1m[32mIU_Pics (9).a4f6bf.jpg[39m[22m 66.3 KiB [1m[32m[emitted][39m[22m [1m[32m[immutable][39m[22m [from: img/IU_Pics (9).jpg] (auxiliary name: menu)
+  asset [1m[32mIU_Pics (9).357c5e6b9d5636007eaa.jpg[39m[22m 66 bytes [1m[32m[emitted][39m[22m [1m[32m[immutable][39m[22m [from: img/IU_Pics (9).jpg] (auxiliary name: menu)
+assets by path [1m[32m*.html[39m[22m 768 bytes
+  asset [1m[32mindex904474.html[39m[22m 412 bytes [1m[32m[emitted][39m[22m [1m[32m[immutable][39m[22m
+  asset [1m[32mindex2904474.html[39m[22m 356 bytes [1m[32m[emitted][39m[22m [1m[32m[immutable][39m[22m
+asset [1m[32mmenu.904474.bundles.js[39m[22m 189 KiB [1m[32m[emitted][39m[22m [1m[32m[immutable][39m[22m [1m[32m[minimized][39m[22m (name: menu) 1 related asset
+runtime modules 27.4 KiB 14 modules
+orphan modules 18.8 KiB [1m[33m[orphan][39m[22m 8 modules
+javascript modules 703 KiB
+  modules by path [1m./node_modules/[39m[22m 700 KiB 23 modules
+  modules by path [1m./*.css[39m[22m 2.77 KiB
+    [1m./app.css[39m[22m 2.3 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    ./node_modules/css-loader/dist/cjs.js!./mycssloader/index.js![1m./app.css[39m[22m 484 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./app.js + 1 modules[39m[22m 235 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./index.tsx[39m[22m 60 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+[1m./img/IU_Pics (9).jpg[39m[22m 42 bytes (javascript) 66 bytes (asset) [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+webpack 5.76.1 compiled [1m[32msuccessfully[39m[22m in 4781 ms
+body {
+    background: green;
+    padding: 0;
+  }
+assets by status 66.4 KiB [1m[32m[cached][39m[22m 2 assets
+assets by info 190 KiB [1m[32m[immutable][39m[22m
+  assets by path [1m[32m*.js[39m[22m 189 KiB
+    asset [1m[32mmenu.af7022.bundles.js[39m[22m 189 KiB [1m[32m[emitted][39m[22m [1m[32m[immutable][39m[22m [1m[32m[minimized][39m[22m (name: menu) 1 related asset
+    asset [1m[32m860.9044744cb9fceb3c943c.hot-update.js[39m[22m 96 bytes [1m[32m[emitted][39m[22m [1m[32m[immutable][39m[22m [1m[32m[hmr][39m[22m [1m[32m[minimized][39m[22m (name: menu)
+  asset [1m[32mindexaf7022.html[39m[22m 412 bytes [1m[32m[emitted][39m[22m [1m[32m[immutable][39m[22m
+  asset [1m[32mmenu.9044744cb9fceb3c943c.hot-update.json[39m[22m 25 bytes [1m[32m[emitted][39m[22m [1m[32m[immutable][39m[22m [1m[32m[hmr][39m[22m
+asset [1m[32mindex2904474.html[39m[22m 356 bytes [1m[32m[emitted][39m[22m
+Entrypoint [1mmenu[39m[22m 189 KiB (66.4 KiB) = [1m[32mmenu.af7022.bundles.js[39m[22m 189 KiB [1m[32m860.9044744cb9fceb3c943c.hot-update.js[39m[22m 96 bytes 2 auxiliary assets
+runtime modules 27.4 KiB 14 modules
+orphan modules 18.8 KiB [1m[33m[orphan][39m[22m 8 modules
+javascript modules 703 KiB
+  modules by path [1m./node_modules/[39m[22m 700 KiB 23 modules
+  modules by path [1m./*.css[39m[22m 2.77 KiB
+    [1m./app.css[39m[22m 2.3 KiB [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+    ./node_modules/css-loader/dist/cjs.js!./mycssloader/index.js![1m./app.css[39m[22m 484 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./app.js + 1 modules[39m[22m 235 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+  [1m./index.tsx[39m[22m 60 bytes [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+[1m./img/IU_Pics (9).jpg[39m[22m 42 bytes (javascript) 66 bytes (asset) [1m[33m[built][39m[22m [1m[33m[code generated][39m[22m
+webpack 5.76.1 compiled [1m[32msuccessfully[39m[22m in 2047 ms

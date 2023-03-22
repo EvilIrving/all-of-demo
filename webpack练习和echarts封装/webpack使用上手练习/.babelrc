@@ -1,0 +1,17 @@
+{
+       // @babel/preset-env ES6到ES5的代码转换
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                // 仅polyfill使用过的ES6语法 缩小打包体积
+                "useBuiltIns": "usage",
+                "targets": {
+                    "browsers": [
+                        "1%"
+                    ]
+                }
+            }
+        ],
+    ]
+}

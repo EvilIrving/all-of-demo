@@ -1,0 +1,38 @@
+:root {
+    /* global */
+    --van-font-size-xs: 12px;
+    --van-font-size-sm: 24px;
+    --van-font-size-md: 32px;
+    --van-font-size-lg: 48px;
+    --van-line-height-xs: 20px;
+    --van-line-height-sm: 30px;
+    --van-line-height-md: 40px;
+    --van-line-height-lg: 50px;
+
+    /* Navbar */
+    --van-nav-bar-background-color: #1477fe;
+    --van-nav-bar-icon-color: #fff;
+    --van-nav-bar-text-color: #fff;
+    --van-nav-bar-title-text-color: #fff;
+    --van-nav-bar-title-font-size: 40px;
+
+    /* Tabs */
+    --van-tabs-bottom-bar-width: 160px;
+    --van-tabs-bottom-bar-height: 3px;
+    --van-tabs-bottom-bar-color: #3797F7;
+
+    /* Button */
+    --van-button-border-radius: 55px;
+
+    --van-button-default-color: #3697F7;
+    --van-button-default-background-color: #F4F7FB;
+    --van-button-default-border-color: #3697F7;
+
+    --van-button-danger-color: #F7413F;
+    --van-button-danger-background-color: #FAF2F2;
+    --van-button-danger-border-color: #F7413F;
+
+    /* Field */
+    --van-field-right-icon-color: #000;
+    --van-field-right-icon-size: 48px
+}

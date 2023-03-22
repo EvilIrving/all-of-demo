@@ -1,0 +1,41 @@
+.main{
+    position: relative;
+    width: 280px;
+    height: 42px;
+}
+.content{
+    width: 280px;
+    height: 42px;
+    line-height: 42px;
+    padding-left: 10px;
+    background: rgb(255, 255, 255);
+    border-radius: 2px;
+    border: 1px solid rgb(221, 221, 221);
+    font-size: 16px;
+    font-family: MicrosoftYaHei;
+    color: rgb(51, 51, 51);
+    cursor: pointer;
+}
+.selectImg{
+    position: absolute;
+    top:13px;
+    right: 10px;
+    cursor: pointer;
+}
+.selectItem{
+    display: none;
+    border: 1px solid #eee;
+    width: 290px;
+}
+.selectItem ul{
+    list-style: none;
+}
+.selectItem ul li{
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+.selectItem ul li:hover{
+    background-color:#f5f7fa;
+}
