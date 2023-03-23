@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.AttHystBaseMapper">
+
+
+    <select id="selectTotal" resultType="java.lang.Integer">
+        select count(1) from att_hyst_base
+        <where>
+            <if test="reqVo.areaCode != null and reqVo.areaCode !=''">
+                and area_code = #{reqVo.areaCode}
+            </if>
+            <if test="reqVo.hystType != null and reqVo.hystType !=''">
+                and hyst_type = #{reqVo.hystType}
+            </if>
+            <if test="reqVo.key != null and reqVo.key !=''">
+                and hyst_name like concat('%',#{reqVo.key},'%')
+            </if>
+            <if test="true">
+                and del_flag = 0 and area_code is not null
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectDropPoint" resultType="com.ygkj.big.screen.vo.response.HystDropPoint">
+            SELECT
+                hyst_name,
+                hyst_code,
+                hyst_lat,
+                hyst_long,
+                ins_cap,
+                hyst_type
+            FROM
+            att_hyst_base
+    </select>
+    <select id="getStationNum" resultType="java.lang.Integer">
+        select count(1) from att_hyst_base where del_flag = 0 and area_code = #{areaCode}
+    </select>
+
+
+</mapper>

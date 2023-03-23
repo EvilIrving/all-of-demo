@@ -1,0 +1,108 @@
+/*
+ * @Author: hanyu
+ * @LastEditTime: 2022-10-26 16:44:58
+ * @Description: 在此覆盖element-ui默认样式
+ * @FilePath: \rscp-big-screen\src\style\element.scss
+ */
+
+ //解决表头错位
+ body .el-table th.gutter{
+  display: table-cell!important;
+}
+.el-table tbody td {
+  color: #000;
+}
+
+//表格样式修改
+.tb_wrapper {
+  padding: 16px;
+  .el-table__header {
+    width: 100% !important;
+  }
+  .el-table__body {
+    width: 100% !important;
+  }
+  .el-table tr {
+    background-color: #fff !important;
+    color: #666 !important;
+  }
+  .el-table th {
+    background-color: #e7ebef !important;
+    color: #666 !important;
+    padding: 6px 0 !important;
+  }
+  .el-table td {
+    // color: #666 !important;
+    padding: 6px 0 !important;
+  }
+  .el-table--striped .el-table__body tr.el-table__row--striped td {
+    background-color: #052176;
+    // background-color: #f5f7f9;
+  }
+  .el-table--border:after,
+  .el-table--group:after,
+  .el-table:before {
+    background-color: #d6d2cc !important;
+  }
+  .el-table--border,
+  .el-table--group {
+    border-color: #d6d2cc !important;
+  }
+  .el-table td,
+  .el-table th.is-leaf {
+    border-bottom: 1px solid #d6d2cc !important;
+  }
+  .el-table--border th,
+  .el-table--border th.gutter:last-of-type {
+    border-bottom: 1px solid #d6d2cc !important;
+  }
+  .el-table--border td,
+  .el-table--border th {
+    border-right: 1px solid #d6d2cc !important;
+  }
+  .el-table td,
+  .el-table th.is-leaf {
+    border-bottom: 1px solid #d6d2cc !important;
+  }
+  .el-table td,
+  .building-top .el-table th.is-leaf {
+    border-bottom: 1px solid #d6d2cc !important;
+  }
+}
+
+
+
+.table_list{
+  padding: 0 16px;
+  .el-table th>.cell{
+    font-size: 14px;
+    color: #666;
+    // word-break:normal;
+  }
+  .el-table .cell{
+    padding-right: 5px;
+    font-size: 14px;
+  }
+  .el-table .cell, .el-table--border td:first-child .cell, .el-table--border th:first-child .cell{
+    padding-left: 5px;
+  }
+  // &.black{
+  //   background: transparent!important;
+  //   .el-table{
+  //     background: transparent!important;
+  //     tr{
+  //       background: transparent!important;
+  //     }
+  //   }
+  // }
+}
+
+.seawall_primary_dialog {
+  .el-dialog {
+    .el-dialog__header {
+      margin-top: 0 !important;
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+    }
+  }
+}

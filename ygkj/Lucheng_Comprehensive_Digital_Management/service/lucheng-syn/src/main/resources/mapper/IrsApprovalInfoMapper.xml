@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.IrsApprovalInfoMapper">
+
+
+    <insert id="replaceIrsApprovalInfo" parameterType="com.ygkj.lcsyn.model.IrsApprovalInfo">
+        REPLACE INTO irs_approval_info
+        (APPROVAL_ITEMID,
+        approval_number,
+        approval_title,
+        current_state,
+        deal_time,
+        dept_code,
+        dept_name,
+        division_code,
+        file_path,
+        item_code,
+        item_name,
+        project_code,
+        validity_date,
+        validity_flag)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.approvalItemid},#{item.approvalNumber},#{item.approvalTitle},#{item.currentState},#{item.dealTime},
+            #{item.deptCode},#{item.deptName},#{item.divisionCode},#{item.filePath},#{item.itemCode},#{item.itemName},
+            #{item.projectCode},#{item.validityDate},#{item.validityFlag})
+        </foreach>
+    </insert>
+
+</mapper>

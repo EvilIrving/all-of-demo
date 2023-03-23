@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.SynRainAndWaterMapper">
+    <select id="pastTwelveHourRainfall" resultType="com.ygkj.digitization.vo.response.HourRainfallResVo">
+        SELECT
+	    DATE_FORMAT( tm, '%Y-%m-%d %H' ) AS tm,
+	    mgstcd,
+	    SUM( drp ) AS total
+        FROM
+	    ${table}
+        WHERE
+	    tm BETWEEN #{start} AND #{end}
+	    <if test="list.size() > 0">
+            AND mgstcd IN
+            <foreach collection="list" open="(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY
+	    DATE_FORMAT( tm, '%Y-%m-%d %H' ),
+	    mgstcd
+        ORDER BY
+	    DATE_FORMAT( tm, '%Y-%m-%d %H' )DESC,mgstcd DESC;
+    </select>
+
+    <select id="selectNewestReserviorWaterLevelFromTable" resultType="com.ygkj.digitization.vo.response.WaterLevelResVo">
+        SELECT a.* FROM
+	    (SELECT mgstcd,stcd, tm, rz FROM ${table}
+	    WHERE tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00')
+	    <if test="stationCodes != null and stationCodes.size() >0">
+            AND mgstcd IN (
+            <foreach collection="stationCodes" item="item" separator=",">
+                #{item}
+            </foreach>
+            )
+        </if>
+	    ORDER BY tm DESC LIMIT 10000 ) a
+        GROUP BY a.stcd
+    </select>
+
+    <select id="selectNewestRiverLevelFromTable" resultType="com.ygkj.digitization.vo.response.WaterLevelResVo">
+        SELECT a.* FROM
+	    (SELECT stcd, tm, z FROM ${table}
+	    WHERE tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 10000 ) a
+        GROUP BY a.stcd
+    </select>
+
+    <select id="selectNewestWas" resultType="com.ygkj.digitization.vo.response.GateOpenResVo">
+         SELECT a.* FROM
+	    (SELECT stcd, tm,UPZ,DWZ,MXGTQ,OVS  FROM ${table}
+	    WHERE tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 10000 ) a
+        GROUP BY a.stcd
+    </select>
+
+
+    <select id="selectHistoryReservoirWaterLevel" resultType="java.util.HashMap">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT stcd, tm,rz AS z FROM ${item}
+            <where>
+                <if test="queryVo.start != null and queryVo.end != null">
+                    and (tm between #{queryVo.start} AND #{queryVo.end})
+                </if>
+                <if test="queryVo.stationCode != null">
+                    AND stcd = #{queryVo.stationCode}
+                </if>
+            </where>
+            )
+        </foreach>
+    </select>
+
+    <select id="selectHistoryRiverWaterLevel" resultType="java.util.HashMap">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT stcd, tm,z  FROM ${item}
+            <where>
+                <if test="queryVo.start != null and queryVo.end != null">
+                    and (tm between #{queryVo.start} AND #{queryVo.end})
+                </if>
+                <if test="queryVo.stationCode != null">
+                    AND stcd = #{queryVo.stationCode}
+                </if>
+            </where>
+            )
+        </foreach>
+    </select>
+
+    <select id="selectHistoryGate" resultType="java.util.HashMap">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT stcd, tm,UPZ,DWZ,MXGTQ,OVS,TGTQ drp FROM ${item}
+            <where>
+                <if test="queryVo.start != null and queryVo.end != null">
+                    and (tm between #{queryVo.start} AND #{queryVo.end})
+                </if>
+                <if test="queryVo.stationCode != null">
+                    AND stcd = #{queryVo.stationCode}
+                </if>
+            </where>
+            )
+        </foreach>
+    </select>
+
+    <select id="selectReserVoirMaxWaterLevel" resultType="java.util.HashMap">
+        SELECT stcd, tm,MAX(rz) AS z from ${table}
+        <where>
+            <if test="start != null and end != null">
+                and (tm between #{start} AND #{end})
+            </if>
+            <if test="list.size()>0">
+                and stcd in
+                <foreach collection="list" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY stcd
+        ORDER BY tm DESC
+    </select>
+
+    <select id="selectRiverMaxWaterLevel" resultType="java.util.HashMap">
+        SELECT stcd, tm,MAX(z) AS z from ${table}
+        <where>
+            <if test="start != null and end != null">
+                and (tm between #{start} AND #{end})
+            </if>
+            <if test="list.size()>0">
+                and stcd in
+                <foreach collection="list" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY stcd
+        ORDER BY tm DESC
+    </select>
+
+    <select id="selectRiverAverageWaterLevel" resultType="java.util.HashMap">
+        SELECT stcd,AVG(z) AS z from ${table}
+        <where>
+            <if test="start != null and end != null">
+                and (tm between #{start} AND #{end})
+            </if>
+            <if test="list.size()>0">
+                and stcd in
+                <foreach collection="list" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY stcd
+    </select>
+
+    <select id="selectReservoirAverageWaterLevel" resultType="java.util.HashMap">
+        SELECT stcd,AVG(rz) AS z from ${table}
+        <where>
+            <if test="start != null and end != null">
+                and (tm between #{start} AND #{end})
+            </if>
+            <if test="list.size()>0">
+                and stcd in
+                <foreach collection="list" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY stcd
+    </select>
+
+    <select id="selectSumRainfall" resultType="java.util.HashMap">
+        SELECT stcd,SUM(drp) AS drp from ${table}
+        <where>
+            <if test="start != null and end != null">
+                and (tm between #{start} AND #{end})
+            </if>
+            <if test="list.size()>0">
+                and stcd in
+                <foreach collection="list" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY stcd
+    </select>
+
+    <select id="rainfallRelationStatistic" resultType="java.util.HashMap">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT SUM(drp) as DRP, DATE_FORMAT(tm,'%Y-%m-%d') tm,stcd FROM ${item}
+            <where>
+                <if test="queryVo.start != null and queryVo.end != null">
+                    and (tm between #{queryVo.start} AND #{queryVo.end})
+                </if>
+                <if test="queryVo.stationCodes.size()>0">
+                    and stcd in
+                    <foreach collection="queryVo.stationCodes" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
+            GROUP BY DATE_FORMAT(tm,'%Y-%m-%d 08:00:00'),stcd
+            )
+        </foreach>
+    </select>
+
+    <select id="reservoirWaterLevelRelationStatistic" resultType="java.util.HashMap">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT AVG(rz) AS z, DATE_FORMAT(tm,'%Y-%m-%d') AS tm,stcd FROM ${item}
+            <where>
+                <if test="queryVo.start != null and queryVo.end != null">
+                    and (tm between #{queryVo.start} AND #{queryVo.end})
+                </if>
+                <if test="queryVo.stationCodes.size()>0">
+                    and stcd in
+                    <foreach collection="queryVo.stationCodes" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
+            GROUP BY DATE_FORMAT(tm,'%Y-%m-%d'),stcd
+            )
+        </foreach>
+    </select>
+
+    <select id="riverWaterLevelRelationStatistic" resultType="java.util.HashMap">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT AVG(z) AS z, DATE_FORMAT(tm,'%Y-%m-%d') AS tm,stcd FROM ${item}
+            <where>
+                <if test="queryVo.start != null and queryVo.end != null">
+                    and (tm between #{queryVo.start} AND #{queryVo.end})
+                </if>
+                <if test="queryVo.stationCodes.size()>0">
+                    and stcd in
+                    <foreach collection="queryVo.stationCodes" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
+            GROUP BY DATE_FORMAT(tm,'%Y-%m-%d'),stcd
+            )
+        </foreach>
+    </select>
+
+    <select id="listWaterQuality" resultType="com.ygkj.digitization.vo.response.CwsResVo">
+        SELECT
+            stationCode,pH,turbidity,
+            dt,freeChlorine,waterquantity
+        FROM
+            (
+                SELECT
+                    stationCode,pH,turbidity,
+                    dt,freeChlorine,waterquantity
+                FROM
+                    syn_waterquality
+                WHERE
+                    stationCode IN
+                    <foreach collection="collection" open="(" separator="," item="item" close=")">
+                        #{item}
+                    </foreach>
+                AND dt &gt;  DATE_ADD(NOW(),INTERVAL -1 HOUR)
+                ORDER BY dt DESC
+                LIMIT 100000
+            ) a
+       GROUP BY stationCode
+    </select>
+
+    <select id="listCwsDetail" resultType="com.ygkj.digitization.vo.response.CwsResVo">
+        SELECT
+            stationCode,pH,turbidity,
+            dt,freeChlorine,waterquantity
+        FROM
+            syn_waterquality
+        WHERE
+            stationCode = #{stationCode}
+            AND dt &gt; DATE_SUB(NOW(),INTERVAL ${day} DAY)
+        ORDER BY
+            dt
+    </select>
+
+    <select id="sumRainfallPeriods" resultType="com.ygkj.digitization.model.SumRainfallPeriods">
+        SELECT sum(k.drp) drp,stcd stcd FROM (
+        <foreach collection="tableNames" item="tableName" separator="union all">
+            (SELECT sum(drp) drp,stcd,DATE_FORMAT(tm,'%Y-%m-%d %H:00') tm FROM ${tableName} WHERE 1=1
+            <if test="startTime != null and startTime != ''">
+                AND tm &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND tm &lt;= #{endTime}
+            </if>
+            <if test="codes.size() > 0">
+                AND mgstcd IN
+                <foreach collection="codes" open="(" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+            GROUP BY mgstcd)
+        </foreach>
+        )k GROUP BY k.stcd
+    </select>
+
+    <select id="selectMaxRainDataTbs" resultType="com.ygkj.digitization.model.SumRainfallPeriods">
+        SELECT max(k.drp) drp,stcd stcd FROM (
+        <foreach collection="tableNames" item="tableName" separator="union all">
+            (SELECT max(drp) drp,stcd FROM ${tableName} WHERE 1=1
+            <if test="startTime != null and startTime != ''">
+                AND tm &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND tm &lt;= #{endTime}
+            </if>
+            <if test="codes.size() > 0">
+                AND mgstcd IN
+                <foreach collection="codes" open="(" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+            GROUP BY stcd
+            )
+        </foreach>
+        )k GROUP BY k.stcd
+    </select>
+
+    <select id="dayRainfallDataList" resultType="com.ygkj.digitization.model.RailWaterCommonEntity">
+        SELECT DATE_FORMAT(k.tm,'%Y-%m-%d') time,sum(k.drp) data FROM (
+        <foreach collection="tableNames" item="tableName" separator="union all">
+            (SELECT * FROM ${tableName} WHERE `stcd` = #{stcd} AND tm &gt;= #{startTime} AND tm &lt;= #{endTime})
+        </foreach>
+        )k WHERE k.stcd = #{stcd}
+        AND k.tm &gt;= #{startTime} AND k.tm &lt;= #{endTime} GROUP BY DATE_FORMAT(k.tm,'%Y-%m-%d')
+    </select>
+
+
+    <select id="selectRsvrByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd, tm, rz FROM ${item} WHERE tm between #{start} AND #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectWasByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd, tm,UPZ,DWZ,MXGTQ,OVS,LL FROM ${item}
+            WHERE tm between #{start} AND #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectRiverByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd, tm, z FROM ${item}
+            WHERE tm between #{start} AND #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectTideByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd, tm, tdz FROM ${item}
+            WHERE tm between #{start} AND #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectRainfallByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd, stcd, tm, drp FROM ${item}
+            WHERE tm between #{start} AND #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectAstrotdByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        SELECT mgstcd, stcd, YMDH as tm, TDZ FROM st_astrotd_r
+        WHERE YMDH between #{start} AND #{end}
+        <if test="stcds!=null and stcds.size!=0">
+            and mgstcd IN
+            <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY YMDH ASC
+    </select>
+
+    <select id="selectAstrotdByTime" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        SELECT mgstcd, stcd, YMDH as tm, TDZ FROM st_astrotd_r
+        WHERE YMDH between #{dataTime} and mgstcd =#{stcd}
+        limit 1
+    </select>
+
+    <select id="selectAstrotdBy2Timestamp" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        SELECT mgstcd, stcd, YMDH as tm, TDZ FROM st_astrotd_r
+        WHERE (YMDH = #{dataTime1} or YMDH = #{dataTime2}) and mgstcd =#{stcd} ORDER BY YMDH asc
+        limit 2
+    </select>
+
+    <select id="selectStcdDataHour" resultType="com.ygkj.digitization.vo.PptnRAssistReq">
+        SELECT stcd,SUM(drp) drp,DATE_FORMAT(tm,'%Y-%m-%d %H') tm FROM ${tableName} WHERE
+        `stcd` = #{stcd} AND tm &gt;= #{startTime} AND tm &lt;= #{endTime} GROUP BY DATE_FORMAT(tm,'%Y-%m-%d %H')
+    </select>
+    <select id="sumStcdDataThreeHour" resultType="com.ygkj.digitization.vo.PptnRAssistReq">
+        SELECT stcd,SUM(drp) drp,DATE_FORMAT(tm,'%Y-%m-%d %H') tm FROM ${tableName} WHERE
+            `stcd` = #{stcd} AND tm &gt;= #{startTime} AND tm &lt;= #{endTime}
+    </select>
+
+    <select id="hourRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        <foreach collection="tables" item="table" separator="UNION ALL">
+            (SELECT mgstcd,SUM(drp) drp,DATE_FORMAT(tm,'%Y-%m-%d %H:00:00') tm FROM ${table}
+            <where>
+                <if test="codes != null and codes.size != 0">
+                    AND mgstcd IN
+                    <foreach collection="codes" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                AND tm &gt;= #{start} AND tm &lt;= #{end}
+            </where>
+            GROUP BY mgstcd,DATE_FORMAT(tm,'%Y-%m-%d %H:00:00'))
+        </foreach>
+    </select>
+
+    <select id="selectYongJiaRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT stcd AS mgstcd, SUM(sub_val) AS drp FROM yongjia_st_pptn_r0
+        <where>
+            <if test="codes != null and '' != codes">
+            AND stcd IN
+                (
+                <foreach collection="codes" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            <if test="startTime != null and endTime != null">
+                and (tm between #{startTime} AND #{endTime})
+            </if>
+        </where>
+        GROUP BY stcd
+    </select>
+
+    <select id="hourYjRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT stcd AS mgstcd, SUM(sub_val) AS drp,DATE_FORMAT(tm,'%Y-%m-%d %H:00:00')
+        FROM yongjia_st_pptn_r0
+        <where>
+            <if test="codes != null and codes.size != 0">
+                AND stcd IN
+                <foreach collection="codes" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            AND tm &gt;= #{start} AND tm &lt;= #{end}
+        </where>
+        GROUP BY stcd,DATE_FORMAT(tm,'%Y-%m-%d %H:00:00')
+    </select>
+
+    <select id="selectRsvrWaterLevelByTimeCode" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, rz FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY)  AND  DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectRiverByTimeCode" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, z FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY)  AND  DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectNewestStationRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT a.* FROM
+            (SELECT stcd, tm, drp FROM ${table}
+             WHERE tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 10000 ) a
+        GROUP BY a.stcd
+    </select>
+
+    <select id="selectTideByTimeCode" resultType="com.ygkj.gragh.model.StTideR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,TDZ FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY)  AND  DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectWasByTimeCode" resultType="com.ygkj.gragh.model.StWasR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm,UPZ,DWZ,MXGTQ,OVS,LL FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY)  AND  DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectHourRsvr" resultType="com.ygkj.gragh.model.StRsvrR">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT MGSTCD,STCD, TM,RZ FROM ${item}
+            <where>
+                <if test="start != null and end != null">
+                    and (tm &gt;= #{start} AND tm &lt;= #{end})
+                </if>
+                <if test="stcd != null">
+                    AND MGSTCD = #{stcd}
+                </if>
+            </where>
+            AND RIGHT(tm,5)='00:00'
+            ORDER BY tm DESC
+            )
+        </foreach>
+    </select>
+
+    <select id="selectRsvrCapcityCurveAsc" resultType="com.ygkj.digitization.model.ReservoirCapacityCurve">
+        select *
+        from reservoir_capacity_curve
+        where 1=1
+        and `code` = #{code}
+        ORDER BY water_level
+    </select>
+
+</mapper>

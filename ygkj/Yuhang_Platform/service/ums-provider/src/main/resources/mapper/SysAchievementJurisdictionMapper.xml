@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.SysAchievementJurisdictionMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.entity.SysAchievementJurisdiction">
+        <result column="id" property="id"/>
+        <result column="achievement_id" property="achievementId"/>
+        <result column="deport_ids" property="deportIds"/>
+        <result column="user_ids" property="userIds"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_id" property="updateId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                achievement_id,
+                deport_ids,
+                user_ids,
+                create_id,
+                update_id,
+                create_time,
+                update_time,
+                type
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.entity.SysAchievementJurisdiction">
+        INSERT INTO sys_achievement_jurisdiction
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != achievementId'>
+                achievement_id,
+            </if>
+            <if test='null != deportIds'>
+                deport_ids,
+            </if>
+            <if test='null != userIds'>
+                user_ids,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != type'>
+                type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != achievementId'>
+                #{achievementId},
+            </if>
+            <if test='null != deportIds'>
+                #{deportIds},
+            </if>
+            <if test='null != userIds'>
+                #{userIds},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != type'>
+                #{type}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete">
+        update sys_achievement_jurisdiction set del_flag = 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="update" parameterType="com.ygkj.entity.SysAchievementJurisdiction">
+        UPDATE sys_achievement_jurisdiction
+        <set>
+            <if test='null != achievementId'>achievement_id = #{achievementId},</if>
+            <if test='null != deportIds'>deport_ids = #{deportIds},</if>
+            <if test='null != userIds'>user_ids = #{userIds},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != type'>type = #{type}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_achievement_jurisdiction
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="com.ygkj.entity.SysAchievementJurisdiction">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_achievement_jurisdiction where del_flag = 0
+        <if test="type!=null and type!=''">
+            AND type = #{type}
+        </if>
+        <if test="achievementId!=null and achievementId!=''">
+            AND achievement_id = #{achievementId}
+        </if>
+    </select>
+
+    <select id="findDataByAchievementIdAndType" resultType="com.ygkj.auth.api.achievement.model.SysAchievementJurisdiction">
+        SELECT * FROM `sys_achievement_jurisdiction` WHERE del_flag = 0
+        <if test="achievementId!=null and achievementId!=''">
+            AND achievement_id = #{achievementId}
+        </if>
+        <if test="type!=null and type!=''">
+            AND type = #{type}
+        </if>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ygkj.water.project.mapper.ConAcceptanceApplicationMapper">
+    <select id="loadPage1" parameterType="com.ygkj.project.vo.request.ConAcceptanceApplicationReqVo"
+            resultType="com.ygkj.project.model.ConAcceptanceApplication">
+
+        select tbl.*,t1.company_name propertyUnitName,t2.username propertyUnitReviewerName,t3.name
+        runUnitName,t4.username runUnitReviewerName,t5.name waterAdministrationUnitName,t6.username
+        waterAdministrationUnitReviewerName from
+        (
+        select * from con_acceptance_application where del_flag=0
+        <if test="id != null and ''!=id">
+            and id = #{id}
+        </if>
+        <if test="null != year and ''!=year">
+            and year = #{year}
+        </if>
+        <if test="null != status and ''!=status">
+            and status = #{status}
+        </if>
+        <if test="null != propertyUnitName and ''!=propertyUnitName">
+            and find_in_set(property_unit_id,#{propertyUnitReviewerId})
+        </if>
+        ) tbl
+        left join professional_company t1 on tbl.property_unit_id=t1.id
+        left join (select * from sys_user where deleted=1) t2 on tbl.property_unit_reviewer_id=t2.id
+        left join (select * from sys_dept where deleted=1) t3 on tbl.run_unit_id=t3.id
+        left join (select * from sys_user where deleted=1) t4 on tbl.run_unit_reviewer_id=t4.id
+        left join (select * from sys_dept where deleted=1) t5 on tbl.water_administration_unit_id=t5.id
+        left join (select * from sys_user where deleted=1) t6 on tbl.water_administration_unit_reviewer_id=t6.id
+        where 1 = 1
+        <if test="isAdmin != null and isAdmin == false">
+            <choose>
+                <when test="isWyLeader != null and isWyLeader == false">
+                    and t2.id=#{currentUserId}
+                </when>
+                <when test="isWyLeader != null and isWyLeader == true">
+                    and t1.id=#{propertyUnitId}
+                </when>
+            </choose>
+        </if>
+    </select>
+
+    <select id="loadPage2" parameterType="com.ygkj.project.vo.request.ConAcceptanceApplicationReqVo"
+            resultType="com.ygkj.project.model.ConAcceptanceApplication">
+
+        select tbl.*,t1.company_name propertyUnitName,t2.username propertyUnitReviewerName,t3.name
+        runUnitName,t4.username runUnitReviewerName,t5.name waterAdministrationUnitName,t6.username
+        waterAdministrationUnitReviewerName from
+        (
+        select * from con_acceptance_application where del_flag=0
+        <if test="id != null and ''!=id">
+            and id = #{id}
+        </if>
+        <if test="null != year and ''!=year">
+            and year = #{year}
+        </if>
+        <if test="null != status and ''!=status">
+            and status = #{status}
+        </if>
+        <if test="null != propertyUnitName and ''!=propertyUnitName">
+            and find_in_set(property_unit_id,#{propertyUnitReviewerId})
+        </if>
+        ) tbl
+        left join professional_company t1 on tbl.property_unit_id=t1.id
+        left join (select * from sys_user where deleted=1) t2 on tbl.property_unit_reviewer_id=t2.id
+        left join (select * from sys_dept where deleted=1) t3 on tbl.run_unit_id=t3.id
+        left join (select * from sys_user where deleted=1) t4 on tbl.run_unit_reviewer_id=t4.id
+        left join (select * from sys_dept where deleted=1) t5 on tbl.water_administration_unit_id=t5.id
+        left join (select * from sys_user where deleted=1) t6 on tbl.water_administration_unit_reviewer_id=t6.id
+        where 1 = 1
+        <if test="isAdmin != null and isAdmin == false">
+            <choose>
+                <when test="isWyLeader != null and isWyLeader == false">
+                    and t4.id=#{currentUserId}
+                </when>
+                <when test="isWyLeader != null and isWyLeader == true">
+                    and t1.id=#{propertyUnitId}
+                </when>
+            </choose>
+        </if>
+        UNION
+        select tbl.*,t1.company_name propertyUnitName,t2.username propertyUnitReviewerName,t3.name
+        runUnitName,t4.username runUnitReviewerName,t5.name waterAdministrationUnitName,t6.username
+        waterAdministrationUnitReviewerName from
+        (
+        select * from con_acceptance_application where del_flag=0
+        <if test="id != null and ''!=id">
+            and id = #{id}
+        </if>
+        <if test="null != year and ''!=year">
+            and year = #{year}
+        </if>
+        <if test="null != status and ''!=status">
+            and status = #{status}
+        </if>
+        <if test="null != propertyUnitName and ''!=propertyUnitName">
+            and find_in_set(property_unit_id,#{propertyUnitReviewerId})
+        </if>
+        ) tbl
+        left join professional_company t1 on tbl.property_unit_id=t1.id
+        left join (select * from sys_user where deleted=1) t2 on tbl.property_unit_reviewer_id=t2.id
+        left join (select * from sys_dept where deleted=1) t3 on tbl.run_unit_id=t3.id
+        left join (select * from sys_user where deleted=1) t4 on tbl.run_unit_reviewer_id=t4.id
+        left join (select * from sys_dept where deleted=1) t5 on tbl.water_administration_unit_id=t5.id
+        left join (select * from sys_user where deleted=1) t6 on tbl.water_administration_unit_reviewer_id=t6.id
+        where 1 = 1
+        <if test="isAdmin != null and isAdmin == false">
+            <choose>
+                <when test="isWyLeader != null and isWyLeader == false">
+                    and t6.id=#{currentUserId}
+                </when>
+                <when test="isWyLeader != null and isWyLeader == true">
+                    and t1.id=#{propertyUnitId}
+                </when>
+            </choose>
+        </if>
+    </select>
+</mapper>

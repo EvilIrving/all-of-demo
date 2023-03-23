@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcy.datamanage.biz.mapper.DataDeptRelMapper">
+
+
+    <select id="listDept" resultType="com.dcy.datamanage.api.model.BusDataDeptRel">
+        SELECT
+            id,dept_id,primary_data
+        FROM
+            `bus_data_dept_rel`
+        <where>
+            <if test="dto.dataSourceId != null and dto.dataSourceId != ''">
+                data_source_id = #{dto.dataSourceId}
+            </if>
+            <if test="dto.tableName != null and dto.tableName != ''">
+                AND `table_name` = #{dto.tableName}
+            </if>
+            <if test="list != null and list.size > 0">
+                AND
+                <foreach collection="list" open="(" item="arrItem" separator="OR" close=")">
+                    <foreach collection="arrItem" open="(" item="item" separator="AND" close=")">
+                        primary_data->'$.${item.colName}' = #{item.colVal}
+                    </foreach>
+                </foreach>
+            </if>
+
+        </where>
+    </select>
+
+</mapper>

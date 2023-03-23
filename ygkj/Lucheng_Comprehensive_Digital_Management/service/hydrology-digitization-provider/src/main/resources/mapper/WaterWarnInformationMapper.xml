@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.WaterWarnInformationMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.WaterWarnInformation" >
+        <result column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="rule_content" property="ruleContent" />
+        <result column="warn_content" property="warnContent" />
+        <result column="send_person_num" property="sendPersonNum" />
+        <result column="send_person_ids" property="sendPersonIds" />
+        <result column="send_status" property="sendStatus" />
+        <result column="create_time" property="createTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="creator_id" property="creatorId" />
+        <result column="create_name" property="createName" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        type,
+        rule_content,
+        warn_content,
+        send_person_num,
+        send_person_ids,
+        send_status,
+        examine_status,
+        create_time,
+        del_flag,
+        creator_id,
+        create_name
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.WaterWarnInformation">
+        INSERT INTO water_warn_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != type'>
+                type,
+            </if>
+            <if test ='null != ruleContent'>
+                rule_content,
+            </if>
+            <if test ='null != warnContent'>
+                warn_content,
+            </if>
+            <if test ='null != sendPersonNum'>
+                send_person_num,
+            </if>
+            <if test ='null != sendPersonIds'>
+                send_person_ids,
+            </if>
+            <if test ='null != sendStatus'>
+                send_status,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != creatorId'>
+                creator_id,
+            </if>
+            <if test ='null != pdfUrl and "" != pdfUrl'>
+                pdf_url,
+            </if>
+            <if test ='null != sendType and "" != sendType'>
+                send_type,
+            </if>
+            <if test ='null != ruleContentId and "" != ruleContentId'>
+                rule_content_id,
+            </if>
+            <if test ='null != lsPerson and "" != lsPerson'>
+                ls_person,
+            </if>
+            <if test ='null != peopleNames and "" != peopleNames'>
+                people_names,
+            </if>
+            <if test ='null != stationIds and "" != stationIds'>
+                station_ids,
+            </if>
+            <if test ='null != lsTime'>
+                ls_time,
+            </if>
+            <if test ='null != warnTemplteId and "" != warnTemplteId'>
+                warn_templte_id,
+            </if>
+            <if test ='null != createName'>
+                create_name
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != type'>
+                #{type},
+            </if>
+            <if test ='null != ruleContent'>
+                #{ruleContent},
+            </if>
+            <if test ='null != warnContent'>
+                #{warnContent},
+            </if>
+            <if test ='null != sendPersonNum'>
+                #{sendPersonNum},
+            </if>
+            <if test ='null != sendPersonIds'>
+                #{sendPersonIds},
+            </if>
+            <if test ='null != sendStatus'>
+                #{sendStatus},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != creatorId'>
+                #{creatorId},
+            </if>
+            <if test ='null != pdfUrl and "" != pdfUrl'>
+                #{pdfUrl},
+            </if>
+            <if test ='null != sendType and "" != sendType'>
+                #{sendType},
+            </if>
+            <if test ='null != ruleContentId and "" != ruleContentId'>
+                #{ruleContentId},
+            </if>
+            <if test ='null != lsPerson and "" != lsPerson'>
+                #{lsPerson},
+            </if>
+            <if test ='null != peopleNames and "" != peopleNames'>
+                #{peopleNames},
+            </if>
+            <if test ='null != stationIds and "" != stationIds'>
+                #{stationIds},
+            </if>
+            <if test ='null != lsTime'>
+                #{lsTime},
+            </if>
+            <if test ='null != warnTemplteId and "" != warnTemplteId'>
+                #{warnTemplteId},
+            </if>
+            <if test ='null != createName'>
+                #{createName}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        update water_warn_information set del_flag = 1 WHERE id = #{id}
+    </delete>
+
+    <select id="loadPage" resultType="com.ygkj.digitization.vo.response.WaterWarnInformationRespVo">
+        SELECT tbl.*,tb2.rule_detail_info_str ruleDetailInfoStr,tb2.station_names,tb3.content warnTemplteContent from water_warn_information tbl
+            LEFT JOIN water_rule_configuration tb2 ON tbl.rule_content_id = tb2.id
+        LEFT JOIN water_warn_template tb3 ON tb3.id = tbl.warn_templte_id WHERE tbl.del_flag = 0
+        <if test ='null != id and "" != id'>
+            and tbl.id = #{id}
+        </if>
+        <if test ='null != sendStatus and "" != sendStatus'>
+            and FIND_IN_SET(#{sendStatus},tbl.send_status)
+        </if>
+        <if test ='null != type and "" != type'>
+            and tbl.type = #{type}
+        </if>
+        <if test ='null != ruleContentId and "" != ruleContentId'>
+            and tbl.rule_content_id = #{ruleContentId}
+        </if>
+        <if test ='null != ruleContent and "" != ruleContent'>
+            and tbl.rule_content like CONCAT('%',#{ruleContent},'%')
+        </if>
+        <if test ='null != warnContent and "" != warnContent'>
+            and tbl.warn_content like CONCAT('%',#{warnContent},'%')
+        </if>
+        <if test="null != startTime and '' != startTime">
+            and tbl.create_time &gt;= CONCAT(#{startTime},' 00:00:00')
+        </if>
+        <if test="null != endTime and '' != endTime">
+            and tbl.create_time &lt;= CONCAT(#{endTime},' 23:59:59')
+        </if>
+        order by tbl.create_time desc
+    </select>
+
+    <select id="findUserList" resultType="com.ygkj.project.model.SysUser">
+        select * from sys_user where deleted = 1 and FIND_IN_SET(id,#{ids})
+    </select>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.WaterWarnInformation">
+        UPDATE water_warn_information
+        <set>
+            <if test ='null != type'>type = #{type},</if>
+            <if test ='null != ruleContent'>rule_content = #{ruleContent},</if>
+            <if test ='null != warnContent'>warn_content = #{warnContent},</if>
+            <if test ='null != sendPersonNum'>send_person_num = #{sendPersonNum},</if>
+            <if test ='null != sendPersonIds'>send_person_ids = #{sendPersonIds},</if>
+            <if test ='null != sendStatus'>send_status = #{sendStatus},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != creatorId'>creator_id = #{creatorId},</if>
+            <if test ='null != pdfUrl and "" != pdfUrl'>pdf_url = #{pdfUrl},</if>
+            <if test ='null != sendType and "" != sendType'>send_type = #{sendType},</if>
+            <if test ='null != ruleContentId and "" != ruleContentId'>rule_content_id = #{ruleContentId},</if>
+            <if test ='null != lsPerson and "" != lsPerson'>ls_person = #{lsPerson},</if>
+            <if test ='null != peopleNames and "" != peopleNames'>people_names = #{peopleNames},</if>
+            <if test ='null != stationIds and "" != stationIds'>station_ids = #{stationIds},</if>
+            <if test ='null != lsTime'>ls_time = #{lsTime},</if>
+            <if test ='null != createName'>create_name = #{createName}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>

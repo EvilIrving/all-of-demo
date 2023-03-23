@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ygkj.water.project.mapper.BmPropertyContractMapper">
+    <select id="loadPage" parameterType="com.ygkj.project.vo.request.BmPropertyContractReqVo" resultType="com.ygkj.project.vo.request.BmPropertyContractReqVo">
+        select a.* from (
+        select tbl.ID,tbl.CONTRACT_NAME,tbl.CONTRACT_CLIENT,tbl.CONTRACT_CLIENT_NM,tbl.CONTRACT_UNIT,
+        tbl.CONTRACT_UNIT_NM,tbl.CONTRACT_CONTENT,tbl.STARTTM,tbl.ENDTM ,tbl.QUALIFICATION,
+        tbl.FUNDS,tbl.CONTRACT_MATTER,tbl.CONTRACT_FILE,tbl.create_time,tbl.source_type from bm_property_contract tbl
+        where del_flag = '0' and tbl.source_type = '1'
+        <if test="id != null and ''!=id">
+            and tbl.id = #{id}
+        </if>
+        <if test="starttm != null">
+            and tbl.STARTTM >= #{starttm}
+        </if>
+        <if test="endtm != null">
+            and tbl.ENDTM &lt;= #{endtm}
+        </if>
+        <if test="contractUnit != null and '' != contractUnit">
+            and tbl.CONTRACT_UNIT = #{contractUnit}
+        </if>
+        <if test="key != null and ''!=key">
+            and concat(IFNULL(tbl.CONTRACT_NAME,''),IFNULL(tbl.CONTRACT_CONTENT,''),IFNULL(tbl.CONTRACT_CLIENT_NM,''),IFNULL(tbl.CONTRACT_UNIT_NM,'')) like concat('%',#{key},'%')
+        </if>
+        UNION
+        select tbl.ID, tbl.CONTRACT_NAME, tbl.CONTRACT_CLIENT, dept.name AS contractClientNm, tbl.CONTRACT_UNIT,
+         company.company_name AS contractUnitNm ,tbl.CONTRACT_CONTENT, tbl.STARTTM, tbl.ENDTM, tbl.QUALIFICATION,
+        tbl.FUNDS, tbl.CONTRACT_MATTER, tbl.CONTRACT_FILE, tbl.create_time, tbl.source_type from bm_property_contract tbl
+        left join professional_company company on tbl.CONTRACT_UNIT = company.id
+        left join sys_dept dept on tbl.CONTRACT_CLIENT = dept.id
+        where del_flag = '0' and tbl.source_type = '2'
+        <if test="id != null and ''!=id">
+            and tbl.id = #{id}
+        </if>
+        <if test="starttm != null">
+            and tbl.STARTTM >= #{starttm}
+        </if>
+        <if test="endtm != null">
+            and tbl.ENDTM &lt;= #{endtm}
+        </if>
+        <if test="contractUnit != null and '' != contractUnit">
+            and tbl.CONTRACT_UNIT = #{contractUnit}
+        </if>
+        <if test="key != null and ''!=key">
+            and concat(IFNULL(tbl.CONTRACT_NAME,''),IFNULL(tbl.CONTRACT_CONTENT,''),IFNULL(company.company_name,''),IFNULL(dept.name,'')) like concat('%',#{key},'%')
+        </if>
+        ) a
+        order by a.create_time desc
+    </select>
+</mapper>

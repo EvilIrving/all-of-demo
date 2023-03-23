@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.RegularReviewMapper">
+
+
+    <select id="getList" resultType="com.ygkj.project.model.RegularReview">
+        SELECT a.*,b.name examUnit,c.company_name evaluatedUnit,d.username staffAppraisal FROM regular_review a
+        LEFT JOIN sys_dept b ON a.exam_unit_id = b.id
+        LEFT JOIN professional_company c ON a.evaluated_unit_id = c.id
+        LEFT JOIN sys_user d ON a.staff_appraisal_id = d.id WHERE a.del_flag = 0
+        <if test="regularReview.examTime != null">
+            AND a.exam_time = #{regularReview.examTime}
+        </if>
+        <if test="regularReview.examUnitId != null and regularReview.examUnitId != ''">
+            AND a.exam_unit_id = #{regularReview.examUnitId}
+        </if>
+        <if test="regularReview.year != null and regularReview.year != ''">
+            AND LEFT(a.exam_time,4) = #{regularReview.year}
+        </if>
+        <if test="regularReview.evaluatedUnitId != null and regularReview.evaluatedUnitId != ''">
+            AND a.evaluated_unit_id = #{regularReview.evaluatedUnitId}
+        </if>
+        <if test="regularReview.staffAppraisalId != null and regularReview.staffAppraisalId != ''">
+            AND a.staff_appraisal_id = #{regularReview.staffAppraisalId}
+        </if>
+    </select>
+
+    <select id="getEdListById" resultType="com.ygkj.project.vo.request.EvaluationItemDataVo">
+SELECT b.id, a.id kpId, b.acceptance_item, b.acceptance_requirements, b.standard_score, a.score, a.mark_principle FROM evaluation_item_data a
+LEFT JOIN evaluation_item_template b ON a.template_id = b.id WHERE review_id = #{id} ORDER BY b.sort ASC
+    </select>
+
+    <select id="yearList" resultType="com.ygkj.project.model.RegularReview">
+        SELECT m.*,
+        CASE WHEN m.synthesis_score >= 90 THEN '优秀'
+        WHEN m.synthesis_score &lt; 90 AND m.synthesis_score >= 80 THEN '合格'
+        WHEN m.synthesis_score &lt; 80 THEN '不合格' END grade
+        FROM (SELECT LEFT(a.exam_time,4) year, a.evaluated_unit_id, c.company_name evaluatedUnit, ROUND(SUM(a.synthesis_score)/COUNT(synthesis_score),1) synthesis_score
+        FROM regular_review a LEFT JOIN sys_dept b ON a.exam_unit_id = b.id
+        LEFT JOIN professional_company c ON a.evaluated_unit_id = c.id
+        LEFT JOIN sys_user d ON a.staff_appraisal_id = d.id WHERE a.del_flag = 0
+        <if test="regularReview.year != null and regularReview.year != ''">
+            AND LEFT(a.exam_time,4) = #{regularReview.year}
+        </if>
+        <if test="regularReview.evaluatedUnitId != null and regularReview.evaluatedUnitId != ''">
+            AND a.evaluated_unit_id = #{regularReview.evaluatedUnitId}
+        </if>
+        GROUP BY LEFT(a.exam_time,4), a.evaluated_unit_id) m ORDER BY m.year DESC
+    </select>
+</mapper>

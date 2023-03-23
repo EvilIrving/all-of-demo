@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.RiverPatrolTaskEventMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.RiverPatrolTaskEvent">
+        <result column="id" property="id"/>
+        <result column="task_id" property="taskId"/>
+        <result column="task_name" property="taskName"/>
+        <result column="river_code" property="riverCode"/>
+        <result column="river_name" property="riverName"/>
+        <result column="river_bas" property="riverBas"/>
+        <result column="patrol_freeq" property="patrolFreeq"/>
+        <result column="patrol_mode" property="patrolMode"/>
+        <result column="patrol_time" property="patrolTime"/>
+        <result column="adcd" property="adcd"/>
+        <result column="adnm" property="adnm"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="dept_id" property="deptId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        task_id,
+        task_name,
+        river_code,
+        river_name,
+        river_bas,
+        patrol_freeq,
+        patrol_mode,
+        patrol_time,
+        adcd,
+        adnm,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag,
+        dept_id
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.RiverPatrolTaskEvent">
+        INSERT INTO river_patrol_task_event
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != taskId'>
+                task_id,
+            </if>
+            <if test='null != taskName'>
+                task_name,
+            </if>
+            <if test='null != riverCode'>
+                river_code,
+            </if>
+            <if test='null != riverName'>
+                river_name,
+            </if>
+            <if test='null != riverBas'>
+                river_bas,
+            </if>
+            <if test='null != patrolFreeq'>
+                patrol_freeq,
+            </if>
+            <if test='null != patrolMode'>
+                patrol_mode,
+            </if>
+            <if test='null != patrolTime'>
+                patrol_time,
+            </if>
+            <if test='null != adcd'>
+                adcd,
+            </if>
+            <if test='null != adnm'>
+                adnm,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag,
+            </if>
+            <if test='null != deptId'>
+                dept_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != taskId'>
+                #{taskId},
+            </if>
+            <if test='null != taskName'>
+                #{taskName},
+            </if>
+            <if test='null != riverCode'>
+                #{riverCode},
+            </if>
+            <if test='null != riverName'>
+                #{riverName},
+            </if>
+            <if test='null != riverBas'>
+                #{riverBas},
+            </if>
+            <if test='null != patrolFreeq'>
+                #{patrolFreeq},
+            </if>
+            <if test='null != patrolMode'>
+                #{patrolMode},
+            </if>
+            <if test='null != patrolTime'>
+                #{patrolTime},
+            </if>
+            <if test='null != adcd'>
+                #{adcd},
+            </if>
+            <if test='null != adnm'>
+                #{adnm},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test='null != deptId'>
+                #{deptId}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM river_patrol_task_event
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.RiverPatrolTaskEvent">
+        UPDATE river_patrol_task_event
+        <set>
+            <if test='null != taskId'>task_id = #{taskId},</if>
+            <if test='null != taskName'>task_name = #{taskName},</if>
+            <if test='null != riverCode'>river_code = #{riverCode},</if>
+            <if test='null != riverName'>river_name = #{riverName},</if>
+            <if test='null != riverBas'>river_bas = #{riverBas},</if>
+            <if test='null != patrolFreeq'>patrol_freeq = #{patrolFreeq},</if>
+            <if test='null != patrolMode'>patrol_mode = #{patrolMode},</if>
+            <if test='null != patrolTime'>patrol_time = #{patrolTime},</if>
+            <if test='null != adcd'>adcd = #{adcd},</if>
+            <if test='null != adnm'>adnm = #{adnm},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test='null != deptId'>dept_id = #{deptId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_patrol_task_event
+        WHERE del_flag=0 and id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_patrol_task_event
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM river_patrol_task_event
+    </select>
+
+    <resultMap id="RptEventResResultMap" type="com.ygkj.river.vo.response.RptEventResVo">
+        <result column="id" property="id"/>
+        <result column="task_id" property="taskId"/>
+        <result column="task_name" property="taskName"/>
+        <result column="river_code" property="riverCode"/>
+        <result column="river_name" property="riverName"/>
+        <result column="river_bas" property="riverBas"/>
+        <result column="patrol_freeq" property="patrolFreeq"/>
+        <result column="patrol_mode" property="patrolMode"/>
+        <result column="patrol_time" property="patrolTime"/>
+        <result column="adcd" property="adcd"/>
+        <result column="adnm" property="adnm"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="dept_id" property="deptId"/>
+    </resultMap>
+    <select id="selectByCondition" resultMap="RptEventResResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from river_patrol_task_event
+        where del_flag=0
+        <if test="taskId!=null and taskId!=''">
+            and task_id=#{taskId}
+        </if>
+        <if test="riverBas!=null and riverBas!=''">
+            and river_bas like CONCAT('%',#{riverBas},'%')
+        </if>
+        <if test="adcd !=null and adcd!='' and adcd.length>=6">
+            and adcd like CONCAT(SUBSTR(#{adcd},1,6),'%')
+        </if>
+        <if test="patrolSTime!=null and patrolETime!=null">
+            and patrol_time between #{patrolSTime} and #{patrolETime}
+        </if>
+    </select>
+
+    <select id="selectForExport" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from river_patrol_task_event
+        where del_flag=0
+        <if test="taskId!=null and taskId!=''">
+            and task_id=#{taskId}
+        </if>
+        <if test="riverBas!=null and riverBas!=''">
+            and river_bas like CONCAT('%',#{riverBas},'%')
+        </if>
+        <if test="adcd !=null and adcd!='' and adcd.length>=6">
+            and adcd like CONCAT(SUBSTR(#{adcd},1,6),'%')
+        </if>
+        <if test="patrolSTime!=null and patrolETime!=null">
+            and patrol_time between #{patrolSTime} and #{patrolETime}
+        </if>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,44 @@
+- data: 
+    ref: 0-api-geo
+  incl: [1-api-city-lookup,2-api-top-city, 3-api-poi-lookup, 4-api-poi-range]
+  price: [0.0005,0.00045,0.00035,0.00025,0.00015,0.0001]
+- data: 
+    zh: 天气服务
+    en: Weather Service
+  incl: [0-api-weather, 0-api-grid-weather, 0-api-minutely, 0-api-warning, 0-api-indices]
+  excl:
+    zh: |- 
+     **注意:** 下列定价不适用于超过7天的每日预报或超过24小时的每小时预报，此类数据参考[天气服务(扩展)](/docs/finance/pricing/#weather-extend)。
+    en: |-
+     **Note:** The following pricing is not available for daily forecast over 7 days or hourly forecast over 24 hours, refer to [Weather (Extend)](/en/docs/finance/pricing/#weather-extend) instead.
+  price: [0.001,0.0009,0.0007,0.0005,0.0003,0.0002]
+- data: 
+    zh: 天气服务(扩展)
+    en: Weather Service(Extend)
+  incl: [0-api-weather, 0-api-grid-weather]
+  excl:
+    zh: |-
+     **注意:** 本定价仅限城市天气和格点天气中超过7天的每日预报或超过24小时的每小时预报。
+    en: |-
+     **Note:** This pricing is only available for daily forecast over 7 days or hourly forecast over 24 hours for the above data services.
+  price: [0.002,0.0018,0.0014,0.001,0.0007,0.0005]
+- data: 
+    ref: 0-api-air
+  incl: [1-api-air-now,2-api-air-daily-forecast]
+  price: [0.001,0.0009,0.0007,0.0005,0.0003,0.0002]
+- data: 
+    ref: 0-api-time-machine
+  incl: [1-api-historical-weather,2-api-historical-air]
+  price: [0.002,0.0018,0.0014,0.001,0.0008,0.0006]
+- data: 
+    ref: 0-api-tropical
+  incl: [1-api-storm-list,2-api-storm-track,3-api-storm-forecast]
+  price: [0.005,0.004,0.0035,0.0025,0.002,0.001]
+- data: 
+    ref: 0-api-ocean
+  incl: [1-api-tide,2-api-currents]
+  price: [0.005,0.004,0.0035,0.0025,0.002,0.001]
+- data: 
+    ref: 0-api-astronomy
+  incl: [1-api-sun,2-api-moon,3-api-solar-elevation-angle]
+  price: [0.001,0.0008,0.0006,0.0004,0.0003,0.0002]

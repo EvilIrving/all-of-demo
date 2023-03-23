@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.TyphoonDataMapper">
+
+
+    <select id="listHistory" resultType="com.ygkj.gragh.model.TyphoonData"
+            parameterType="com.ygkj.gragh.vo.request.TyphoonReqVo">
+        SELECT
+        id,name,begin_time,end_time,affected_area
+        FROM
+        real_typhoon_data
+        WHERE
+        !ISNULL(end_time) AND end_time != ''
+        <if test="startTime != null and startTime != ''">
+            AND begin_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND begin_time &lt;= #{endTime}
+        </if>
+        <if test="name != null and name != ''">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        ORDER BY
+        end_time DESC
+    </select>
+
+    <select id="load" resultType="com.ygkj.gragh.model.TyphoonData">
+        SELECT
+        id,name,begin_time,end_time,points,code,affected_area
+        FROM
+        real_typhoon_data WHERE id = #{id}
+    </select>
+</mapper>

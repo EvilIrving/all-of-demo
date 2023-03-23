@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.DingDingDeptMapper">
+
+  <insert id="batchInsert" parameterType="com.alibaba.fastjson.JSONObject">
+      INSERT INTO dingding_dept(id,`pid`,`name`,orderId,adcd)
+      VALUE
+      <foreach collection="list" separator="," item="item">
+        (#{item.id},#{item.parentId},#{item.name},#{item.orderId},#{item.adcd})
+      </foreach>
+  </insert>
+
+    <update id="batchUpdate" parameterType="com.alibaba.fastjson.JSONObject">
+        UPDATE dingding_dept
+        <trim prefix="set" suffixOverrides=",">
+
+            <trim prefix="`pid` =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.parentId != null">
+                        WHEN id=#{item.id} THEN #{item.parentId}
+                    </if>
+                </foreach>
+            </trim>
+
+            <trim prefix="name =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.name != null">
+                        WHEN id=#{item.id} THEN #{item.name}
+                    </if>
+                </foreach>
+            </trim>
+
+            <trim prefix="orderId =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.orderId != null">
+                        WHEN id=#{item.id} THEN #{item.orderId}
+                    </if>
+                </foreach>
+            </trim>
+
+            <trim prefix="adcd =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.adcd != null">
+                        WHEN id=#{item.id} THEN #{item.adcd}
+                    </if>
+                </foreach>
+            </trim>
+
+        </trim>
+        WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <update id="bind" parameterType="com.ygkj.entity.DingDingDept">
+        UPDATE
+            dingding_dept
+        SET
+            sys_dept = #{sysDept}
+        WHERE
+            id = #{id}
+    </update>
+
+    <update id="batchBind" parameterType="com.ygkj.entity.DingDingDept">
+        UPDATE dingding_dept
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="`sys_dept` =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.sysDept != null">
+                        WHEN id=#{item.id} THEN #{item.sysDept}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="listBind" resultType="com.ygkj.vo.req.DingDingDeptVo">
+        SELECT
+            ddd.id,ddd.`name`,ddd.sys_dept,sd.`name` sysDeptName
+        FROM dingding_dept ddd
+        LEFT JOIN sys_dept sd ON ddd.sys_dept = sd.id
+        <where>
+            <if test="sysDept != null and sysDept != ''">
+                <if test="sysDept == 'nobind'">
+                    (ddd.sys_dept IS NULL OR ddd.sys_dept = '')
+                </if>
+                <if test="sysDept == 'bind'">
+                    (ddd.sys_dept IS NOT NULL AND ddd.sys_dept != '')
+                </if>
+            </if>
+            <if test="name != null and name != ''">
+                AND ddd.name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="sysDeptName != null and sysDeptName != ''">
+                AND sd.name LIKE CONCAT('%',#{sysDeptName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="listByIds" resultType="com.ygkj.entity.DingDingDept" parameterType="String">
+        SELECT * FROM dingding_dept
+        WHERE id IN
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.RiverUnionInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.vo.response.RiverUnionInfoResVo">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="area_name" property="areaName"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="basin" property="basin"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
+        <result column="description" property="description"/>
+        <result column="file_ids" property="fileIds"/>
+        <result column="river_name" property="riverName"/>
+        <result column="browse_url" property="browseUrl"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        name,
+        type,
+        area_name,
+        area_name,
+        basin,
+        longitude,
+        latitude,
+        description,
+        file_ids,
+        river_name,
+        browse_url
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.RiverUnionInfo">
+        INSERT INTO river_union_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != name'>
+                name,
+            </if>
+            <if test='null != type'>
+                type,
+            </if>
+            <if test='null != areaName'>
+                area_name,
+            </if>
+            <if test='null != areaCode'>
+                area_code,
+            </if>
+            <if test='null != basin'>
+                basin,
+            </if>
+            <if test='null != longitude'>
+                longitude,
+            </if>
+            <if test='null != latitude'>
+                latitude,
+            </if>
+            <if test='null != description'>
+                description,
+            </if>
+            <if test='null != fileIds'>
+                file_ids,
+            </if>
+            <if test="null != riverId">
+                river_id,
+            </if>
+            <if test="null != riverName">
+                river_name,
+            </if>
+            <if test="null != browseUrl">
+                browse_url,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != name'>
+                #{name},
+            </if>
+            <if test='null != type'>
+                #{type},
+            </if>
+            <if test='null != areaName'>
+                #{areaName},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test='null != basin'>
+                #{basin},
+            </if>
+            <if test='null != longitude'>
+                #{longitude},
+            </if>
+            <if test='null != latitude'>
+                #{latitude},
+            </if>
+            <if test='null != description'>
+                #{description},
+            </if>
+            <if test='null != fileIds'>
+                #{fileIds},
+            </if>
+            <if test="null != riverId">
+                #{riverId},
+            </if>
+            <if test="null != riverName">
+                #{riverName},
+            </if>
+            <if test="null != browseUrl">
+                #{browseUrl},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM river_union_info
+        WHERE FIND_IN_SET(id , #{id})
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.RiverUnionInfo">
+        UPDATE river_union_info
+        <set>
+            <if test='null != name'>name = #{name},</if>
+            <if test='null != type'>type = #{type},</if>
+            <if test='null != areaName'>area_name = #{areaName},</if>
+            <if test='null != areaCode'>area_code = #{areaCode},</if>
+            <if test='null != basin'>basin = #{basin},</if>
+            <if test='null != longitude'>longitude = #{longitude},</if>
+            <if test='null != latitude'>latitude = #{latitude},</if>
+            <if test='null != description'>description = #{description},</if>
+            <if test='null != fileIds'>file_ids = #{fileIds},</if>
+            <if test='null != riverId'>river_id = #{riverId},</if>
+            <if test='null != riverName'>river_name = #{riverName},</if>
+            <if test='null != browseUrl'>browse_url = #{browseUrl},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_union_info
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_union_info
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM river_union_info
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_union_info
+        WHERE del_flag = 0
+        <if test="id != null and id != ''">
+            AND id = #{id}
+        </if>
+        <if test="name != null and name != ''">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+        <if test="areaName != null and areaName != ''">
+            AND area_name = #{areaName}
+        </if>
+        <if test="areaCode != null and areaCode != ''">
+            AND area_code = #{areaCode}
+        </if>
+        <if test="basin != null and basin != ''">
+            AND basin = #{basin}
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.visualization.mapper.AdcdBaseDataMapper">
+
+    <select id="getAdcds" resultType="com.ygkj.visualization.vo.response.AdcdStatisticsInfo">
+        select adcd,adnm from att_adcd_base where parent_adcd =
+        (select adcd from att_adcd_base where del_flag=0 and adnm = #{adnm} and city_adcd = '330300000000')
+    </select>
+
+    <select id="getPopInfos" resultType="com.ygkj.visualization.vo.response.AdcdStatisticsInfo">
+        select t.pop_num, t.adnm from population_info t where t.del_flag = 0 and t.tag = 1 and t.county_name = #{adnm}
+    </select>
+
+    <select id="getGdpInfos" resultType="com.ygkj.visualization.model.GdpInfo">
+        select t.gdp, t.adcd from gdp_info t where t.del_flag = 0 and t.year = #{year}
+    </select>
+
+    <select id="getAntiTyphoonInfos" resultType="com.ygkj.visualization.model.AntiTyphoonInfo">
+        select t.id, t.name, t.position, t.phone, t.adcd, t.adnm, t.county_name from anti_typhoon_info t where t.del_flag = 0 and county_name = #{adnm}
+    </select>
+
+    <select id="getAreaGdps" resultType="com.ygkj.visualization.vo.response.AreaGdpStatistics">
+        select t.year, t.gdp from gdp_info t where adnm = #{adnm} order by t.year desc limit 10
+    </select>
+
+    <select id="getGdpByYearRangeAndAdcd" resultType="com.ygkj.visualization.model.GdpInfo">
+        select * from gdp_info where del_flag = 0 and adcd=#{adcd} and `year` between #{startYear} and #{endYear}
+    </select>
+
+    <select id="getPopByYearRangeAndAdcd" resultType="com.ygkj.visualization.model.PopulationInfo">
+        select * from population_info where del_flag = 0 and tag=#{tag} and adcd=#{adcd} and `year` between #{startYear} and #{endYear}
+    </select>
+
+    <select id="getGdpByYearRange" resultType="com.ygkj.visualization.model.GdpInfo">
+        select * from gdp_info where del_flag = 0 and `year` between #{startYear} and #{endYear}
+    </select>
+
+    <select id="getPopByYearRange" resultType="com.ygkj.visualization.model.PopulationInfo">
+        select * from population_info where del_flag = 0 and tag=#{tag} and `year` between #{startYear} and #{endYear}
+    </select>
+
+</mapper>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.SysFileMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.auth.api.file.model.SysFile">
+        <result column="id" property="id"/>
+        <result column="file_no" property="fileNo"/>
+        <result column="file_name" property="fileName"/>
+        <result column="file_image" property="fileImage"/>
+        <result column="file_url" property="fileUrl"/>
+        <result column="file_type" property="fileType"/>
+        <result column="file_size" property="fileSize"/>
+        <result column="deleted" property="deleted"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_id" property="updateId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="label_ids" property="labelIds"/>
+        <result column="achievement_name" property="achievementName"/>
+    </resultMap>
+
+    <resultMap id="resultUserNameMap" type="com.ygkj.entity.SysFile" extends="BaseResultMap">
+        <association property="userName" fetchType="lazy" column="create_id"
+                     select="com.ygkj.mapper.SysUserMapper.selectUserNameById"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id,
+        file_name,
+        file_url,
+        file_type,
+        file_size,
+        deleted,
+        create_id,
+        update_id,
+        create_time,
+        update_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="false" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.entity.SysFile">
+        INSERT INTO sys_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != fileName'>
+                file_name,
+            </if>
+            <if test='null != fileUrl'>
+                file_url,
+            </if>
+            <if test='null != fileType'>
+                file_type,
+            </if>
+            <if test='null != fileSize'>
+                file_size,
+            </if>
+            <if test='null != deleted'>
+                deleted,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != updateTime'>
+                update_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != fileName'>
+                #{fileName},
+            </if>
+            <if test='null != fileUrl'>
+                #{fileUrl},
+            </if>
+            <if test='null != fileType'>
+                #{fileType},
+            </if>
+            <if test='null != fileSize'>
+                #{fileSize},
+            </if>
+            <if test='null != deleted'>
+                #{deleted},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM sys_file
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.entity.SysFile">
+        UPDATE sys_file
+        <set>
+            <if test='null != fileName'>file_name = #{fileName},</if>
+            <if test='null != fileUrl'>file_url = #{fileUrl},</if>
+            <if test='null != fileType'>file_type = #{fileType},</if>
+            <if test='null != fileSize'>file_size = #{fileSize},</if>
+            <if test='null != deleted'>deleted = #{deleted},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != updateTime'>update_time = #{updateTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultType="com.ygkj.auth.api.file.model.SysFile">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_file
+        WHERE FIND_IN_SET(id , #{id}) AND deleted = 0
+    </select>
+
+    <select id="pageList" resultMap="resultUserNameMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_file
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM sys_file
+    </select>
+
+    <update id="batchLogicDelete">
+        UPDATE sys_file SET deleted = 1
+        WHERE FIND_IN_SET(id , #{id})
+    </update>
+
+    <select id="archivalDataStatistics" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT file_type fileType,COUNT(id) num FROM `sys_file` WHERE deleted = 0 GROUP BY file_type
+    </select>
+
+    <select id="statUploadFile" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT DATE_FORMAT(create_time,'%m') time,COUNT(1) num FROM `sys_file` WHERE deleted = 0 AND
+        DATE_FORMAT(create_time,'%Y') = #{year}
+        GROUP BY DATE_FORMAT(create_time,'%Y-%m') ORDER BY DATE_FORMAT(create_time,'%m')
+    </select>
+    <select id="findFileGroupTimes" resultType="java.lang.String">
+        SELECT DATE_FORMAT(create_time,'%Y') time FROM `sys_file` GROUP BY DATE_FORMAT(create_time,'%Y') ORDER BY
+        DATE_FORMAT(create_time,'%Y') desc
+    </select>
+    <select id="findFileGroupTypes" resultType="java.lang.String">
+        SELECT file_type type FROM `sys_file` GROUP BY file_type
+    </select>
+
+    <update id="del">
+        UPDATE sys_file
+        set deleted = 1
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectAll" resultType="com.ygkj.auth.api.file.model.SysFile">
+        SELECT file.*,(case when ((SELECT collection.id FROM `sys_archive_collection` collection WHERE
+        collection.del_flag = 0 AND collection.creator_id = #{userId} AND file_id = file.id) ) IS NULL then '1' else '0'
+        end) collectionFlag
+        ,(SELECT COUNT(1) num FROM `sys_archive_log` log WHERE log.del_flag = 0 AND file.id = log.file_id)
+        browseNum,(SELECT collection.id FROM `sys_archive_collection` collection WHERE collection.del_flag = 0 AND
+        collection.creator_id = #{userId} AND file_id = file.id) as collectionId
+        FROM sys_file file where deleted = 0
+        <if test="!otherType">
+            <if test="fileType!=null and fileType!=''">
+                AND FIND_IN_SET(file.file_type,#{fileType})
+            </if>
+        </if>
+        <if test="otherType">
+            AND file_type NOT IN ('pdf', 'xls', 'xlsx', 'docx', 'doc', 'txt', 'gif', 'jpeg', 'jpg', 'png', 'mp4', 'avi',
+            'zip', 'rar', 'cad')
+        </if>
+        <if test="fileName!=null and fileName!=''">
+            AND file.file_name LIKE concat('%',#{fileName},'%')
+        </if>
+        <if test="year!=null and year!=''">
+            AND FIND_IN_SET(DATE_FORMAT(file.create_time,'%Y'),#{year})
+        </if>
+        <if test="labelIds!=null and labelIds!=''">
+            AND label_ids regexp concat('(',#{labelIds},')')
+        </if>
+        <if test="(achievementId!=null and achievementId!='') or (null!=projectCode and ''!=projectCode and achievementId!=null and achievementId!='') ">
+            AND (FIND_IN_SET(file.id,(SELECT file_ids FROM `sys_achievement` achievement where id = #{achievementId})) or
+            FIND_IN_SET(file.id,(SELECT file_ids FROM `sys_achievement` achievement where project_code = #{projectCode} and id = #{achievementId})))
+        </if>
+        <if test="id!=null and id!=''">
+            AND file.id = #{id}
+        </if>
+    </select>
+
+    <select id="selectAppAchievement" resultType="com.ygkj.auth.api.file.model.SysFile">
+        SELECT file.*
+        FROM sys_file file where deleted = 0
+        <if test="achievementId != null and achievementId != '' ">
+            AND (FIND_IN_SET(file.id , (SELECT group_concat(file_ids) FROM `sys_achievement` achievement where FIND_IN_SET(id,#{achievementId}))))
+        </if>
+        <if test="id != null and id != '' ">
+            AND FIND_IN_SET(file.id,#{id})
+        </if>
+        <if test="fileName!=null and fileName!=''">
+            AND file.file_name LIKE concat('%',#{fileName},'%')
+        </if>
+        <if test="year!=null and year!=''">
+            AND FIND_IN_SET(DATE_FORMAT(file.create_time,'%Y'),#{year})
+        </if>
+    </select>
+</mapper>

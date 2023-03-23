@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.WarningTemplateMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.project.vo.response.WarningTemplateResVo" >
+        <result column="id" property="id" />
+        <result column="warning_type" property="warningType" />
+        <result column="template_name" property="templateName" />
+        <result column="template_content" property="templateContent" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                warning_type,
+                template_name,
+                template_content,
+                created_by,
+                created_time,
+                updated_by,
+                updated_time,
+                del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.project.vo.request.WarningTemplateAddVo">
+        INSERT INTO warning_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != warningType'>
+                warning_type,
+            </if>
+            <if test ='null != templateName'>
+                template_name,
+            </if>
+            <if test ='null != templateContent'>
+                template_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != warningType'>
+                #{warningType},
+            </if>
+            <if test ='null != templateName'>
+                #{templateName},
+            </if>
+            <if test ='null != templateContent'>
+                #{templateContent},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM warning_template
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.project.vo.request.WarningTemplateAddVo">
+        UPDATE warning_template
+        <set>
+            <if test ='null != warningType'>warning_type = #{warningType},</if>
+            <if test ='null != templateName'>template_name = #{templateName},</if>
+            <if test ='null != templateContent'>template_content = #{templateContent},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM warning_template
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM warning_template
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM warning_template
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM warning_template WHERE del_flag = 0
+        <if test="id != null and id != ''">
+            AND id = #{id}
+        </if>
+        <if test="warningType != null and warningType != ''">
+            AND warning_type like concat('%', #{warningType}, '%')
+        </if>
+        <if test="templateName != null and templateName != ''">
+            AND template_name LIKE CONCAT('%',#{templateName},'%')
+        </if>
+    </select>
+
+    <update id="batchDelete">
+        UPDATE warning_template SET del_flag = 1 WHERE
+        id IN
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="loadContent" resultType="java.lang.String">
+        SELECT template_content FROM warning_template WHERE del_flag = 0 AND id = #{id}
+    </select>
+
+
+</mapper>

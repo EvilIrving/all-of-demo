@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.AttMaterialBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.flood.vo.response.AttMaterialResVo">
+        <result column="id" property="id"/>
+        <result column="type_id" property="typeId"/>
+        <result column="type" property="type"/>
+        <result column="name" property="name"/>
+        <result column="warehouse_id" property="warehouseId"/>
+        <result column="num" property="num"/>
+        <result column="measure" property="measure"/>
+        <result column="price" property="price"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        type_id,
+        type,
+        name,
+        warehouse_id,
+        num,
+        measure,
+        price
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.flood.model.AttMaterialBase">
+        INSERT INTO att_material_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != typeId'>
+                type_id,
+            </if>
+            <if test='null != type'>
+                type,
+            </if>
+            <if test='null != name'>
+                name,
+            </if>
+            <if test='null != warehouseId'>
+                warehouse_id,
+            </if>
+            <if test='null != num'>
+                num,
+            </if>
+            <if test='null != measure'>
+                measure,
+            </if>
+            <if test='null != price'>
+                price,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != typeId'>
+                #{typeId},
+            </if>
+            <if test='null != type'>
+                #{type},
+            </if>
+            <if test='null != name'>
+                #{name},
+            </if>
+            <if test='null != warehouseId'>
+                #{warehouseId},
+            </if>
+            <if test='null != num'>
+                #{num},
+            </if>
+            <if test='null != measure'>
+                #{measure},
+            </if>
+            <if test='null != price'>
+                #{price},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="batchInsert">
+        INSERT INTO att_material_base
+        (id,
+        type_id,
+        type,
+        name,
+        warehouse_id,
+        num,
+        measure,
+        price) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.typeId},#{item.type},#{item.name},#{item.warehouseId},#{item.num},#{item.measure},#{item.price})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+        UPDATE att_material_base SET del_flag = 1 WHERE FIND_IN_SET(id,#{ids})
+    </delete>
+
+    <delete id="spacialDelete">
+        UPDATE att_material_base SET del_flag = 1
+        WHERE warehouse_id = #{warehouseId} AND type_id = #{typeId}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.flood.model.AttMaterialBase">
+        UPDATE att_material_base
+        <set>
+            <if test='null != typeId'>type_id = #{typeId},</if>
+            <if test='null != type'>type = #{type},</if>
+            <if test='null != name'>name = #{name},</if>
+            <if test='null != warehouseId'>warehouse_id = #{warehouseId},</if>
+            <if test='null != num'>num = #{num},</if>
+            <if test='null != measure'>measure = #{measure},</if>
+            <if test='null != price'>price = #{price},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_material_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_material_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_material_base
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_material_base
+        WHERE del_flag = 0
+        <if test="typeId != null and typeId != ''">
+            AND type_id = #{typeId}
+        </if>
+        <if test="warehouseId != null and warehouseId != ''">
+            AND warehouse_id = #{warehouseId}
+        </if>
+    </select>
+
+<!--    <select id="selectMaterials" resultType="java.lang.String">-->
+<!--        SELECT DISTINCT(name) FROM att_material_base WHERE del_flag = 0-->
+<!--    </select>-->
+
+    <select id="selectMaterials" resultType="java.lang.String">
+        SELECT DISTINCT(name) FROM att_warehouse_device_base WHERE del_flag = 0
+    </select>
+
+    <select id="matchMaterialWarehouses" resultType="com.ygkj.flood.vo.response.AttWarehouseResVo">
+        SELECT DISTINCT(a.warehouse_id) AS id ,b.`name`,b.latitude,b.longitude,charge_person,charge_phone
+        FROM att_material_base a
+        LEFT JOIN att_warehouse_base b ON a.warehouse_id = b.id
+        WHERE a.del_flag = 0
+        <if test="list.size()>0">
+            AND
+            (
+            <foreach collection="list" item="item" open="(" close=")" separator="OR">
+                a.name = #{item.materialName} AND a.num >= #{item.num}
+            </foreach>
+            )
+        </if>
+    </select>
+
+
+    <select id="matchMaterialWarehouseAdd" resultType="com.ygkj.flood.vo.response.AttWarehouseResVo">
+        SELECT DISTINCT(a.warehouse_id) AS id ,b.`name`,b.latitude,b.longitude,b.charge_person,b.charge_phone
+        FROM att_warehouse_add a
+        LEFT JOIN att_warehouse_base b ON a.warehouse_id = b.id
+        WHERE a.del_flag = 0
+        <if test="list.size()>0">
+            AND
+            (
+            <foreach collection="list" item="item" open="(" close=")" separator="OR">
+                a.material_name = #{item.materialName} AND a.num >= #{item.num}
+            </foreach>
+            )
+        </if>
+    </select>
+
+</mapper>

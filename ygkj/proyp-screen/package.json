@@ -1,0 +1,49 @@
+{
+  "name": "bigscreen_guangdong",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --open",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@turf/turf": "^6.5.0",
+    "axios": "^1.2.0",
+    "core-js": "^3.6.5",
+    "echarts": "^5.4.0",
+    "echarts-gl": "^2.0.9",
+    "element-ui": "^2.15.10",
+    "highcharts": "^10.3.3",
+    "highcharts-3d": "^0.1.7",
+    "highcharts-vue": "^1.4.0",
+    "normalize.css": "^8.0.1",
+    "ol": "^7.1.0",
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.19",
+    "@vue/cli-plugin-eslint": "~4.5.19",
+    "@vue/cli-plugin-router": "~4.5.19",
+    "@vue/cli-plugin-vuex": "~4.5.19",
+    "@vue/cli-service": "~4.5.19",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "lint-staged": "^9.5.0",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  }
+}

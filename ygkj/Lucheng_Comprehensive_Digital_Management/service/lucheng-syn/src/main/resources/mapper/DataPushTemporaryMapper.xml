@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.DataPushTemporaryMapper">
+
+
+    <insert id="replace">
+        insert INTO st_basin (id,actualTime,dataValue,basin) values (#{id},#{actualTime},#{dataValue},#{basin})
+    </insert>
+    <insert id="addBasin1">
+        insert INTO st_pptn_r_06731 (id,actualTime,dataValue) values (#{id},#{actualTime},#{dataValue})
+    </insert>
+    <insert id="addBasin2">
+        insert INTO st_pptn_r_01653 (id,actualTime,dataValue) values (#{id},#{actualTime},#{dataValue})
+    </insert>
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.SysLogMapper">
+    <resultMap id="BaseResultMap" type="com.ygkj.project.model.SysLog">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="operation" jdbcType="VARCHAR" property="operation"/>
+        <result column="time" jdbcType="INTEGER" property="time"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="params" jdbcType="VARCHAR" property="params"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, username, `operation`,`module`, `time`, `method`, params, ip, create_time
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.ygkj.project.model.SysLog">
+        insert into sys_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="operation != null">
+                `operation`,
+            </if>
+            <if test="module != null">
+                `module`,
+            </if>
+            <if test="time != null">
+                `time`,
+            </if>
+            <if test="method != null">
+                `method`,
+            </if>
+            <if test="params != null">
+                params,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="operation != null">
+                #{operation,jdbcType=VARCHAR},
+            </if>
+            <if test="module != null">
+                #{module,jdbcType=VARCHAR},
+            </if>
+            <if test="time != null">
+                #{time,jdbcType=INTEGER},
+            </if>
+            <if test="method != null">
+                #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="params != null">
+                #{params,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+</mapper>

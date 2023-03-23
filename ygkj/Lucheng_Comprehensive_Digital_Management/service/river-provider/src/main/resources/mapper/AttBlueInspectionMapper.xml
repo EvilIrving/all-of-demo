@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttBlueInspectionMapper">
+
+
+    <select id="selectListByCondition" resultType="com.ygkj.river.vo.response.AttBlueInspectionResVo">
+        select abi.*,
+        abp.project_name,
+        abp.address,
+        abp.legal_represent,
+        abp.phone
+        from
+        (select * from att_blue_inspection
+        where inspector_id = #{userId}
+        <if test="stage !=null and stage !=''">
+            and stage = #{stage}
+        </if>
+        <if test="type !=null and type == 1">
+            and patrol_end_time is null
+        </if>
+        <if test="type !=null and type == 2">
+            and patrol_end_time is not null
+        </if>
+        <if test="result !=null">
+            and patrol_result = #{result}
+        </if>
+        union all
+        select * from att_blue_inspection
+        where reviewer_id = #{userId}
+        <if test="stage !=null and stage !=''">
+            and stage = #{stage}
+        </if>
+        <if test="type !=null and type == 1">
+            and reviewer_end_time is null
+        </if>
+        <if test="type !=null and type == 2">
+            and reviewer_end_time is not null
+        </if>
+        <if test="result !=null">
+            and review_result = #{result}
+        </if>) abi left join att_blue_project abp
+        on abi.project_id = abp.id
+        where abi.del_flag = 0 and abp.del_flag = 0 and now() > DATE_ADD(abi.patrol_begin_time,INTERVAL -7 DAY)
+        order by abi.create_time desc
+    </select>
+
+    <select id="statisticsPeopleByArea" resultType="java.lang.Integer">
+        select count(distinct(tb2.distributor)) as `num` from att_blue_project tb1 left join att_blue_inspection tb2 on tb1.id = tb2.project_id
+        where tb1.del_flag = 0 and tb1.adcd = #{adcd}
+    </select>
+
+    <select id="projectInspectionCountNum" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT tbl.id) num FROM `att_blue_inspection` tbl LEFT JOIN main_db.sys_user tb2 ON tb2.id = tbl.inspector_id
+        LEFT JOIN main_db.sys_dept tb3 ON tb3.id = tb2.dept_id where tbl.del_flag = 0
+        <if test="adcd !=null and adcd !=''">
+            AND tb3.adcd = #{adcd}
+        </if>
+    </select>
+
+
+    <select id="statusListCount" resultType="com.ygkj.river.vo.response.AttBlueInspectionResVo">
+        select abi.*,
+               abp.project_name,
+               abp.address,
+               abp.legal_represent,
+               abp.phone
+        from
+            (select * from att_blue_inspection
+             where inspector_id = #{userId} and patrol_end_time is null
+             union all
+             select * from att_blue_inspection
+             where reviewer_id = #{userId} and patrol_end_time is null
+            ) abi left join att_blue_project abp
+                            on abi.project_id = abp.id
+        where abi.del_flag = 0 and abp.del_flag = 0 and now() > DATE_ADD(abi.patrol_begin_time,INTERVAL -7 DAY)
+    </select>
+
+
+</mapper>

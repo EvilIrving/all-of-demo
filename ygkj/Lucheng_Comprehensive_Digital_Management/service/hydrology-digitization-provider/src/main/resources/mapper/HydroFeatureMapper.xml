@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.HydroFeatureMapper">
+
+    <select id="listHydroFeatureTableName" resultType="java.lang.String">
+        select distinct `table_name` from att_hydro_feature_base
+        <where>
+            <if test="tableNameKey!=null and tableNameKey!=''">
+                and `table_name` like concat('%',#{tableNameKey},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="loadHydroFeatureTable" resultType="com.ygkj.digitization.model.AttHydroFeatureBase">
+        select * from att_hydro_feature_base
+        <where>
+            <if test="tableName!=null and tableName!=''">
+                and `table_name` = #{tableNameKey}
+            </if>
+        </where>
+        limit 1
+    </select>
+</mapper>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.ProjTestCompletionMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.project.model.ProjTestCompletion" >
+        <result column="id" property="id" />
+        <result column="content" property="content" />
+        <result column="check_time" property="checkTime" />
+        <result column="check_site" property="checkSite" />
+        <result column="check_num" property="checkNum" />
+        <result column="check_result" property="checkResult" />
+        <result column="file_url" property="fileUrl" />
+        <result column="project_code" property="projectCode" />
+        <result column="upload_time" property="uploadTime" />
+        <result column="upload_id" property="uploadId" />
+        <result column="upload_name" property="uploadName" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        content,
+        check_time,
+        check_site,
+        check_num,
+        check_result,
+        file_url,
+        project_code,
+        upload_time,
+        upload_id,
+        upload_name,
+        del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.project.model.ProjTestCompletion">
+        INSERT INTO proj_test_completion
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != content'>
+                content,
+            </if>
+            <if test ='null != checkTime'>
+                check_time,
+            </if>
+            <if test ='null != checkSite'>
+                check_site,
+            </if>
+            <if test ='null != checkNum'>
+                check_num,
+            </if>
+            <if test ='null != checkResult'>
+                check_result,
+            </if>
+            <if test ='null != fileUrl'>
+                file_url,
+            </if>
+            <if test ='null != projectCode'>
+                project_code,
+            </if>
+            <if test ='null != uploadTime'>
+                upload_time,
+            </if>
+            <if test ='null != uploadId'>
+                upload_id,
+            </if>
+            <if test ='null != uploadName'>
+                upload_name,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != content'>
+                #{content},
+            </if>
+            <if test ='null != checkTime'>
+                #{checkTime},
+            </if>
+            <if test ='null != checkSite'>
+                #{checkSite},
+            </if>
+            <if test ='null != checkNum'>
+                #{checkNum},
+            </if>
+            <if test ='null != checkResult'>
+                #{checkResult},
+            </if>
+            <if test ='null != fileUrl'>
+                #{fileUrl},
+            </if>
+            <if test ='null != projectCode'>
+                #{projectCode},
+            </if>
+            <if test ='null != uploadTime'>
+                #{uploadTime},
+            </if>
+            <if test ='null != uploadId'>
+                #{uploadId},
+            </if>
+            <if test ='null != uploadName'>
+                #{uploadName},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        update proj_test_completion set del_flag = 1 WHERE id = #{id}
+    </delete>
+
+    <select id="loadPage" resultType="com.ygkj.project.vo.response.ProjTestCompletionRespVo">
+        SELECT tbl.* from proj_test_completion tbl where tbl.del_flag = 0
+        <if test="null != id and '' != id">
+            and tbl.id = #{id}
+        </if>
+        <if test="null != projectCode and '' != projectCode">
+            and tbl.project_code = #{projectCode}
+        </if>
+        <if test="null != checkResult and '' != checkResult">
+            and tbl.check_result = #{checkResult}
+        </if>
+        <if test="null != uploadTime and '' != uploadTime">
+            and DATE_FORMAT(tbl.upload_time, '%Y-%m-%d') = #{uploadTime}
+        </if>
+        <if test="null != content and '' != content">
+            and tbl.content like concat('%',#{content},'%')
+        </if>
+        <if test="null != uploadId and '' != uploadId">
+            and tbl.upload_id = #{uploadId}
+        </if>
+        order by tbl.upload_time desc
+    </select>
+
+    <update id="update" parameterType="com.ygkj.project.model.ProjTestCompletion">
+        UPDATE proj_test_completion
+        <set>
+            <if test ='null != content'>content = #{content},</if>
+            <if test ='null != checkTime'>check_time = #{checkTime},</if>
+            <if test ='null != checkSite'>check_site = #{checkSite},</if>
+            <if test ='null != checkNum'>check_num = #{checkNum},</if>
+            <if test ='null != checkResult'>check_result = #{checkResult},</if>
+            <if test ='null != fileUrl'>file_url = #{fileUrl},</if>
+            <if test ='null != projectCode'>project_code = #{projectCode},</if>
+            <if test ='null != uploadTime'>upload_time = #{uploadTime},</if>
+            <if test ='null != uploadId'>upload_id = #{uploadId},</if>
+            <if test ='null != uploadName'>upload_name = #{uploadName},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

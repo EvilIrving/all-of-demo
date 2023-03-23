@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.DataManagementMapper">
+
+    <select id="countOfflineNumbers" resultType="map">
+        SELECT
+        COUNT(DISTINCT ( station_code )) AS num,
+        CASE
+        station_type
+        WHEN 'PP' THEN '雨情'
+        WHEN 'RR' THEN '水情'
+        WHEN 'ZZ' THEN '水情'
+        WHEN 'DD' THEN '工情'
+        ELSE '' END AS type
+        FROM
+        station_offline_history
+        WHERE
+        offline_time >= #{start} AND offline_time &lt;= #{end}
+    </select>
+
+    <select id="countCurrentYearOfflineNumbersByMonth" resultType="map">
+        SELECT COUNT(DISTINCT(station_code)) AS num,DATE_FORMAT(offline_time,'%Y-%m') AS ym
+        FROM station_offline_history
+        WHERE YEAR(offline_time) = YEAR(NOW())
+        <if test="type != null and type != ''">
+            <choose>
+                <when test="type == '雨情'">
+                    AND station_type = 'PP'
+                </when>
+                <when test="type == '水情'">
+                    AND station_type = 'RR' OR station_type = 'ZZ'
+                </when>
+                <when test="type == '工情'">
+                    AND station_type = 'DD'
+                </when>
+            </choose>
+        </if>
+        GROUP BY ym
+    </select>
+</mapper>

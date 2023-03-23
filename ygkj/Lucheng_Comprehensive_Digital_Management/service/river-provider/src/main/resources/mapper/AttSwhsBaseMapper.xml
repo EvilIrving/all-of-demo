@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttSwhsBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttSwhsBase" >
+        <result column="swhs_code" property="swhsCode" />
+        <result column="swhs_name" property="swhsName" />
+        <result column="swhs_long" property="swhsLong" />
+        <result column="swhs_lat" property="swhsLat" />
+        <result column="swhs_loc" property="swhsLoc" />
+        <result column="wain_waso_type" property="wainWasoType" />
+        <result column="wat_area" property="watArea" />
+        <result column="wain_num" property="wainNum" />
+        <result column="main_wain_use" property="mainWainUse" />
+        <result column="wasu_obj_type" property="wasuObjType" />
+        <result column="wasu_town_name" property="wasuTownName" />
+        <result column="des_ann_wain" property="desAnnWain" />
+        <result column="des_ann_wasu_pop" property="desAnnWasuPop" />
+        <result column="run_year" property="runYear" />
+        <result column="waqu_goal" property="waquGoal" />
+        <result column="note" property="note" />
+        <result column="eff_date" property="effDate" />
+        <result column="expr_date" property="exprDate" />
+        <result column="date_max_wat" property="dateMaxWat" />
+        <result column="master" property="master" />
+        <result column="master_phone" property="masterPhone" />
+        <result column="create_time" property="createTime" />
+        <result column="create_id" property="createId" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_id" property="updateId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="supply_scale" property="supplyScale" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                swhs_code,
+                swhs_name,
+                swhs_long,
+                swhs_lat,
+                swhs_loc,
+                wain_waso_type,
+                wat_area,
+                wain_num,
+                main_wain_use,
+                wasu_obj_type,
+                wasu_town_name,
+                des_ann_wain,
+                des_ann_wasu_pop,
+                run_year,
+                waqu_goal,
+                note,
+                eff_date,
+                expr_date,
+                date_max_wat,
+                master,
+                master_phone,
+                create_time,
+                create_id,
+                update_time,
+                update_id,
+                del_flag,
+                supply_scale
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.river.model.AttSwhsBase">
+        INSERT INTO att_swhs_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != swhsCode'>
+                swhs_code,
+            </if>
+            <if test ='null != swhsName'>
+                swhs_name,
+            </if>
+            <if test ='null != swhsLong'>
+                swhs_long,
+            </if>
+            <if test ='null != swhsLat'>
+                swhs_lat,
+            </if>
+            <if test ='null != swhsLoc'>
+                swhs_loc,
+            </if>
+            <if test ='null != wainWasoType'>
+                wain_waso_type,
+            </if>
+            <if test ='null != watArea'>
+                wat_area,
+            </if>
+            <if test ='null != wainNum'>
+                wain_num,
+            </if>
+            <if test ='null != mainWainUse'>
+                main_wain_use,
+            </if>
+            <if test ='null != wasuObjType'>
+                wasu_obj_type,
+            </if>
+            <if test ='null != wasuTownName'>
+                wasu_town_name,
+            </if>
+            <if test ='null != desAnnWain'>
+                des_ann_wain,
+            </if>
+            <if test ='null != desAnnWasuPop'>
+                des_ann_wasu_pop,
+            </if>
+            <if test ='null != runYear'>
+                run_year,
+            </if>
+            <if test ='null != waquGoal'>
+                waqu_goal,
+            </if>
+            <if test ='null != note'>
+                note,
+            </if>
+            <if test ='null != effDate'>
+                eff_date,
+            </if>
+            <if test ='null != exprDate'>
+                expr_date,
+            </if>
+            <if test ='null != dateMaxWat'>
+                date_max_wat,
+            </if>
+            <if test ='null != master'>
+                master,
+            </if>
+            <if test ='null != masterPhone'>
+                master_phone,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != createId'>
+                create_id,
+            </if>
+            <if test ='null != updateTime'>
+                update_time,
+            </if>
+            <if test ='null != updateId'>
+                update_id,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != supplyScale'>
+                supply_scale
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != swhsCode'>
+                #{swhsCode},
+            </if>
+            <if test ='null != swhsName'>
+                #{swhsName},
+            </if>
+            <if test ='null != swhsLong'>
+                #{swhsLong},
+            </if>
+            <if test ='null != swhsLat'>
+                #{swhsLat},
+            </if>
+            <if test ='null != swhsLoc'>
+                #{swhsLoc},
+            </if>
+            <if test ='null != wainWasoType'>
+                #{wainWasoType},
+            </if>
+            <if test ='null != watArea'>
+                #{watArea},
+            </if>
+            <if test ='null != wainNum'>
+                #{wainNum},
+            </if>
+            <if test ='null != mainWainUse'>
+                #{mainWainUse},
+            </if>
+            <if test ='null != wasuObjType'>
+                #{wasuObjType},
+            </if>
+            <if test ='null != wasuTownName'>
+                #{wasuTownName},
+            </if>
+            <if test ='null != desAnnWain'>
+                #{desAnnWain},
+            </if>
+            <if test ='null != desAnnWasuPop'>
+                #{desAnnWasuPop},
+            </if>
+            <if test ='null != runYear'>
+                #{runYear},
+            </if>
+            <if test ='null != waquGoal'>
+                #{waquGoal},
+            </if>
+            <if test ='null != note'>
+                #{note},
+            </if>
+            <if test ='null != effDate'>
+                #{effDate},
+            </if>
+            <if test ='null != exprDate'>
+                #{exprDate},
+            </if>
+            <if test ='null != dateMaxWat'>
+                #{dateMaxWat},
+            </if>
+            <if test ='null != master'>
+                #{master},
+            </if>
+            <if test ='null != masterPhone'>
+                #{masterPhone},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != createId'>
+                #{createId},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test ='null != updateId'>
+                #{updateId},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != supplyScale'>
+                #{supplyScale}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        update att_swhs_base set del_flag = 1 WHERE swhs_code = #{swhsCode}
+    </delete>
+
+    <select id="loadPage" resultType="com.ygkj.river.vo.response.AttSwhsBaseRespVo">
+        SELECT tbl.*,tb2.adnm FROM `att_swhs_base` tbl LEFT JOIN att_adcd_base tb2 ON tbl.swhs_loc = tb2.adcd where tbl.del_flag = 0
+        <if test ='null != swhsCode and "" != swhsCode'>
+            and tbl.swhs_code = #{swhsCode}
+        </if>
+        <if test ='null != swhsName and "" != swhsName'>
+            and tbl.swhs_name like CONCAT('%',#{swhsName},'%')
+        </if>
+        <if test ='null != swhsLoc and "" != swhsLoc'>
+            and tbl.swhs_loc = #{swhsLoc}
+        </if>
+        <if test ='null != wainWasoType and "" != wainWasoType'>
+            and tbl.wain_waso_type = #{wainWasoType}
+        </if>
+        <if test ='null != supplyScale and "" != supplyScale'>
+            and tbl.supply_scale = #{supplyScale}
+        </if>
+        <if test ='null != warnType and "" != warnType'>
+            and tbl.warn_type = #{warnType}
+        </if>
+        <if test ='null != queryStartTime and "" != queryStartTime'>
+            and tbl.eff_date &gt;= #{queryStartTime}
+        </if>
+        <if test ='null != queryEndTime and "" != queryEndTime'>
+            and tbl.eff_date &lt;= #{queryEndTime}
+        </if>
+        <if test ='null != areaCode and "" != areaCode'>
+            and tbl.area_code = #{areaCode}
+        </if>
+    </select>
+
+    <select id="statisSwhsNumByScale" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.supply_scale supplyScale,COUNT(1) num FROM `att_swhs_base` tbl where tbl.del_flag = 0
+        <if test ='null != adcd and "" != adcd'>
+            and swhs_loc = #{adcd}
+        </if>
+         GROUP BY tbl.supply_scale
+    </select>
+
+    <select id="statisSwhsNumByType" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.wain_waso_type wainWasoType,COUNT(1) num FROM `att_swhs_base` tbl where tbl.del_flag = 0
+        <if test ='null != adcd and "" != adcd'>
+            and swhs_loc = #{adcd}
+        </if>
+         GROUP BY tbl.wain_waso_type
+    </select>
+
+    <select id="statisSwhsNumByArea" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tb2.country_adnm adnm,COUNT(1) num FROM `att_swhs_base` tbl LEFT JOIN att_adcd_base tb2 ON tb2.adcd = tbl.swhs_loc where tbl.del_flag = 0 AND tb2.country_adnm is NOT NULL GROUP BY tb2.country_adcd ORDER BY COUNT(tbl.swhs_code) desc
+    </select>
+
+    <select id="statisSwhsDesAnnWainByScale" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.supply_scale supplyScale,sum(des_ann_wain) num FROM `att_swhs_base` tbl where tbl.del_flag = 0
+        <if test ='null != adcd and "" != adcd'>
+            and tbl.swhs_loc = #{adcd}
+        </if>
+         GROUP BY tbl.supply_scale
+    </select>
+
+    <select id="statisSwhsDesAnnWainByType" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.wain_waso_type wainWasoType,sum(des_ann_wain) num FROM `att_swhs_base` tbl where tbl.del_flag = 0
+        <if test ='null != adcd and "" != adcd'>
+            and tbl.swhs_loc = #{adcd}
+        </if>
+         GROUP BY tbl.wain_waso_type
+    </select>
+
+    <select id="statisSwhsDesAnnWainByArea" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tb2.country_adnm adnm,sum(des_ann_wain) num FROM `att_swhs_base` tbl LEFT JOIN att_adcd_base tb2 ON tb2.adcd = tbl.swhs_loc where tbl.del_flag = 0 AND tb2.country_adnm is NOT NULL GROUP BY tb2.country_adcd ORDER BY COUNT(tbl.swhs_code) desc
+    </select>
+
+    <select id="statisSwarnGradeNum" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT COUNT(1) num,(case warn_type
+            when '1' then '暂无风险'
+            when '2' then '黄色预警'
+            when '3' then '橙色预警'
+            else '红色预警' end) warnType FROM `att_swhs_base` WHERE del_flag = 0
+            <if test ='null != adcd and "" != adcd'>
+                and swhs_loc = #{adcd}
+            </if>
+             GROUP BY warn_type
+    </select>
+
+    <select id="statisSwarnGradeByAdcd" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT COUNT(1) num,tb2.adnm FROM `att_swhs_base` tb1 LEFT JOIN att_adcd_base tb2 ON tb1.swhs_loc = tb2.adcd WHERE tb1.del_flag = 0
+    </select>
+
+    <select id="calDesAnnWasuPop" resultType="java.math.BigDecimal">
+        SELECT SUM(des_ann_wain) total FROM `att_swhs_base` WHERE del_flag = 0
+    </select>
+
+    <select id="totaldesannwasupop" resultType="java.math.BigDecimal">
+        SELECT SUM(des_ann_wasu_pop) total FROM `att_swhs_base` WHERE del_flag = 0
+        <if test ='null != adcd and "" != adcd'>
+            and swhs_loc = #{adcd}
+        </if>
+    </select>
+
+    <select id="waterSuantityStatisticNum" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT (case tbl.supply_scale
+        when '1' then '县级以上'
+        when '2' then '千吨万人'
+        when '3' then '200吨-1000吨'
+        else '200吨以下' end) supplyScale,COUNT(1) num FROM `att_swhs_base` tbl LEFT JOIN att_adcd_base tb2 ON tbl.swhs_loc = tb2.adcd where tbl.del_flag = 0
+        <if test ='null != swhsCode and "" != swhsCode'>
+            and tbl.swhs_code = #{swhsCode}
+        </if>
+        <if test ='null != swhsName and "" != swhsName'>
+            and tbl.swhs_name like CONCAT('%',#{swhsName},'%')
+        </if>
+        <if test ='null != swhsLoc and "" != swhsLoc'>
+            and tbl.swhs_loc = #{swhsLoc}
+        </if>
+        <if test ='null != wainWasoType and "" != wainWasoType'>
+            and tbl.wain_waso_type = #{wainWasoType}
+        </if>
+        <if test ='null != supplyScale and "" != supplyScale'>
+            and tbl.supply_scale = #{supplyScale}
+        </if>
+        <if test ='null != warnType and "" != warnType'>
+            and tbl.warn_type = #{warnType}
+        </if>
+        <if test ='null != queryStartTime and "" != queryStartTime'>
+            and tbl.eff_date &gt;= #{queryStartTime}
+        </if>
+        <if test ='null != queryEndTime and "" != queryEndTime'>
+            and tbl.eff_date &lt;= #{queryEndTime}
+        </if>
+        GROUP BY tbl.supply_scale
+    </select>
+
+    <select id="waterSuantityStatisticWarn" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT (case tbl.warn_type
+        when '1' then '暂无风险'
+        when '2' then '黄色预警'
+        when '3' then '橙色预警'
+        else '红色预警' end) warnType,COUNT(1) num FROM `att_swhs_base` tbl LEFT JOIN att_adcd_base tb2 ON tbl.swhs_loc = tb2.adcd where tbl.del_flag = 0
+        <if test ='null != swhsCode and "" != swhsCode'>
+            and tbl.swhs_code = #{swhsCode}
+        </if>
+        <if test ='null != swhsName and "" != swhsName'>
+            and tbl.swhs_name like CONCAT('%',#{swhsName},'%')
+        </if>
+        <if test ='null != swhsLoc and "" != swhsLoc'>
+            and tbl.swhs_loc = #{swhsLoc}
+        </if>
+        <if test ='null != wainWasoType and "" != wainWasoType'>
+            and tbl.wain_waso_type = #{wainWasoType}
+        </if>
+        <if test ='null != supplyScale and "" != supplyScale'>
+            and tbl.supply_scale = #{supplyScale}
+        </if>
+        <if test ='null != warnType and "" != warnType'>
+            and tbl.warn_type = #{warnType}
+        </if>
+        <if test ='null != queryStartTime and "" != queryStartTime'>
+            and tbl.eff_date &gt;= #{queryStartTime}
+        </if>
+        <if test ='null != queryEndTime and "" != queryEndTime'>
+            and tbl.eff_date &lt;= #{queryEndTime}
+        </if>
+        GROUP BY tbl.warn_type
+    </select>
+
+    <update id="update" parameterType="com.ygkj.river.model.AttSwhsBase">
+        UPDATE att_swhs_base
+        <set>
+            <if test ='null != swhsName'>swhs_name = #{swhsName},</if>
+            <if test ='null != swhsLong'>swhs_long = #{swhsLong},</if>
+            <if test ='null != swhsLat'>swhs_lat = #{swhsLat},</if>
+            <if test ='null != swhsLoc'>swhs_loc = #{swhsLoc},</if>
+            <if test ='null != wainWasoType'>wain_waso_type = #{wainWasoType},</if>
+            <if test ='null != watArea'>wat_area = #{watArea},</if>
+            <if test ='null != wainNum'>wain_num = #{wainNum},</if>
+            <if test ='null != mainWainUse'>main_wain_use = #{mainWainUse},</if>
+            <if test ='null != wasuObjType'>wasu_obj_type = #{wasuObjType},</if>
+            <if test ='null != wasuTownName'>wasu_town_name = #{wasuTownName},</if>
+            <if test ='null != desAnnWain'>des_ann_wain = #{desAnnWain},</if>
+            <if test ='null != desAnnWasuPop'>des_ann_wasu_pop = #{desAnnWasuPop},</if>
+            <if test ='null != runYear'>run_year = #{runYear},</if>
+            <if test ='null != waquGoal'>waqu_goal = #{waquGoal},</if>
+            <if test ='null != note'>note = #{note},</if>
+            <if test ='null != effDate'>eff_date = #{effDate},</if>
+            <if test ='null != exprDate'>expr_date = #{exprDate},</if>
+            <if test ='null != dateMaxWat'>date_max_wat = #{dateMaxWat},</if>
+            <if test ='null != master'>master = #{master},</if>
+            <if test ='null != masterPhone'>master_phone = #{masterPhone},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != createId'>create_id = #{createId},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime},</if>
+            <if test ='null != updateId'>update_id = #{updateId},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != supplyScale'>supply_scale = #{supplyScale}</if>
+        </set>
+        WHERE swhs_code = #{swhsCode}
+    </update>
+
+    <select id="listSwhsSinageByCondition" resultType="com.ygkj.river.model.AttSwhsSignageBase">
+        select *
+        from att_swhs_signage_base
+        <where>
+            <if test="swhsCodeList!=null and swhsCodeList.size!=0">
+                and swhs_code in
+                <foreach collection="swhsCodeList" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>

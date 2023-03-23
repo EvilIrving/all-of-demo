@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.2.130:3306/lc_meta_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&useAffectedRows=true
+    username: lc_plt
+    password: GXvJaDjeuyPCZSKO
+    type: com.alibaba.druid.pool.DruidDataSource
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    call-setters-on-nulls: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+httpclient:
+  #连接超时
+  connect-timeout: 3000
+  #数据读取超时
+  read-timeout: 3000
+  #连接池获取请求连接的超时时间
+  request-timeout: 3000
+  #最大连接数
+  max-total: 2000
+  #同路由并发数
+  max-per-route: 1000
+  #重试次数
+  retry-times: 2
+  #最大闲置时长
+  max-idle-time: 60000
+
+jwt:
+  secretKey: 78944878877848fg)
+  accessTokenExpireTime: PT2H
+  refreshTokenExpireTime: PT8H
+  refreshTokenExpireAppTime: P30D
+  issuer: yingxue.com

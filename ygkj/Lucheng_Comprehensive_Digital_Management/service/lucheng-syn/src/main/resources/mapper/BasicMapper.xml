@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.BasicMapper">
+
+
+    <insert id="insertFcstTide" parameterType="com.ygkj.lcsyn.model.AttTideFcstBase">
+        INSERT INTO att_tide_fcst_base
+            (id,release_time,release_type,attach_name,
+             attach_url,fcst_start,fcst_end)
+        VALUES
+            (#{id},#{releaseTime},#{releaseType},#{attachName},
+             #{attachUrl},#{fcstStart},#{fcstEnd})
+    </insert>
+
+    <insert id="batchInsertFcstTideVal" parameterType="com.ygkj.lcsyn.model.AttTideFcstValBase">
+        INSERT INTO att_tide_fcst_val_base
+            (fcst_id,st_code,tm,tdz,auto_max)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.fcstId},#{item.stCode},#{item.tm},#{item.tdz},#{item.autoMax})
+            </foreach>
+    </insert>
+
+    <insert id="batchInsertBmAccBuild" parameterType="com.ygkj.lcsyn.model.BmAccBuild">
+        INSERT INTO bm_acc_build
+            (ID,PRCD,PRO_NAME,PRO_TYPE,
+             PRO_LOC,PRO_AREA,LNG,LAT,
+             PRO_INFO,IMG_FILE,create_time,creator_id,
+             update_time,updator_id,del_flag)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.id},#{item.prcd}, #{item.proName},#{item.proType},
+                #{item.proLoc},#{item.proArea},#{item.lng},#{item.lat},
+                #{item.proInfo},#{item.imgFile}, #{item.createTime},#{item.creatorId},
+                #{item.updateTime},#{item.updatorId},#{item.delFlag})
+            </foreach>
+    </insert>
+
+    <insert id="batchInsertBmPrcdAccprcd" parameterType="com.ygkj.lcsyn.model.BmPrcdAccprcd">
+        INSERT INTO bm_prcd_accprcd
+            (id,prcd,acc_prcd)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.prcd}, #{item.accPrcd})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertBmSeawallStructinfo" parameterType="com.ygkj.lcsyn.model.BmSeawallStructinfo">
+        INSERT INTO bm_seawall_structinfo
+        (id,prcd,wave_wall_high,wave_wall_elevation,wave_wall_type,wave_wall_width,
+        earthwork_high,earthwork_slope,earthwork_swidth,
+        armor_type,armor_upwater_slope,armor_downwater_slope,
+        suplatform_high,suplatform_elevation,
+        dike_platform_type,dike_platform_hight,dike_platformelevation,bid_section,
+        stake,stake_longitude,stake_latitude,section_type,section,drawing_no)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.prcd}, #{item.waveWallHigh},#{item.waveWallElevation},#{item.waveWallType},#{item.waveWallWidth},
+            #{item.earthworkHigh},#{item.earthworkSlope},#{item.earthworkSwidth},
+            #{item.armorType},#{item.armorUpwaterSlope},#{item.armorDownwaterSlope},
+            #{item.suplatformHigh},#{item.suplatformElevation},
+            #{item.dikePlatformType},#{item.dikePlatformHight},#{item.dikePlatformelevation},#{item.bidSection},
+            #{item.stake},#{item.stakeLongitude},#{item.stakeLatitude},#{item.sectionType},#{item.section},#{item.drawingNo})
+        </foreach>
+    </insert>
+
+    <update id="batchUpdateDikeInfo" parameterType="com.ygkj.lcsyn.model.AttDikeBase">
+            update att_dike_base
+             <set>
+             dike_name = #{item.name},start_long = #{item.dikeStartLongitude},start_lat = #{item.dikeStartLatitude},end_long = #{item.dikeEndLongitude},
+             end_lat = #{item.dikeEndLatitude},dikestartlongitude = #{item.lgtd},dikestartlatitude = #{item.lttd},
+             dike_grad = #{item.projectScale},dike_patt = #{item.dikePattern},dike_len = #{item.dikeLength},
+             rv_bank = #{item.riverBank},river_level = #{item.riverLevel},coorpot = #{item.coorpot}
+             </set>
+            where dike_code = #{item.prcd}
+    </update>
+    <update id="insertContract" parameterType="com.ygkj.lcsyn.model.BmPropertyContract">
+        REPLACE INTO  bm_property_contract(ID,CONTRACT_NAME,CONTRACT_CLIENT_NM,CONTRACT_UNIT_NM,CONTRACT_CONTENT,
+        ADCD,STARTTM,ENDTM,QUALIFICATION,FUNDS,CONTRACT_MATTER,CONTRACT_FILE,create_time,update_time,source_type,prcd)
+        VALUE(#{id},#{contractName},#{contractClientNM},#{contractUnitNM},#{contractContent},#{adcd},#{starttm},
+        #{endtm},#{qualification},#{funds},#{contractMatter},#{contractFile},#{createTime},#{updateTime},#{sourceType},#{prcd})
+
+    </update>
+
+
+    <insert id="batchReplacePerennialRainfall">
+        REPLACE INTO att_perennial_rainfall (`STCD`,`MONTH`,`DRP`)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.stcd},#{item.month},#{item.drp})
+        </foreach>
+    </insert>
+
+    <insert id="batchAttLastYearRainfall">
+        REPLACE INTO att_last_year_rainfall (`STCD`,`MONTH`,`DRP`)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.stcd},#{item.month},#{item.drp})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertDataMaintainPeopleSyn" parameterType="com.ygkj.lcsyn.model.DataMaintainPeopleSyn">
+        INSERT INTO data_maintain_people_syn
+        (prcd,name,type,projectScale)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.prcd},#{item.name},#{item.type},#{item.projectScale})
+        </foreach>
+    </insert>
+</mapper>

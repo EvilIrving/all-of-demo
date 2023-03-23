@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.BsDrillStdataMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.BsDrillStdata">
+        <result column="id" property="id"/>
+        <result column="stcase_id" property="stcaseId"/>
+        <result column="case_id" property="caseId"/>
+        <result column="time_index" property="timeIndex"/>
+        <result column="st_data" property="stData"/>
+        <result column="data_type" property="dataType"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        stcase_id,
+        case_id,
+        time_index,
+        time_stamp,
+        st_data,
+        data_type
+    </sql>
+    <sql id="Base_Column_Without_Data">
+        id,
+        stcase_id,
+        case_id,
+        time_index,
+        time_stamp,
+        data_type
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.big.screen.model.BsDrillStdata">
+        INSERT INTO bs_drill_stdata
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != stcaseId'>
+                stcase_id,
+            </if>
+            <if test='null != caseId'>
+                case_id,
+            </if>
+            <if test='null != timeIndex'>
+                time_index,
+            </if>
+            <if test='null != timeStamp'>
+                time_stamp,
+            </if>
+            <if test='null != stData'>
+                st_data,
+            </if>
+            <if test='null != dataType'>
+                data_type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != stcaseId'>
+                #{stcaseId},
+            </if>
+            <if test='null != caseId'>
+                #{caseId},
+            </if>
+            <if test='null != timeIndex'>
+                #{timeIndex},
+            </if>
+            <if test='null != timeStamp'>
+                #{timeStamp},
+            </if>
+            <if test='null != stData'>
+                #{stData},
+            </if>
+            <if test='null != dataType'>
+                #{dataType}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM bs_drill_stdata
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.big.screen.model.BsDrillStdata">
+        UPDATE bs_drill_stdata
+        <set>
+            <if test='null != stcaseId'>stcase_id = #{stcaseId},</if>
+            <if test='null != caseId'>case_id = #{caseId},</if>
+            <if test='null != timeIndex'>time_index = #{timeIndex},</if>
+            <if test='null != timeStamp'>time_stamp = #{timeStamp},</if>
+            <if test='null != stData'>st_data = #{stData},</if>
+            <if test='null != dataType'>data_type = #{dataType}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_stdata
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_stdata
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM bs_drill_stdata
+    </select>
+
+    <select id="selectNoDataByUniqueIndex" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_Without_Data"/>
+        FROM bs_drill_stdata
+        <where>
+            <if test="stcaseId!=null and stcaseId!=''">
+                and stcase_id = #{stcaseId}
+            </if>
+            <if test="caseId!=null and caseId!=''">
+                and case_id = #{caseId}
+            </if>
+            <if test="timeStamp!=null">
+                and time_stamp = #{timeStamp}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectDataByTimeInterval" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_stdata
+        <where>
+            <if test="stcaseId!=null and stcaseId!=''">
+                and stcase_id = #{stcaseId}
+            </if>
+            <if test="caseId!=null and caseId!=''">
+                and case_id = #{caseId}
+            </if>
+            <if test="start!=null and end !=null">
+                and time_stamp between #{start} and #{end}
+            </if>
+        </where>
+    </select>
+
+</mapper>

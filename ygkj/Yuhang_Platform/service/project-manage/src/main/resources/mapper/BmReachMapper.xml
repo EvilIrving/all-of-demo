@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.project.mapper.BmReachMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.project.api.vo.model.BmReach" >
+        <result column="dts_cmf_id" property="dtsCmfId" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="adcd" property="adcd" />
+        <result column="grade" property="grade" />
+        <result column="mntrb" property="mntrb" />
+        <result column="bas" property="bas" />
+        <result column="dts_cmf_creator_id" property="dtsCmfCreatorId" />
+        <result column="dts_cmf_create_time" property="dtsCmfCreateTime" />
+        <result column="dts_cmf_updator_id" property="dtsCmfUpdatorId" />
+        <result column="dts_cmf_update_time" property="dtsCmfUpdateTime" />
+        <result column="dts_cmf_dept" property="dtsCmfDept" />
+        <result column="dts_cmf_deleted" property="dtsCmfDeleted" />
+        <result column="dts_cmf_version" property="dtsCmfVersion" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        dts_cmf_id,
+                code,
+                name,
+                adcd,
+                grade,
+                mntrb,
+                bas,
+                dts_cmf_creator_id,
+                dts_cmf_create_time,
+                dts_cmf_updator_id,
+                dts_cmf_update_time,
+                dts_cmf_dept,
+                dts_cmf_deleted,
+                dts_cmf_version,
+                type
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.project.api.vo.model.BmReach">
+        INSERT INTO dts_yh_basic_data_db_bm_reach
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != dtsCmfId and '' != dtsCmfId">
+                dts_cmf_id,
+            </if>
+            <if test="null != code and '' != code">
+                code,
+            </if>
+            <if test="null != name and '' != name">
+                name,
+            </if>
+            <if test="null != adcd and '' != adcd">
+                adcd,
+            </if>
+            <if test="null != grade and '' != grade">
+                grade,
+            </if>
+            <if test="null != mntrb and '' != mntrb">
+                mntrb,
+            </if>
+            <if test="null != bas and '' != bas">
+                bas,
+            </if>
+            <if test="null != dtsCmfCreatorId and '' != dtsCmfCreatorId">
+                dts_cmf_creator_id,
+            </if>
+            <if test="null != dtsCmfCreateTime ">
+                dts_cmf_create_time,
+            </if>
+            <if test="null != dtsCmfUpdatorId and '' != dtsCmfUpdatorId">
+                dts_cmf_updator_id,
+            </if>
+            <if test="null != dtsCmfUpdateTime ">
+                dts_cmf_update_time,
+            </if>
+            <if test="null != dtsCmfDept and '' != dtsCmfDept">
+                dts_cmf_dept,
+            </if>
+            <if test="null != dtsCmfDeleted ">
+                dts_cmf_deleted,
+            </if>
+            <if test="null != dtsCmfVersion ">
+                dts_cmf_version,
+            </if>
+            <if test="null != type ">
+                type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != dtsCmfId and '' != dtsCmfId">
+                #{dtsCmfId},
+            </if>
+            <if test="null != code and '' != code">
+                #{code},
+            </if>
+            <if test="null != name and '' != name">
+                #{name},
+            </if>
+            <if test="null != adcd and '' != adcd">
+                #{adcd},
+            </if>
+            <if test="null != grade and '' != grade">
+                #{grade},
+            </if>
+            <if test="null != mntrb and '' != mntrb">
+                #{mntrb},
+            </if>
+            <if test="null != bas and '' != bas">
+                #{bas},
+            </if>
+            <if test="null != dtsCmfCreatorId and '' != dtsCmfCreatorId">
+                #{dtsCmfCreatorId},
+            </if>
+            <if test="null != dtsCmfCreateTime ">
+                #{dtsCmfCreateTime},
+            </if>
+            <if test="null != dtsCmfUpdatorId and '' != dtsCmfUpdatorId">
+                #{dtsCmfUpdatorId},
+            </if>
+            <if test="null != dtsCmfUpdateTime ">
+                #{dtsCmfUpdateTime},
+            </if>
+            <if test="null != dtsCmfDept and '' != dtsCmfDept">
+                #{dtsCmfDept},
+            </if>
+            <if test="null != dtsCmfDeleted ">
+                #{dtsCmfDeleted},
+            </if>
+            <if test="null != dtsCmfVersion ">
+                #{dtsCmfVersion},
+            </if>
+            <if test="null != type ">
+                #{type}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        update dts_yh_basic_data_db_bm_reach set dts_cmf_deleted = 1 WHERE id = #{id}
+    </delete>
+
+    <select id="loadPage" resultType="com.ygkj.project.api.vo.res.BmReachRespVo">
+        SELECT tbl.*,tb2.TOWN,tb2.SNAME,tb2.ENAME,tb2.LENGTH,tb2.AREA,tb2.VOL,tb2.RCHIEF,tb2.FUNCTION from
+        dts_yh_basic_data_db_bm_reach tbl LEFT JOIN dts_yh_basic_data_db_bm_reach_ct tb2 ON tbl.`CODE` = tb2.`CODE`
+        where tbl.dts_cmf_deleted = 0
+        <if test="null != dtsCmfId and '' != dtsCmfId">and tbl.dts_cmf_id = #{dtsCmfId}</if>
+        <if test="null != type and '' != type">and tbl.type = #{type}</if>
+        <if test="null != mntrb and '' != mntrb">and tbl.MNTRB = #{mntrb}</if>
+        <if test="null != grade and '' != grade">and tbl.GRADE = #{grade}</if>
+        <if test="null != bas and '' != bas">and tbl.BAS = #{bas}</if>
+    </select>
+
+    <update id="update" parameterType="com.ygkj.project.api.vo.model.BmReach">
+        UPDATE dts_yh_basic_data_db_bm_reach
+        <set>
+            <if test="null != dtsCmfId and '' != dtsCmfId">dts_cmf_id = #{dtsCmfId},</if>
+            <if test="null != code and '' != code">code = #{code},</if>
+            <if test="null != name and '' != name">name = #{name},</if>
+            <if test="null != adcd and '' != adcd">adcd = #{adcd},</if>
+            <if test="null != grade and '' != grade">grade = #{grade},</if>
+            <if test="null != mntrb and '' != mntrb">mntrb = #{mntrb},</if>
+            <if test="null != bas and '' != bas">bas = #{bas},</if>
+            <if test="null != dtsCmfCreatorId and '' != dtsCmfCreatorId">dts_cmf_creator_id = #{dtsCmfCreatorId},</if>
+            <if test="null != dtsCmfCreateTime ">dts_cmf_create_time = #{dtsCmfCreateTime},</if>
+            <if test="null != dtsCmfUpdatorId and '' != dtsCmfUpdatorId">dts_cmf_updator_id = #{dtsCmfUpdatorId},</if>
+            <if test="null != dtsCmfUpdateTime ">dts_cmf_update_time = #{dtsCmfUpdateTime},</if>
+            <if test="null != dtsCmfDept and '' != dtsCmfDept">dts_cmf_dept = #{dtsCmfDept},</if>
+            <if test="null != dtsCmfDeleted ">dts_cmf_deleted = #{dtsCmfDeleted},</if>
+            <if test="null != dtsCmfVersion ">dts_cmf_version = #{dtsCmfVersion},</if>
+            <if test="null != type ">type = #{type}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

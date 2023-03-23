@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.OverseeMapper">
+
+    <insert id="batchInsertWorker" parameterType="com.ygkj.project.model.ProjectOverseeWork">
+        INSERT INTO project_oversee_work
+            (id,worker_id,worker_name,worker_phone,oversee_id,`type`,req_id)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.id},#{item.workerId},#{item.workerName},#{item.workerPhone},#{item.overseeId},#{item.type},#{item.reqId})
+            </foreach>
+    </insert>
+
+    <insert id="batchInsertMsg" parameterType="String">
+        INSERT INTO oversee_msg
+            (msg)
+        VALUE
+        <foreach collection="list" separator="," item="item">
+            (#{item})
+        </foreach>
+    </insert>
+
+    <select id="page" resultType="com.ygkj.project.vo.response.ProjectOverseeResVo">
+        SELECT
+            po.*,sb.seawall_name projectName,su.username createName
+        FROM
+            project_oversee po
+            LEFT JOIN att_seawall_base sb ON po.project_code = sb.seawall_code
+            LEFT JOIN sys_user su ON po.create_id = su.id
+        <where>
+            <choose>
+                <when test="id != null">
+                    po.id = #{id}
+                </when>
+                <otherwise>
+                    <if test="projectCode != null and projectCode != ''">
+                        po.project_code = #{projectCode}
+                    </if>
+                    <if test="userId != null and userId != ''">
+                        AND (
+                                po.create_id = #{userId} OR
+                                EXISTS ( SELECT id FROM project_oversee_work WHERE po.id = oversee_id AND worker_id = #{userId})
+                            )
+                    </if>
+                    <if test="status != null">
+                        <choose>
+                            <when test="status == -1">
+                                AND NOW() &gt; po.deadline AND ISNULL(work_time)
+                            </when>
+                            <when test="status == 0">
+                                AND NOW() &lt; po.deadline AND ISNULL(work_time)
+                            </when>
+                            <otherwise>
+                                AND !ISNULL(work_time)
+                            </otherwise>
+                        </choose>
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+        ORDER BY po.create_time DESC
+    </select>
+
+    <select id="listWorkerByIds" resultType="com.ygkj.project.model.ProjectOverseeWork">
+        SELECT * FROM project_oversee_work WHERE oversee_id IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectWork" resultType="com.ygkj.project.model.ProjectOverseeWork" parameterType="com.ygkj.project.model.ProjectOverseeWork">
+        SELECT
+            id,worker_id,worker_name,worker_phone,
+            oversee_id,`type`,req_id
+        FROM
+            project_oversee_work
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+            <if test="null != workerId and '' != workerId">
+                AND worker_id = #{workerId}
+            </if>
+            <if test="null != workerName and '' != workerName">
+                AND worker_name = #{workerName}
+            </if>
+            <if test="null != workerPhone and '' != workerPhone">
+                AND worker_phone = #{workerPhone}
+            </if>
+            <if test="null != overseeId and '' != overseeId">
+                AND oversee_id = #{overseeId}
+            </if>
+            <if test="null != type">
+                AND `type` = #{type}
+            </if>
+        </where>
+    </select>
+
+</mapper>

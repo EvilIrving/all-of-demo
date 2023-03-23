@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttWaterAreaMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttWaterArea">
+        <result column="id" property="id"/>
+        <result column="water_area" property="waterArea"/>
+        <result column="area_name" property="areaName"/>
+        <result column="year" property="year"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        water_area,
+        area_name,
+        year,
+        type
+    </sql>
+
+    <select id="totalStatisticsWaterAreaByYear" resultType="java.math.BigDecimal">
+        SELECT SUM(water_area) total FROM `att_water_area` WHERE year = #{year}
+    </select>
+
+    <select id="calYears" resultType="java.lang.Integer">
+        SELECT tbl.`year` FROM `att_water_area` tbl GROUP BY tbl.year ORDER BY tbl.year asc
+    </select>
+
+    <select id="loadPage" resultType="com.ygkj.river.vo.response.AttWaterAreaRespVo">
+        SELECT tbl.*,tb2.occupied_area,tb2.compensation_area FROM `att_water_area` tbl LEFT JOIN
+        att_waterarea_compensation tb2 ON tbl.area_name = tb2.area_name where 1=1
+        <if test='null != year'>
+            and tbl.year = #{year}
+        </if>
+        <if test='null != id and "" != id'>
+            and tbl.id = #{id}
+        </if>
+        <if test='null != areaName and "" != areaName'>
+            and tbl.area_name = #{areaName}
+        </if>
+    </select>
+
+    <select id="histogramWaterArea" resultType="com.ygkj.river.vo.response.HistogramWaterArea">
+        SELECT tbl.water_area,tbl.type FROM `att_water_area` tbl where 1=1
+        <if test='null != year'>
+            and tbl.year = #{year}
+        </if>
+        order by tbl.type
+    </select>
+
+    <select id="waterAreaEachAdministrative" resultType="com.ygkj.river.vo.response.AttWaterAreaRespVo">
+        SELECT area_name areaName,SUM(water_area) waterArea,"2" valueType FROM `lc_basic_db`.`att_water_area` WHERE
+        `year` = #{year} GROUP BY area_name ORDER BY SUM(water_area)
+    </select>
+
+    <select id="findByAreaNameAndYear" resultType="com.ygkj.river.vo.response.AttWaterAreaRespVo">
+        SELECT tbl.* FROM `att_water_area` tbl where tbl.type= '1'
+        <if test='null != year and "" != year'>
+            and tbl.year = #{year}
+        </if>
+        <if test='null != areaName and areaName != ""'>
+            and tbl.area_name = #{areaName}
+        </if>
+    </select>
+
+    <update id="updateData" parameterType="com.ygkj.river.vo.response.AttWaterAreaRespVo">
+        UPDATE att_water_area
+        <set>
+            <if test='null != waterArea'>water_area = #{waterArea},</if>
+            <if test='null != areaName'>area_name = #{areaName},</if>
+            <if test='null != year'>year = #{year},</if>
+            <if test='null != type'>type = #{type}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

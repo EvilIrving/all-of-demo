@@ -1,0 +1,258 @@
+.mian-header {
+  width: 100%;
+  padding: 0;
+  user-select: none;
+  position: absolute;
+  top: 0;
+  .main-header__content {
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    background-image: url(~assets/images/ScreenAsset/header-bg.png);
+    background-size: 100% 100%;
+    height: 124px;
+    overflow: hidden;
+    .main-header__content--menu {
+      display: flex;
+      justify-content: space-between;
+      background-image: url(~assets/images/ScreenAsset/header-txt-bg.png);
+      background-size: 100% 100%;
+      height: 152px;
+      z-index: 100;
+      .mian-header-center {
+        width: 394px;
+        position: absolute;
+        left: 50%;
+        margin-left: -200px;
+        bottom: 35px;
+        img {
+          width: 100%;
+        }
+      }
+      .main-header-left {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-left: 12px;
+        img {
+          width: 20px;
+          margin-right: 14px;
+        }
+        span {
+          background: linear-gradient(180deg, #5de6fb 0%, #02a4ed 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          font-size: 16px;
+        }
+        .address-name {
+          font-size: 24px;
+          background: linear-gradient(180deg, #5de6fb 0%, #02a4ed 100%);
+          -webkit-background-clip: text;
+          font-family: 'YouYaBiaoTiHei';
+          margin-right: 16px;
+        }
+        .address-weather {
+          padding-right: 8px;
+        }
+        .address-line {
+          margin: 0 10px;
+          width: 1px;
+          height: 16px;
+          background: rgba(71, 245, 219, 0.3);
+        }
+        .address-times {
+          margin-right: 16px;
+        }
+      }
+      .main-header-right {
+        display: flex;
+        align-items: center;
+        padding-right: 23px;
+        margin-bottom: 38px;
+        .main-header-date{
+          padding-right: 45px;
+        }
+        .analysis {
+          cursor: pointer;
+          width: 186px;
+          height: 58px;
+          padding-top: 22px;
+          padding-left: 72px;
+          font-size: 14px;
+          background-image: url(~assets/images/ScreenAsset/analysis-bg.png);
+          background-repeat: no-repeat;
+          background-size: 100%;
+          margin-right: 21px;
+          span {
+            background: linear-gradient(180deg, #5de6fb 0%, #02a4ed 100%);
+            -webkit-background-clip: text;
+            color: transparent;
+            font-size: 16px;
+          }
+        }
+        .notification {
+          cursor: pointer;
+          width: 49px;
+          height: 45px;
+          background-image: url(~assets/images/ScreenAsset/notification.png);
+          background-repeat: no-repeat;
+          background-size: 100%;
+        }
+      }
+    }
+    .main-header__content--collaspe-btn {
+      .collapse-btn {
+        cursor: pointer;
+        width: 40px;
+        height: 26px;
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        &.up {
+          background-image: url(~assets/images/ScreenAsset/header-arrow-up.png);
+          background-size: 100%;
+        }
+        &.down {
+          background-image: url(~assets/images/ScreenAsset/header-arrow-down.png);
+          background-size: 100%;
+        }
+      }
+    }
+  }
+  .main-header__float {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    .main-header__float--logo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 507px;
+      height: 71px;
+      z-index: 101;
+      background-image: url(~assets/images/ScreenAsset/header-logo-bg.png);
+      display: flex;
+      align-items: center;
+      background-size: 90% 100%;
+      background-repeat: no-repeat;
+      .logo {
+        font-family: 'YouSheBiaoTiHei';
+        margin-left: 16px;
+        font-size: 42px;
+        color: #ffffff;
+        letter-spacing: 2.21px;
+        text-shadow: 0 0 20px rgba(0, 255, 249, 0.7);
+        font-weight: 400;
+      }
+      .system-name {
+        font-family: 'YouSheBiaoTiHei';
+        font-size: 24px;
+        font-weight: bold;
+        color: #fff;
+        margin-left: 16px;
+      }
+    }
+    .main-header__float--center {
+      position: absolute;
+      top: -43px;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      color: #fff;
+      width: 100%;
+      height: 300px;
+      opacity: 0.6;
+      background-image: url(~assets/images/ScreenAsset/qiong-ding-tu.png);
+      background-repeat: no-repeat;
+      background-size: 100%;
+    }
+    .main-header__float--action {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 101;
+      display: flex;
+      color: #fff;
+      .workplace {
+        cursor: pointer;
+        width: 112px;
+        height: 33px;
+        margin-top: 21px;
+        padding-top: 11px;
+        padding-left: 19px;
+        font-size: 14px;
+        background-image: url(~assets/images/ScreenAsset/workplace-bg.png);
+        background-repeat: no-repeat;
+        background-size: 100%;
+      }
+      .analysis {
+        cursor: pointer;
+        width: 186px;
+        height: 75px;
+        margin-top: 4.5px;
+        margin-left: 26px;
+        padding-top: 22px;
+        padding-left: 72px;
+        font-size: 14px;
+        background-image: url(~assets/images/ScreenAsset/analysis-bg.png);
+        background-repeat: no-repeat;
+        background-size: 100%;
+      }
+      .notification {
+        cursor: pointer;
+        width: 51px;
+        height: 34px;
+        margin-top: 21px;
+        margin-right: 12px;
+        background-image: url(~assets/images/ScreenAsset/notification.png);
+        background-repeat: no-repeat;
+        background-size: 100%;
+      }
+      .notification-warning {
+        cursor: pointer;
+        width: 51px;
+        height: 34px;
+        margin-top: 21px;
+        margin-right: 12px;
+        background-image: url(~assets/images/ScreenAsset/notification-warning.png);
+        background-repeat: no-repeat;
+        background-size: 100%;
+      }
+    }
+  }
+}
+.popover-menu {
+  border: 2px solid #1a5c7c;
+  background-image: linear-gradient(to bottom, #061141, #0b2b50);
+  color: #fff;
+  min-width: unset;
+  width: 120px;
+
+  .popper__arrow {
+    top: -10px !important;
+    border-bottom-width: 10px;
+    border-bottom-color: #1a5c7c !important;
+
+    &::after {
+      top: 3px !important;
+      border-bottom-width: 10px;
+      border-bottom-color: #061141 !important;
+    }
+  }
+  .menu-list {
+    i[class^='icon-'] {
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    li {
+      cursor: pointer;
+      padding: 3px 6px;
+
+      &:hover {
+        background-color: #0b2b50;
+      }
+    }
+  }
+}

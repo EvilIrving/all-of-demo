@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.EmergencyPlansManagementMapper">
+
+
+    <select id="getList" resultType="com.ygkj.project.model.EmergencyPlansManagement">
+        SELECT a.*,b.NAME,(SELECT name FROM sys_dept WHERE id = a.organization_unit) organizationUnitName,
+        (SELECT name FROM sys_dept WHERE id = a.approval_unit) approvalUnitName FROM emergency_plans_management a
+        LEFT JOIN bm_project b ON a.prcd = b.PRCD WHERE a.del_flag = 0
+        <if test="emergencyPlansManagement.prcd != null and emergencyPlansManagement.prcd != ''">
+            AND a.prcd = #{emergencyPlansManagement.prcd}
+        </if>
+        <if test="emergencyPlansManagement.planType != null and emergencyPlansManagement.planType != ''">
+            AND a.plan_type = #{emergencyPlansManagement.planType}
+        </if>
+        <if test="emergencyPlansManagement.id != null and emergencyPlansManagement.id != ''">
+            AND a.id = #{emergencyPlansManagement.id}
+        </if>
+        ORDER BY a.plan_time DESC
+    </select>
+
+    <select id="planManagement" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT GROUP_CONCAT(plan_type) types,prcd FROM emergency_plans_management
+        WHERE del_flag = 0 AND YEAR(plan_time) = #{year} AND prcd IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY prcd
+    </select>
+
+</mapper>

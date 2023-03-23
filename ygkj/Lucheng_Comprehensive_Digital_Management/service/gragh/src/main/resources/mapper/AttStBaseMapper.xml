@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.AttStBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.gragh.model.AttStBase">
+        <result column="st_code" property="stCode"/>
+        <result column="st_name" property="stName"/>
+        <result column="st_type" property="stType"/>
+        <result column="st_long" property="stLong"/>
+        <result column="st_lat" property="stLat"/>
+        <result column="st_loc" property="stLoc"/>
+        <result column="st_year_mon" property="stYearMon"/>
+        <result column="beg_repo_year_mon" property="begRepoYearMon"/>
+        <result column="bank" property="bank"/>
+        <result column="st_dir" property="stDir"/>
+        <result column="cat_area" property="catArea"/>
+        <result column="moni_item" property="moniItem"/>
+        <result column="dtm_name" property="dtmName"/>
+        <result column="dtm_elev" property="dtmElev"/>
+        <result column="types" property="types"/>
+        <result column="attr" property="attr"/>
+        <result column="staff" property="staff"/>
+        <result column="estuary_distance" property="estuaryDistance"/>
+        <result column="obs_env" property="obsEnv"/>
+        <result column="river_state" property="riverState"/>
+        <result column="note" property="note"/>
+        <result column="eff_date" property="effDate"/>
+        <result column="expr_date" property="exprDate"/>
+        <result column="limit_level" property="limitLevel"/>
+        <result column="guarantee_level" property="guaranteeLevel"/>
+        <result column="warning_level" property="warningLevel"/>
+        <result column="proj_code" property="projCode"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="bas" property="bas"/>
+        <result column="res_grade" property="resGrade"/>
+        <result column="gate_open_threshold" property="gateOpenThreshold"/>
+        <result column="highest_level" property="highestLevel"/>
+        <result column="appear_time" property="appearTime"/>
+    </resultMap>
+
+    <sql id="Left_Join_Base_Column_List">
+        a.st_code,
+        a.st_name,
+        a.st_type,
+        a.st_long,
+        a.st_lat,
+        a.st_loc,
+        a.st_year_mon,
+        a.beg_repo_year_mon,
+        a.bank,
+        a.st_dir,
+        a.cat_area,
+        a.moni_item,
+        a.dtm_name,
+        a.dtm_elev,
+        a.types,
+        a.attr,
+        a.staff,
+        a.estuary_distance,
+        a.obs_env,
+        a.river_state,
+        a.note,
+        a.eff_date,
+        a.expr_date,
+        a.limit_level,
+        a.guarantee_level,
+        a.warning_level,
+        a.proj_code,
+        a.area_code,
+        a.bas,
+        a.res_grade,
+        a.gate_open_threshold,
+        a.display
+    </sql>
+
+    <sql id="Base_Column_List">
+        st_code,
+        st_name,
+        st_type,
+        st_long,
+        st_lat,
+        st_loc,
+        st_year_mon,
+        beg_repo_year_mon,
+        bank,
+        st_dir,
+        cat_area,
+        moni_item,
+        dtm_name,
+        dtm_elev,
+        types,
+        attr,
+        staff,
+        estuary_distance,
+        obs_env,
+        river_state,
+        note,
+        eff_date,
+        expr_date,
+        limit_level,
+        guarantee_level,
+        warning_level,
+        proj_code,
+        area_code,
+        bas,
+        res_grade,
+        gate_open_threshold,
+        highest_level,
+        appear_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.gragh.model.AttStBase">
+        INSERT INTO att_st_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != stCode'>
+                st_code,
+            </if>
+            <if test='null != stName'>
+                st_name,
+            </if>
+            <if test='null != stType'>
+                st_type,
+            </if>
+            <if test='null != stLong'>
+                st_long,
+            </if>
+            <if test='null != stLat'>
+                st_lat,
+            </if>
+            <if test='null != stLoc'>
+                st_loc,
+            </if>
+            <if test='null != stYearMon'>
+                st_year_mon,
+            </if>
+            <if test='null != begRepoYearMon'>
+                beg_repo_year_mon,
+            </if>
+            <if test='null != bank'>
+                bank,
+            </if>
+            <if test='null != stDir'>
+                st_dir,
+            </if>
+            <if test='null != catArea'>
+                cat_area,
+            </if>
+            <if test='null != moniItem'>
+                moni_item,
+            </if>
+            <if test='null != dtmName'>
+                dtm_name,
+            </if>
+            <if test='null != dtmElev'>
+                dtm_elev,
+            </if>
+            <if test='null != types'>
+                types,
+            </if>
+            <if test='null != attr'>
+                attr,
+            </if>
+            <if test='null != staff'>
+                staff,
+            </if>
+            <if test='null != estuaryDistance'>
+                estuary_distance,
+            </if>
+            <if test='null != obsEnv'>
+                obs_env,
+            </if>
+            <if test='null != riverState'>
+                river_state,
+            </if>
+            <if test='null != note'>
+                note,
+            </if>
+            <if test='null != effDate'>
+                eff_date,
+            </if>
+            <if test='null != exprDate'>
+                expr_date,
+            </if>
+            <if test='null != limitLevel'>
+                limit_level,
+            </if>
+            <if test='null != guaranteeLevel'>
+                guarantee_level,
+            </if>
+            <if test='null != warningLevel'>
+                warning_level
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != stCode'>
+                #{stCode},
+            </if>
+            <if test='null != stName'>
+                #{stName},
+            </if>
+            <if test='null != stType'>
+                #{stType},
+            </if>
+            <if test='null != stLong'>
+                #{stLong},
+            </if>
+            <if test='null != stLat'>
+                #{stLat},
+            </if>
+            <if test='null != stLoc'>
+                #{stLoc},
+            </if>
+            <if test='null != stYearMon'>
+                #{stYearMon},
+            </if>
+            <if test='null != begRepoYearMon'>
+                #{begRepoYearMon},
+            </if>
+            <if test='null != bank'>
+                #{bank},
+            </if>
+            <if test='null != stDir'>
+                #{stDir},
+            </if>
+            <if test='null != catArea'>
+                #{catArea},
+            </if>
+            <if test='null != moniItem'>
+                #{moniItem},
+            </if>
+            <if test='null != dtmName'>
+                #{dtmName},
+            </if>
+            <if test='null != dtmElev'>
+                #{dtmElev},
+            </if>
+            <if test='null != types'>
+                #{types},
+            </if>
+            <if test='null != attr'>
+                #{attr},
+            </if>
+            <if test='null != staff'>
+                #{staff},
+            </if>
+            <if test='null != estuaryDistance'>
+                #{estuaryDistance},
+            </if>
+            <if test='null != obsEnv'>
+                #{obsEnv},
+            </if>
+            <if test='null != riverState'>
+                #{riverState},
+            </if>
+            <if test='null != note'>
+                #{note},
+            </if>
+            <if test='null != effDate'>
+                #{effDate},
+            </if>
+            <if test='null != exprDate'>
+                #{exprDate},
+            </if>
+            <if test='null != limitLevel'>
+                #{limitLevel},
+            </if>
+            <if test='null != guaranteeLevel'>
+                #{guaranteeLevel},
+            </if>
+            <if test='null != warningLevel'>
+                #{warningLevel}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_st_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.gragh.model.AttStBase">
+        UPDATE att_st_base
+        <set>
+            <if test='null != stCode'>st_code = #{stCode},</if>
+            <if test='null != stName'>st_name = #{stName},</if>
+            <if test='null != stType'>st_type = #{stType},</if>
+            <if test='null != stLong'>st_long = #{stLong},</if>
+            <if test='null != stLat'>st_lat = #{stLat},</if>
+            <if test='null != stLoc'>st_loc = #{stLoc},</if>
+            <if test='null != stYearMon'>st_year_mon = #{stYearMon},</if>
+            <if test='null != begRepoYearMon'>beg_repo_year_mon = #{begRepoYearMon},</if>
+            <if test='null != bank'>bank = #{bank},</if>
+            <if test='null != stDir'>st_dir = #{stDir},</if>
+            <if test='null != catArea'>cat_area = #{catArea},</if>
+            <if test='null != moniItem'>moni_item = #{moniItem},</if>
+            <if test='null != dtmName'>dtm_name = #{dtmName},</if>
+            <if test='null != dtmElev'>dtm_elev = #{dtmElev},</if>
+            <if test='null != types'>types = #{types},</if>
+            <if test='null != attr'>attr = #{attr},</if>
+            <if test='null != staff'>staff = #{staff},</if>
+            <if test='null != estuaryDistance'>estuary_distance = #{estuaryDistance},</if>
+            <if test='null != obsEnv'>obs_env = #{obsEnv},</if>
+            <if test='null != riverState'>river_state = #{riverState},</if>
+            <if test='null != note'>note = #{note},</if>
+            <if test='null != effDate'>eff_date = #{effDate},</if>
+            <if test='null != exprDate'>expr_date = #{exprDate},</if>
+            <if test='null != limitLevel'>limit_level = #{limitLevel},</if>
+            <if test='null != guaranteeLevel'>guarantee_level = #{guaranteeLevel},</if>
+            <if test='null != warningLevel'>warning_level = #{warningLevel}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_st_base
+        WHERE st_code = #{stCode}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_st_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_st_base
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Left_Join_Base_Column_List"/>
+        FROM att_st_base a
+        <if test="riverStationType != null and riverStationType == '平原河网'">
+            LEFT JOIN att_st_mark_base c ON a.st_code = c.st_code
+        </if>
+        <if test="riverStationType != null and riverStationType == '山区河道'">
+            LEFT JOIN att_st_mark_base c ON a.st_code = c.st_code
+        </if>
+        <if test="riverStationType != null and riverStationType == '其他'">
+            LEFT JOIN att_st_mark_base c ON a.st_code = c.st_code
+        </if>
+        <where>
+            AND a.del_flag = 0
+            <if test="isYongJiaStation != null and isYongJiaStation == true">
+                AND a.st_code LIKE 'YJ_%'
+            </if>
+            <if test="isShuiWenStation != null and isShuiWenStation == true">
+                AND a.st_code LIKE 'SWZ_%'
+            </if>
+            <if test="projectCodes != null and projectCodes != ''">
+                AND FIND_IN_SET(a.proj_code,#{projectCodes})
+            </if>
+            <if test="stationType != null and stationType != ''">
+                AND FIND_IN_SET(a.st_type,#{stationType})
+            </if>
+            <if test="stationCodes != null and stationCodes != ''">
+                AND FIND_IN_SET(a.st_code,#{stationCodes})
+            </if>
+            <if test="stationName != null and stationName != ''">
+                AND a.st_name LIKE CONCAT('%',#{stationName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND a.area_code LIKE CONCAT('%',#{areaCode},'%')
+            </if>
+            <if test="bas != null and bas != ''">
+                AND a.bas = #{bas}
+            </if>
+            <if test="resGrade != null and resGrade != ''">
+                AND a.res_grade = #{resGrade}
+            </if>
+            <if test="isRainStation != null and isRainStation == true">
+                AND a.is_rain_station = 1
+            </if>
+            <if test="isSurfaceRainStation != null and isSurfaceRainStation == true">
+                AND a.is_surface_rain_station = 1
+            </if>
+            <if test="isReservoirSurfaceRainStation != null and isReservoirSurfaceRainStation == true">
+                AND a.is_reservoir_surface_rain_station = 1
+            </if>
+            <if test="display != null">
+                <choose>
+                    <when test="display">
+                        AND a.display=1
+                    </when>
+                    <otherwise>
+                        AND a.display=0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="isWrpWaga != null">
+                <choose>
+                    <when test="isWrpWaga">
+                        AND a.wrp_waga=1
+                    </when>
+                    <otherwise>
+                        AND a.wrp_waga=0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="isFocus != null">
+                <choose>
+                    <when test="isFocus == true">
+                        AND a.is_focus=1
+                    </when>
+                    <otherwise>
+                        AND a.is_focus=0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="engScal != null and engScal!=''">
+                and (a.proj_code in (select distinct res_code from att_res_base where del_flag=0 and
+                FIND_IN_SET(eng_scal,#{engScal})) or a.st_code in (select distinct main_stcd from att_res_base where
+                del_flag=0 and main_stcd is not null and FIND_IN_SET(eng_scal,#{engScal})))
+            </if>
+            <if test="riverStationType != null and riverStationType != ''">
+                <choose>
+                    <when test="riverStationType == '平原河网'">
+                        AND c.mark = '平原'
+                    </when>
+                    <when test="riverStationType == '山区河道'">
+                        AND c.mark = '山区河道'
+                    </when>
+                    <when test="riverStationType == '其他'">
+                        <!-- AND (c.mark &lt;&gt; '山区河道' AND d.main_st_name IS NULL) -->
+                        AND (c.mark &lt;&gt; '山区河道' AND c.mark &lt;&gt; '平原')
+                    </when>
+                </choose>
+            </if>
+            <if test="bindProj!=null">
+                <choose>
+                    <when test="bindProj">
+                        and (a.proj_code in (select distinct res_code from att_res_base where del_flag=0) or a.st_code
+                        in (select distinct main_stcd from att_res_base where del_flag=0 and main_stcd is not null))
+                    </when>
+                    <otherwise>
+                        and (a.proj_code not in (select distinct res_code from att_res_base where del_flag=0) and
+                        a.st_code not in (select distinct main_stcd from att_res_base where del_flag=0 and main_stcd is
+                        not null))
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        <if test="riverStationType != null and riverStationType == '其他'">
+            GROUP BY a.st_code
+        </if>
+    </select>
+
+    <select id="countStTypeNumByAdcdBasin" resultType="com.ygkj.gragh.vo.response.ChartResVo">
+        select count(1) as `value`,st_type as `key` from att_st_base
+        <where>
+            <if test="adcd !=null and adcd!='' and adcd.length>=6">
+                and area_code like CONCAT(SUBSTR(#{adcd},1,6),'%')
+            </if>
+            <if test="basin!=null and basin!=''">
+                <choose>
+                    <when test="basin!='其他'">
+                        and bas like concat('%',#{basin},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        group by st_type
+    </select>
+
+    <select id="stationTypeStatistic" resultType="map">
+        <foreach collection="types" item="item" separator="UNION ALL">
+            SELECT #{item} AS type,COUNT(DISTINCT(st_code)) AS num FROM att_st_base WHERE del_flag = 0
+            <choose>
+                <when test="item == '雨情'">
+                    AND is_rain_station = 1
+                </when>
+                <when test="item == '水情'">
+                    AND st_type = 'RR' OR st_type = 'ZZ'
+                </when>
+                <when test="item == '工情'">
+                    AND st_type = 'DD'
+                </when>
+            </choose>
+        </foreach>
+    </select>
+
+    <select id="rainfallHistoryMax" resultType="map">
+        SELECT
+        station_name,
+        during_unit,
+        station_code,
+        happen_date,
+        rainfall,
+        area_name
+        FROM
+        att_statistic_heavy_rain
+        WHERE
+        type = '市级'
+        <if test="stationCode == null or stationCode == ''">
+            AND rank = 1
+        </if>
+        <if test="stationCode != null and stationCode != ''">
+            AND station_code = #{stationCode}
+        </if>
+        GROUP BY
+        during_unit
+    </select>
+
+</mapper>

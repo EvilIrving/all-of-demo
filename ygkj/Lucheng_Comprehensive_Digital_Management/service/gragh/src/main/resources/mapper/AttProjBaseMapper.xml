@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.AttProjBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.gragh.model.AttProjBase">
+        <result column="proj_code" property="projCode"/>
+        <result column="proj_name" property="projName"/>
+        <result column="posit" property="posit"/>
+        <result column="con_unit" property="conUnit"/>
+        <result column="year" property="year"/>
+        <result column="app_num" property="appNum"/>
+        <result column="proj_type" property="projType"/>
+        <result column="plan_fund" property="planFund"/>
+        <result column="comp_fund" property="compFund"/>
+        <result column="proj_leg_pers" property="projLegPers"/>
+        <result column="status" property="status"/>
+        <result column="proj_brin" property="projBrin"/>
+        <result column="proj_set_date" property="projSetDate"/>
+        <result column="proj_comp_date" property="projCompDate"/>
+        <result column="acc_date" property="accDate"/>
+        <result column="note" property="note"/>
+        <result column="eff_date" property="effDate"/>
+        <result column="expr_date" property="exprDate"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
+        <result column="basin_code" property="basinCode"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="file_ids" property="fileIds"/>
+        <result column="area" property="area"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        proj_code,
+        proj_name,
+        posit,
+        con_unit,
+        year,
+        app_num,
+        proj_type,
+        plan_fund,
+        comp_fund,
+        proj_leg_pers,
+        status,
+        proj_brin,
+        proj_set_date,
+        proj_comp_date,
+        acc_date,
+        note,
+        eff_date,
+        expr_date,
+        longitude,
+        latitude,
+        basin_code,
+        area_code,
+        area
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.gragh.model.AttProjBase">
+        INSERT INTO att_proj_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != projCode'>
+                proj_code,
+            </if>
+            <if test='null != projName'>
+                proj_name,
+            </if>
+            <if test='null != posit'>
+                posit,
+            </if>
+            <if test='null != conUnit'>
+                con_unit,
+            </if>
+            <if test='null != year'>
+                year,
+            </if>
+            <if test='null != appNum'>
+                app_num,
+            </if>
+            <if test='null != projType'>
+                proj_type,
+            </if>
+            <if test='null != planFund'>
+                plan_fund,
+            </if>
+            <if test='null != compFund'>
+                comp_fund,
+            </if>
+            <if test='null != projLegPers'>
+                proj_leg_pers,
+            </if>
+            <if test='null != status'>
+                status,
+            </if>
+            <if test='null != projBrin'>
+                proj_brin,
+            </if>
+            <if test='null != projSetDate'>
+                proj_set_date,
+            </if>
+            <if test='null != projCompDate'>
+                proj_comp_date,
+            </if>
+            <if test='null != accDate'>
+                acc_date,
+            </if>
+            <if test='null != note'>
+                note,
+            </if>
+            <if test='null != effDate'>
+                eff_date,
+            </if>
+            <if test='null != exprDate'>
+                expr_date,
+            </if>
+            <if test='null != longitude'>
+                longitude,
+            </if>
+            <if test='null != latitude'>
+                latitude,
+            </if>
+            <if test='null != basinCode'>
+                basin_code,
+            </if>
+            <if test='null != areaCode'>
+                area_code
+            </if>
+            <if test='null != fileIds'>
+                file_ids
+            </if>
+            <if test='null != area'>
+                area
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != projCode'>
+                #{projCode},
+            </if>
+            <if test='null != projName'>
+                #{projName},
+            </if>
+            <if test='null != posit'>
+                #{posit},
+            </if>
+            <if test='null != conUnit'>
+                #{conUnit},
+            </if>
+            <if test='null != year'>
+                #{year},
+            </if>
+            <if test='null != appNum'>
+                #{appNum},
+            </if>
+            <if test='null != projType'>
+                #{projType},
+            </if>
+            <if test='null != planFund'>
+                #{planFund},
+            </if>
+            <if test='null != compFund'>
+                #{compFund},
+            </if>
+            <if test='null != projLegPers'>
+                #{projLegPers},
+            </if>
+            <if test='null != status'>
+                #{status},
+            </if>
+            <if test='null != projBrin'>
+                #{projBrin},
+            </if>
+            <if test='null != projSetDate'>
+                #{projSetDate},
+            </if>
+            <if test='null != projCompDate'>
+                #{projCompDate},
+            </if>
+            <if test='null != accDate'>
+                #{accDate},
+            </if>
+            <if test='null != note'>
+                #{note},
+            </if>
+            <if test='null != effDate'>
+                #{effDate},
+            </if>
+            <if test='null != exprDate'>
+                #{exprDate},
+            </if>
+            <if test='null != longitude'>
+                #{longitude},
+            </if>
+            <if test='null != latitude'>
+                #{latitude},
+            </if>
+            <if test='null != basinCode'>
+                #{basinCode},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode}
+            </if>
+            <if test='null != fileIds'>
+                #{fileIds}
+            </if>
+            <if test='null != area'>
+                #{area}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_proj_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.gragh.model.AttProjBase">
+        UPDATE att_proj_base
+        <set>
+            <if test='null != projCode'>proj_code = #{projCode},</if>
+            <if test='null != projName'>proj_name = #{projName},</if>
+            <if test='null != posit'>posit = #{posit},</if>
+            <if test='null != conUnit'>con_unit = #{conUnit},</if>
+            <if test='null != year'>year = #{year},</if>
+            <if test='null != appNum'>app_num = #{appNum},</if>
+            <if test='null != projType'>proj_type = #{projType},</if>
+            <if test='null != planFund'>plan_fund = #{planFund},</if>
+            <if test='null != compFund'>comp_fund = #{compFund},</if>
+            <if test='null != projLegPers'>proj_leg_pers = #{projLegPers},</if>
+            <if test='null != status'>status = #{status},</if>
+            <if test='null != projBrin'>proj_brin = #{projBrin},</if>
+            <if test='null != projSetDate'>proj_set_date = #{projSetDate},</if>
+            <if test='null != projCompDate'>proj_comp_date = #{projCompDate},</if>
+            <if test='null != accDate'>acc_date = #{accDate},</if>
+            <if test='null != note'>note = #{note},</if>
+            <if test='null != effDate'>eff_date = #{effDate},</if>
+            <if test='null != exprDate'>expr_date = #{exprDate},</if>
+            <if test='null != longitude'>longitude = #{longitude},</if>
+            <if test='null != latitude'>latitude = #{latitude},</if>
+            <if test='null != basinCode'>basin_code = #{basinCode},</if>
+            <if test='null != areaCode'>area_code = #{areaCode}</if>
+            <if test='null != fileIds'>file_ids = #{fileIds}</if>
+            <if test='null != area'>area = #{area}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_proj_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_proj_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_proj_base
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_proj_base
+        <where>
+            <if test="projCode != null and projCode != ''">
+                and proj_code = #{projCode}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                and proj_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="basinCode != null and basinCode != ''">
+                and basin_code = #{basinCode}
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                and area_code = #{areaCode}
+            </if>
+            <if test="projectType != null and projectType != ''">
+                and FIND_IN_SET(#{projectType},proj_type)
+            </if>
+        </where>
+    </select>
+
+    <select id="selectReservoirs" resultType="com.ygkj.gragh.model.AttResBase">
+        SELECT
+        res_code,res_name,eng_scal,mei_flood_limit_water_level,yphoon_flood_llimit_water_level,norm_wat_lev,upp_lev_flco,main_stcd
+        FROM att_res_base
+        <where>
+            <if test="true">
+                AND del_flag = 0
+            </if>
+            <if test="engScal!=null and engScal!=''">
+                AND FIND_IN_SET(eng_scal,#{engScal})
+            </if>
+            <if test="resCodes!=null and resCodes!=''">
+                AND FIND_IN_SET(res_code,#{resCodes})
+            </if>
+            <if test="mainStcds!=null and mainStcds!=''">
+                AND FIND_IN_SET(main_stcd,#{mainStcds})
+            </if>
+        </where>
+    </select>
+
+</mapper>

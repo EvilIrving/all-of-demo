@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.CommonCountMapper">
+
+    <select id="CommonCountByColumn" resultType="java.util.Map">
+        SELECT COUNT(1) AS num,${column} FROM ${table}
+        WHERE del_flag = 0
+        <foreach item="value" index="key" collection="map.entrySet()">
+            AND ${key} = #{value}
+        </foreach>
+        GROUP BY ${column}
+    </select>
+
+</mapper>

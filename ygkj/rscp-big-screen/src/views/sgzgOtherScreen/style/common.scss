@@ -1,0 +1,453 @@
+@mixin map {
+  position: absolute;
+  top: 108px;
+  left: 488px;
+  right: 488px;
+  height: calc(100% - 108px);
+}
+
+@mixin header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 108px;
+  text-align: center;
+  z-index: 9;
+  background: url($imageUrl + "skzg_title.png") no-repeat center;
+}
+
+@mixin title {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 60px;
+  font-family: "youshe";
+  color: #FFFFFF;
+  letter-spacing: 3px;
+}
+
+@mixin time {
+  position: absolute;
+  top: 16px;
+  left: 24px;
+  height: 33px;
+  font-size: 24px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: 33px;
+}
+
+@mixin user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  box-sizing: border-box;
+  width: 124px;
+  height: 36px;
+  background: #204CC0;
+  border-radius: 18px;
+  border: 2px solid #5A89F1;
+
+  span {
+    font-size: 20px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+  }
+
+  img {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+  }
+}
+
+@mixin TF {
+  position: absolute;
+  cursor: pointer;
+  left: 503px;
+  top: 148px;
+  width: 58px;
+  height: 56px;
+}
+
+@mixin drawerLayout {
+  box-sizing: border-box;
+  width: 488px;
+  height: calc(100% - 108px);
+  margin-top: 108px;
+  background: rgba(4, 49, 160, 0.7);
+  border: none;
+  box-shadow: none;
+}
+
+@mixin drawerLeft {
+  padding: 17px 16px 0 32px;
+
+}
+
+@mixin drawerRight {
+  padding: 17px 32px 0 16px;
+}
+
+@mixin chartTitle {
+  display: flex;
+  height: 31px;
+  line-height: 22px;
+  text-align: left;
+  color: #ffffff;
+  font-size: 30px;
+  font-family: "youshe";
+  padding: 0 0 0 37px;
+  background: url($imageUrl + "second_title.png") no-repeat bottom;
+  margin-bottom: 12px;
+}
+
+@mixin chartClean {
+  position: static;
+  width: 66px;
+  height: 27px;
+  border-radius: 14px;
+  background-color: #45ffff;
+  color: #0431a0;
+  font-size: 20px;
+  font-family: "youshe";
+  line-height: 27px;
+  text-align: center;
+  margin-left: 16px;
+  cursor: pointer;
+}
+
+@mixin chartExport {
+  position: static;
+  // width: 66px;
+  padding: 0 8px;
+  height: 23px;
+  border-radius: 14px;
+  background-color: transparent;
+  border: 2px solid #46FDFF;
+  color: #46FDFF;
+  font-size: 20px;
+  font-family: "youshe";
+  line-height: 23px;
+  text-align: center;
+  margin-left: 16px;
+  cursor: pointer;
+}
+
+@mixin basinList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+@mixin basinItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  width: 194px;
+  height: 40px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-right: 16px;
+  margin-bottom: 12px;
+  background-image: url($swImgUrl + 'basin-item-bgi.png');
+  cursor: pointer;
+}
+
+@mixin basinItemLeft {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(230, 247, 255, 0.8);
+
+  img {
+    margin-right: 8px;
+    width: 29px;
+    height: 28px;
+  }
+}
+
+@mixin basinItemRight {
+  font-size: 24px;
+  font-family: "youshe";
+  color: #FFFFFF;
+}
+
+@mixin basinItemActive {
+  background-image: url($swImgUrl + 'basin-item-bgi-active.png');
+}
+
+@mixin basinItemLeftActive {
+  font-weight: 500;
+  font-size: 18px;
+  color: #46FDFF;
+}
+
+@mixin basinItemRightActive {
+  color: #46FDFF;
+}
+
+@mixin statusList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: space-around;
+  height: 261px;
+  padding-bottom: 12px;
+}
+
+@mixin statusItem {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  cursor: pointer;
+
+  img {
+    width: 120px;
+    height: 98px;
+  }
+}
+
+@mixin statusRight {
+  p {
+    font-weight: 400;
+    font-size: 20px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    color: rgba(230, 247, 255, 0.8);
+    line-height: 28px;
+  }
+
+  span {
+    font-size: 28px;
+    font-family: "youshe";
+    color: #ffffff;
+    line-height: 36px;
+
+    i {
+      font-size: 16px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #ffffff;
+      line-height: 22px;
+      margin-left: 5px;
+    }
+  }
+}
+
+@mixin statusItemActive {
+  color: rgba(25, 59, 196, 0.15);
+}
+
+@mixin rightSelect {
+  position: absolute;
+  top: 40px;
+  left: auto;
+  right: 100%;
+  transform: translateX(-15px);
+  width: 133px;
+  background: #0431A0;
+  border: 1px solid #00CFFF;
+}
+
+@mixin rightSelectTitle {
+  height: 24px;
+  font-size: 20px;
+  font-family: YouShe;
+  color: #46FDFF;
+  line-height: 24px;
+  display: flex;
+  flex-direction: row;
+  padding: 8px 0;
+  background-image: none;
+  margin-left: 5px;
+
+  img {
+    width: 16px;
+    height: 16px;
+    margin-top: 4px;
+    margin-right: 8px;
+
+  }
+}
+
+@mixin rightSelectItem {
+  height: 56px;
+  margin-bottom: 7px;
+  padding-top: 2px;
+
+  p {
+    font-family: PingFangSC-Medium, PingFang SC;
+    //font-weight: 500;
+    color: #FFFFFF;
+    font-size: 16px;
+    height: 22px;
+    line-height: 22px;
+    margin-bottom: 1px;
+  }
+
+  span {
+    font-size: 28px !important;
+    font-family: YouShe !important;
+    color: #FFFFFF !important;
+
+    i {
+      font-size: 16px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #FFFFFF;
+    }
+  }
+}
+
+@mixin rightSelectOpen {
+  position: absolute;
+  top: 40px;
+  left: auto;
+  right: 100%;
+  transform: translateX(-15px);
+  cursor: pointer;
+}
+
+@mixin rightSelectClose {
+  font-size: 16px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  padding: 8px 32px;
+  margin: 8px 8px;
+  border-top: 1px rgba(0, 207, 255, 0.5) solid;
+  background-color: transparent;
+  cursor: pointer;
+
+  img {
+    width: 13px;
+    height: 12px;
+  }
+}
+
+@mixin rightSelectActive {
+  background: rgba(0, 56, 160, 0.8);
+  box-shadow: inset 0px 0px 16px 0px rgba(46, 228, 255, 0.8);
+  border: 1px solid #448EF7;
+
+  p {
+    color: #ffffff;
+  }
+}
+
+@mixin changeElTable {
+  ::v-deep .el-table {
+    background-color: transparent;
+
+    &::before {
+      background-color: #0051B5;
+    }
+
+    .el-table__header-wrapper {
+      .el-table__header {
+        .has-gutter {
+          tr {
+            background-color: #0431A0;
+
+            th {
+              background-color: #0431A0;
+              border-top: 1px solid #0051B5;
+              border-bottom: 1px solid #0051B5;
+
+              &:first-child {
+                border-left: 1px solid #0051B5;
+              }
+
+              &:last-child {
+                border-right: 1px solid #0051B5;
+              }
+
+              .cell {
+                font-size: 16px;
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                color: #46FDFF;
+              }
+            }
+          }
+        }
+
+        .is-group {
+          tr:not(:first-child) {
+            th {
+              border-left: none;
+              border-top: none;
+            }
+          }
+        }
+      }
+    }
+
+    .el-table__body-wrapper {
+      .el-table__body {
+        tbody {
+          tr {
+            background-color: transparent;
+
+            td {
+              background-color: transparent;
+              border-bottom: 1px solid rgba(51, 144, 225, 0.44);
+
+              .cell {
+                font-size: 16px;
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                color: #FFFFFF;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  ::v-deep .el-table--border,
+  .el-table--group {
+    border: none;
+
+    &::after {
+      background-color: transparent;
+    }
+  }
+}
+
+@mixin changeELSelect {
+  ::v-deep .el-radio {
+    color: #ffffff;
+
+    .el-radio__input.is-checked .el-radio__inner {
+      border-color: #46FDFF;
+      background: transparent;
+    }
+
+    .el-radio__input.is-checked+.el-radio__label {
+      color: #46FDFF;
+    }
+
+    .el-radio__inner {
+      background-color: transparent;
+      border: 1px solid #ffffff;
+    }
+
+    .el-radio__inner::after {
+      width: 8px;
+      height: 8px;
+      background-color: #46FDFF;
+    }
+  }
+}

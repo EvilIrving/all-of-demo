@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttBlueProjectMapper">
+
+
+    <resultMap id="result" type="com.ygkj.river.vo.response.AttBlueProjectResVo">
+        <result column="id" property="id"/>
+        <result column="project_name" property="projectName"/>
+        <result column="project_code" property="projectCode"/>
+        <result column="year" property="year"/>
+        <result column="adcd" property="adcd"/>
+        <result column="river_name" property="riverName"/>
+        <result column="river_id" property="riverId"/>
+        <result column="address" property="address"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
+        <result column="unit_name" property="unitName"/>
+        <result column="legal_represent" property="legalRepresent"/>
+        <result column="phone" property="phone"/>
+        <result column="involved_water_name" property="involvedWaterName"/>
+        <result column="occupy_water_time" property="occupyWaterTime"/>
+        <result column="occupy_water_area" property="occupyWaterArea"/>
+        <result column="is_narrow" property="isNarrow"/>
+        <result column="is_affect_safety" property="isAffectSafety"/>
+        <result column="remark" property="remark"/>
+        <result column="file_ids" property="fileIds"/>
+        <result column="project_stage" property="projectStage"/>
+        <result column="regulatory_status" property="regulatoryStatus"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="river_level" property="riverLevel"/>
+        <result column="basin" property="basin"/>
+        <result column="del_flag" property="delFlag"/>
+        <collection property="inspectionNum" fetchType="lazy" column="id"
+                    select="com.ygkj.river.mapper.AttBlueInspectionMapper.countNumByProjectId"/>
+        <collection property="unRectifyProblemNum" fetchType="lazy" column="id"
+                    select="com.ygkj.river.mapper.AttBlueInspectionProblemMapper.countTotalProblemNum"/>
+        <collection property="lastInspectionTime" fetchType="lazy" column="id"
+                    select="com.ygkj.river.mapper.AttBlueInspectionMapper.getLastTime"/>
+    </resultMap>
+
+
+    <select id="selectByCondition" resultMap="result">
+        select tbl.*,tb2.river_level,tb2.basin from att_blue_project tbl LEFT JOIN att_river_base tb2 ON tbl.river_id =
+        tb2.id
+        <where>
+            tbl.del_flag = 0
+            <if test="areaCode != null and areaCode !=''">
+                and tbl.adcd = #{areaCode}
+            </if>
+            <if test="projectStage !=null and projectStage !='' ">
+                and tbl.project_stage =#{projectStage}
+            </if>
+            <if test="regulatoryStatus !=null and regulatoryStatus !=''">
+                and tbl.regulatory_status = #{regulatoryStatus}
+            </if>
+            <if test="key !=null and key!=''">
+                and tbl.project_name like concat('%',#{key},'%')
+            </if>
+            <if test="riverLevel !=null and riverLevel!=''">
+                and tb2.river_level = #{riverLevel}
+            </if>
+            <if test="basin !=null and basin!=''">
+                and tb2.basin = #{basin}
+            </if>
+        </where>
+        order by tbl.update_time desc
+    </select>
+
+    <select id="projectStatisByBasin" resultType="cn.hutool.json.JSONObject">
+        SELECT tb2.basin,COUNT(1) num FROM `att_blue_project` tbl LEFT JOIN att_river_base tb2 ON tbl.river_id = tb2.id
+        WHERE tbl.del_flag = 0 AND tbl.river_id is NOT NULL GROUP BY tb2.basin
+    </select>
+
+    <select id="projectStatisByRiverLevel" resultType="cn.hutool.json.JSONObject">
+        SELECT tb2.river_level riverLevel,COUNT(1) num FROM `att_blue_project` tbl LEFT JOIN att_river_base tb2 ON
+        tbl.river_id = tb2.id
+        WHERE tbl.del_flag = 0 AND tb2.river_level is NOT NULL GROUP BY tb2.river_level
+    </select>
+
+    <select id="projectStatisByAdcd" resultType="cn.hutool.json.JSONObject">
+        SELECT tb2.adnm,COUNT(1) num FROM `att_blue_project` tbl LEFT JOIN att_adcd_base tb2 ON tbl.adcd = tb2.adcd
+        WHERE tbl.del_flag = 0 AND tb2.adcd is NOT NULL GROUP BY tb2.adcd
+    </select>
+
+    <select id="projectStatisByProjectStage" resultType="cn.hutool.json.JSONObject">
+        SELECT( CASE tbl.project_stage WHEN 1 THEN '前期阶段' WHEN 2 THEN '施工阶段' WHEN 3 THEN '完工阶段' else '' end )
+        projectStage,COUNT( 1 ) num FROM `att_blue_project` tbl WHERE tbl.del_flag = 0 AND tbl.project_stage IS NOT NULL
+        GROUP BY tbl.project_stage
+    </select>
+
+    <select id="findById" resultType="com.ygkj.river.model.AttBlueProject">
+        select tbl.* from att_blue_project tbl where tbl.del_flag = 0 and tbl.id = #{id}
+    </select>
+
+    <select id="selectRiverIdOfWaterAreaOccupyFillNotBalance" resultType="string">
+        select distinct river_id
+        from att_blue_project
+        <where>
+            <if test="true">
+                and CONVERT(`occupy_water_area`,DECIMAL) >CONVERT(`fille_area`,DECIMAL)
+            </if>
+            <if test="true">
+                and river_id is not null
+            </if>
+            <if test="riverId!=null and riverId!=''">
+                and river_id =#{riverId}
+            </if>
+        </where>
+    </select>
+</mapper>

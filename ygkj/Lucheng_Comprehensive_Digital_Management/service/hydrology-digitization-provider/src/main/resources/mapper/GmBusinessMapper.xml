@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.GmBusinessMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.GmBusiness" >
+        <result column="id" property="id" />
+        <result column="task_name" property="taskName" />
+        <result column="exe_dept_id" property="exeDeptId" />
+        <result column="exe_dept_name" property="exeDeptName" />
+        <result column="exe_user_id" property="exeUserId" />
+        <result column="exe_user_name" property="exeUserName" />
+        <result column="exe_start_time" property="exeStartTime" />
+        <result column="exe_end_time" property="exeEndTime" />
+        <result column="task_state" property="taskState" />
+        <result column="finish_time" property="finishTime" />
+        <result column="adcd" property="adcd" />
+        <result column="adnm" property="adnm" />
+        <result column="create_time" property="createTime" />
+        <result column="create_id" property="createId" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_id" property="updateId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="dept_id" property="deptId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                task_name,
+                exe_dept_id,
+                exe_dept_name,
+                exe_user_id,
+                exe_user_name,
+                exe_start_time,
+                exe_end_time,
+                task_state,
+                finish_time,
+                adcd,
+                adnm,
+                create_time,
+                create_id,
+                update_time,
+                update_id,
+                del_flag,
+                dept_id,
+                category,
+                progress,
+                completion,
+                resp_person
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.GmBusiness">
+        INSERT INTO gm_business
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != taskName'>
+                task_name,
+            </if>
+            <if test ='null != exeDeptId'>
+                exe_dept_id,
+            </if>
+            <if test ='null != exeDeptName'>
+                exe_dept_name,
+            </if>
+            <if test ='null != exeUserId'>
+                exe_user_id,
+            </if>
+            <if test ='null != exeUserName'>
+                exe_user_name,
+            </if>
+            <if test ='null != exeStartTime'>
+                exe_start_time,
+            </if>
+            <if test ='null != exeEndTime'>
+                exe_end_time,
+            </if>
+            <if test ='null != taskState'>
+                task_state,
+            </if>
+            <if test ='null != finishTime'>
+                finish_time,
+            </if>
+            <if test ='null != adcd'>
+                adcd,
+            </if>
+            <if test ='null != adnm'>
+                adnm,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != createId'>
+                create_id,
+            </if>
+            <if test ='null != updateTime'>
+                update_time,
+            </if>
+            <if test ='null != updateId'>
+                update_id,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != deptId'>
+                dept_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != taskName'>
+                #{taskName},
+            </if>
+            <if test ='null != exeDeptId'>
+                #{exeDeptId},
+            </if>
+            <if test ='null != exeDeptName'>
+                #{exeDeptName},
+            </if>
+            <if test ='null != exeUserId'>
+                #{exeUserId},
+            </if>
+            <if test ='null != exeUserName'>
+                #{exeUserName},
+            </if>
+            <if test ='null != exeStartTime'>
+                #{exeStartTime},
+            </if>
+            <if test ='null != exeEndTime'>
+                #{exeEndTime},
+            </if>
+            <if test ='null != taskState'>
+                #{taskState},
+            </if>
+            <if test ='null != finishTime'>
+                #{finishTime},
+            </if>
+            <if test ='null != adcd'>
+                #{adcd},
+            </if>
+            <if test ='null != adnm'>
+                #{adnm},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != createId'>
+                #{createId},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test ='null != updateId'>
+                #{updateId},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != deptId'>
+                #{deptId}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM gm_business
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.GmBusiness">
+        UPDATE gm_business
+        <set>
+            <if test ='null != taskName'>task_name = #{taskName},</if>
+            <if test ='null != exeDeptId'>exe_dept_id = #{exeDeptId},</if>
+            <if test ='null != exeDeptName'>exe_dept_name = #{exeDeptName},</if>
+            <if test ='null != exeUserId'>exe_user_id = #{exeUserId},</if>
+            <if test ='null != exeUserName'>exe_user_name = #{exeUserName},</if>
+            <if test ='null != exeStartTime'>exe_start_time = #{exeStartTime},</if>
+            <if test ='null != exeEndTime'>exe_end_time = #{exeEndTime},</if>
+            <if test ='null != taskState'>task_state = #{taskState},</if>
+            <if test ='null != finishTime'>finish_time = #{finishTime},</if>
+            <if test ='null != adcd'>adcd = #{adcd},</if>
+            <if test ='null != adnm'>adnm = #{adnm},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != createId'>create_id = #{createId},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime},</if>
+            <if test ='null != updateId'>update_id = #{updateId},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != category'>category = #{category},</if>
+            <if test ='null != progress'>progress = #{progress},</if>
+            <if test ='null != completion'>completion = #{completion},</if>
+            <if test ='null != respPerson'>resp_person = #{respPerson},</if>
+            <if test ='null != deptId'>dept_id = #{deptId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM gm_business
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM gm_business
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM gm_business
+    </select>
+
+    <select id="selectByAdcdTaskNameExetime" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM gm_business
+        where del_flag=0
+        <if test="adcd!=null and adcd!=''">
+            and adcd=#{adcd}
+        </if>
+        <if test="taskName!=null and taskName!=''">
+            and task_name like concat('%',concat(#{taskName},'%'))
+        </if>
+        <if test="etStart!=null and etEnd!=null">
+            and exe_start_time &gt;=#{etStart} and exe_end_time &lt;=#{etEnd}
+        </if>
+        <if test="taskStateList!=null and taskStateList.size!=0">
+            and task_state in
+            <foreach collection="taskStateList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <update id="virtualDeleteById">
+        update gm_business set del_flag=1 WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM gm_business
+        where del_flag=0 and id=#{id}
+    </select>
+
+    <update id="updateTaskStateFromState">
+        update gm_business
+        set task_state=#{newState}
+        WHERE del_flag=0 AND task_state=#{oldState}
+        <if test="id!=null and id!=''">
+           and id=#{id}
+        </if>
+    </update>
+
+    <insert id="insertMany" >
+        INSERT INTO gm_business
+        (<include refid="Base_Column_List" />)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},
+                #{item.taskName},
+                #{item.exeDeptId},
+                #{item.exeDeptName},
+                #{item.exeUserId},
+                #{item.exeUserName},
+                #{item.exeStartTime},
+                #{item.exeEndTime},
+                #{item.taskState},
+                #{item.finishTime},
+                #{item.adcd},
+                #{item.adnm},
+                #{item.createTime},
+                #{item.createId},
+                #{item.updateTime},
+                #{item.updateId},
+                #{item.delFlag},
+                #{item.deptId},
+                #{busMan.category},
+                #{busMan.progress},
+                #{busMan.completion},
+                #{busMan.respPerson}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insertOne" >
+        INSERT INTO gm_business
+        (<include refid="Base_Column_List" />)
+        values
+            (#{busMan.id},
+            #{busMan.taskName},
+            #{busMan.exeDeptId},
+            #{busMan.exeDeptName},
+            #{busMan.exeUserId},
+            #{busMan.exeUserName},
+            #{busMan.exeStartTime},
+            #{busMan.exeEndTime},
+            #{busMan.taskState},
+            #{busMan.finishTime},
+            #{busMan.adcd},
+            #{busMan.adnm},
+            #{busMan.createTime},
+            #{busMan.createId},
+            #{busMan.updateTime},
+            #{busMan.updateId},
+            #{busMan.delFlag},
+            #{busMan.deptId},
+            #{busMan.category},
+            #{busMan.progress},
+            #{busMan.completion},
+            #{busMan.respPerson}
+        )
+    </insert>
+
+</mapper>

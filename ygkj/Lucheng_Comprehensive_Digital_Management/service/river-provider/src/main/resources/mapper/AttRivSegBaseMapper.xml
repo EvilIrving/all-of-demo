@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttRivSegBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttRivSegBase">
+        <result column="id" property="id"/>
+        <result column="river_no" property="riverNo"/>
+        <result column="river_name" property="riverName"/>
+        <result column="level" property="level"/>
+        <result column="area_level" property="areaLevel"/>
+        <result column="start_name" property="startName"/>
+        <result column="end_name" property="endName"/>
+        <result column="length" property="length"/>
+        <result column="path_str" property="pathStr"/>
+        <result column="watershed_name" property="watershedName"/>
+        <result column="start_location" property="startLocation"/>
+        <result column="end_location" property="endLocation"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="area_name" property="areaName"/>
+        <result column="none_four_chaos" property="noneFourChaos"/>
+        <result column="none_illegal_river_create" property="noneIllegalRiverCreate"/>
+        <result column="shoreline_occupy_balance" property="shorelineOccupyBalance"/>
+        <result column="river_proj_tallied" property="riverProjTallied"/>
+        <result column="public_satisfy" property="publicSatisfy"/>
+        <result column="health_state" property="healthState"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        river_no,
+        river_name,
+        level,
+        area_level,
+        start_name,
+        end_name,
+        length,
+        path_str,
+        watershed_name,
+        start_location,
+        end_location,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag,
+        area_code,
+        area_name,
+        none_four_chaos,
+        none_illegal_river_create,
+        shoreline_occupy_balance,
+        river_proj_tallied,
+        public_satisfy,
+        health_state
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.AttRivSegBase">
+        INSERT INTO att_riv_seg_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != riverNo'>
+                river_no,
+            </if>
+            <if test='null != riverName'>
+                river_name,
+            </if>
+            <if test='null != level'>
+                level,
+            </if>
+            <if test='null != areaLevel'>
+                area_level,
+            </if>
+            <if test='null != startName'>
+                start_name,
+            </if>
+            <if test='null != endName'>
+                end_name,
+            </if>
+            <if test='null != length'>
+                length,
+            </if>
+            <if test='null != pathStr'>
+                path_str,
+            </if>
+            <if test='null != watershedName'>
+                watershed_name,
+            </if>
+            <if test='null != startLocation'>
+                start_location,
+            </if>
+            <if test='null != endLocation'>
+                end_location,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag,
+            </if>
+            <if test='null != areaCode'>
+                area_code,
+            </if>
+            <if test='null != areaName'>
+                area_name,
+            </if>
+            <if test='null != noneFourChaos'>
+                none_four_chaos,
+            </if>
+            <if test='null != noneIllegalRiverCreate'>
+                none_illegal_river_create,
+            </if>
+            <if test='null != shorelineOccupyBalance'>
+                shoreline_occupy_balance,
+            </if>
+            <if test='null != riverProjTallied'>
+                river_proj_tallied,
+            </if>
+            <if test='null != publicSatisfy'>
+                public_satisfy,
+            </if>
+            <if test='null != healthState'>
+                health_state
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != riverNo'>
+                #{riverNo},
+            </if>
+            <if test='null != riverName'>
+                #{riverName},
+            </if>
+            <if test='null != level'>
+                #{level},
+            </if>
+            <if test='null != areaLevel'>
+                #{areaLevel},
+            </if>
+            <if test='null != startName'>
+                #{startName},
+            </if>
+            <if test='null != endName'>
+                #{endName},
+            </if>
+            <if test='null != length'>
+                #{length},
+            </if>
+            <if test='null != pathStr'>
+                #{pathStr},
+            </if>
+            <if test='null != watershedName'>
+                #{watershedName},
+            </if>
+            <if test='null != startLocation'>
+                #{startLocation},
+            </if>
+            <if test='null != endLocation'>
+                #{endLocation},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test='null != areaName'>
+                #{areaName},
+            </if>
+            <if test='null != noneFourChaos'>
+                #{noneFourChaos},
+            </if>
+            <if test='null != noneIllegalRiverCreate'>
+                #{noneIllegalRiverCreate},
+            </if>
+            <if test='null != shorelineOccupyBalance'>
+                #{shorelineOccupyBalance},
+            </if>
+            <if test='null != riverProjTallied'>
+                #{riverProjTallied},
+            </if>
+            <if test='null != publicSatisfy'>
+                #{publicSatisfy},
+            </if>
+            <if test='null != healthState'>
+                #{healthState}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_riv_seg_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.AttRivSegBase">
+        UPDATE att_riv_seg_base
+        <set>
+            <if test='null != riverNo'>river_no = #{riverNo},</if>
+            <if test='null != riverName'>river_name = #{riverName},</if>
+            <if test='null != level'>level = #{level},</if>
+            <if test='null != areaLevel'>area_level = #{areaLevel},</if>
+            <if test='null != startName'>start_name = #{startName},</if>
+            <if test='null != endName'>end_name = #{endName},</if>
+            <if test='null != length'>length = #{length},</if>
+            <if test='null != pathStr'>path_str = #{pathStr},</if>
+            <if test='null != watershedName'>watershed_name = #{watershedName},</if>
+            <if test='null != startLocation'>start_location = #{startLocation},</if>
+            <if test='null != endLocation'>end_location = #{endLocation},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test='null != areaCode'>area_code = #{areaCode},</if>
+            <if test='null != areaName'>area_name = #{areaName},</if>
+            <if test='null != noneFourChaos'>none_four_chaos = #{noneFourChaos},</if>
+            <if test='null != noneIllegalRiverCreate'>none_illegal_river_create = #{noneIllegalRiverCreate},</if>
+            <if test='null != shorelineOccupyBalance'>shoreline_occupy_balance = #{shorelineOccupyBalance},</if>
+            <if test='null != riverProjTallied'>river_proj_tallied = #{riverProjTallied},</if>
+            <if test='null != publicSatisfy'>public_satisfy = #{publicSatisfy},</if>
+            <if test='null != healthState'>health_state = #{healthState}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_seg_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_seg_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_riv_seg_base
+    </select>
+
+    <select id="selectByCondition" resultType="com.ygkj.river.vo.response.RiverBaseInfoResVo">
+        SELECT a.*
+        <if test="withPathStr">
+            ,b.river_path
+        </if>
+        FROM att_riv_seg_base as a
+        <if test="withPathStr">
+            left join att_riv_shape_base as b
+            on a.river_no=b.river_no and a.river_name=b.river_name
+        </if>
+        <where>
+            <if test="true">
+                and a.del_flag=0
+            </if>
+            <if test="riverName!=null and riverName!=''">
+                and a.river_name like concat('%',#{riverName},'%')
+            </if>
+            <if test="areaCode!=null and areaCode!=''">
+                and a.area_code =#{areaCode}
+            </if>
+            <if test="level!=null">
+                and a.`level` =#{level}
+            </if>
+            <if test="areaLevel!=null">
+                and a.area_level =#{areaLevel}
+            </if>
+            <if test="healthState!=null">
+                and a.health_state =#{healthState}
+            </if>
+        </where>
+    </select>
+
+    <select id="rivSegStaticByArea" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tb2.adnm,COUNT(1) num FROM `att_riv_seg_base` tbl LEFT JOIN att_adcd_base tb2 ON tbl.area_code = tb2.adcd
+        WHERE tbl.del_flag = 0 AND tbl.area_code IS NOT NULL GROUP BY tbl.area_code
+    </select>
+
+    <select id="rivSegStaticByAreaLevel" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT (CASE tbl.area_level WHEN 2 THEN '省级' WHEN 3 THEN '市级' WHEN 4 THEN '县级' WHEN 5 THEN '镇级' ELSE '村级' END )
+        areaLevel,
+        COUNT(1) num FROM `att_riv_seg_base` tbl WHERE tbl.del_flag = 0 GROUP BY tbl.area_level ORDER BY tbl.area_level
+        ASC
+    </select>
+
+    <select id="rivSegStaticByHealthState" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT (CASE tbl.health_state WHEN 1 THEN '绿码' WHEN 2 THEN '黄码' ELSE '红码' END) healthState,COUNT( 1 ) num
+        FROM `att_riv_seg_base` tbl WHERE tbl.del_flag = 0 GROUP BY health_state
+    </select>
+
+    <select id="rivSegCStatic" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT COUNT( 1 ) num,SUM(length) length FROM `att_riv_seg_base` tbl WHERE tbl.del_flag = 0
+    </select>
+
+    <select id="rivSegStaticLengthByArea" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tb2.adnm,sum(tbl.length) num FROM `att_riv_seg_base` tbl LEFT JOIN att_adcd_base tb2 ON tbl.area_code =
+        tb2.adcd
+        WHERE tbl.del_flag = 0 AND tbl.area_code IS NOT NULL GROUP BY tbl.area_code
+    </select>
+
+    <select id="rivSegStaticLengthByAreaLevel" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT (CASE tbl.area_level WHEN 2 THEN '省级' WHEN 3 THEN '市级' WHEN 4 THEN '县级' WHEN 5 THEN '镇级' ELSE '村级' END )
+        areaLevel,
+        sum(tbl.length) num FROM `att_riv_seg_base` tbl WHERE tbl.del_flag = 0 GROUP BY tbl.area_level ORDER BY
+        tbl.area_level ASC
+    </select>
+
+</mapper>

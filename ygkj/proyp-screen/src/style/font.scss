@@ -1,0 +1,94 @@
+@font-face {
+  font-family: 'douyufont';
+  src: url('../assets/fonts/douyuFont-2.otf');
+}
+
+@font-face {
+  font-family: 'youshebiaotihei';
+  src: url('../assets/fonts/YouSheBiaoTiHei-2.ttf');
+}
+
+@font-face {
+  font-family: 'youshebiaotiyuan';
+  src: url('../assets/fonts/YouSheBiaoTiYuan-2.otf');
+}
+
+@font-face {
+  font-family: 'digitalnarrow';
+  src: url('../assets/fonts/Digital-tube-word.ttf');
+}
+
+@font-face {
+  font-family: 'digitalwide';
+  src: url('../assets/fonts/液晶数字体.TTF');
+}
+
+@font-face {
+  font-family: 'dinalternate';
+  src: url('../assets/fonts/DINAlternate.ttf');
+}
+
+@font-face {
+  font-family: 'agencyb';
+  src: url('../assets/fonts/AGENCYB.TTF');
+}
+
+@font-face {
+  font-family: 'agencyr';
+  src: url('../assets/fonts/AGENCYB.TTF');
+}
+
+@font-face {
+  font-family: 'digiface';
+  src: url('../assets/fonts/DIGIFACE.TTF');
+}
+
+@font-face {
+  font-family: 'fzzyjw';
+  src: url('../assets/fonts/FZZYJW.TTF');
+}
+
+@font-face {
+  font-family: 'icomoon';
+  src: url('../assets/fonts/icomoon.eot?as82yn');
+  src: url('../assets/fonts/icomoon.eot?as82yn#iefix') format('embedded-opentype'),
+    url('../assets/fonts/icomoon.ttf?as82yn') format('truetype'),
+    url('../assets/fonts/icomoon.woff?as82yn') format('woff'),
+    url('../assets/fonts/icomoon.svg?as82yn#icomoon') format('svg');
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-content-btn-xiala2:before {
+  content: "\e900";
+}
+
+.icon-content-cion-huitui:before {
+  content: "\e901";
+}
+
+.icon-content-ibtn-xiala:before {
+  content: "\e902";
+}
+
+.icon-content-icon-dingwei:before {
+  content: "\e903";
+}
+
+.icon-content-icon-haitangdengji:before {
+  content: "\e904";
+}

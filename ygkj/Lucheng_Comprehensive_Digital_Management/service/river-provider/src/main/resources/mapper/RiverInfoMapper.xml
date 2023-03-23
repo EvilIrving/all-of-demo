@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.RiverInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.vo.response.RiverInfoResVo">
+        <result column="id" property="id"/>
+        <result column="river_name" property="name"/>
+        <result column="river_type" property="riverType"/>
+        <result column="river_level" property="riverGrade"/>
+        <result column="basin" property="basin"/>
+        <result column="river_length" property="riverLength"/>
+        <result column="resource_location" property="resourceLocation"/>
+        <result column="estuary_location" property="estuaryLocation"/>
+        <result column="river_manager_grade" property="riverManagerGrade"/>
+        <result column="river_manager_name" property="riverManagerName"/>
+        <result column="river_manager_phone" property="riverManagerPhone"/>
+        <result column="river_manager_job" property="riverManagerJob"/>
+        <result column="department" property="department"/>
+        <result column="distrinct_adcd" property="distrinctAdcd"/>
+        <result column="policy" property="policy"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        river_name,
+        river_type,
+        river_level,
+        basin,
+        river_length,
+        resource_location,
+        estuary_location,
+        river_manager_grade,
+        river_manager_name,
+        river_manager_phone,
+        river_manager_job,
+        department,
+        distrinct_adcd,
+        policy
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.RiverInfo">
+        INSERT INTO att_river_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != name'>
+                river_name,
+            </if>
+            <if test='null != riverType'>
+                river_type,
+            </if>
+            <if test='null != riverGrade'>
+                river_level,
+            </if>
+            <if test='null != basin'>
+                basin,
+            </if>
+            <if test='null != riverLength'>
+                river_length,
+            </if>
+            <if test='null != resourceLocation'>
+                resource_location,
+            </if>
+            <if test='null != estuaryLocation'>
+                estuary_location,
+            </if>
+            <if test='null != riverManagerGrade'>
+                river_manager_grade,
+            </if>
+            <if test='null != riverManagerName'>
+                river_manager_name,
+            </if>
+            <if test='null != riverManagerPhone'>
+                river_manager_phone,
+            </if>
+            <if test='null != riverManagerJob'>
+                river_manager_job,
+            </if>
+            <if test='null != department'>
+                department,
+            </if>
+            <if test='null != distrinctAdcd'>
+                distrinct_adcd,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != name'>
+                #{name},
+            </if>
+            <if test='null != riverType'>
+                #{riverType},
+            </if>
+            <if test='null != riverGrade'>
+                #{riverGrade},
+            </if>
+            <if test='null != basin'>
+                #{basin},
+            </if>
+            <if test='null != riverLength'>
+                #{riverLength},
+            </if>
+            <if test='null != resourceLocation'>
+                #{resourceLocation},
+            </if>
+            <if test='null != estuaryLocation'>
+                #{estuaryLocation},
+            </if>
+            <if test='null != riverManagerGrade'>
+                #{riverManagerGrade},
+            </if>
+            <if test='null != riverManagerName'>
+                #{riverManagerName},
+            </if>
+            <if test='null != riverManagerPhone'>
+                #{riverManagerPhone},
+            </if>
+            <if test='null != riverManagerJob'>
+                #{riverManagerJob},
+            </if>
+            <if test='null != department'>
+                #{department},
+            </if>
+            <if test='null != distrinctAdcd'>
+                #{distrinctAdcd},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        UPDATE att_river_base SET del_flag = 1
+        WHERE FIND_IN_SET(id,#{ids})
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.RiverInfo">
+        UPDATE att_river_base
+        <set>
+            <if test='null != name'>river_name = #{name},</if>
+            <if test='null != riverType'>river_type = #{riverType},</if>
+            <if test='null != riverGrade'>river_level = #{riverGrade},</if>
+            <if test='null != basin'>basin = #{basin},</if>
+            <if test='null != riverLength'>river_length = #{riverLength},</if>
+            <if test='null != resourceLocation'>resource_location = #{resourceLocation},</if>
+            <if test='null != estuaryLocation'>estuary_location = #{estuaryLocation},</if>
+            <if test='null != riverManagerGrade'>river_manager_grade = #{riverManagerGrade},</if>
+            <if test='null != riverManagerName'>river_manager_name = #{riverManagerName},</if>
+            <if test='null != riverManagerPhone'>river_manager_phone = #{riverManagerPhone},</if>
+            <if test='null != riverManagerJob'>river_manager_job = #{riverManagerJob},</if>
+            <if test='null != department'>department = #{department},</if>
+            <if test='null != distrinctAdcd'>distrinct_adcd = #{distrinctAdcd},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_river_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_info
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM river_info
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_river_base
+        WHERE del_flag = 0
+        <if test="id != null and id != '' ">
+            AND id = #{id}
+        </if>
+        <if test="name != null and name != ''">
+            AND river_name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="riverGrade != null and riverGrade != '' ">
+            AND river_level = #{riverGrade}
+        </if>
+        <if test="riverType != null and riverType != '' ">
+            AND river_type = #{riverType}
+        </if>
+        <if test="policy != null and policy != '' ">
+            AND policy = #{policy}
+        </if>
+        <if test="basin != null and basin != '' ">
+            AND basin = #{basin}
+        </if>
+        <if test="areaCode !=null and areaCode !=''">
+            AND area_code = #{areaCode}
+        </if>
+    </select>
+
+    <select id="selectByRiverCodes" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_river_base
+        WHERE del_flag = 0 and FIND_IN_SET(id,#{ids})
+    </select>
+
+</mapper>

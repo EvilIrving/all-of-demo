@@ -1,0 +1,129 @@
+/*
+ * @Author: hanyu
+ * @LastEditTime: 2021-03-01 15:46:44
+ * @Description: 存放mixin函数、公共颜色变量
+ * @FilePath: /scwater_development/src/style/mixin.scss
+ */
+
+$color-red:#df3848; //红色
+$color-green:#00AD17; //绿色
+$color-origin:#F9823A; //橘色
+$color-light: #3d52da; 
+$color-light-hover: #3a8df6; //hover
+$color-lighter: #232b52; 
+$color-light-bg: #1D2243; //深蓝色背景
+$color-light-bg-hover: #f1f6fc; //浅蓝色背景hover
+$color-word-blackest: #000; //黑色文字
+$color-word-black: #333; //黑色文字
+$color-word-greyest: #666; //黑色文字
+$color-word-grey: #999; //灰色文字
+$color-bg: #f4f4f4; //网页整体背景色
+$color-bg-form: #FCFCFE; //网页整体背景色
+$color-border: #EBEBEB; //模块边框颜色
+$color-white: #fff; //模块背景色
+$color-shadow-white: #ddd; //浅色阴影
+$color-shadow-grey: #ccc; //深色阴影
+
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+  
+@mixin flex($values) {
+  -webkit-box-flex: $values;
+  -moz-box-flex:  $values;
+  -webkit-flex:  $values;
+  -ms-flex:  $values;
+  flex:  $values;
+}
+
+@mixin flexflow() {
+  -webkit-flex-flow: row wrap;
+  -moz-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+}
+
+@mixin flexJC() {
+  -webkit-box-pack: center;
+  -moz-justify-content: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+@mixin flexJSB() {
+  -webkit-box-pack: space-between;
+  -moz-justify-content: space-between;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+@mixin flexAC() {
+  -webkit-box-align: center;
+  -moz-align-items: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+  
+@mixin transform ($x) {
+  transform: $x;
+  -ms-transform: $x;
+  -moz-transform: $x;
+  -webkit-transform: $x;
+  -o-transform: $x;
+}
+
+// transition动画
+@mixin transition ($x, $y, $timing, $x2, $y2, $timing2) {
+  transition: $x $y $timing, $x2 $y2 $timing2;
+  -ms-transition: $x $y $timing, $x2 $y2 $timing2;
+  -moz-transition: $x $y $timing, $x2 $y2 $timing2;
+  -webkit-transition: $x $y $timing, $x2 $y2 $timing2;
+  -o-transition: $x $y $timing, $x2 $y2 $timing2;
+}
+
+// 四周阴影边框
+@mixin shadow ($color, $a, $b, $c) {
+  box-shadow: $color $a $b $c;
+  -webkit-box-shadow: $color $a $b $c; 
+  -moz-box-shadow: $color $a $b $c; 
+  -ms-box-shadow: $color $a $b $c; 
+  -o-shadow: $color $a $b $c; 
+}
+
+// 白底阴影边框的内容容器
+@mixin contentBox(){
+  background: #fff;
+  @include shadow($color-shadow-white, 0px, 0px, 3px);
+}
+
+// 已知盒子高度垂直水平居中 父元素需设置position: relative;
+@mixin positionCenter($width, $height){
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: - $width / 2;
+  margin-top: - $height / 2;
+}
+
+//禁用文字选中
+@mixin noSelect(){
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+  not supported by any browser */
+}
+
+//禁用文字选中
+@mixin transform($transform){
+  transform: $transform;
+  -ms-transform: $transform;
+  -moz-transform: $transform;
+  -webkit-transform: $transform;
+  -o-transform: $transform;
+}

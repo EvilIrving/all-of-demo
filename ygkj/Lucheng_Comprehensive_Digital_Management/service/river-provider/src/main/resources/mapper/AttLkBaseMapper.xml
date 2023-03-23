@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttLkBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttLkBase">
+        <result column="lk_code" property="lkCode"/>
+        <result column="lk_name" property="lkName"/>
+        <result column="low_left_long" property="lowLeftLong"/>
+        <result column="low_left_lat" property="lowLeftLat"/>
+        <result column="up_right_long" property="upRightLong"/>
+        <result column="up_right_lat" property="upRightLat"/>
+        <result column="cr_over_type" property="crOverType"/>
+        <result column="lk_loc" property="lkLoc"/>
+        <result column="wat_area" property="watArea"/>
+        <result column="mea_ann_lk_vol" property="meaAnnLkVol"/>
+        <result column="sal_fre_wat" property="salFreWat"/>
+        <result column="mea_ann_wat_dept" property="meaAnnWatDept"/>
+        <result column="max_dept" property="maxDept"/>
+        <result column="note" property="note"/>
+        <result column="eff_date" property="effDate"/>
+        <result column="expr_date" property="exprDate"/>
+        <result column="basin" property="basin"/>
+        <result column="river_manager_grade" property="riverManagerGrade"/>
+        <result column="river_manager_name" property="riverManagerName"/>
+        <result column="river_manager_phone" property="riverManagerPhone"/>
+        <result column="river_manager_job" property="riverManagerJob"/>
+        <result column="department" property="department"/>
+    </resultMap>
+
+    <resultMap id="voMap" type="com.ygkj.river.vo.response.LakeInfoResVo">
+        <result column="lk_code" property="lkCode"/>
+        <result column="lk_name" property="lkName"/>
+        <result column="wat_area" property="watArea"/>
+        <result column="low_left_long" property="lowLeftLong"/>
+        <result column="low_left_lat" property="lowLeftLat"/>
+        <result column="mea_ann_lk_vol" property="meaAnnLkVol"/>
+        <result column="mea_ann_wat_dept" property="meaAnnWatDept"/>
+        <result column="basin" property="basin"/>
+        <result column="river_manager_grade" property="riverManagerGrade"/>
+        <result column="river_manager_name" property="riverManagerName"/>
+        <result column="river_manager_phone" property="riverManagerPhone"/>
+        <result column="river_manager_job" property="riverManagerJob"/>
+        <result column="department" property="department"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        lk_code,
+        lk_name,
+        basin,
+        low_left_long,
+        low_left_lat,
+        mea_ann_lk_vol,
+        wat_area,
+        mea_ann_wat_dept,
+        river_manager_grade,
+        river_manager_name,
+        river_manager_phone,
+        river_manager_job,
+        department
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.AttLkBase">
+        INSERT INTO att_lk_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != lkCode'>
+                lk_code,
+            </if>
+            <if test='null != lkName'>
+                lk_name,
+            </if>
+            <if test='null != lowLeftLong'>
+                low_left_long,
+            </if>
+            <if test='null != lowLeftLat'>
+                low_left_lat,
+            </if>
+            <if test='null != upRightLong'>
+                up_right_long,
+            </if>
+            <if test='null != upRightLat'>
+                up_right_lat,
+            </if>
+            <if test='null != crOverType'>
+                cr_over_type,
+            </if>
+            <if test='null != lkLoc'>
+                lk_loc,
+            </if>
+            <if test='null != watArea'>
+                wat_area,
+            </if>
+            <if test='null != meaAnnLkVol'>
+                mea_ann_lk_vol,
+            </if>
+            <if test='null != salFreWat'>
+                sal_fre_wat,
+            </if>
+            <if test='null != meaAnnWatDept'>
+                mea_ann_wat_dept,
+            </if>
+            <if test='null != maxDept'>
+                max_dept,
+            </if>
+            <if test='null != note'>
+                note,
+            </if>
+            <if test='null != effDate'>
+                eff_date,
+            </if>
+            <if test='null != exprDate'>
+                expr_date,
+            </if>
+            <if test='null != basin'>
+                basin,
+            </if>
+            <if test='null != riverManagerGrade'>
+                river_manager_grade,
+            </if>
+            <if test='null != riverManagerName'>
+                river_manager_name,
+            </if>
+            <if test='null != riverManagerPhone'>
+                river_manager_phone,
+            </if>
+            <if test='null != riverManagerJob'>
+                river_manager_job,
+            </if>
+            <if test='null != department'>
+                department
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != lkCode'>
+                #{lkCode},
+            </if>
+            <if test='null != lkName'>
+                #{lkName},
+            </if>
+            <if test='null != lowLeftLong'>
+                #{lowLeftLong},
+            </if>
+            <if test='null != lowLeftLat'>
+                #{lowLeftLat},
+            </if>
+            <if test='null != upRightLong'>
+                #{upRightLong},
+            </if>
+            <if test='null != upRightLat'>
+                #{upRightLat},
+            </if>
+            <if test='null != crOverType'>
+                #{crOverType},
+            </if>
+            <if test='null != lkLoc'>
+                #{lkLoc},
+            </if>
+            <if test='null != watArea'>
+                #{watArea},
+            </if>
+            <if test='null != meaAnnLkVol'>
+                #{meaAnnLkVol},
+            </if>
+            <if test='null != salFreWat'>
+                #{salFreWat},
+            </if>
+            <if test='null != meaAnnWatDept'>
+                #{meaAnnWatDept},
+            </if>
+            <if test='null != maxDept'>
+                #{maxDept},
+            </if>
+            <if test='null != note'>
+                #{note},
+            </if>
+            <if test='null != effDate'>
+                #{effDate},
+            </if>
+            <if test='null != exprDate'>
+                #{exprDate},
+            </if>
+            <if test='null != basin'>
+                #{basin},
+            </if>
+            <if test='null != riverManagerGrade'>
+                #{riverManagerGrade},
+            </if>
+            <if test='null != riverManagerName'>
+                #{riverManagerName},
+            </if>
+            <if test='null != riverManagerPhone'>
+                #{riverManagerPhone},
+            </if>
+            <if test='null != riverManagerJob'>
+                #{riverManagerJob},
+            </if>
+            <if test='null != department'>
+                #{department}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_lk_base
+        WHERE FIND_IN_SET(lk_code,#{code})
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.AttLkBase">
+        UPDATE att_lk_base
+        <set>
+            <if test='null != lkCode'>lk_code = #{lkCode},</if>
+            <if test='null != lkName'>lk_name = #{lkName},</if>
+            <if test='null != lowLeftLong'>low_left_long = #{lowLeftLong},</if>
+            <if test='null != lowLeftLat'>low_left_lat = #{lowLeftLat},</if>
+            <if test='null != upRightLong'>up_right_long = #{upRightLong},</if>
+            <if test='null != upRightLat'>up_right_lat = #{upRightLat},</if>
+            <if test='null != crOverType'>cr_over_type = #{crOverType},</if>
+            <if test='null != lkLoc'>lk_loc = #{lkLoc},</if>
+            <if test='null != watArea'>wat_area = #{watArea},</if>
+            <if test='null != meaAnnLkVol'>mea_ann_lk_vol = #{meaAnnLkVol},</if>
+            <if test='null != salFreWat'>sal_fre_wat = #{salFreWat},</if>
+            <if test='null != meaAnnWatDept'>mea_ann_wat_dept = #{meaAnnWatDept},</if>
+            <if test='null != maxDept'>max_dept = #{maxDept},</if>
+            <if test='null != note'>note = #{note},</if>
+            <if test='null != effDate'>eff_date = #{effDate},</if>
+            <if test='null != exprDate'>expr_date = #{exprDate},</if>
+            <if test='null != basin'>basin = #{basin},</if>
+            <if test='null != riverManagerGrade'>river_manager_grade = #{riverManagerGrade},</if>
+            <if test='null != riverManagerName'>river_manager_name = #{riverManagerName},</if>
+            <if test='null != riverManagerPhone'>river_manager_phone = #{riverManagerPhone},</if>
+            <if test='null != riverManagerJob'>river_manager_job = #{riverManagerJob},</if>
+            <if test='null != department'>department = #{department}</if>
+        </set>
+        WHERE lk_code = #{lkCode}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_lk_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_lk_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_lk_base
+    </select>
+
+    <select id="selectByCondition" resultMap="voMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_lk_base
+        WHERE del_flag = 0
+        <if test="lakeCode != null and lakeCode != ''">
+            AND lk_code = #{lakeCode}
+        </if>
+        <if test="basin != null and basin != ''">
+            AND basin = #{basin}
+        </if>
+        <if test="lakeName != null and lakeName != ''">
+            AND lk_name LIKE CONCAT('%',#{lakeName},'%')
+        </if>
+    </select>
+
+</mapper>

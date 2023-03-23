@@ -1,0 +1,49 @@
+package com.ygkj.utils;
+
+import ygkj.com.util.StringUtils;
+
+import java.util.UUID;
+
+/**
+* @ClassName:       PasswordUtils
+*                   密码工具类
+* @Author:          Huang.zh
+* @CreateDate:      2019/9/7 13:44
+* @UpdateUser:      Huang.zh
+* @UpdateDate:      2019/9/7 13:44
+* @Version:         0.0.1
+*/
+public class PasswordUtils {
+
+	/**
+	 * 匹配密码
+	 * @param salt 盐
+	 * @param rawPass 明文 
+	 * @param encPass 密文
+	 * @return
+	 */
+	public static boolean matches(String salt, String rawPass, String encPass) {
+		if(StringUtils.isEmpty(salt) || StringUtils.isEmpty(rawPass) || StringUtils.isEmpty(encPass)){
+			return false;
+		}
+		return new PasswordEncoder(salt).matches(encPass, rawPass) || rawPass.equals(encPass);
+	}
+	
+	/**
+	 * 明文密码加密
+	 * @param rawPass 明文
+	 * @param salt
+	 * @return
+	 */
+	public static String encode(String rawPass, String salt) {
+		return new PasswordEncoder(salt).encode(rawPass);
+	}
+
+	/**
+	 * 获取加密盐
+	 * @return
+	 */
+	public static String getSalt() {
+		return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
+	}
+}

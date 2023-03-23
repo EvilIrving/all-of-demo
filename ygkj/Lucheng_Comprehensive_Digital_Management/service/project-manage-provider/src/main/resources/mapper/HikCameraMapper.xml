@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.HikCameraMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.project.model.HikvisionCameraRecord" >
+        <result column="camera_index_code" property="cameraIndexCode" />
+        <result column="camera_name" property="cameraName" />
+        <result column="device_index_code" property="deviceIndexCode" />
+        <result column="longitude" property="longitude" />
+        <result column="latitude" property="latitude" />
+        <result column="altitude" property="altitude" />
+        <result column="camera_type" property="cameraType" />
+        <result column="camera_type_name" property="cameraTypeName" />
+        <result column="channel_type" property="channelType" />
+        <result column="channel_type_name" property="channelTypeName" />
+        <result column="region_index_code" property="regionIndexCode" />
+        <result column="sync_time" property="syncTime" />
+        <result column="create_time" property="createTime" />
+        <result column="creator_id" property="creatorId" />
+        <result column="update_time" property="updateTime" />
+        <result column="updator_id" property="updatorId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="source" property="source" />
+        <result column="preview_url" property="previewUrl" />
+        <result column="status" property="status" />
+        <result column="area_code" property="areaCode" />
+        <result column="project_code" property="projectCode" />
+        <result column="out_line_number" property="outLineNumber" />
+        <result column="basin" property="basin" />
+        <result column="gb_index_code" property="gbIndexCode" />
+        <result column="ops_id" property="opsId" />
+        <result column="region_camera_hash" property="regionCameraHash" />
+        <result column="del_time" property="delTime" />
+        <result column="region_camera_chain" property="regionCameraChain" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        camera_index_code,
+                camera_name,
+                device_index_code,
+                longitude,
+                latitude,
+                altitude,
+                camera_type,
+                camera_type_name,
+                channel_type,
+                channel_type_name,
+                region_index_code,
+                sync_time,
+                create_time,
+                creator_id,
+                update_time,
+                updator_id,
+                del_flag,
+                source,
+                preview_url,
+                status,
+                area_code,
+                project_code,
+                out_line_number,
+                basin,
+                gb_index_code,
+                ops_id,
+region_camera_hash,
+del_time,
+region_camera_chain,camera_source
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.project.model.HikvisionCameraRecord">
+        INSERT INTO hikvision_camera_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != cameraIndexCode'>
+                camera_index_code,
+            </if>
+            <if test ='null != cameraName'>
+                camera_name,
+            </if>
+            <if test ='null != deviceIndexCode'>
+                device_index_code,
+            </if>
+            <if test ='null != longitude'>
+                longitude,
+            </if>
+            <if test ='null != latitude'>
+                latitude,
+            </if>
+            <if test ='null != altitude'>
+                altitude,
+            </if>
+            <if test ='null != cameraType'>
+                camera_type,
+            </if>
+            <if test ='null != cameraTypeName'>
+                camera_type_name,
+            </if>
+            <if test ='null != channelType'>
+                channel_type,
+            </if>
+            <if test ='null != channelTypeName'>
+                channel_type_name,
+            </if>
+            <if test ='null != regionIndexCode'>
+                region_index_code,
+            </if>
+            <if test ='null != syncTime'>
+                sync_time,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != creatorId'>
+                creator_id,
+            </if>
+            <if test ='null != updateTime'>
+                update_time,
+            </if>
+            <if test ='null != updatorId'>
+                updator_id,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != source'>
+                source,
+            </if>
+            <if test ='null != previewUrl'>
+                preview_url,
+            </if>
+            <if test ='null != status'>
+                status,
+            </if>
+            <if test ='null != areaCode'>
+                area_code,
+            </if>
+            <if test ='null != projectCode'>
+                project_code,
+            </if>
+            <if test ='null != outLineNumber'>
+                out_line_number,
+            </if>
+            <if test ='null != basin'>
+                basin,
+            </if>
+            <if test ='null != gbIndexCode'>
+                gb_index_code,
+            </if>
+            <if test ='null != opsId'>
+                ops_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != cameraIndexCode'>
+                #{cameraIndexCode},
+            </if>
+            <if test ='null != cameraName'>
+                #{cameraName},
+            </if>
+            <if test ='null != deviceIndexCode'>
+                #{deviceIndexCode},
+            </if>
+            <if test ='null != longitude'>
+                #{longitude},
+            </if>
+            <if test ='null != latitude'>
+                #{latitude},
+            </if>
+            <if test ='null != altitude'>
+                #{altitude},
+            </if>
+            <if test ='null != cameraType'>
+                #{cameraType},
+            </if>
+            <if test ='null != cameraTypeName'>
+                #{cameraTypeName},
+            </if>
+            <if test ='null != channelType'>
+                #{channelType},
+            </if>
+            <if test ='null != channelTypeName'>
+                #{channelTypeName},
+            </if>
+            <if test ='null != regionIndexCode'>
+                #{regionIndexCode},
+            </if>
+            <if test ='null != syncTime'>
+                #{syncTime},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != creatorId'>
+                #{creatorId},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test ='null != updatorId'>
+                #{updatorId},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != source'>
+                #{source},
+            </if>
+            <if test ='null != previewUrl'>
+                #{previewUrl},
+            </if>
+            <if test ='null != status'>
+                #{status},
+            </if>
+            <if test ='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test ='null != projectCode'>
+                #{projectCode},
+            </if>
+            <if test ='null != outLineNumber'>
+                #{outLineNumber},
+            </if>
+            <if test ='null != basin'>
+                #{basin},
+            </if>
+            <if test ='null != gbIndexCode'>
+                #{gbIndexCode},
+            </if>
+            <if test ='null != opsId'>
+                #{opsId}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.ygkj.project.model.HikvisionCameraRecord">
+        UPDATE hikvision_camera_record
+        <set>
+            <if test ='null != cameraName'>camera_name = #{cameraName},</if>
+            <if test ='null != deviceIndexCode'>device_index_code = #{deviceIndexCode},</if>
+            <if test ='null != longitude'>longitude = #{longitude},</if>
+            <if test ='null != latitude'>latitude = #{latitude},</if>
+            <if test ='null != altitude'>altitude = #{altitude},</if>
+            <if test ='null != cameraType'>camera_type = #{cameraType},</if>
+            <if test ='null != cameraTypeName'>camera_type_name = #{cameraTypeName},</if>
+            <if test ='null != channelType'>channel_type = #{channelType},</if>
+            <if test ='null != channelTypeName'>channel_type_name = #{channelTypeName},</if>
+            <if test ='null != regionIndexCode'>region_index_code = #{regionIndexCode},</if>
+            <if test ='null != syncTime'>sync_time = #{syncTime},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != creatorId'>creator_id = #{creatorId},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime},</if>
+            <if test ='null != updatorId'>updator_id = #{updatorId},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != source'>source = #{source},</if>
+            <if test ='null != previewUrl'>preview_url = #{previewUrl},</if>
+            <if test ='null != status'>status = #{status},</if>
+            <if test ='null != areaCode'>area_code = #{areaCode},</if>
+            <if test ='null != projectCode'>project_code = #{projectCode},</if>
+            <if test ='null != outLineNumber'>out_line_number = #{outLineNumber},</if>
+            <if test ='null != basin'>basin = #{basin},</if>
+            <if test ='null != gbIndexCode'>gb_index_code = #{gbIndexCode},</if>
+            <if test ='null != opsId'>ops_id = #{opsId},</if>
+            <if test ='null != isWarnNotify'>is_warn_notify = #{isWarnNotify},</if>
+            <if test ='null != warnNotifyRule'>warn_notify_rule = #{warnNotifyRule},</if>
+            <if test ='null != warnSetTime'>warn_set_time = #{warnSetTime}</if>
+        </set>
+        WHERE camera_index_code = #{cameraIndexCode}
+    </update>
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM hikvision_camera_record
+        WHERE camera_index_code = #{cameraIndexCode}
+    </select>
+
+    <select id="selectByCondition" resultType="com.ygkj.project.vo.response.HikCameraResVo">
+        SELECT
+            a.camera_index_code,
+            a.camera_name,
+            a.device_index_code,
+            a.longitude,
+            a.latitude,
+            a.altitude,
+            a.camera_type,
+            a.camera_type_name,
+            a.channel_type,
+            a.channel_type_name,
+            a.region_index_code,
+            a.sync_time,
+            a.create_time,
+            a.creator_id,
+            a.update_time,
+            a.updator_id,
+            a.del_flag,
+            a.source,
+            a.preview_url,
+            a.status,
+            a.area_code,
+            a.project_code,
+            a.out_line_number,
+            a.basin,
+            a.gb_index_code,
+            a.ops_id,
+        a.region_camera_hash,a.del_time,a.region_camera_chain,a.camera_source,
+        b.project_name,
+        aab.adnm adnm,
+        b.project_type
+        FROM hikvision_camera_record a
+        LEFT JOIN att_camera_bind_obj b ON a.project_code = b.project_code
+        left join att_adcd_base aab on aab.adcd = a.area_code
+        WHERE a.del_flag = 0
+        <if test="coordinateNotNull">
+            AND (a.longitude IS NOT NULL AND a.latitude IS NOT NULL )
+            AND (a.longitude &lt;&gt;'Null' AND a.latitude &lt;&gt;'Null' )
+        </if>
+        <if test="cameraIndexCode != null and cameraIndexCode != ''">
+            AND a.camera_index_code = #{cameraIndexCode}
+        </if>
+        <if test="cameraName != null and cameraName != ''">
+            AND a.camera_name LIKE CONCAT('%',#{cameraName},'%')
+        </if>
+        <if test="gbIndexCode != null and gbIndexCode != ''">
+            AND a.gb_index_code =#{gbIndexCode}
+        </if>
+        <if test="areaCode != null and areaCode != ''">
+            AND a.area_code =#{areaCode}
+        </if>
+        <if test="regionIndexCode != null and regionIndexCode != ''">
+            AND FIND_IN_SET(a.region_index_code,#{regionIndexCode})
+        </if>
+        <if test="projectType != null and projectType != ''">
+            AND b.project_type =#{projectType}
+        </if>
+        <if test="status != null and status != ''">
+            AND a.status =#{status}
+        </if>
+    </select>
+
+    <select id="selectCameraInfoByCondition" resultType="com.ygkj.project.vo.response.HikCameraResVo">
+        SELECT a.camera_index_code,a.camera_name,a.longitude,a.latitude,
+        a.region_index_code,a.preview_url,a.sync_time,a.del_flag,
+        a.status,a.status_first_collect_time,a.area_code,a.project_code,a.basin,a.gb_index_code,a.ops_id,
+        a.region_camera_hash,a.del_time,a.region_camera_chain,a.camera_source,
+        a.is_warn_notify,a.warn_notify_rule,a.warn_set_time
+        <if test="withProjInfo">
+            ,b.project_name,b.project_type,b.eng_grad,b.eng_scal
+        </if>
+        <if test="withOpsInfo">
+            ,c.ops_name,c.ops_phone,c.notify_type
+        </if>
+        FROM hikvision_camera_record a
+        <if test="withProjInfo">
+            LEFT JOIN att_real_all_project_base b
+            ON a.project_code = b.project_code
+        </if>
+        <if test="withOpsInfo">
+            LEFT JOIN att_camera_ops c
+            ON a.ops_id = c.id
+        </if>
+        <where>
+            <if test="true">
+                AND a.del_flag = 0
+            </if>
+            <if test="cameraIndexCode != null and cameraIndexCode != ''">
+                AND a.camera_index_code = #{cameraIndexCode}
+            </if>
+            <if test="cameraName != null and cameraName != ''">
+                AND a.camera_name LIKE CONCAT('%',#{cameraName},'%')
+            </if>
+            <if test="gbIndexCode != null and gbIndexCode != ''">
+                AND a.gb_index_code =#{gbIndexCode}
+            </if>
+            <if test="areaCode !=null and areaCode!='' and areaCode.length>=6">
+                and a.area_code like CONCAT(SUBSTR(#{areaCode},1,6),'%')
+            </if>
+            <if test="regionIndexCode != null and regionIndexCode != ''">
+                AND FIND_IN_SET(a.region_index_code,#{regionIndexCode})
+            </if>
+            <if test="status != null and status != ''">
+                AND a.status =#{status}
+            </if>
+            <if test="regionCameraHash != null">
+                AND a.region_camera_hash =#{regionCameraHash}
+            </if>
+            <if test="excludeCameraIndexCode!= null and excludeCameraIndexCode!=''">
+                AND find_in_set(a.camera_index_code,#{excludeCameraIndexCode})=0
+            </if>
+            <if test="withProjInfo">
+                <if test="projectType != null and projectType != ''">
+                    AND b.project_type =#{projectType}
+                </if>
+                <if test="notBelongProjType != null and notBelongProjType != ''">
+                    AND (find_in_set(b.project_type,#{notBelongProjType}) is null or find_in_set(b.project_type,#{notBelongProjType})=0)
+                </if>
+            </if>
+            <if test="withOpsInfo">
+                <if test="opsName != null and opsName != ''">
+                    AND c.ops_name =#{opsName}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCamStatus" resultType="com.ygkj.project.vo.response.HikCameraResVo">
+        SELECT a.camera_index_code,a.status
+        FROM hikvision_camera_record a
+        <if test="withProjInfo">
+            LEFT JOIN att_camera_bind_obj b
+            ON a.project_code = b.project_code
+        </if>
+        <if test="withOpsInfo">
+            LEFT JOIN att_camera_ops c
+            ON a.ops_id = c.id
+        </if>
+        <where>
+            <if test="true">
+                AND a.del_flag = 0
+            </if>
+            <if test="cameraIndexCode != null and cameraIndexCode != ''">
+                AND a.camera_index_code = #{cameraIndexCode}
+            </if>
+            <if test="cameraName != null and cameraName != ''">
+                AND a.camera_name LIKE CONCAT('%',#{cameraName},'%')
+            </if>
+            <if test="gbIndexCode != null and gbIndexCode != ''">
+                AND a.gb_index_code =#{gbIndexCode}
+            </if>
+            <if test="areaCode !=null and areaCode!='' and areaCode.length>=6">
+                and a.area_code like CONCAT(SUBSTR(#{areaCode},1,6),'%')
+            </if>
+            <if test="regionIndexCode != null and regionIndexCode != ''">
+                AND FIND_IN_SET(a.region_index_code,#{regionIndexCode})
+            </if>
+            <if test="status != null and status != ''">
+                AND a.status =#{status}
+            </if>
+            <if test="regionCameraHash != null">
+                AND a.region_camera_hash =#{regionCameraHash}
+            </if>
+            <if test="excludeCameraIndexCode!= null and excludeCameraIndexCode!=''">
+                AND find_in_set(a.camera_index_code,#{excludeCameraIndexCode})=0
+            </if>
+            <if test="withProjInfo">
+                <if test="projectType != null and projectType != ''">
+                    AND b.project_type =#{projectType}
+                </if>
+                <if test="notBelongProjType != null and notBelongProjType != ''">
+                    AND (find_in_set(b.project_type,#{notBelongProjType}) is null or find_in_set(b.project_type,#{notBelongProjType})=0)
+                </if>
+            </if>
+            <if test="withOpsInfo">
+                <if test="opsName != null and opsName != ''">
+                    AND c.ops_name =#{opsName}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="loadByProjCode" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM hikvision_camera_record
+        WHERE project_code = #{projCode}
+    </select>
+
+    <select id="selectCamsProjOpsQua" resultType="com.ygkj.project.vo.response.HikOpsQuaResVo">
+        SELECT a.camera_index_code,a.camera_name,a.longitude,a.latitude,
+        a.region_index_code,a.sync_time,a.del_flag,
+        a.status,a.area_code,a.project_code,a.basin,a.gb_index_code,a.ops_id,
+        b.project_name,b.project_type,b.eng_grad,b.eng_scal,
+        c.ops_name,c.ops_phone,c.remark,
+        d.sc_mono_result,d.inspect_result,d.sc_blur_result,d.sc_scene_result
+        FROM hikvision_camera_record a
+        LEFT JOIN att_camera_bind_obj b ON a.project_code = b.project_code
+        LEFT JOIN att_camera_ops c ON a.ops_id = c.id
+        LEFT JOIN att_camera_quality d ON a.camera_index_code = d.index_code
+        WHERE a.del_flag = 0
+        <if test="cameraIndexCode != null and cameraIndexCode != ''">
+            AND a.camera_index_code = #{cameraIndexCode}
+        </if>
+        <if test="cameraName != null and cameraName != ''">
+            AND a.camera_name LIKE CONCAT('%',#{cameraName},'%')
+        </if>
+        <if test="gbIndexCode != null and gbIndexCode != ''">
+            AND a.gb_index_code =#{gbIndexCode}
+        </if>
+        <if test="projectType != null and projectType != ''">
+            AND b.project_type =#{projectType}
+        </if>
+        <if test="regionIndexCode != null and regionIndexCode != ''">
+            AND FIND_IN_SET(a.region_index_code,#{regionIndexCode})
+        </if>
+    </select>
+
+    <select id="candidateCamera" resultType="com.ygkj.project.vo.response.HikCameraResVo">
+        SELECT * FROM hikvision_camera_record
+        WHERE del_flag = 0
+        AND camera_index_code IN
+        <foreach collection="codes" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="countCameraStatus" resultType="com.ygkj.project.vo.response.CountCameraStatus">
+        SELECT status,COUNT(1) num,(select COUNT(1) FROM `hikvision_camera_record` WHERE del_flag = 0 AND `status` IS not NULL) total
+        FROM `hikvision_camera_record` WHERE del_flag = 0 AND `status` IS not NULL GROUP BY status
+    </select>
+
+    <select id="selectCameraBindObjType" resultType="string">
+        select distinct project_type
+        from att_real_all_project_base
+        <where>
+            <if test="projCodeList!=null and projCodeList.size!=0">
+                and project_code in
+                <foreach collection="projCodeList" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBindObjByCondition" resultType="com.ygkj.project.vo.response.CamBindObjResVo">
+        select * from att_camera_bind_obj
+        <where>
+            <if test="projectType!=null and projectType!=''">
+                and project_type=#{projectType}
+            </if>
+            <if test="projectName!=null and projectName!=''">
+                and project_name=#{projectName}
+            </if>
+            <if test="projectCode!=null and projectCode!=''">
+                and project_code=#{projectCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCameraOnlineByCameraHashList" resultType="com.ygkj.project.model.AttCameraOnline">
+        select region_camera_hash,create_time,online
+        from att_camera_online
+        <where>
+            <if test="cameraHashList!=null and cameraHashList.size!=0">
+                and region_camera_hash in
+                <foreach collection="cameraHashList" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="start!=null and end!=null">
+                    and sync_date &gt;= #{start} and sync_date &lt;=#{end}
+                </when>
+                <otherwise>
+                    and sync_date &gt;= DATE_SUB(CURDATE(),INTERVAL 7 DAY) and sync_date &lt;=CURDATE()
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <insert id="insertCameraWarnRecord" parameterType="com.ygkj.project.model.CameraWarnRecord">
+        INSERT INTO ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != cameraIndexCode'>
+                camera_index_code,
+            </if>
+            <if test ='null != regionCameraHash'>
+                region_camera_hash,
+            </if>
+            <if test ='null != warnTime'>
+                warn_time,
+            </if>
+            <if test ='null != content'>
+                content,
+            </if>
+            <if test ='null != opsPhone'>
+                ops_phone,
+            </if>
+            <if test ='null != opsName'>
+                ops_name,
+            </if>
+            <if test ='null != notifyType'>
+                notify_type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != cameraIndexCode'>
+                #{cameraIndexCode},
+            </if>
+            <if test ='null != regionCameraHash'>
+                #{regionCameraHash},
+            </if>
+            <if test ='null != warnTime'>
+                #{warnTime},
+            </if>
+            <if test ='null != content'>
+                #{content},
+            </if>
+            <if test ='null != opsPhone'>
+                #{opsPhone},
+            </if>
+            <if test ='null != opsName'>
+                #{opsName},
+            </if>
+            <if test ='null != notifyType'>
+                #{notifyType}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectNewestWarnTime" resultType="com.ygkj.project.model.CameraWarnRecord">
+        SELECT * FROM
+        (select camera_index_code,warn_time
+        from ${tableName}
+        <where>
+            <if test="cameraIndexCodeList!=null and cameraIndexCodeList.size!=0">
+                AND camera_index_code IN
+                <foreach collection="cameraIndexCodeList" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        HAVING 1 order by warn_time desc
+        ) as a group by a.camera_index_code
+    </select>
+</mapper>

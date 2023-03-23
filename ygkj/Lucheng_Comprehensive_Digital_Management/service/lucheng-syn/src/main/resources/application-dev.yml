@@ -1,0 +1,101 @@
+server:
+  port: 9001
+
+spring:
+  redis:
+    timeout: PT10S
+    password: xB239MCfg3321Pq002
+    lettuce:
+      pool:
+        max-active: 100
+        min-idle: 1
+        max-wait: PT10S
+        max-idle: 30
+    database: 12
+    port: 6379
+    host: 192.168.2.130
+  application:
+    name: data-synchronized
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  datasource:
+    dynamic:
+      primary: business
+      strict: false
+      datasource:
+        business:
+          url: jdbc:mysql://192.168.2.130:3306/lc_business_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: lc_plt
+          password: GXvJaDjeuyPCZSKO
+          driver-class-name: com.mysql.jdbc.Driver
+#        sichuang:
+#          url: jdbc:sqlserver://192.168.3.42:4133;DatabaseName=StrongWater_2015
+#          username: DSJ_1cslread
+#          password: LcnL02SLj_2021w#1
+#          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+        bh:
+          url: jdbc:sqlserver://117.149.227.48:51433;DatabaseName=StrongMain_LCQ_BZH
+          username: LCd_read#
+          password: LCslj061_876N
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+        exchange:
+          url: jdbc:mysql://192.168.2.130:3306/lc_exchange_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: lc_plt
+          password: GXvJaDjeuyPCZSKO
+          driver-class-name: com.mysql.jdbc.Driver
+        basic:
+          url: jdbc:mysql://192.168.2.130:3306/lc_basic_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: lc_plt
+          password: GXvJaDjeuyPCZSKO
+          driver-class-name: com.mysql.jdbc.Driver
+        wz:
+          url: jdbc:mysql://0tpn865y.dongtaiyuming.net:30314/wz_business_data_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: wz_sljsgl
+          password: 3GsBf3h_s5m8
+          driver-class-name: com.mysql.jdbc.Driver
+        push:
+          url: jdbc:sqlserver://rdseqab3ieqab3i.sqlserver.rds.aliyuncs.com:3433;DatabaseName=lucheng_info_syn
+          username: lucheng_info_syn
+          password: Z9x6@$1YvmpUB6
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+      initial-size: 20
+      min-idle: 10
+      max-active: 40
+      max-wait: 30000
+      min-evictable-idle-time-millis: 180000
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    call-setters-on-nulls: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+logging:
+  file:
+    path: logs
+    name: ${logging.file.path}/${spring.application.name}.log
+  level:
+    com:
+      ygkj:
+        lcsyn:
+          dao: debug
+
+wzapi:
+  key: dq/IKkr+aZxuRv1ATYmdoQ==
+  secret: /HBnCSAMEkb72GTlo7vPXZbd0QbGx1Nb0gkXkF6T7cI=
+
+watermanage:
+  appkey: 8c05a6fcf3964e238f35f2069dfc67e4
+  appsecret: 8f46f2b126ba4279
+  tokenkey: DC_ACCESS_TOKEN
+  appsymbol: 114
+
+access:
+  key: azFNTFdVbEpnMWRCeXhIYg
+  secret: bHNQT01IZFJ0VlFPOFZKRQ
+#  url: http://192.168.2.210:8080/rscp_war_exploded
+  url: https://sk.zjwater.com
+
+weather:
+  syn-rain-path: E:\\develop\\rain-data

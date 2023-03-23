@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.visualization.mapper.CollectPointMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.visualization.model.CollectPoint" >
+        <result column="id" property="id" />
+        <result column="point_name" property="pointName" />
+        <result column="longitude" property="longitude" />
+        <result column="latitude" property="latitude" />
+        <result column="user_id" property="userId" />
+        <result column="create_time" property="createTime" />
+        <result column="create_id" property="createId" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_id" property="updateId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="dept_id" property="deptId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                point_name,
+                longitude,
+                latitude,
+                user_id,
+                create_time,
+                create_id,
+                update_time,
+                update_id,
+                del_flag,
+                dept_id
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.visualization.model.CollectPoint">
+        INSERT INTO collect_point
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != pointName'>
+                point_name,
+            </if>
+            <if test ='null != longitude'>
+                longitude,
+            </if>
+            <if test ='null != latitude'>
+                latitude,
+            </if>
+            <if test ='null != userId'>
+                user_id,
+            </if>
+            <if test ='null != location'>
+                location,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != createId'>
+                create_id,
+            </if>
+            <if test ='null != updateTime'>
+                update_time,
+            </if>
+            <if test ='null != updateId'>
+                update_id,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != deptId'>
+                dept_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != pointName'>
+                #{pointName},
+            </if>
+            <if test ='null != longitude'>
+                #{longitude},
+            </if>
+            <if test ='null != latitude'>
+                #{latitude},
+            </if>
+            <if test ='null != userId'>
+                #{userId},
+            </if>
+            <if test ='null != location'>
+                #{location},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != createId'>
+                #{createId},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test ='null != updateId'>
+                #{updateId},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != deptId'>
+                #{deptId}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="deleteByIdList">
+        <if test="idList!=null and idList.size!=0">
+            update collect_point set del_flag=1 where id in
+            <foreach collection="idList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <if test="userId!=null and userId!=''">
+                and user_id =#{userId}
+            </if>
+        </if>
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from collect_point where del_flag=0
+        <if test="userId!=null and userId!=''">
+            and user_id=#{userId}
+        </if>
+        <if test="name!=null and name!=''">
+            and point_name like concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM collect_point WHERE del_flag=0
+        <if test="longitude != null and longitude != ''">
+            AND longitude = #{longitude}
+        </if>
+        <if test="latitude != null and latitude != ''">
+            AND latitude = #{latitude}
+        </if>
+    </select>
+</mapper>

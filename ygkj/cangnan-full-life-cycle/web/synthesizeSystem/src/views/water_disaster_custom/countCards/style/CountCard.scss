@@ -1,0 +1,116 @@
+.count-card {
+	width: 870px;
+	height: 169px;
+	background-image: url(~assets/images/count-card-bg.png);
+	background-size: 100% 100%;
+	padding: 22px 56px;
+	color: #ffffff;
+	font-size: 26px;
+
+	.fs24 {
+		font-size: 24px;
+	}
+
+	.fs32 {
+		font-size: 32px;
+	}
+
+	.fs36 {
+		font-size: 36px;
+	}
+
+	.white {
+		color: #fff;
+	}
+
+	.yellow {
+		color: #eec80b;
+	}
+
+	.orange {
+		color: #ff551f;
+	}
+
+	.red {
+		color: #ef1313;
+	}
+
+	.blue {
+		color: #00bdf8;
+	}
+
+	.green {
+		color: #1cfff5;
+	}
+
+	.ml38 {
+		margin-left: 38px;
+	}
+
+	.ml12 {
+		margin-left: 12px;
+	}
+
+	.mr12 {
+		margin-right: 12px;
+	}
+
+	.count-title {
+		position: relative;
+		width: 100%;
+		height: 40px;
+		line-height: 40px;
+		font-size: 30px;
+		font-weight: bold;
+		color: #1ef8f2;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+		text-align: center;
+
+		.title-btn {
+			position: absolute;
+			top: 0;
+			right: 0;
+			text-align: right;
+			cursor: pointer;
+			color: #ffffff;
+			font-size: 16px;
+		}
+
+		.icon-hide {
+			vertical-align: middle;
+			margin-right: 8px;
+		}
+
+		.title-name {
+			i:nth-child(1) {
+				margin-right: 24px;
+			}
+
+			i:nth-child(2) {
+				margin-left: 24px;
+			}
+		}
+
+		i {
+			vertical-align: middle;
+		}
+	}
+	&.no-title {
+		.count-content {
+			height: 90%;
+		}
+	}
+	.count-content {
+		padding-top: 6px;
+		height: calc(100% - 45px - 8px);
+		width: 100%;
+
+		.no-count {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			height: 100%;
+		}
+	}
+}

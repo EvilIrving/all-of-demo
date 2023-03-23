@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ygkj.water.project.mapper.ConAcceptanceApplicationNodeMapper">
+    <select id="loadNodes" parameterType="com.ygkj.project.vo.request.ConAcceptanceApplicationNodeReqVo" resultType="com.ygkj.project.model.ConAcceptanceApplicationNode">
+        select  * from
+        (select tbl.*,t1.company_name unitName,t2.username unitReviewerName from
+        (select * from con_acceptance_application_node
+        where del_flag=0 and applicationId=#{applicationid} and sort =1) tbl
+        left join professional_company t1 on tbl.unit_id = t1.id
+        left join (select * from sys_user where deleted=1) t2 on tbl.unit_reviewer_id = t2.id
+        UNION
+         select tbl.*,t1.name unitName,t2.username unitReviewerName from
+        (select * from con_acceptance_application_node
+        where del_flag=0 and applicationId=#{applicationid} and sort > 1) tbl
+        left join sys_dept t1 on tbl.unit_id = t1.id
+        left join (select * from sys_user where deleted=1) t2 on tbl.unit_reviewer_id = t2.id) t
+        order by t.sort asc
+    </select>
+
+    <select id="findCurrentNode" resultType="com.ygkj.project.model.ConAcceptanceApplicationNode">
+         select tbl.*,t1.name unitName,t2.unitReviewerName from
+        (select * from con_acceptance_application_node
+        where del_flag=0 and applicationId=#{applicationId} and id = #{nodeId}) tbl
+        left join sys_dept t1 on tbl.unit_id = t1.id
+        left join (select * from sys_user where deleted=1) t2 on tbl.unit_reviewer_id = t1.id
+        order by tbl.sort asc
+    </select>
+
+    <select id="getFirstNode" resultType="com.ygkj.project.model.ConAcceptanceApplicationNode">
+        select * from con_acceptance_application_node where applicationId = #{applicationid} and sort = 1;
+    </select>
+
+    <select id="getAfterNode" resultType="com.ygkj.project.model.ConAcceptanceApplicationNode">
+        select * from con_acceptance_application_node where applicationId = #{applicationid} and del_flag = 0 and sort > (select sort from con_acceptance_application_node where id = #{nodeId})
+    </select>
+
+    <select id="getNodesByAssociationId" resultType="com.ygkj.project.model.ConAcceptanceApplicationNode">
+        select * from con_acceptance_application_node where applicationId = #{applicationid} and del_flag = 0
+    </select>
+</mapper>

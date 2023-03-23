@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.SysUserCollectionMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.SysUserCollection" >
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="category" property="category" />
+        <result column="url" property="url" />
+        <result column="collect_date" property="collectDate" />
+        <result column="user_id" property="userId" />
+        <result column="username" property="username" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                name,
+                category,
+                url,
+                collect_date,
+                user_id,
+                username,
+                object_id,
+                collection_type,
+                upload_name
+    </sql>
+
+    <insert id="insert"  parameterType="com.ygkj.digitization.model.SysUserCollection">
+        INSERT INTO sys_user_collection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != objectId'>
+                object_id,
+            </if>
+            <if test ='null != collectionType'>
+                collection_type,
+            </if>
+            <if test ='null != name'>
+                name,
+            </if>
+            <if test ='null != category'>
+                category,
+            </if>
+            <if test ='null != url'>
+                url,
+            </if>
+            <if test ='null != collectDate'>
+                collect_date,
+            </if>
+            <if test ='null != userId'>
+                user_id,
+            </if>
+            <if test ='null != username'>
+                username,
+            </if>
+            <if test ='null != uploadName'>
+                upload_name
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != objectId'>
+                #{objectId},
+            </if>
+            <if test ='null != collectionType'>
+                #{collectionType},
+            </if>
+            <if test ='null != name'>
+                #{name},
+            </if>
+            <if test ='null != category'>
+                #{category},
+            </if>
+            <if test ='null != url'>
+                #{url},
+            </if>
+            <if test ='null != collectDate'>
+                #{collectDate},
+            </if>
+            <if test ='null != userId'>
+                #{userId},
+            </if>
+            <if test ='null != username'>
+                #{username},
+            </if>
+            <if test ='null != uploadName'>
+                #{uploadName}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM sys_user_collection
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.SysUserCollection">
+        UPDATE sys_user_collection
+        <set>
+            <if test ='null != name'>name = #{name},</if>
+            <if test ='null != category'>category = #{category},</if>
+            <if test ='null != url'>url = #{url},</if>
+            <if test ='null != collectDate'>collect_date = #{collectDate},</if>
+            <if test ='null != userId'>user_id = #{userId},</if>
+            <if test ='null != username'>username = #{username}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_user_collection
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_user_collection
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM sys_user_collection
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_user_collection
+        <where>
+            <if test="userId != null and userId != ''">
+                AND user_id = #{userId}
+            </if>
+            <if test="collectionType != null and collectionType != ''">
+                AND collection_type = #{collectionType}
+            </if>
+            <if test="objectId != null and objectId != ''">
+                AND object_id = #{objectId}
+            </if>
+        </where>
+    </select>
+</mapper>

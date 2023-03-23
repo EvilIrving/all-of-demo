@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.ProjectDivisionMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.project.model.ProjectDivision" >
+        <result column="id" property="id" />
+        <result column="pid" property="pid" />
+        <result column="name" property="name" />
+        <result column="project_code" property="projectCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="upload_id" property="uploadId" />
+        <result column="upload_name" property="uploadName" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+                pid,
+                name,
+                project_code,
+                del_flag,
+                upload_id,
+                upload_name
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.project.model.ProjectDivision">
+        INSERT INTO project_division
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != pid'>
+                pid,
+            </if>
+            <if test ='null != name'>
+                name,
+            </if>
+            <if test ='null != projectCode'>
+                project_code,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != uploadId'>
+                upload_id,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != uploadName'>
+                upload_name
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != pid'>
+                #{pid},
+            </if>
+            <if test ='null != name'>
+                #{name},
+            </if>
+            <if test ='null != projectCode'>
+                #{projectCode},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != uploadId'>
+                #{uploadId},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != uploadName'>
+                #{uploadName}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        update project_division set del_flag = 1 WHERE id = #{id}
+    </delete>
+
+    <select id="loadPage" resultType="com.ygkj.project.vo.response.ProjectDivisionRespVo">
+        SELECT tbl.*,tb2.project_name from project_division tbl
+        LEFT JOIN att_project tb2 ON tbl.project_code = tb2.project_id WHERE tbl.del_flag = 0
+        <if test="null != id and '' != id">
+            and tbl.id = #{id}
+        </if>
+        <if test="null != projectCode and '' != projectCode">
+            and FIND_IN_SET(#{projectCode} , tbl.project_code)
+        </if>
+        <if test="null != name and '' != name">
+            and tbl.name like concat('%',#{name},'%')
+        </if>
+        <if test="null != uploadId and '' != uploadId">
+            and tbl.upload_id = #{uploadId}
+        </if>
+        <if test="null != pid and '' != pid">
+            and tbl.pid = #{pid}
+        </if>
+        order by tbl.create_time desc
+    </select>
+
+    <update id="update" parameterType="com.ygkj.project.model.ProjectDivision">
+        UPDATE project_division
+        <set>
+            <if test ='null != pid'>pid = #{pid},</if>
+            <if test ='null != name'>name = #{name},</if>
+            <if test ='null != projectCode'>project_code = #{projectCode},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != uploadId'>upload_id = #{uploadId},</if>
+            <if test ='null != uploadName'>upload_name = #{uploadName}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>

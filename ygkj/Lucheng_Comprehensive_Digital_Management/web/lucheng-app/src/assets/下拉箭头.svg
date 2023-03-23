@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="37px" viewBox="0 0 60 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>下拉箭头</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-345.000000, -425.000000)">
+            <g id="下拉箭头" transform="translate(374.764646, 443.115942) rotate(-180.000000) translate(-374.764646, -443.115942) translate(345.000000, 425.000000)">
+                <polygon id="路径" points="0 0 59.5292926 0 59.5292926 36.2318841 0 36.2318841"></polygon>
+                <polygon id="路径" fill-opacity="0.48" fill="#000000" fill-rule="nonzero" points="30.6947915 16.6332204 18.3956528 23.5507246 14.8823231 21.5746941 30.6947915 12.6811594 46.5072598 21.5746941 42.9939301 23.5507246"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

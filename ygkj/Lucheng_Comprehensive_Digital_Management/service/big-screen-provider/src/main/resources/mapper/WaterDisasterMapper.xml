@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.WaterDisasterMapper">
+
+    <select id="getRainfallStas" resultType="com.ygkj.big.screen.vo.response.RainfallStaInfo">
+        select st_code from att_st_base where st_type = 'PP'
+    </select>
+
+    <select id="getRealRainfalls" resultType="com.ygkj.big.screen.model.StPptnR">
+        select stcd, sum(drp) from lc_business_db.${tableName} where tm &gt;= date_sub(now(), interval #{hour}
+        hour) group by stcd
+    </select>
+
+    <select id="getLargeMediResStas" resultType="com.ygkj.big.screen.vo.response.WaResStaWaterLevelInfo">
+        select a.res_loc, a.res_name, a.tot_cap, b.st_code, b.st_name from att_res_base a
+        left join att_st_base b on b.st_type = 'RR' and a.res_code = b.proj_code
+        where a.del_flag = 0
+        and a.eng_scal &lt;= 3
+    </select>
+
+    <select id="getLargeMediResStaWaterLevels" resultType="java.util.Map">
+        select t.stcd, t.z from
+        (select stcd, z from ${tableName}
+        where tm &gt;= date_sub(now(), interval 7 day)
+        and stcd in
+        <foreach collection="list" item="item" separator="," open="(" close=")">#{item}</foreach>
+        having 1 order by tm desc) t
+        group by t.stcd
+    </select>
+
+    <select id="getResStaAndAreas" resultType="com.ygkj.big.screen.vo.response.WaResStaWaterLevelInfo">
+        select a.res_code, a.res_name, a.tot_cap, a.wat_shed_area, b.st_code, b.st_name
+        from att_res_base a
+        left join att_st_base b on b.st_type = 'RR' and a.res_code = b.proj_code
+        where a.del_flag = 0
+    </select>
+
+    <!-- ≤8级、9~10级、11~12级、13~14级、＞14级 -->
+    <select id="typhoonPowerStats" resultType="com.ygkj.big.screen.vo.response.WuWiuStatsRespVo">
+        select t.text, count(1) num from
+        (select
+        case
+        when land_power &lt;= 8 then '≤8级'
+        when land_power &gt; 8 and land_power &lt;= 10 then '9~10级'
+        when land_power &gt; 10 and land_power &lt;= 12 then '11~12级'
+        when land_power &gt; 12 and land_power &lt;= 14 then '13~14级'
+        when land_power &gt; 14 then '>14级'
+        else land_power
+        end `text`
+        from real_typhoon_data where `year` &gt;= #{yearPeriod}) t group by t.text
+    </select>
+
+    <!-- 1历史台风数量、2历史最大台风等级 -->
+    <select id="hisTyphoonStats" resultType="com.ygkj.big.screen.vo.response.WuWiuStatsRespVo">
+        <if test='"1".equals(type)'>
+            select '历史台风数量' `text`, count(1) num from real_typhoon_data where `year` &gt;= #{yearPeriod}
+        </if>
+        <if test='"1".equals(type)'>
+            select '历史最大台风等级' `text`, max(convert(land_power,signed)) num from real_typhoon_data where `year` &gt;=
+            #{yearPeriod}
+        </if>
+    </select>
+
+    <select id="yearTyphoonStats" resultType="com.ygkj.big.screen.vo.response.WuWiuStatsRespVo">
+        select `year`, count(1) num from real_typhoon_data where `year` &gt;= #{yearPeriod} group by `year`
+    </select>
+
+    <select id="typhoonInfos" resultType="com.ygkj.big.screen.model.RealTyphoonData">
+        select
+        id,
+        `name`,
+        begin_time,
+        end_time,
+        land,
+        code,
+        points,
+        `year`,
+        land_power,
+        english_name
+        from real_typhoon_data where `year` = #{year}
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+        <if test="landPower != null and landPower != ''">
+            and land_power = #{landPower}
+        </if>
+    </select>
+</mapper>

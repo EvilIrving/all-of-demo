@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.MountainFloodWarnDataMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.MountainFloodWarnData">
+        <result column="station_code" property="stationCode"/>
+        <result column="tm" property="tm"/>
+        <result column="data" property="data"/>
+        <result column="type" property="type"/>
+        <result column="period" property="period"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        station_code,
+        tm,
+        data,
+        type,
+        period
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.big.screen.model.MountainFloodWarnData">
+        replace into mountain_flood_warn_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != stationCode and '' != stationCode">
+                station_code,
+            </if>
+            <if test="null != tm and '' != tm">
+                tm,
+            </if>
+            <if test="null != data and '' != data">
+                data,
+            </if>
+            <if test="null != type and '' != type">
+                type,
+            </if>
+            <if test="null != period and '' != period">
+                period
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != stationCode and '' != stationCode">
+                #{stationCode},
+            </if>
+            <if test="null != tm and '' != tm">
+                #{tm},
+            </if>
+            <if test="null != data and '' != data">
+                #{data},
+            </if>
+            <if test="null != type and '' != type">
+                #{type},
+            </if>
+            <if test="null != period and '' != period">
+                #{period}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findRainDataByCondition" resultType="java.lang.Double">
+        SELECT SUM(drp) data FROM ${tableName} WHERE mgstcd = #{stcd} AND tm &gt;= #{startTime} AND tm &lt;= #{endTime}
+    </select>
+
+    <select id="selectPrevTfData" resultType="com.ygkj.big.screen.model.MountainFloodWarnData">
+        SELECT * FROM `mountain_flood_warn_data` where tm = #{endTime}
+    </select>
+
+
+</mapper>

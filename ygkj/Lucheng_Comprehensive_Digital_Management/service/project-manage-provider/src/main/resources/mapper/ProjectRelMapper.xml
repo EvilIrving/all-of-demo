@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.ProjectRelMapper">
+
+    <update id="updateProjVideoRel" parameterType="com.ygkj.project.vo.request.BatchSlProjStReqVo">
+        UPDATE
+            hikvision_camera_record
+        SET
+            project_code = #{projectCode}
+        WHERE
+            camera_index_code IN
+            <foreach collection="list" open="(" item="item" separator="," close=")">
+                #{item.stcd}
+            </foreach>
+    </update>
+
+    <update id="batchInsertProjStRel" parameterType="com.ygkj.project.model.SlProjStR">
+        INSERT INTO sl_proj_st_r
+            (project_code,stcd,st_type,project_type,is_main)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.projectCode},#{item.stcd},#{item.stType},#{item.projectType},#{item.isMain})
+            </foreach>
+    </update>
+
+    <update id="cleanMainSt" parameterType="String">
+        UPDATE sl_proj_st_r SET is_main = 0 WHERE project_code = #{projectCode}
+    </update>
+
+    <update id="updateSeawallMainSt" parameterType="com.ygkj.project.model.SlProjStR">
+        UPDATE att_seawall_base SET tide_station_code = #{stcd} WHERE seawall_code = #{projectCode}
+    </update>
+
+    <update id="cleanProjVideoRel" parameterType="com.ygkj.project.model.SlProjStR">
+        UPDATE
+            hikvision_camera_record
+        SET
+            project_code = NULL
+        <where>
+            <if test="stcd != null and stcd != ''">
+                camera_index_code = #{stcd}
+            </if>
+            <if test="projectCode != null and projectCode != ''">
+                AND project_code = #{projectCode}
+            </if>
+        </where>
+    </update>
+
+    <update id="updateMainSt" parameterType="com.ygkj.project.model.SlProjStR">
+        UPDATE
+            sl_proj_st_r
+        SET
+            is_main = #{isMain}
+        WHERE
+            project_code = #{projectCode}
+            AND stcd = #{stcd}
+            AND st_type = #{stType}
+    </update>
+
+    <delete id="delSeawallMainSt" parameterType="com.ygkj.project.model.SlProjStR">
+        UPDATE att_seawall_base SET tide_station_code = NULL WHERE seawall_code = #{projectCode}
+    </delete>
+
+    <delete id="delProjStRel" parameterType="com.ygkj.project.model.SlProjStR">
+        DELETE FROM sl_proj_st_r
+        WHERE project_code = #{projectCode} AND st_type = #{stType}
+        <if test="stcd != null and stcd != ''">
+            AND stcd = #{stcd}
+        </if>
+    </delete>
+
+    <select id="listRelSt" resultType="com.ygkj.project.vo.response.SlProjStResVo" parameterType="com.ygkj.project.vo.request.ProRelStVo">
+        SELECT
+            sp.stcd,sb.st_name stnm,sp.st_type
+        FROM
+            sl_proj_st_r sp
+            INNER JOIN att_st_base sb ON sp.stcd = sb.st_code
+        WHERE
+            sp.project_code = #{projectCode}
+            AND sp.project_type = #{projectType}
+            <if test="stTypeList.size > 0">
+                AND sp.st_type IN
+                <foreach collection="stTypeList" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        ORDER BY sp.is_main DESC
+    </select>
+
+    <select id="listRelQua" resultType="com.ygkj.project.vo.response.SlProjStResVo" parameterType="String">
+        SELECT
+            sp.stcd,sb.site_name stnm,sp.st_type
+        FROM
+            sl_proj_st_r sp
+            INNER JOIN att_riv_qua_st_base sb ON sp.stcd = sb.site_no
+        WHERE
+            sp.project_code = #{projectCode}
+            AND sp.st_type = 'QUA'
+            AND sp.project_type = 1
+        ORDER BY sp.is_main DESC
+    </select>
+
+    <select id="listPatrol" resultType="com.ygkj.project.vo.response.ProjectPatrolResVo" parameterType="com.ygkj.project.vo.request.ProjectPatrolReqVo">
+        SELECT
+            pg.id,pg.patrol_begintime,pg.patrol_endtime,pg.hidden_trouble_count,bu.real_name
+        FROM
+            `bh_sl_patrol_gis` pg
+            LEFT JOIN bh_user bu ON pg.u_id = bu.u_id
+        <where>
+            <if test="projectCode != null and projectCode != ''">
+                pg.skid = #{projectCode}
+            </if>
+            <if test="startTime != null">
+                AND patrol_begintime &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND patrol_begintime &lt;= #{endTime}
+            </if>
+            <if test="hiddenTroubleCount != null">
+                <choose>
+                    <when test="hiddenTroubleCount == 0">
+                        AND hidden_trouble_count = 0
+                    </when>
+                    <otherwise>
+                        AND hidden_trouble_count > 0
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        ORDER BY patrol_begintime DESC
+    </select>
+
+    <select id="listDanger" resultType="com.ygkj.project.vo.response.ProjectDangerResVo" parameterType="com.ygkj.project.vo.request.ProjectDangerReqVo">
+        SELECT
+            ABBREVIATION,PERSONLIABLE,`POSITION`,DESCRIPTION,
+            PHONE,FOUNDMETHOD,DISPOSALMETHOD,FOUNDTIME,PLAN_COMP_TM,
+            ACTL_COMP_TM,manage_desc,PICAID,AFTERAID,PID
+        FROM
+            bh_lg_prj_hide_danger
+        <where>
+            <if test="projectCode != null and projectCode != ''">
+               PID = #{projectCode}
+            </if>
+            <if test="startTime != null">
+                AND FOUNDTIME &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND FOUNDTIME &lt;= #{endTime}
+            </if>
+            <if test="foundmethod != null and foundmethod != ''">
+                AND FOUNDMETHOD = #{foundmethod}
+            </if>
+        </where>
+        ORDER BY FOUNDTIME DESC
+    </select>
+
+    <select id="listGreatDanger" resultType="com.ygkj.project.vo.response.ProjectGreatDangerResVo" parameterType="com.ygkj.project.vo.request.ProjectGreatDangerReqVo">
+
+    </select>
+
+    <select id="listMs" resultType="com.ygkj.water.project.vo.MonitoringStationResVo" parameterType="com.ygkj.project.vo.request.MonitoringStationReqVo">
+        SELECT
+           *
+        FROM
+            monitoring_station
+        <where>
+            <if test="stType != null and stType != ''">
+                st_type = #{stType}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="stName != null and stName != ''">
+                AND st_name LIKE CONCAT('%',#{stName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectLeader" resultType="com.ygkj.project.vo.response.DutyResVo">
+        SELECT
+            bu.real_name name
+        FROM
+            bh_duty_record bdr
+            LEFT JOIN bh_user bu ON bdr.LEADER = bu.u_id
+        WHERE
+            bdr.PID = #{projectCode}
+            AND DATE_FORMAT(DUTY_DATE,'%Y-%m-%d') = #{date}
+    </select>
+
+    <select id="listWorker" resultType="com.ygkj.project.vo.response.DutyResVo">
+        SELECT
+            bu.real_name name,bdr.DUTY_PHONE telphone
+        FROM
+            `bh_duty_record` bdr
+                LEFT JOIN bh_user bu ON FIND_IN_SET( bu.u_id, bdr.MGT_DAY ) AND bdr.LEADER != bu.u_id
+        WHERE
+            bdr.PID = #{projectCode}
+            AND DATE_FORMAT(DUTY_DATE,'%Y-%m-%d') = #{date}
+    </select>
+
+    <select id="selectForeignCode" resultType="java.lang.String" parameterType="com.ygkj.project.model.ProjectCodeMapping">
+        SELECT foreign_prcd FROM project_code_mapping
+        WHERE local_prcd = #{localPrcd} AND `type` = #{type}
+        <if test="null != projectType">
+            AND project_type = #{projectType}
+        </if>
+
+    </select>
+
+    <select id="listMapping" resultType="com.ygkj.project.model.ProjectCodeMapping">
+        SELECT * FROM project_code_mapping WHERE local_prcd IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="listBhFc" resultType="com.ygkj.project.model.BhLgMpFc">
+        SELECT
+            *
+        FROM
+            bh_lg_mp_fc
+        WHERE
+            YEAR(TM) = YEAR(NOW())
+            AND !ISNULL(AID)
+            AND PID IN
+            <foreach collection="list" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+
+    <select id="listBhAc" resultType="com.ygkj.project.model.BhLgMpAc">
+        SELECT
+            *
+        FROM
+            bh_lg_mp_ac
+        WHERE
+            YEAR(TM) = YEAR(NOW()) - 1
+            AND !ISNULL(AID)
+            AND PID IN
+            <foreach collection="list" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+
+    <select id="listPatrolWarn" resultType="com.ygkj.project.model.BhSlPatrolGis">
+        SELECT * FROM
+            (
+                 SELECT * FROM bh_sl_patrol_gis
+                 WHERE skid IN
+                    <foreach collection="list" open="(" item="item" separator="," close=")">
+                        #{item}
+                    </foreach>
+                 HAVING 1
+                 ORDER BY patrol_begintime DESC
+            ) a
+        GROUP BY skid
+    </select>
+
+    <select id="listDangerWarn" resultType="com.ygkj.project.model.BhLgPrjHideDanger">
+        SELECT pid,ACTL_COMP_TM,AFTERAID FROM bh_lg_prj_hide_danger WHERE PID IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="listProjVideoRel" resultType="com.ygkj.project.vo.response.SlProjStRResVo"
+            parameterType="com.ygkj.project.vo.request.SlProjStReqVo">
+        SELECT
+            IF(cr.project_code = #{projectCode},cr.project_code,null) project_code,
+            cr.camera_index_code stcd,cr.camera_name st_name,'SC' as st_type,
+            ab.city_adnm,ab.country_adnm,0 as is_main,${projectType} as project_type
+        FROM
+            hikvision_camera_record cr
+            LEFT JOIN att_adcd_base ab ON cr.area_code = ab.adcd
+        <where>
+            <if test="bind">
+                cr.project_code = #{projectCode}
+            </if>
+            <if test="stName != null and stName != ''">
+                AND cr.camera_name LIKE CONCAT('%',#{stName},'%')
+            </if>
+        </where>
+        ORDER BY project_code DESC
+    </select>
+
+    <select id="listProjStRel" resultType="com.ygkj.project.vo.response.SlProjStRResVo"
+            parameterType="com.ygkj.project.vo.request.SlProjStReqVo">
+        SELECT
+            project_code,stcd,st_name,is_main,
+            city_adnm,country_adnm,st_type,project_type
+        FROM
+            (
+                SELECT
+                    IF(sr.project_code = #{projectCode},sr.project_code,null) project_code,
+                    sb.st_code stcd,sb.st_name,IFNULL(sr.is_main,0) is_main,
+                    ab.city_adnm,ab.country_adnm,sb.st_type,${projectType} as project_type
+                FROM
+                    att_st_base sb
+                    LEFT JOIN sl_proj_st_r sr ON sb.st_code = sr.stcd
+                    LEFT JOIN att_real_all_project_base pb ON sr.project_code = pb.project_code
+                    LEFT JOIN att_adcd_base ab ON sb.area_code = ab.adcd
+                <where>
+                    <if test="bind">
+                        sr.project_code = #{projectCode}
+                    </if>
+                    <if test="stType != null and stType != ''">
+                        AND sb.st_type = #{stType}
+                    </if>
+                    <if test="isMain != null and isMain != ''">
+                        AND sb.is_main = #{isMain}
+                    </if>
+                    <if test="stName != null and stName != ''">
+                        AND sb.st_name LIKE CONCAT('%',#{stName},'%')
+                    </if>
+                    <if test="isRainStation != null and isRainStation != ''">
+                        AND sb.is_rain_station = #{isRainStation}
+                    </if>
+                </where>
+                HAVING 1
+                ORDER BY project_code DESC
+            ) a
+        GROUP BY stcd
+        ORDER BY project_code DESC
+    </select>
+
+    <select id="countRelSt" resultType="com.ygkj.project.vo.response.CountRelResVo" parameterType="String">
+        SELECT
+            COUNT( CASE WHEN st_type = 'TT' THEN 1 END ) ttNum,
+            COUNT( CASE WHEN st_type = 'PP' THEN 1 END ) ppNum,
+            COUNT( CASE WHEN st_type = 'MM' THEN 1 END ) mmNum,
+            COUNT( CASE WHEN st_type = 'SM' THEN 1 END ) smNum
+        FROM
+            sl_proj_st_r
+        WHERE
+            project_code = #{projectCode}
+    </select>
+
+    <select id="countRelVideo" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM hikvision_camera_record WHERE project_code = #{projectCode}
+    </select>
+
+    <select id="listBhDict" resultType="com.ygkj.project.model.BhDict">
+        SELECT * FROM bh_dict
+        <where>
+            <if test="tableName != null and tableName != ''">
+                table_name = #{tableName}
+            </if>
+            <if test="colName != null and colName != ''">
+                AND col_name = #{colName}
+            </if>
+        </where>
+    </select>
+
+    <select id="listRes" resultType="com.ygkj.project.vo.response.WaterLevelWarnResVo" parameterType="com.ygkj.project.vo.request.WaterLevelWarnReqVo">
+        SELECT * FROM
+            (
+              SELECT
+                pro.res_code project_code,pro.res_name project_name,
+                pro.low_left_long longitude,pro.low_left_lat latitude,
+                rel.stcd,rel.st_type,st.limit_level, pro.safety_conclusion
+              FROM
+                att_res_base pro
+                LEFT JOIN sl_proj_st_r rel ON pro.res_code = rel.project_code AND rel.project_type = 2 and rel.st_type = 'RR'
+                LEFT JOIN att_st_base st ON rel.stcd = st.st_code
+              <where>
+                  <if test="projectCode != null and projectCode != ''">
+                      pro.res_code = #{projectCode}
+                  </if>
+              </where>
+              HAVING 1
+              ORDER BY rel.is_main DESC
+            ) a
+        GROUP BY project_code
+    </select>
+
+    <select id="listRz" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT * FROM
+            (
+              SELECT
+                stcd,tm,rz
+              FROM
+                ${table}
+              WHERE
+                stcd IN
+                    <foreach collection="stcdList" open="(" item="item" separator="," close=")">
+                        #{item}
+                    </foreach>
+                AND tm &gt;= DATE_SUB(NOW(),INTERVAL 4 HOUR)
+              HAVING 1
+              ORDER BY tm DESC
+            ) a
+        GROUP BY stcd
+    </select>
+
+    <select id="listWaga" resultType="com.ygkj.project.vo.response.WaterLevelWarnResVo" parameterType="com.ygkj.project.vo.request.WaterLevelWarnReqVo">
+        SELECT * FROM
+            (
+              SELECT
+                pro.waga_code project_code,pro.waga_name project_name,
+                pro.start_long longitude,pro.start_lat latitude,
+                rel.stcd,rel.st_type,wc.water_level control_transport_level
+              FROM
+                att_waga_base pro
+                LEFT JOIN sl_proj_st_r rel ON pro.waga_code = rel.project_code AND rel.project_type = 6 AND rel.st_type = 'DD'
+                LEFT JOIN att_st_base st ON rel.stcd = st.st_code
+                LEFT JOIN water_level_control wc ON wc.prcd = pro.waga_code AND start_time &lt;= DATE_FORMAT(NOW(), '%m-%d') AND end_Time >= DATE_FORMAT(NOW(), '%m-%d')
+                <where>
+                    <if test="projectCode != null and projectCode != ''">
+                        pro.waga_code = #{projectCode}
+                    </if>
+                </where>
+              HAVING 1
+              ORDER BY rel.is_main
+            ) a
+        GROUP BY project_code
+    </select>
+
+    <select id="listUpz" resultType="com.ygkj.gragh.model.StWasR">
+        SELECT * FROM
+            (
+                SELECT
+                    stcd,tm,upz,dwz,MXGTQ,OVS
+                FROM
+                    ${table}
+                WHERE
+                    stcd IN
+                    <foreach collection="stcdList" open="(" item="item" separator="," close=")">
+                        #{item}
+                    </foreach>
+                    AND tm &gt;= DATE_SUB(NOW(),INTERVAL 4 HOUR)
+                HAVING 1
+                ORDER BY tm DESC
+            ) a
+        GROUP BY stcd
+    </select>
+
+    <select id="listDike" resultType="com.ygkj.project.vo.response.WaterLevelWarnResVo" parameterType="com.ygkj.project.vo.request.WaterLevelWarnReqVo">
+        SELECT * FROM
+            (
+                SELECT
+                    pro.dike_code project_code,pro.dike_name project_name,
+                    pro.start_long longitude,pro.start_lat latitude,
+                    rel.stcd,rel.st_type,st.warning_level,pro.dike_len,pro.dike_grad,pro.plan_fl_sta
+                FROM
+                    att_dike_base pro
+                    LEFT JOIN sl_proj_st_r rel ON pro.dike_code = rel.project_code AND rel.project_type = 6
+                    LEFT JOIN att_st_base st ON rel.stcd = st.st_code
+                    <where>
+                        <if test="projectCode != null and projectCode != ''">
+                            pro.dike_code = #{projectCode}
+                        </if>
+                    </where>
+                HAVING 1
+                ORDER BY rel.is_main DESC
+            ) a
+        GROUP BY project_code
+    </select>
+
+    <select id="listRuntimeProject" resultType="com.ygkj.project.vo.response.RuntimeWarnAllProjectResVo" parameterType="com.ygkj.project.vo.request.RuntimeWarnReqVo">
+        SELECT
+            *
+        FROM
+            att_pro_runtime
+        <where>
+            <if test="projectCode != null and projectCode != ''">
+                project_code = #{projectCode}
+            </if>
+            <if test="projectType != null and projectType != ''">
+                AND project_type = #{projectType}
+            </if>
+        </where>
+    </select>
+
+    <select id="listBeforeFlood" resultType="com.ygkj.project.vo.response.BeforeFloodResVo" parameterType="com.ygkj.project.vo.request.CheckReqVo">
+        SELECT
+            aid,tm
+        FROM
+            bh_lg_mp_fc
+        WHERE
+            PID = #{projectCode}
+            <if test="startTime != null">
+                AND tm &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND tm &lt;= #{endTime}
+            </if>
+        ORDER BY TM DESC
+    </select>
+
+    <select id="listYearReport" resultType="com.ygkj.project.vo.response.BhLgMpAcResVo" parameterType="com.ygkj.project.vo.request.CheckReqVo">
+        SELECT
+            ma.*,c.real_name checkName,GROUP_CONCAT(j.real_name) joinName
+        FROM
+            `bh_lg_mp_ac` ma
+            LEFT JOIN bh_user c ON ma.CHECK_UID = c.u_id
+            LEFT JOIN bh_user j ON FIND_IN_SET(j.u_id,ma.JOIN_UID)
+        WHERE
+            ma.pid = #{projectCode}
+            <if test="startTime != null">
+                AND ma.tm &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND ma.tm &lt;= #{endTime}
+            </if>
+        GROUP BY ma.id
+        ORDER BY ma.tm DESC
+    </select>
+
+    <select id="listTermiteCheck" resultType="com.ygkj.project.model.BhLgTermiteCheck" parameterType="com.ygkj.project.vo.request.CheckReqVo">
+        SELECT
+            *
+        FROM
+            bh_lg_termite_check
+        WHERE
+            pid = #{projectCode}
+            <if test="startTime != null">
+                AND tm &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND tm &lt;= #{endTime}
+            </if>
+        ORDER BY TM DESC
+    </select>
+
+    <select id="listYearBhFc" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT a.PID pid,b.local_prcd prcd,b.project_type FROM bh_lg_mp_fc a LEFT JOIN project_code_mapping b ON a.PID = b.foreign_prcd
+        WHERE YEAR(a.TM) = #{year} AND !ISNULL(a.AID)
+        AND b.local_prcd IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY a.PID
+    </select>
+
+    <select id="listYearCheck" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT a.PID pid,b.local_prcd prcd,b.project_type FROM bh_lg_mp_ac a LEFT JOIN project_code_mapping b ON a.PID = b.foreign_prcd
+        WHERE YEAR(a.TM) = #{year} AND !ISNULL(a.AID)
+        AND b.local_prcd IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY a.PID
+    </select>
+
+    <select id="listAfterCheck" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT pid prcd,file_ids FROM bh_lg_mp_af
+        WHERE del_flag = 0 AND YEAR(tm) = #{year} AND !ISNULL(file_ids)
+        AND pid IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY pid
+    </select>
+
+    <select id="listDailyCheck" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT a.skid pid,b.local_prcd prcd,b.project_type FROM bh_sl_patrol_gis a LEFT JOIN project_code_mapping b ON a.skid = b.foreign_prcd
+        WHERE left(a.patrol_begintime,13) = #{date}
+        AND b.local_prcd IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY a.skid
+    </select>
+
+
+    <select id="getProjList" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT  project_code, project_name,project_type from att_real_all_project_base
+        where del_flag=0 AND project_type IN ('海塘','堤防','水闸','水库')
+        <if test="list != null and list.size > 0">
+            AND project_code IN
+            <foreach collection="list" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+    </select>
+</mapper>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.AttTideFcstBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.AttTideFcstBase" >
+        <result column="id" property="id" />
+        <result column="release_time" property="releaseTime" />
+        <result column="release_type" property="releaseType" />
+        <result column="attach_name" property="attachName" />
+        <result column="attach_url" property="attachUrl" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+                release_time,
+                release_type,
+                attach_name,
+                attach_url
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.digitization.model.AttTideFcstBase">
+        INSERT INTO att_tide_fcst_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != releaseTime'>
+                release_time,
+            </if>
+            <if test ='null != releaseType'>
+                release_type,
+            </if>
+            <if test ='null != attachName'>
+                attach_name,
+            </if>
+            <if test ='null != attachUrl'>
+                attach_url,
+            </if>
+            <if test ='null != fcstStart'>
+                fcst_start,
+            </if>
+            <if test ='null != fcstEnd'>
+                fcst_end
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != releaseTime'>
+                #{releaseTime},
+            </if>
+            <if test ='null != releaseType'>
+                #{releaseType},
+            </if>
+            <if test ='null != attachName'>
+                #{attachName},
+            </if>
+            <if test ='null != attachUrl'>
+                #{attachUrl},
+            </if>
+            <if test ='null != fcstStart'>
+                #{fcstStart},
+            </if>
+            <if test ='null != fcstEnd'>
+                #{fcstEnd}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM att_tide_fcst_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.AttTideFcstBase">
+        UPDATE att_tide_fcst_base
+        <set>
+            <if test ='null != releaseTime'>release_time = #{releaseTime},</if>
+            <if test ='null != releaseType'>release_type = #{releaseType},</if>
+            <if test ='null != attachName'>attach_name = #{attachName},</if>
+            <if test ='null != attachUrl'>attach_url = #{attachUrl}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_tide_fcst_base
+        WHERE id = #{id}
+    </select>
+
+    <insert id="replaceVal" parameterType="com.ygkj.digitization.model.AttTideFcstValBase">
+        REPLACE INTO att_tide_fcst_val_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != fcstId'>
+                fcst_id,
+            </if>
+            <if test ='null != stCode'>
+                st_code,
+            </if>
+            <if test ='null != tm'>
+                tm,
+            </if>
+            <if test ='null != tdz'>
+                tdz
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != fcstId'>
+                #{fcstId},
+            </if>
+            <if test ='null != stCode'>
+                #{stCode},
+            </if>
+            <if test ='null != tm'>
+                #{tm},
+            </if>
+            <if test ='null != tdz'>
+                #{tdz}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="batchInsertVal" parameterType="com.ygkj.digitization.model.AttTideFcstValBase">
+        INSERT INTO att_tide_fcst_val_base
+            ( fcst_id,st_code,tm,tdz)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                ( #{item.fcstId},#{item.stCode},#{item.tm},#{item.tdz})
+            </foreach>
+    </insert>
+
+    <select id="selectByCondition" resultType="com.ygkj.digitization.vo.response.TideFcstResVo">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_tide_fcst_base
+        <where>
+            <if test="releaseStartTm!=null">
+                release_time &gt;= #{releaseStartTm}
+            </if>
+            <if test="releaseEndTm!=null">
+                AND release_time &lt;= #{releaseEndTm}
+            </if>
+            <if test="releaseType!=null">
+                AND release_type = #{releaseType}
+            </if>
+            <if test="year != null">
+                AND YEAR(release_time) = #{year}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectNewestFcst" resultType="com.ygkj.digitization.vo.response.TideFcstResVo">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_tide_fcst_base
+        <where>
+            <if test="true">
+                and release_time between DATE_ADD(CURDATE(),INTERVAL -5 DAY) and DATE_ADD(CURDATE(),INTERVAL 1 DAY)
+            </if>
+        </where>
+        order by release_time desc limit 1
+    </select>
+
+    <select id="selectManualValByFcstId" resultType="com.ygkj.digitization.vo.response.TideFcstValResVo">
+        select *
+        from
+        (select * from att_tide_fcst_val_base where fcst_id=#{fcstId} having 1 order by tm desc)
+        as a group by a.st_code
+    </select>
+
+    <select id="listFcstVal" resultType="com.ygkj.digitization.vo.response.AttTideFcstValResVo" parameterType="String">
+        select fcst_id,st_code,tm dataTime,tdz drillTdz from att_tide_fcst_val_base where fcst_id=#{fcstId} AND MINUTE(tm) = 0 ORDER BY tm
+    </select>
+
+    <select id="listTileFcstSt" resultType="com.ygkj.digitization.vo.response.FcstStResVo" parameterType="String">
+        SELECT
+            DISTINCT(vb.st_code),sb.st_name
+        FROM
+            att_tide_fcst_val_base vb
+            LEFT JOIN att_st_base sb ON vb.st_code = sb.st_code
+        WHERE
+            vb.fcst_id = #{fcstId}
+    </select>
+
+    <select id="listTileFcstVal" resultType="com.ygkj.digitization.vo.response.FcstValResVo"
+            parameterType="com.ygkj.digitization.vo.request.FcstValReqVo">
+        SELECT
+            fcst_id,st_code,tm,tdz
+        FROM
+            att_tide_fcst_val_base
+        WHERE
+            fcst_id=#{fcstId}
+            <if test="stCode != null and stCode != ''">
+                AND st_code = #{stCode}
+            </if>
+        ORDER BY tm
+    </select>
+
+</mapper>

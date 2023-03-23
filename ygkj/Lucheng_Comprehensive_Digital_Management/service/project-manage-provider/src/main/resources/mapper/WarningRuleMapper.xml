@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.WarningRuleMapper">
+    <select id="getSeawallByIds" resultType="com.alibaba.fastjson.JSONObject">
+
+        select seawall_code, seawall_name, seawall_type, seawall_level
+        from att_seawall_base
+        where del_flag = 0 AND seawall_code in
+        <foreach collection="asList" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getStationByIds" resultType="com.alibaba.fastjson.JSONObject">
+        select st_code, st_name, st_type
+        from att_st_base
+        where st_code in
+        <foreach collection="asList" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getStList" resultType="com.ygkj.gragh.model.AttStBase">
+        select st_code, st_name, st_type
+        from att_st_base
+        <where>
+            <if test="attStBase.stType != null and attStBase.stType != ''">
+                and st_type = #{attStBase.stType}
+            </if>
+            <if test="attStBase.stName !=null and attStBase.stName != ''">
+                and st_name like concat('%',#{attStBase.stName},'%')
+            </if>
+        </where>
+
+    </select>
+
+    <select id="listRuleSt" resultType="com.ygkj.gragh.model.AttStBase">
+        SELECT
+            st_code, st_name, st_type
+        FROM
+            att_st_base
+        WHERE
+            st_type IN
+            <foreach collection="stTypeList" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+            <if test="stName != null and stName != ''">
+                AND st_name LIKE CONCAT('%',#{stName},'%')
+            </if>
+    </select>
+
+    <select id="projectList" resultType="com.alibaba.fastjson.JSONObject">
+       select project_code, project_name,project_type from att_real_all_project_base
+        where del_flag=0 AND project_type IN ('海塘','堤防','水闸','水库')
+        <if test="projectName != null and ''!=projectName">
+            AND project_name like concat('%',#{projectName},'%')
+        </if>
+
+    </select>
+
+    <select id="getProjectByIds" resultType="com.alibaba.fastjson.JSONObject">
+        select project_code, project_name,project_type from att_real_all_project_base
+        where del_flag=0 AND project_type IN ('海塘','堤防','水闸','水库') and project_code in
+        <foreach collection="asList" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

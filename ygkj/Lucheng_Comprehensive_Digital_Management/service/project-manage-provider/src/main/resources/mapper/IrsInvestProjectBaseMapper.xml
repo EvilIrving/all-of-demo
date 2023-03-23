@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ygkj.water.project.mapper.IrsInvestProjectBaseMapper">
+    <select id="loadPage" parameterType="com.ygkj.project.vo.request.InvestProjectReqVo" resultType="com.ygkj.project.model.IrsInvestProjectBase">
+        select tbl.*,t1.APPROVAL_NUMBER approvalNumber from
+         (
+            select * from irs_approval_info
+            where VALIDITY_FLAG = '1' and DEPT_NAME like concat('%','鹿城区','%') and ITEM_CODE = '330000_SHSTJSXMSP'
+         ) t1
+        left join
+        (
+            select * from irs_invest_project_base where VALIDITY_FLAG = '有效'
+        <if test="year !=null and year !=''">
+            and APPLY_DATE like concat(#{year},'%')
+        </if>
+        <if test="archive !=null and archive !=''">
+            and archive = #{archive}
+        </if>
+        <if test="projectCode !=null and projectCode !=''">
+            and PROJECT_CODE = #{projectCode}
+        </if>
+        <if test="key !=null and key !=''">
+            and concat(PROJECT_NAME,PRINCIPAL_NAME) like concat('%', #{key},'%')
+        </if>
+            order by PROJECT_CODE
+        )tbl
+        on tbl.PROJECT_CODE = t1.PROJECT_CODE
+        where tbl.PROJECT_CODE is not null
+    </select>
+
+    <insert id="saveInvestProjectPlan" parameterType="com.ygkj.project.model.IrsInvestProjectPlan">
+        INSERT INTO irs_invest_project_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                id,
+            </if>
+            <if test="null != projectCode and '' != projectCode">
+                project_code,
+            </if>
+            <if test="null != planName and '' != planName">
+                plan_name,
+            </if>
+            <if test="null != time">
+                time,
+            </if>
+            <if test="null != reportPerson and '' != reportPerson">
+                report_person,
+            </if>
+            <if test="null != projectBaseCode and '' != projectBaseCode">
+                project_base_code
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                #{id},
+            </if>
+            <if test="null != projectCode and '' != projectCode">
+                #{projectCode},
+            </if>
+            <if test="null != planName and '' != planName">
+                #{planName},
+            </if>
+            <if test="null != time">
+                #{time},
+            </if>
+            <if test="null != reportPerson and '' != reportPerson">
+                #{reportPerson},
+            </if>
+            <if test="null != projectBaseCode and '' != projectBaseCode">
+                #{projectBaseCode}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="editInvestProjectPlan" parameterType="com.ygkj.project.model.IrsInvestProjectPlan">
+        UPDATE irs_invest_project_plan
+        <set>
+            project_code = #{projectCode},
+            plan_name = #{planName},
+            time = #{time},
+            report_person = #{reportPerson},
+            PROJECT_BASE_CODE = #{projectBaseCode}
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <insert id="saveInvestProjectFinance"  parameterType="com.ygkj.project.model.IrsInvestProjectFinance">
+        INSERT INTO irs_invest_project_finance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                id,
+            </if>
+            <if test="null != projectCode and '' != projectCode">
+                project_code,
+            </if>
+            <if test="null != totalMoney and '' != totalMoney">
+                total_money,
+            </if>
+            <if test="null != fundsSourcr and '' != fundsSourcr">
+                funds_sourcr,
+            </if>
+            <if test="null != purpose and '' != purpose">
+                purpose,
+            </if>
+            <if test="null != amountUserd and '' != amountUserd">
+                amount_userd,
+            </if>
+            <if test="null != amountRemain and '' != amountRemain">
+                amount_remain,
+            </if>
+            <if test="null != time">
+                time,
+            </if>
+            <if test="null != maintainer and '' != maintainer">
+                maintainer,
+            </if>
+            <if test="null != projectBaseCode and '' != projectBaseCode">
+                project_base_code
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                #{id},
+            </if>
+            <if test="null != projectCode and '' != projectCode">
+                #{projectCode},
+            </if>
+            <if test="null != totalMoney and '' != totalMoney">
+                #{totalMoney},
+            </if>
+            <if test="null != fundsSourcr and '' != fundsSourcr">
+                #{fundsSourcr},
+            </if>
+            <if test="null != purpose and '' != purpose">
+                #{purpose},
+            </if>
+            <if test="null != amountUserd and '' != amountUserd">
+                #{amountUserd},
+            </if>
+            <if test="null != amountRemain and '' != amountRemain">
+                #{amountRemain},
+            </if>
+            <if test="null != time">
+                #{time},
+            </if>
+            <if test="null != maintainer and '' != maintainer">
+                #{maintainer},
+            </if>
+            <if test="null != projectBaseCode and '' != projectBaseCode">
+                #{projectBaseCode}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="editInvestProjectFinance" parameterType="com.ygkj.project.model.IrsInvestProjectFinance">
+        UPDATE irs_invest_project_finance
+        <set>
+            project_code = #{projectCode},
+            total_money = #{totalMoney},
+            funds_sourcr = #{fundsSourcr},
+            purpose = #{purpose},
+            amount_userd = #{amountUserd},
+            amount_remain = #{amountRemain},
+            time = #{time},
+            maintainer = #{maintainer},
+            project_base_code = #{projectBaseCode}
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <insert id="saveInvestProjectConstruction"  parameterType="com.ygkj.project.model.IrsInvestProjectConstruction">
+        INSERT INTO irs_invest_project_construction
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                id,
+            </if>
+            <if test="null != projectCode and '' != projectCode">
+                project_code,
+            </if>
+            <if test="null != constructionunit and '' != constructionunit">
+                constructionunit,
+            </if>
+            <if test="null != constructionContent and '' != constructionContent">
+                construction_content,
+            </if>
+            <if test="null != constructionProgress and '' != constructionProgress">
+                construction_progress,
+            </if>
+            <if test="null != director and '' != director">
+                director,
+            </if>
+            <if test="null != projectBaseCode and '' != projectBaseCode">
+                project_base_code
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                #{id},
+            </if>
+            <if test="null != projectCode and '' != projectCode">
+                #{projectCode},
+            </if>
+            <if test="null != constructionunit and '' != constructionunit">
+                #{constructionunit},
+            </if>
+            <if test="null != constructionContent and '' != constructionContent">
+                #{constructionContent},
+            </if>
+            <if test="null != constructionProgress and '' != constructionProgress">
+                #{constructionProgress},
+            </if>
+            <if test="null != director and '' != director">
+                #{director},
+            </if>
+            <if test="null != projectBaseCode and '' != projectBaseCode">
+                #{projectBaseCode}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="editInvestProjectConstruction" parameterType="com.ygkj.project.model.IrsInvestProjectConstruction">
+        UPDATE irs_invest_project_construction
+        <set>
+            project_code = #{projectCode},
+            constructionunit = #{constructionunit},
+            construction_content = #{constructionContent},
+            construction_progress = #{constructionProgress},
+            director = #{director},
+            project_base_code = #{projectBaseCode}
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttSmallMediumRiverMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttSmallMediumRiver">
+        <result column="id" property="id"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="progress" property="progress"/>
+        <result column="project_name" property="projectName"/>
+        <result column="provincial_annual_task" property="provincialAnnualTask"/>
+        <result column="central_annual_mission" property="centralAnnualMission"/>
+        <result column="project_category" property="projectCategory"/>
+        <result column="project_overview" property="projectOverview"/>
+        <result column="subproject_name" property="subprojectName"/>
+        <result column="project_status" property="projectStatus"/>
+        <result column="river_water_system" property="riverWaterSystem"/>
+        <result column="section_name" property="sectionName"/>
+        <result column="start_location" property="startLocation"/>
+        <result column="end_location" property="endLocation"/>
+        <result column="province_task" property="provinceTask"/>
+        <result column="central_task" property="centralTask"/>
+        <result column="practical_tasks" property="practicalTasks"/>
+        <result column="total_project_investment" property="totalProjectInvestment"/>
+        <result column="complete_project_investment" property="completeProjectInvestment"/>
+        <result column="investment_proportion" property="investmentProportion"/>
+        <result column="complete_provincial_fund" property="completeProvincialFund"/>
+        <result column="complete_central_fund" property="completeCentralFund"/>
+        <result column="complete_localgovernment_fund" property="completeLocalgovernmentFund"/>
+        <result column="overall_progress" property="overallProgress"/>
+        <result column="task_status" property="taskStatus"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        city,
+        county,
+        progress,
+        project_name,
+        provincial_annual_task,
+        central_annual_mission,
+        project_category,
+        project_overview,
+        subproject_name,
+        project_status,
+        river_water_system,
+        section_name,
+        start_location,
+        end_location,
+        province_task,
+        central_task,
+        practical_tasks,
+        total_project_investment,
+        complete_project_investment,
+        investment_proportion,
+        complete_provincial_fund,
+        complete_central_fund,
+        complete_localgovernment_fund,
+        overall_progress,
+        task_status
+    </sql>
+
+    <select id="loadPage" resultType="com.ygkj.river.vo.response.AttSmallMediumRiverRespVo">
+        SELECT tbl.* FROM `att_small_medium_river` tbl where 1=1 and tbl.county != '温州市'
+        <if test='null != id and "" != id'>
+            and tbl.id = #{id}
+        </if>
+        <if test='null != county and "" != county'>
+            and tbl.county = #{county}
+        </if>
+        <if test='null != projectStatus and "" != projectStatus'>
+            and tbl.project_status = #{projectStatus}
+        </if>
+        <if test='null != projectName and "" != projectName'>
+            and tbl.project_name like CONCAT('%',#{projectName},'%')
+        </if>
+    </select>
+
+
+</mapper>

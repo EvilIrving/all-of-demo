@@ -1,0 +1,92 @@
+/*
+ * @Author: hanyu
+ * @LastEditTime: 2021-10-21 15:36:24
+ * @Description: 在此覆盖element-ui默认样式
+ * @FilePath: /lucheng_project/src/style/element.scss
+ */
+
+//解决表头错位
+body .el-table th.gutter {
+  display: table-cell !important;
+}
+//表格样式修改
+.tb_wrapper {
+  padding: 16px;
+  .el-table__header {
+    width: 100% !important;
+  }
+  .el-table__body {
+    width: 100% !important;
+  }
+  .el-table tr {
+    background-color: #fff !important;
+    color: #666 !important;
+  }
+  .el-table th {
+    background-color: #f2f3f5 !important;
+    color: #666 !important;
+    padding: 6px 0 !important;
+  }
+  .el-table td {
+    color: #666 !important;
+    padding: 6px 0 !important;
+  }
+  .el-table--striped .el-table__body tr.el-table__row--striped td {
+    background-color: #f5f7f9 !important;
+  }
+  .el-table--border:after,
+  .el-table--group:after,
+  .el-table:before {
+    background-color: #ddd !important;
+  }
+  .el-table--border,
+  .el-table--group {
+    border-color: #ddd !important;
+  }
+  .el-table td,
+  .el-table th.is-leaf {
+    border-bottom: 1px solid #ddd !important;
+  }
+  .el-table--border th,
+  .el-table--border th.gutter:last-of-type {
+    border-bottom: 1px solid #ddd !important;
+  }
+  .el-table--border td,
+  .el-table--border th {
+    border-right: 1px solid #ddd !important;
+  }
+  .el-table td,
+  .el-table th.is-leaf {
+    border-bottom: 1px solid #ddd !important;
+  }
+  .el-table td,
+  .building-top .el-table th.is-leaf {
+    border-bottom: 1px solid #ddd !important;
+  }
+  .pagination_box {
+    text-align: right;
+    padding-top: 20px;
+  }
+}
+
+// 弹窗样式
+.el-dialog__header {
+  padding: 16px;
+  background: #1492ff;
+  .el-dialog__title {
+    color: #fff;
+  }
+  .el-dialog__close {
+    color: #fff;
+  }
+}
+.el-dialog__body {
+  height: calc(100% - 120px);
+  overflow: hidden;
+}
+.fangan_dialog .el-dialog__header {
+  padding-bottom: 0;
+}
+.fangan_dialog .el-dialog__body {
+  padding-top: 0;
+}

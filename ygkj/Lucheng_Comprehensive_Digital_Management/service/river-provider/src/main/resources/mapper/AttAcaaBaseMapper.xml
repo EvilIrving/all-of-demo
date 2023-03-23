@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttAcaaBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttAcaaBase">
+        <result column="fid" property="fid"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="sname" property="sname"/>
+        <result column="enmae" property="enmae"/>
+        <result column="length" property="length"/>
+        <result column="width" property="width"/>
+        <result column="area" property="area"/>
+        <result column="vol" property="vol"/>
+        <result column="landform" property="landform"/>
+        <result column="town" property="town"/>
+        <result column="ia" property="ia"/>
+        <result column="type" property="type"/>
+        <result column="imp" property="imp"/>
+        <result column="contdiff" property="contdiff"/>
+        <result column="spcl" property="spcl"/>
+        <result column="remark" property="remark"/>
+        <result column="geometry" property="geometry"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        fid,
+        name,
+        code,
+        city,
+        county,
+        sname,
+        enmae,
+        length,
+        width,
+        area,
+        vol,
+        landform,
+        town,
+        ia,
+        type,
+        imp,
+        contdiff,
+        spcl,
+        remark,
+        geometry,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.river.model.AttAcaaBase">
+        INSERT INTO att_acaa_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != fid'>
+                fid,
+            </if>
+            <if test='null != name'>
+                name,
+            </if>
+            <if test='null != code'>
+                code,
+            </if>
+            <if test='null != city'>
+                city,
+            </if>
+            <if test='null != county'>
+                county,
+            </if>
+            <if test='null != sname'>
+                sname,
+            </if>
+            <if test='null != enmae'>
+                enmae,
+            </if>
+            <if test='null != length'>
+                length,
+            </if>
+            <if test='null != width'>
+                width,
+            </if>
+            <if test='null != area'>
+                area,
+            </if>
+            <if test='null != vol'>
+                vol,
+            </if>
+            <if test='null != landform'>
+                landform,
+            </if>
+            <if test='null != town'>
+                town,
+            </if>
+            <if test='null != ia'>
+                ia,
+            </if>
+            <if test='null != type'>
+                type,
+            </if>
+            <if test='null != imp'>
+                imp,
+            </if>
+            <if test='null != contdiff'>
+                contdiff,
+            </if>
+            <if test='null != spcl'>
+                spcl,
+            </if>
+            <if test='null != remark'>
+                remark,
+            </if>
+            <if test='null != geometry'>
+                geometry,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != fid'>
+                #{fid},
+            </if>
+            <if test='null != name'>
+                #{name},
+            </if>
+            <if test='null != code'>
+                #{code},
+            </if>
+            <if test='null != city'>
+                #{city},
+            </if>
+            <if test='null != county'>
+                #{county},
+            </if>
+            <if test='null != sname'>
+                #{sname},
+            </if>
+            <if test='null != enmae'>
+                #{enmae},
+            </if>
+            <if test='null != length'>
+                #{length},
+            </if>
+            <if test='null != width'>
+                #{width},
+            </if>
+            <if test='null != area'>
+                #{area},
+            </if>
+            <if test='null != vol'>
+                #{vol},
+            </if>
+            <if test='null != landform'>
+                #{landform},
+            </if>
+            <if test='null != town'>
+                #{town},
+            </if>
+            <if test='null != ia'>
+                #{ia},
+            </if>
+            <if test='null != type'>
+                #{type},
+            </if>
+            <if test='null != imp'>
+                #{imp},
+            </if>
+            <if test='null != contdiff'>
+                #{contdiff},
+            </if>
+            <if test='null != spcl'>
+                #{spcl},
+            </if>
+            <if test='null != remark'>
+                #{remark},
+            </if>
+            <if test='null != geometry'>
+                #{geometry},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="loadPage" resultType="com.ygkj.river.vo.response.AttAcaaBaseRespVo">
+        SELECT tbl.* FROM `att_acaa_base` tbl WHERE tbl.del_flag = 0
+    </select>
+
+
+</mapper>

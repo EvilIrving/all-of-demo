@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.BusinessMapper">
+
+
+    <select id="lastRz" resultType="com.ygkj.digitization.vo.response.ResSoftResVo">
+        SELECT
+            stcd st_code,rz
+        FROM
+            (
+                SELECT * FROM
+                    ${tableName}
+                WHERE
+                    tm > DATE_ADD(NOW(),INTERVAL -3 HOUR)
+                    AND stcd IN
+                    <foreach collection="collection" open="(" item="item" separator="," close=")">
+                        #{item}
+                    </foreach>
+                ORDER BY tm DESC
+                LIMIT 10000
+            ) a GROUP BY stcd
+    </select>
+
+    <select id="lastTide" resultType="com.ygkj.digitization.vo.response.SeawallSoftResVo">
+        SELECT
+            STCD st_code,TDZ
+        FROM
+            (
+                SELECT * FROM
+                    ${tableName}
+                WHERE
+                    TM > DATE_ADD(NOW(),INTERVAL -3 HOUR)
+                    AND STCD IN
+                    <foreach collection="collection" open="(" item="item" separator="," close=")">
+                        #{item}
+                    </foreach>
+                ORDER BY TM DESC
+                LIMIT 10000
+            ) a GROUP BY STCD
+    </select>
+</mapper>

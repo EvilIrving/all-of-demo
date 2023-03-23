@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.WatersReportMapper">
+
+
+    <select id="listPage" resultType="com.ygkj.project.model.WatersReport">
+        SELECT a.*,(SELECT GROUP_CONCAT(adnm) FROM att_adcd_base WHERE FIND_IN_SET(adcd,a.adcds)) adcdNames
+        FROM waters_report a
+        WHERE 1=1
+        <if test="watersReport.id != null and watersReport.id != ''">
+        AND a.id = #{watersReport.id}
+        </if>
+        <if test="watersReport.name != null and watersReport.name != ''">
+            AND a.name like CONCAT('%',#{watersReport.name},'%')
+        </if>
+        <if test="watersReport.area != null and watersReport.area != ''">
+            AND a.area &lt; #{watersReport.area}
+        </if>
+        <!--<if test="watersReport.waterType != null">
+            AND a.water_type = #{watersReport.waterType}
+        </if>-->
+        <if test="watersReport.adcds != null and watersReport.adcds != ''">
+            AND FIND_IN_SET(#{watersReport.adcds},a.adcds)
+        </if>
+        ORDER BY a.create_time DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.StPptnRAssistMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.StPptnRAssist" >
+        <result column="stcd" property="stcd" />
+        <result column="time" property="time" />
+        <result column="hour" property="hour" />
+        <result column="threehour" property="threehour" />
+        <result column="day" property="day" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        stcd,
+                time,
+                hour,
+                threehour,
+                day,
+                type
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.StPptnRAssist">
+        REPLACE INTO st_pptn_r_assist
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != stcd'>
+                stcd,
+            </if>
+            <if test ='null != time'>
+                time,
+            </if>
+            <if test ='null != hour'>
+                hour,
+            </if>
+            <if test ='null != threehour'>
+                threehour,
+            </if>
+            <if test ='null != day'>
+                day,
+            </if>
+            <if test ='null != type'>
+                type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != stcd'>
+                #{stcd},
+            </if>
+            <if test ='null != time'>
+                #{time},
+            </if>
+            <if test ='null != hour'>
+                #{hour},
+            </if>
+            <if test ='null != threehour'>
+                #{threehour},
+            </if>
+            <if test ='null != day'>
+                #{day},
+            </if>
+            <if test ='null != type'>
+                #{type}
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertForeach">
+        REPLACE into st_pptn_r_assist
+        ( stcd,time,hour,threehour,day,type)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.stcd},
+            DATE_FORMAT(#{item.time}, '%Y-%m-%d %H:%i:%s'),
+            #{item.hour},
+            #{item.threehour},
+            #{item.day},
+            #{item.type}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM st_pptn_r_assist
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.StPptnRAssist">
+        UPDATE st_pptn_r_assist
+        <set>
+            <if test ='null != stcd'>stcd = #{stcd},</if>
+            <if test ='null != time'>time = #{time},</if>
+            <if test ='null != hour'>hour = #{hour},</if>
+            <if test ='null != threehour'>threehour = #{threehour},</if>
+            <if test ='null != day'>day = #{day},</if>
+            <if test ='null != type'>type = #{type}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM st_pptn_r_assist
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM st_pptn_r_assist
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM st_pptn_r_assist
+    </select>
+
+    <select id="selectDataGreaterByHour" resultType="com.ygkj.digitization.vo.response.StPptnRAssistResp">
+        SELECT assist.hour data,assist.time,a.area_code,c.adnm area_name,assist.stcd,a.st_name stnm FROM `st_pptn_r_assist` assist
+            LEFT JOIN att_st_base a ON a.st_code = assist.stcd LEFT JOIN att_adcd_base c ON a.area_code = c.adcd WHERE assist.`hour` > 30
+        <if test="areaCode != null and areaCode != ''">
+            AND a.area_code = #{areaCode}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            AND assist.time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND assist.time &lt;= #{endTime}
+        </if>
+        <if test="stationName != null and stationName != ''">
+            AND a.st_name LIKE CONCAT('%',#{stationName},'%')
+        </if>
+        <if test="bas != null and bas !=''">
+            AND a.bas = #{bas}
+        </if>
+    </select>
+
+    <select id="selectDataGreaterByThreeHour"
+            resultType="com.ygkj.digitization.vo.response.StPptnRAssistResp">
+        SELECT assist.threehour data,assist.time,a.area_code,c.adnm area_name,assist.stcd,a.st_name stnm FROM `st_pptn_r_assist` assist
+            LEFT JOIN att_st_base a ON a.st_code = assist.stcd LEFT JOIN att_adcd_base c ON a.area_code = c.adcd
+        WHERE assist.`threehour` > 60
+        <if test="startTime != null and startTime != ''">
+            AND assist.time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND assist.time &lt;= #{endTime}
+        </if>
+        <if test="areaCode != null and areaCode != ''">
+            AND a.area_code = #{areaCode}
+        </if>
+        <if test="stationName != null and stationName != ''">
+            AND a.st_name LIKE CONCAT('%',#{stationName},'%')
+        </if>
+        <if test="bas != null and bas !=''">
+            AND a.bas = #{bas}
+        </if>
+    </select>
+
+    <select id="selectDataGreaterByDay" resultType="com.ygkj.digitization.vo.response.StPptnRAssistResp">
+        SELECT assist.day data,assist.time,a.area_code,c.adnm area_name,assist.stcd,a.st_name stnm FROM `st_pptn_r_assist` assist
+            LEFT JOIN att_st_base a ON a.st_code = assist.stcd LEFT JOIN att_adcd_base c ON a.area_code = c.adcd
+        WHERE assist.`day` > 100 AND type = 2
+        <if test="startTime != null and startTime != ''">
+            AND assist.time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND assist.time &lt;= #{endTime}
+        </if>
+        <if test="areaCode != null and areaCode != ''">
+            AND a.area_code = #{areaCode}
+        </if>
+        <if test="stationName != null and stationName != ''">
+            AND a.st_name LIKE CONCAT('%',#{stationName},'%')
+        </if>
+        <if test="bas != null and bas !=''">
+            AND a.bas = #{bas}
+        </if>
+    </select>
+
+    <select id="dailyRainfall" resultType="com.ygkj.digitization.vo.response.StPptnRAssistResp">
+        SELECT assist.day data,DATE_FORMAT(assist.time,'%Y-%m-%d') time,a.area_code,c.adnm area_name,assist.stcd,a.st_name stnm FROM `st_pptn_r_assist` assist
+        LEFT JOIN att_st_base a ON a.st_code = assist.stcd LEFT JOIN att_adcd_base c ON a.area_code = c.adcd WHERE type = 2
+        <if test="startTime != null and startTime != ''">
+            AND assist.time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND assist.time &lt;= #{endTime}
+        </if>
+        <if test="areaCode != null and areaCode != ''">
+            AND a.area_code = #{areaCode}
+        </if>
+        <if test="stationName != null and stationName != ''">
+            AND a.st_name LIKE CONCAT('%',#{stationName},'%')
+        </if>
+        order by assist.time
+    </select>
+    <select id="findIntervalDataRainOneRain" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+            CONCAT(DATE_FORMAT(b.time,'%Y-%m-%d %H'),'时-',DATE_FORMAT(DATE_ADD(b.time,INTERVAL +1 HOUR),'%H'),'时') tm,
+            b.hour data,
+            asb.st_name stnm,asb.st_code stCode
+        FROM
+            ( SELECT k.stcd, MAX( k.hour ) hour FROM st_pptn_r_assist k GROUP BY stcd ) a
+                LEFT JOIN st_pptn_r_assist b ON ( a.stcd = b.stcd AND a.hour = b.hour )
+                LEFT JOIN att_st_base asb ON asb.st_code = a.stcd where 1=1
+        <if test="areaCode != null and areaCode != ''">
+            AND asb.area_code = #{areaCode}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            AND b.time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND b.time &lt;= #{endTime}
+        </if>
+        <if test="stationName != null and stationName != ''">
+            AND asb.st_name LIKE CONCAT('%',#{stationName},'%')
+        </if>
+        GROUP BY
+            a.stcd
+        ORDER BY a.stcd
+    </select>
+
+    <select id="findIntervalDataRainThreeRain" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+            CONCAT(DATE_FORMAT(b.time,'%Y-%m-%d %H'),'时-',DATE_FORMAT(DATE_ADD(b.time,INTERVAL +3 HOUR),'%H'),'时') tm,
+            b.threehour data,
+            asb.st_name stnm,asb.st_code stCode
+        FROM
+            ( SELECT stcd, MAX( threehour ) threehour FROM st_pptn_r_assist GROUP BY stcd ) a
+                LEFT JOIN st_pptn_r_assist b ON ( a.stcd = b.stcd AND a.threehour = b.threehour )
+                LEFT JOIN att_st_base asb ON asb.st_code = a.stcd where 1=1
+        <if test="areaCode != null and areaCode != ''">
+            AND asb.area_code = #{areaCode}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            AND b.time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND b.time &lt;= #{endTime}
+        </if>
+        <if test="stationName != null and stationName != ''">
+            AND asb.st_name LIKE CONCAT('%',#{stationName},'%')
+        </if>
+        GROUP BY
+            a.stcd
+        ORDER BY a.stcd
+    </select>
+
+</mapper>

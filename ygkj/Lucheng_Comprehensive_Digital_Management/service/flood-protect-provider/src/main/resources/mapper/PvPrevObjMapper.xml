@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.PvPrevObjMapper">
+
+    <select id="selectPrevObj" resultType="com.ygkj.flood.model.AttPrevTfBase">
+        select a.prev_code id,case when i.prevtp = 'A047B9C832B411EAB14D6C92BFCE09D6' then '一般村落'
+            when i.prevtp = 'D304049432B411EAB14D6C92BFCE09D6' then '重要村落' end as recType,
+               a.admin_adnm avi,a.natural_adnm nvi, i.htcount tho,i.pcount tpo,
+               i.lgtd lon,i.lttd lat,pp.pcharge_name chargerName,pp.mobile chargerPhone,case when pfi.warn_time is not null then 'true' when pfi.warn_time is null then 'false' end as isAlarm
+        from (
+            select * from (
+                select * from pv_prev_obj_base where to_date is null
+                <if test="naturalAdnm!=null and naturalAdnm !=''">
+                    and natural_adnm like concat('%',#{naturalAdnm},'%')
+                </if>
+                 having 1 order by from_date desc ) b
+            group by b.natural_adnm ) a
+        left join pv_prev_obj_info  i
+            on a.prev_code = i.prev_code
+        left join (
+            select pb.natural_adnm,pb.charge_type,pb.charge_level,pi.pcharge_name,pi.mobile,pi.position
+                from  (
+                    select * from  pv_pcharge_base where to_date is null ) pb
+                    left join pv_pcharge_info pi on pb.pcharge_code = pi.pcharge_code
+            where pi.position = '转移责任人' ) pp on a.natural_adnm = pp.natural_adnm
+        <choose>
+            <when test="isAlarm == 'true'">
+                right join (select * from (select * from pv_flood_info where warn_time > DATE_SUB(NOW(),INTERVAL 1 DAY)  having 1 order by warn_time desc ) c group by c.prev_code ) pfi on a.prev_code = pfi.prev_code
+            </when>
+            <otherwise>
+                left join (select * from (select * from pv_flood_info where warn_time > DATE_SUB(NOW(),INTERVAL 1 DAY)  having 1 order by warn_time desc ) c group by c.prev_code ) pfi on a.prev_code = pfi.prev_code
+            </otherwise>
+        </choose>
+        order by pfi.warn_time desc
+    </select>
+
+
+    <select id="findAffectPopulationList" resultType="com.ygkj.flood.vo.response.PvFloodAffectPopulationResVo">
+        select * from pv_flood_affect_population
+        <where>
+            <if test="baseId != null and baseId != ''">
+                and prev_code = #{baseId}
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>

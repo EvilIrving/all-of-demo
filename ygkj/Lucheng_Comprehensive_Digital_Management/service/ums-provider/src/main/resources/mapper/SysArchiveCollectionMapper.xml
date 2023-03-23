@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.SysArchiveCollectionMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.auth.api.archivecollection.model.SysArchiveCollection" >
+        <result column="id" property="id" />
+        <result column="achievement_id" property="achievementId" />
+        <result column="create_name" property="createName" />
+        <result column="create_time" property="createTime" />
+        <result column="creator_id" property="creatorId" />
+        <result column="update_time" property="updateTime" />
+        <result column="file_id" property="fileId" />
+        <collection property="sysFile" ofType="com.ygkj.auth.api.file.model.SysFile" select="findFile" column="file_id">
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                achievement_id,
+                create_name,
+                create_time,
+                creator_id,
+                update_time,
+                del_flag,
+                file_id
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.auth.api.archivecollection.model.SysArchiveCollection">
+        INSERT INTO sys_archive_collection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != achievementId'>
+                achievement_id,
+            </if>
+            <if test ='null != createName'>
+                create_name,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != creatorId'>
+                creator_id,
+            </if>
+            <if test ='null != updateTime'>
+                update_time,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != fileId'>
+                file_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != achievementId'>
+                #{achievementId},
+            </if>
+            <if test ='null != createName'>
+                #{createName},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != creatorId'>
+                #{creatorId},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != fileId'>
+                #{fileId}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete" >
+        UPDATE sys_archive_collection set del_flag =1
+        WHERE id = #{id}
+    </update>
+
+    <update id="update" parameterType="com.ygkj.auth.api.archivecollection.model.SysArchiveCollection">
+        UPDATE sys_archive_collection
+        <set>
+            <if test ='null != achievementId'>achievement_id = #{achievementId},</if>
+            <if test ='null != createName'>create_name = #{createName},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != creatorId'>creator_id = #{creatorId},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != fileId'>file_id = #{fileId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="cancelCollection">
+        UPDATE sys_archive_collection set del_flag =1
+        WHERE creator_id = #{userId} and file_id = #{fileId}
+        <if test="achievementId!=null and achievementId!=''">
+            AND achievement_id = #{achievementId}
+        </if>
+    </delete>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_archive_collection
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_archive_collection
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM sys_archive_collection
+    </select>
+    <select id="selectAll" resultType="com.ygkj.auth.api.file.model.SysFile">
+        SELECT file.*,collection.id collectionId FROM sys_archive_collection collection LEFT JOIN `sys_file` file ON collection.file_id = file.id where file.deleted=0 and collection.del_flag=0
+        <if test="fileType!=null and fileType!=''">
+            AND FIND_IN_SET(file.file_type,#{fileType})
+        </if>
+        <if test="fileName!=null and fileName!=''">
+            AND file.file_name LIKE concat('%',#{fileName},'%')
+        </if>
+        <if test="year!=null and year!=''">
+            AND FIND_IN_SET(DATE_FORMAT(file.create_time,'%Y'),#{year})
+        </if>
+        <if test="labelIds!=null and labelIds!=''">
+            AND label_ids regexp concat('(',#{labelIds},')')
+        </if>
+        <if test="achievementId!=null and achievementId!=''">
+            AND FIND_IN_SET(file.id,(SELECT file_ids FROM `sys_achievement` achievement where id = #{achievementId}))
+        </if>
+        <if test="userId!=null and userId!=''">
+            AND collection.creator_id = #{userId}
+        </if>
+        <if test="id!=null and id!=''">
+            AND file.id = #{id}
+        </if>
+    </select>
+
+    <select id="findFile" parameterType="java.lang.String" resultType="com.ygkj.auth.api.file.model.SysFile">
+        select
+        file.*,(SELECT COUNT(1) num FROM `sys_archive_log` log WHERE log.del_flag = 0 AND file.id = log.file_id) browseNum
+        from sys_file file WHERE file.deleted = 0 and file.id = #{file_id, jdbcType=VARCHAR}
+    </select>
+
+</mapper>

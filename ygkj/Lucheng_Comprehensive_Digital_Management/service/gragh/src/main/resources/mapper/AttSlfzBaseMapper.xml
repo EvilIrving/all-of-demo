@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.AttSlfzBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.gragh.model.AttSlfzBase">
+        <result column="slfz_code" property="slfzCode"/>
+        <result column="slfz_name" property="slfzName"/>
+        <result column="low_left_long" property="lowLeftLong"/>
+        <result column="low_left_lat" property="lowLeftLat"/>
+        <result column="up_right_long" property="upRightLong"/>
+        <result column="up_right_lat" property="upRightLat"/>
+        <result column="slfz_rang" property="slfzRang"/>
+        <result column="slfz_clas" property="slfzClas"/>
+        <result column="sflz_len" property="sflzLen"/>
+        <result column="slfz__area" property="slfzArea"/>
+        <result column="note" property="note"/>
+        <result column="eff_date" property="effDate"/>
+        <result column="expr_date" property="exprDate"/>
+        <result column="points" property="points"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        slfz_code,
+        slfz_name,
+        low_left_long,
+        low_left_lat,
+        up_right_long,
+        up_right_lat,
+        slfz_rang,
+        slfz_clas,
+        sflz_len,
+        slfz__area,
+        note,
+        eff_date,
+        expr_date,
+        points
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.gragh.model.AttSlfzBase">
+        INSERT INTO att_slfz_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != slfzCode'>
+                slfz_code,
+            </if>
+            <if test='null != slfzName'>
+                slfz_name,
+            </if>
+            <if test='null != lowLeftLong'>
+                low_left_long,
+            </if>
+            <if test='null != lowLeftLat'>
+                low_left_lat,
+            </if>
+            <if test='null != upRightLong'>
+                up_right_long,
+            </if>
+            <if test='null != upRightLat'>
+                up_right_lat,
+            </if>
+            <if test='null != slfzRang'>
+                slfz_rang,
+            </if>
+            <if test='null != slfzClas'>
+                slfz_clas,
+            </if>
+            <if test='null != sflzLen'>
+                sflz_len,
+            </if>
+            <if test='null != slfzArea'>
+                slfz__area,
+            </if>
+            <if test='null != note'>
+                note,
+            </if>
+            <if test='null != effDate'>
+                eff_date,
+            </if>
+            <if test='null != exprDate'>
+                expr_date,
+            </if>
+            <if test='null != points'>
+                points
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != slfzCode'>
+                #{slfzCode},
+            </if>
+            <if test='null != slfzName'>
+                #{slfzName},
+            </if>
+            <if test='null != lowLeftLong'>
+                #{lowLeftLong},
+            </if>
+            <if test='null != lowLeftLat'>
+                #{lowLeftLat},
+            </if>
+            <if test='null != upRightLong'>
+                #{upRightLong},
+            </if>
+            <if test='null != upRightLat'>
+                #{upRightLat},
+            </if>
+            <if test='null != slfzRang'>
+                #{slfzRang},
+            </if>
+            <if test='null != slfzClas'>
+                #{slfzClas},
+            </if>
+            <if test='null != sflzLen'>
+                #{sflzLen},
+            </if>
+            <if test='null != slfzArea'>
+                #{slfzArea},
+            </if>
+            <if test='null != note'>
+                #{note},
+            </if>
+            <if test='null != effDate'>
+                #{effDate},
+            </if>
+            <if test='null != exprDate'>
+                #{exprDate},
+            </if>
+            <if test='null != points'>
+                #{points}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_slfz_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.gragh.model.AttSlfzBase">
+        UPDATE att_slfz_base
+        <set>
+            <if test='null != slfzCode'>slfz_code = #{slfzCode},</if>
+            <if test='null != slfzName'>slfz_name = #{slfzName},</if>
+            <if test='null != lowLeftLong'>low_left_long = #{lowLeftLong},</if>
+            <if test='null != lowLeftLat'>low_left_lat = #{lowLeftLat},</if>
+            <if test='null != upRightLong'>up_right_long = #{upRightLong},</if>
+            <if test='null != upRightLat'>up_right_lat = #{upRightLat},</if>
+            <if test='null != slfzRang'>slfz_rang = #{slfzRang},</if>
+            <if test='null != slfzClas'>slfz_clas = #{slfzClas},</if>
+            <if test='null != sflzLen'>sflz_len = #{sflzLen},</if>
+            <if test='null != slfzArea'>slfz__area = #{slfzArea},</if>
+            <if test='null != note'>note = #{note},</if>
+            <if test='null != effDate'>eff_date = #{effDate},</if>
+            <if test='null != exprDate'>expr_date = #{exprDate},</if>
+            <if test='null != points'>points = #{points}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_slfz_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_slfz_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_slfz_base
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_slfz_base
+        <where>
+            <if test="lineType != null and lineType != ''">
+                AND slfz_clas = #{lineType}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

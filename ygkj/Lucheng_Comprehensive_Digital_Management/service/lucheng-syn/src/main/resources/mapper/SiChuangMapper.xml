@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.SiChuangMapper">
+
+    <select id="getAttPerennialRainfallList" resultType="com.ygkj.lcsyn.model.AttPerennialRainfall">
+        SELECT RIGHT(b.TM, 2) as MONTH, ROUND(AVG(b.DRP), 1) DRP,b.STCD FROM
+        (SELECT STCD, datename(year,TM)+datename(month,TM) TM,SUM(DRP) DRP FROM ST_PPTN_R
+            <where>
+                <if test="year != null">
+                    and YEAR(TM) &lt; #{year}
+                </if>
+                <if test="stcds != null and stcds.size > 0">
+                    and STCD IN
+                    <foreach collection="stcds" item="stcd" close=")" open="(" separator=",">
+                        #{stcd}
+                    </foreach>
+                </if>
+                GROUP BY STCD, datename(year,TM)+datename(month,TM)) b GROUP BY b.STCD, RIGHT(b.TM, 2)
+            </where>
+    </select>
+
+    <select id="getAttLastYearRainfallList" resultType="com.ygkj.lcsyn.model.AttLastYearRainfall">
+        SELECT RIGHT(b.TM, 2) as MONTH, ROUND(AVG(b.DRP), 1) DRP,b.STCD FROM
+        (SELECT STCD, datename(year,TM)+datename(month,TM) TM,SUM(DRP) DRP FROM ST_PPTN_R
+        <where>
+            <if test="year != null">
+                and YEAR(TM) = #{year}
+            </if>
+            <if test="stcds != null and stcds.size > 0">
+                and STCD IN
+                <foreach collection="stcds" item="stcd" close=")" open="(" separator=",">
+                    #{stcd}
+                </foreach>
+            </if>
+            GROUP BY STCD, datename(year,TM)+datename(month,TM)) b GROUP BY b.STCD, RIGHT(b.TM, 2)
+        </where>
+    </select>
+</mapper>

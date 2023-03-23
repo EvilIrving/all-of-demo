@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.BusDuplicateCollectionMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.BusDuplicateCollection">
+        <result column="id" property="id"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="typhoon_id" property="typhoonId"/>
+        <result column="time_interval" property="timeInterval"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        start_time,
+        end_time,
+        typhoon_id,
+        time_interval,
+        type
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.big.screen.model.BusDuplicateCollection">
+        INSERT INTO bus_duplicate_collection
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                id,
+            </if>
+            <if test="null != startTime and '' != startTime">
+                start_time,
+            </if>
+            <if test="null != endTime and '' != endTime">
+                end_time,
+            </if>
+            <if test="null != typhoonId and '' != typhoonId">
+                typhoon_id,
+            </if>
+            <if test="null != timeInterval and '' != timeInterval">
+                time_interval,
+            </if>
+            <if test="null != typhoonName and '' != typhoonName">
+                typhoon_name,
+            </if>
+            <if test="null != type and '' != type">
+                type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                #{id},
+            </if>
+            <if test="null != startTime and '' != startTime">
+                #{startTime},
+            </if>
+            <if test="null != endTime and '' != endTime">
+                #{endTime},
+            </if>
+            <if test="null != typhoonId and '' != typhoonId">
+                #{typhoonId},
+            </if>
+            <if test="null != timeInterval and '' != timeInterval">
+                #{timeInterval},
+            </if>
+            <if test="null != typhoonName and '' != typhoonName">
+                #{typhoon_name},
+            </if>
+            <if test="null != type and '' != type">
+                #{type}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        update bus_duplicate_collection set del_flag = 1 WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.big.screen.model.BusDuplicateCollection">
+        UPDATE bus_duplicate_collection
+        <set>
+            <if test="null != startTime and '' != startTime">start_time = #{startTime},</if>
+            <if test="null != endTime and '' != endTime">end_time = #{endTime},</if>
+            <if test="null != typhoonId and '' != typhoonId">typhoon_id = #{typhoonId},</if>
+            <if test="null != timeInterval and '' != timeInterval">time_interval = #{timeInterval},</if>
+            <if test="null != type and '' != type">type = #{type}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="getList" resultType="com.ygkj.big.screen.vo.response.BusDuplicateCollectionResp">
+        select * from bus_duplicate_collection where del_flag = 0
+        <if test="id != null and id != ''">
+            AND id = #{id}
+        </if>
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+    </select>
+
+</mapper>

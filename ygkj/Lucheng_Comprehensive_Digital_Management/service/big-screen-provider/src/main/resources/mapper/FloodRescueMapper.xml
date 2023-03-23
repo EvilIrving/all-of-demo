@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.FloodRescueMapper">
+
+    <select id="getResBases" resultType="com.ygkj.big.screen.model.AttResBase">
+        select * from att_res_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and res_code = #{id}
+        </if>
+    </select>
+    <select id="getMnpdBases" resultType="com.ygkj.big.screen.model.AttMnpdBase">
+        select * from att_mnpd_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and mnpd_code = #{id}
+        </if>
+    </select>
+    <select id="getDikeBases" resultType="com.ygkj.big.screen.model.AttDikeBase">
+        select * from att_dike_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and dike_code = #{id}
+        </if>
+    </select>
+    <select id="getSeawallBases" resultType="com.ygkj.big.screen.model.AttSeawallBase">
+        select * from att_seawall_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and seawall_code = #{id}
+        </if>
+    </select>
+    <select id="getHystsBases" resultType="com.ygkj.big.screen.model.AttHystBase">
+        select * from att_hyst_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and hyst_code = #{id}
+        </if>
+    </select>
+    <select id="getPustBases" resultType="com.ygkj.big.screen.model.AttPustBase">
+        select * from att_pust_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and pust_code = #{id}
+        </if>
+    </select>
+    <select id="getWagaBases" resultType="com.ygkj.big.screen.model.AttWagaBase">
+        select * from att_waga_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and waga_code = #{id}
+        </if>
+    </select>
+    <select id="getWsProjs" resultType="com.ygkj.big.screen.model.WaterSupplyProject">
+        select * from water_supply_project where del_flag = 0
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+    </select>
+    <select id="getRiverStBases" resultType="com.ygkj.big.screen.model.AttStBase">
+        select * from att_st_base where st_type = 'ZZ'
+        <if test="id != null and id != ''">
+            and st_code = #{id}
+        </if>
+    </select>
+    <select id="getWarehouseBases" resultType="com.ygkj.big.screen.model.AttWarehouseBase">
+        select * from att_warehouse_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+    </select>
+    <select id="getTeamBases" resultType="com.ygkj.big.screen.model.AttTeamBase">
+        select * from att_team_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+    </select>
+    <select id="getCameraRecords" resultType="com.ygkj.big.screen.model.HikvisionCameraRecord">
+        select * from hikvision_camera_record where del_flag = 0
+        <if test="id != null and id != ''">
+            and camera_index_code = #{id}
+        </if>
+    </select>
+
+    <select id="wareHouseAdcdStats" resultType="java.util.Map">
+        select area_code adcd, count(1) num from att_warehouse_base where del_flag = 0 group by area_code
+    </select>
+
+    <select id="teamAdcdStats" resultType="java.util.Map">
+        select area_code adcd, count(1) num from att_team_base where del_flag = 0 group by area_code
+    </select>
+
+    <select id="teamPersonAdcdStats" resultType="java.util.Map">
+        select area_code adcd, sum(existing_number) num from att_team_base where del_flag = 0 group by area_code
+    </select>
+
+    <select id="projAdcdStats" resultType="java.util.Map">
+        select t.adcd, sum(t.num) num from
+        (select area_code adcd, count(1) num from att_res_base where del_flag = 0 and area_code is not null group by
+        area_code
+        union all
+        select area_code adcd, count(1) num from att_mnpd_base where del_flag = 0 and area_code is not null group by
+        area_code
+        union all
+        select area_code adcd, count(1) num from att_dike_base where del_flag = 0 and area_code is not null group by
+        area_code
+        union all
+        select area_code adcd, count(1) num from att_seawall_base where del_flag = 0 and area_code is not null group by
+        area_code
+        union all
+        select hyst_loc adcd, count(1) num from att_hyst_base where del_flag = 0 and hyst_loc is not null group by
+        hyst_loc
+        union all
+        select area_code adcd, count(1) num from att_pust_base where del_flag = 0 and area_code is not null group by
+        area_code
+        union all
+        select area_code adcd, count(1) num from att_waga_base where del_flag = 0 and area_code is not null group by
+        area_code
+        union all
+        select m.adcd, count(1) num from
+        (select concat(left(adcd,6),'000000') adcd from water_supply_project where del_flag = 0 and adcd is not null and
+        adcd &lt;&gt; '') m
+        group by m.adcd) t group by t.adcd
+    </select>
+    <select id="projTypeStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select '水库' txt, count(1) num from att_res_base where del_flag = 0
+        union all
+        select '山塘' txt, count(1) num from att_mnpd_base where del_flag = 0
+        union all
+        select '堤防' txt, count(1) num from att_dike_base where del_flag = 0
+        union all
+        select '海塘' txt, count(1) num from att_seawall_base where del_flag = 0
+        union all
+        select '水电站' txt, count(1) num from att_hyst_base where del_flag = 0
+        union all
+        select '泵站' txt, count(1) num from att_pust_base where del_flag = 0
+        union all
+        select '水闸' txt, count(1) num from att_waga_base where del_flag = 0
+        union all
+        select '农村供水工程' txt, count(1) num from water_supply_project where del_flag = 0
+    </select>
+
+    <select id="getWatertLevelStas" resultType="com.ygkj.big.screen.vo.response.FrWaterLevelStaRespVo">
+        select st_code, st_name, st_type from att_st_base where st_type in ('RR', 'ZZ')
+    </select>
+    <select id="getResRealWaterLevels" resultType="java.util.Map">
+        select t.stcd, t.z from
+        (select stcd, rz z from ${tableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by tm desc) t
+        group by t.stcd
+    </select>
+    <select id="getRiverRealWaterLevels" resultType="java.util.Map">
+        select t.stcd, t.z from
+        (select stcd, z from ${tableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by tm desc) t
+        group by t.stcd
+    </select>
+
+    <select id="getStBases" resultType="com.ygkj.big.screen.vo.response.FrWaterLevelStaRespVo">
+        select st_code, st_name, st_type from att_st_base where st_type = #{stType}
+    </select>
+    <select id="getSzWaterLevels" resultType="java.util.Map">
+        select t.stcd, t.upz, t.dwz, t.ovs from
+        (select stcd, upz, dwz, ovs from ${tableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by
+        tm desc) t
+        group by t.stcd
+    </select>
+
+    <select id="queryStByCondtion" resultType="com.ygkj.big.screen.model.AttStBase">
+        select *
+        from att_st_base
+        <where>
+            <if test="stCode!=null and stCode!=''">
+                AND st_code=#{stCode}
+            </if>
+            <if test="stName!=null and stName!=''">
+                AND st_name like concat('%',#{stName},'%'}
+            </if>
+            <if test="stType!=null and stType!=''">
+                AND st_type=#{stType}
+            </if>
+            <if test="bas!=null and bas!=''">
+                AND bas like concat('%',#{bas},'%'}
+            </if>
+        </where>
+    </select>
+</mapper>

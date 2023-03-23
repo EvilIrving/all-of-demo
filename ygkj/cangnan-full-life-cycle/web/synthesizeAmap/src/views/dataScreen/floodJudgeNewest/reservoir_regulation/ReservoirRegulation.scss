@@ -1,0 +1,148 @@
+@import "@/style/blueDialog.scss";
+::v-deep .dispatch-dialog {
+	.el-dialog {
+		background: rgba(0, 0, 0, 0) url(../../../../assets/images/blue-dialog-bg.png) no-repeat center center;
+		background-size: 100% 100%;
+		.el-dialog__header {
+			// padding: 0 40px;
+			background: rgba(0, 0, 0, 0);
+			.el-dialog__title {
+				// margin-left: 20px !important;
+				color: #4db6e4;
+			}
+			.el-dialog__headerbtn {
+				// margin-right: 20px !important;
+				top: 26px;
+				right: 28px;
+			}
+		}
+		.dialog-content {
+			// padding-top: 20px;
+			.configuration-header {
+				width: 100%;
+				height: 100px;
+				padding: 0;
+				.first-line {
+					@include flexflow(row, nowrap);
+					@include flexJC(space-between);
+					@include flexAC;
+					.left-side {
+						padding-left: 20px;
+						color: #4898fb;
+						.el-input {
+							width: 210px;
+							border: 1px solid #4898fb;
+							.el-input__inner {
+								height: 28px;
+								color: #4898fb;
+								background: rgba(0, 0, 0, 0);
+							}
+						}
+						b {
+							padding: 0 5px;
+							font-weight: normal;
+						}
+					}
+					.right-side {
+						span {
+							display: inline-block;
+							padding: 8px;
+							border-radius: 4px;
+							background: #205ab0;
+							color: #ccc;
+							font-size: 12px;
+							margin-right: 8px;
+							cursor: pointer;
+							&.active {
+								color: #fff;
+								background: #3283ff;
+							}
+						}
+					}
+				}
+				.content-body {
+					height: calc(100% - 100px);
+					width: 100%;
+					padding: 0px !important;
+					@include flexbox;
+					@include flexflow(row, nowrap);
+					.configuration-body {
+						width: 250px;
+						height: 100%;
+						padding-right: 0px !important;
+					}
+				}
+				.second-line {
+					padding-top: 16px;
+					padding-left: 20px;
+					.parameter-area {
+						width: calc(100% - 300px);
+						@include flexbox;
+						@include flexJC(space-around);
+						@include flexflow(row, nowrap);
+						.param-item {
+							@include flexbox;
+							@include flexAC;
+							span {
+								color: #4898fb;
+							}
+							.el-input {
+								width: 70px;
+								.el-input__inner {
+									padding: 0;
+									background: rgba(0, 0, 0, 0);
+									border: 1px solid #4898fb;
+									height: 28px;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		.el-dialog__footer {
+			font-size: 16px;
+			padding: 0.625rem 1.25rem 1.25rem;
+			text-align: right;
+			.el-button {
+				border: 0;
+				border-radius: 0;
+			}
+
+			.btn-cancel.el-button,
+			.btn-cancel.el-button:focus,
+			.btn-cancel.el-button:hover {
+				color: #999999;
+				background-color: transparent;
+			}
+
+			.btn-save.el-button,
+			.btn-save.el-button:focus,
+			.btn-save.el-button:hover {
+				color: #fff;
+				background: #239def;
+			}
+		}
+	}
+	.el-collapse {
+		border: 0;
+		.el-collapse-item__header {
+			height: 32px;
+			background-color: transparent;
+			border: none;
+			color: #3f9bfc;
+			font-size: 14px;
+			padding-left: 10px;
+			background: url(../../../../assets/images/title-border.png) no-repeat;
+			background-size: 100% 100%;
+			margin-bottom: 10px;
+		}
+		.el-collapse-item__wrap {
+			background-color: transparent;
+			border: none;
+		}
+		.el-collapse-item__content {
+			padding-bottom: 0;
+		}
+	}
+}

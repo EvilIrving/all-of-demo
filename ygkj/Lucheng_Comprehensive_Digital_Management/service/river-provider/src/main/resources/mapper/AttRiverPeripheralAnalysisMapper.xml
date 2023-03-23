@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttRiverPeripheralAnalysisMapper">
+    <select id="RiverAnalysisObjectTypeStatistic" resultType="com.ygkj.entity.StatisticEntity">
+        SELECT `type`,COUNT(DISTINCT(object_id)) AS num
+        FROM att_river_peripheral_analysis
+        WHERE river_seg_id = #{riverSegId} AND distance &lt;= #{distance}
+        GROUP BY type
+    </select>
+
+    <select id="selectPoints" resultType="map">
+        SELECT * FROM ${table}
+        WHERE ${primary} IN
+        (
+        <foreach collection="ids" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+</mapper>

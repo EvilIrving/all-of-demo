@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="Yvette Lau">
+  <meta name="Keywords" content="关键字">
+  <meta name="Description" content="描述">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+      font-size: 22px;
+    }
+
+    .content {
+      background-color: #57FF57;
+      opacity: 0.6;
+      padding: 40px;
+      width: 600px;
+      border-radius: 10px;
+      margin: 20px auto;
+    }
+
+    input[type='file'] {
+      outline: none;
+    }
+
+    input[type='button'] {
+      border-radius: 10px;
+      height: 50px;
+      width: 80px;
+      background-color: pink;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type='button']:hover {
+      font-weight: 600;
+    }
+
+    #details,
+    #information,
+    #imgInfo {
+      border-radius: 10px;
+      padding: 10px 20px;
+      background-color: rgba(246, 255, 73, 0.6);
+      color: #000000;
+      display: none;
+      margin: 10px;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    #details p,
+    #information p,
+    #imgInfo p {
+      font-weight: 600;
+      font-family: "Microsoft Yahei";
+      height: 40px;
+      line-height: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <input type="file" id="file" multiple="multiple" />
+    <input type="button" id="upload" value="上传" />
+    <div id="details">
+    </div>
+  </div>
+
+  <div class="content">
+    <input type="file" id="image" multiple="multiple" />
+    <input type="button" id="show" value="上传" />
+    <div id="information">
+    </div>
+  </div>
+
+  <div class="content">
+    <input type="file" id="imageOnly" multiple="multiple" accept="image/*" />
+    <input type="button" id="uploadImg" value="上传" />
+    <div id="imgInfo">
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+  window.onload = function () {
+    /*文件上传*/
+    var filesList = document.getElementById("file");
+    var up = document.getElementById("upload");
+    var details = document.getElementById("details");
+    /*通过正则表达式，限制文件类型*/
+    var imgList = document.getElementById("image");
+    var show = document.getElementById("show");
+    var information = document.getElementById("information");
+    /*通过file空间的自带属性accept来限制文件类型*/
+    var imageOnly = document.getElementById("imageOnly");
+    var uploadImg = document.getElementById("uploadImg");
+    var upoadImg = document.getElementById("imgInfo");
+
+    for (var i = 0; i < navigator.plugins.length; i++) {
+      console.log(navigator.plugins[i], 'name');
+    }
+     //IE中无效
+    function hasPlugin(name) {
+      name = name.toLowerCase();
+      for (var i = 0; i < navigator.plugins.length; i++) {
+        console.log(navigator.plugins[i].name,'name');
+        if (navigator.plugins[i].name.toLowerCase().indexOf(name) > -1) {
+          return true;
+        }
+      }
+      return false;
+    }
+    //IE浏览器
+    function hasIEPlugin(name) {
+      try {
+        new ActiveXObject(name);
+        return true;
+      } catch (ex) {
+        return false;
+      }
+    }
+    //检测浏览器是否有Flash插件
+    function hasFlash(name) {
+      var result = hasPlugin(name);
+      if (!result) {
+        result = hasIEPlugin("ShockwaveFlash.ShockwaveFlash");
+      }
+      return result;
+    }
+
+     if (!hasFlash("flash")) {
+      if (window.confirm("系统检测到您的电脑尚未安装该页面必须的Flash插件，需要您关闭浏览器后下载并按照提示安装该插件。\r\n您确定继续下载安装Flash插件吗？")){
+            var newWindow = window.open("http://wwww.baidu.com", "_blank", "");
+      if (newWindow == null) {
+        //打开新窗口失败
+        window.location = "http://wwww.baidu.com"; //在本窗口打开
+      }
+    }
+  }
+
+    up.onclick = function () {
+      insertInformation(details, filesList);
+    }
+    show.onclick = function () {
+      insertInformation(information, imgList, /image\/\w+/);
+    }
+    uploadImg.onclick = function () {
+      insertInformation(upoadImg, imageOnly);
+    }
+
+    /*将时间格式化为“yy-mm-dd hh:mm:ss”*/
+    function FormatDate(strTime) {
+      var date = new Date(strTime);
+      return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    }
+
+    /*des是存放信息的对象，fileMes是file控件， pattern是正则表达式*/
+    function insertInformation(des, fileMes, pattern) {
+      des.innerHTML = "";
+      for (var i = 0; i < fileMes.files.length; i++) {
+        var file = fileMes.files[i];
+        if (pattern == undefined || pattern.test(file.type)) {
+          des.innerHTML += "<p>文件名：" + file.name + "</p>";
+          des.innerHTML += "<p>文件类型：" + file.type + "</p>";
+          des.innerHTML += "<p>文件大小：" + file.size + "</p>";
+          des.innerHTML += "<p>最后修改时间：" + FormatDate(file.lastModifiedDate) + "</p>" + "<br/>";
+          des.style.display = "block";
+        } else {
+          alert(file.name + "的文件类型不正确");
+        }
+      }
+    }
+  };
+</script>
+
+</html>

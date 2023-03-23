@@ -1,0 +1,51 @@
+{
+  "name": "scwater_official",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --open",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "bubild:deploy:dev": "npm run build && cross-env NODE_ENV=dev node ./deploy",
+    "bubild:deploy:prod": "npm run build && cross-env NODE_ENV=prod node ./deploy",
+    "deploy:dev": "cross-env NODE_ENV=dev node ./deploy",
+    "deploy:prod": "cross-env NODE_ENV=prod node ./deploy"
+  },
+  "dependencies": {
+    "@linjhon/v-charts": "^1.19.1",
+    "@supermap/iclient-ol": "^10.1.0",
+    "axios": "^0.19.2",
+    "core-js": "^3.6.5",
+    "element-ui": "2.15.8",
+    "js-base64": "^3.6.0",
+    "jsencrypt": "^3.2.0",
+    "moment": "^2.29.3",
+    "nprogress": "^0.2.0",
+    "ol": "^6.5.0",
+    "v-charts": "^1.19.0",
+    "video.js": "^7.17.0",
+    "videojs-flash": "^2.2.1",
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
+    "vue-video-player": "^5.0.2",
+    "vuex": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-plugin-eslint": "~4.4.0",
+    "@vue/cli-plugin-router": "~4.4.0",
+    "@vue/cli-plugin-vuex": "~4.4.0",
+    "@vue/cli-service": "~4.4.0",
+    "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.3",
+    "docx-preview": "^0.1.11",
+    "echarts": "^4.9.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "ora": "^5.3.0",
+    "px2rem-loader": "^0.1.9",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  }
+}

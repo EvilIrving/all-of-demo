@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.CameraRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.gragh.model.AttVideoBase">
+        <result column="device" property="device"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="check_count" property="checkCount"/>
+        <result column="community" property="community"/>
+        <result column="current_status" property="currentStatus"/>
+        <result column="db33" property="db33"/>
+        <result column="device_class" property="deviceClass"/>
+        <result column="device_code" property="deviceCode"/>
+        <result column="factory_id" property="factoryId"/>
+        <result column="group_code" property="groupCode"/>
+        <result column="last_check_time" property="lastCheckTime"/>
+        <result column="last_status" property="lastStatus"/>
+        <result column="last_url" property="lastUrl"/>
+        <result column="lat" property="lat"/>
+        <result column="lng" property="lng"/>
+        <result column="mp_id" property="mpId"/>
+        <result column="mp_name" property="mpName"/>
+        <result column="need_check" property="needCheck"/>
+        <result column="res_type" property="resType"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="resultMap" type="com.ygkj.gragh.model.HikvisionCameraRecord">
+        <result column="camera_index_code" property="cameraIndexCode"/>
+        <result column="camera_name" property="cameraName"/>
+        <result column="device_index_code" property="deviceIndexCode"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
+        <result column="altitude" property="altitude"/>
+        <result column="camera_type" property="cameraType"/>
+        <result column="camera_type_name" property="cameraTypeName"/>
+        <result column="channel_type" property="channelType"/>
+        <result column="channel_type_name" property="channelTypeName"/>
+        <result column="region_index_code" property="regionIndexCode"/>
+        <result column="sync_time" property="syncTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator_id" property="creatorId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updator_id" property="updatorId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="source" property="source"/>
+        <result column="preview_url" property="previewUrl"/>
+        <result column="status" property="status"/>
+        <result column="area_code" property="areaCode"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        camera_index_code,
+        camera_name,
+        device_index_code,
+        longitude,
+        latitude,
+        altitude,
+        camera_type,
+        camera_type_name,
+        channel_type,
+        channel_type_name,
+        region_index_code,
+        sync_time,
+        create_time,
+        creator_id,
+        update_time,
+        updator_id,
+        del_flag,
+        source,
+        preview_url,
+        status,
+        area_code
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.gragh.model.HikvisionCameraRecord">
+        INSERT INTO hikvision_camera_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != cameraIndexCode'>
+                camera_index_code,
+            </if>
+            <if test='null != cameraName'>
+                camera_name,
+            </if>
+            <if test='null != deviceIndexCode'>
+                device_index_code,
+            </if>
+            <if test='null != longitude'>
+                longitude,
+            </if>
+            <if test='null != latitude'>
+                latitude,
+            </if>
+            <if test='null != altitude'>
+                altitude,
+            </if>
+            <if test='null != cameraType'>
+                camera_type,
+            </if>
+            <if test='null != cameraTypeName'>
+                camera_type_name,
+            </if>
+            <if test='null != channelType'>
+                channel_type,
+            </if>
+            <if test='null != channelTypeName'>
+                channel_type_name,
+            </if>
+            <if test='null != regionIndexCode'>
+                region_index_code,
+            </if>
+            <if test='null != syncTime'>
+                sync_time,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != creatorId'>
+                creator_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updatorId'>
+                updator_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag,
+            </if>
+            <if test='null != source'>
+                source,
+            </if>
+            <if test='null != previewUrl'>
+                preview_url,
+            </if>
+            <if test='null != status'>
+                status,
+            </if>
+            <if test='null != areaCode'>
+                area_code
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != cameraIndexCode'>
+                #{cameraIndexCode},
+            </if>
+            <if test='null != cameraName'>
+                #{cameraName},
+            </if>
+            <if test='null != deviceIndexCode'>
+                #{deviceIndexCode},
+            </if>
+            <if test='null != longitude'>
+                #{longitude},
+            </if>
+            <if test='null != latitude'>
+                #{latitude},
+            </if>
+            <if test='null != altitude'>
+                #{altitude},
+            </if>
+            <if test='null != cameraType'>
+                #{cameraType},
+            </if>
+            <if test='null != cameraTypeName'>
+                #{cameraTypeName},
+            </if>
+            <if test='null != channelType'>
+                #{channelType},
+            </if>
+            <if test='null != channelTypeName'>
+                #{channelTypeName},
+            </if>
+            <if test='null != regionIndexCode'>
+                #{regionIndexCode},
+            </if>
+            <if test='null != syncTime'>
+                #{syncTime},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != creatorId'>
+                #{creatorId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updatorId'>
+                #{updatorId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test='null != source'>
+                #{source},
+            </if>
+            <if test='null != previewUrl'>
+                #{previewUrl},
+            </if>
+            <if test='null != status'>
+                #{status},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM hikvision_camera_record
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.gragh.model.HikvisionCameraRecord">
+        UPDATE hikvision_camera_record
+        <set>
+            <if test='null != cameraIndexCode'>camera_index_code = #{cameraIndexCode},</if>
+            <if test='null != cameraName'>camera_name = #{cameraName},</if>
+            <if test='null != deviceIndexCode'>device_index_code = #{deviceIndexCode},</if>
+            <if test='null != longitude'>longitude = #{longitude},</if>
+            <if test='null != latitude'>latitude = #{latitude},</if>
+            <if test='null != altitude'>altitude = #{altitude},</if>
+            <if test='null != cameraType'>camera_type = #{cameraType},</if>
+            <if test='null != cameraTypeName'>camera_type_name = #{cameraTypeName},</if>
+            <if test='null != channelType'>channel_type = #{channelType},</if>
+            <if test='null != channelTypeName'>channel_type_name = #{channelTypeName},</if>
+            <if test='null != regionIndexCode'>region_index_code = #{regionIndexCode},</if>
+            <if test='null != syncTime'>sync_time = #{syncTime},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != creatorId'>creator_id = #{creatorId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updatorId'>updator_id = #{updatorId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test='null != source'>source = #{source},</if>
+            <if test='null != previewUrl'>preview_url = #{previewUrl},</if>
+            <if test='null != status'>status = #{status},</if>
+            <if test='null != areaCode'>area_code = #{areaCode}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM hikvision_camera_record
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM hikvision_camera_record
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM hikvision_camera_record
+    </select>
+
+    <select id="selectByCondition" resultMap="resultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM hikvision_camera_record
+        <where>
+            del_flag = 0
+            <if test="cameraIndexCode != null and cameraIndexCode != ''">
+                AND camera_index_code = #{cameraIndexCode}
+            </if>
+            <if test="cameraName != null and cameraName != ''">
+                AND camera_name LIKE CONCAT('%',#{cameraName},'%')
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+        </where>
+    </select>
+</mapper>

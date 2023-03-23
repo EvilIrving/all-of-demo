@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.visualization.mapper.MeteorologicalMapper">
+    <select id="newestMeteorologicData" resultType="com.ygkj.visualization.model.StMeR">
+        SELECT a.* FROM (SELECT
+        mgstcd,
+        tm,
+        wind_velocity,
+        relhumidity,
+        wind_direct,
+        precipition,
+        station_press,
+        drybultemp,
+        vapour_press
+        FROM
+        st_me_r
+        WHERE
+        tm > #{startTime}
+        AND tm &lt; NOW()
+        ORDER BY
+        tm DESC)a GROUP BY a.MGSTCD
+    </select>
+
+    <select id="pastMeteorologicData" resultType="com.ygkj.visualization.model.StMeR">
+        SELECT
+        mgstcd,
+        tm,
+        wind_velocity,
+        relhumidity,
+        wind_direct,
+        precipition,
+        station_press,
+        drybultemp,
+        vapour_press  FROM st_me_r WHERE mgstcd = #{stationCode} AND	tm > #{startTime}
+        AND tm &lt; NOW()
+    </select>
+
+
+</mapper>

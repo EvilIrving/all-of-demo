@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.DataPushQueryMapper">
+
+
+    <select id="queryPtsnData" resultType="com.ygkj.lcsyn.model.PushModel">
+        select tm as actualTime,drp as dataValue from st_pptn_r_202210 where stcd = #{stcd} and tm <![CDATA[ > ]]> #{startTime} order by tm asc
+    </select>
+    <select id="queryRiverData" resultType="com.ygkj.lcsyn.model.PushModel">
+        select tm as actualTime,z as dataValue from st_river_r_202210 where stcd = #{stcd}   and tm <![CDATA[ > ]]> #{startTime} order by tm asc
+    </select>
+    <select id="queryWasData" resultType="com.ygkj.lcsyn.model.PushModel">
+        select tm as actualTime,LL as dataValue from st_was_r_202210 where stcd = #{stcd} and tm <![CDATA[ > ]]> #{startTime} order by tm asc
+    </select>
+    <select id="queryPointData" resultType="java.lang.String">
+        select IFNULL(drp,'0.0') from ${tableName} where stcd = #{pointCode}
+        and tm > NOW()-INTERVAL 1 HOUR order by tm desc limit 1
+    </select>
+    <select id="queryLastData" resultType="com.ygkj.lcsyn.model.PushModel">
+        select tm as actualTime,z as dataValue  from  ${tableName} where stcd = #{pointCode} order by tm desc limit 1
+    </select>
+
+
+</mapper>

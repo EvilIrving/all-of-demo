@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.UpdateWasTaskMapper">
+    <update id="update" parameterType="com.ygkj.gragh.model.StWasR">
+            UPDATE ${table} set
+                MGSTCD = #{stWasR.mgstcd},STCD = #{stWasR.stcd},TM = #{stWasR.tm},UPZ = #{stWasR.upz},DWZ = #{stWasR.dwz},
+                MXGTQ = #{stWasR.mxgtq},OVS = #{stWasR.ovs},TGTQ = #{stWasR.tgtq},SWCHRCD = #{stWasR.swchrcd},SUPWPTN = #{stWasR.supwptn},
+                SDWWPTN = #{stWasR.sdwwptn},MSQMT = #{stWasR.msqmt},MODIT = #{stWasR.modit},TAG = #{stWasR.tag},UPLOAD_TIME = #{stWasR.uploadTime},
+                LL = #{stWasR.ll},FLAG=#{stWasR.flag}
+            WHERE  FLAG=0 and MGSTCD = #{stWasR.mgstcd} and STCD = #{stWasR.stcd} and TM = #{stWasR.tm}
+    </update>
+
+    <insert id="insert" parameterType="com.ygkj.gragh.model.StWasR">
+            INSERT INTO ${table} (MGSTCD,STCD,TM,UPZ,DWZ,MXGTQ,OVS,TGTQ,SWCHRCD,SUPWPTN,SDWWPTN,MSQMT,MODIT,TAG,UPLOAD_TIME,LL)
+            VALUES ( #{stWasR.mgstcd},#{stWasR.stcd},#{stWasR.tm}, #{stWasR.upz}, #{stWasR.dwz}, #{stWasR.mxgtq},#{stWasR.ovs}, #{stWasR.tgtq}, #{stWasR.swchrcd}, #{stWasR.supwptn},
+                 #{stWasR.sdwwptn}, #{stWasR.msqmt}, #{stWasR.modit}, #{stWasR.tag}, #{stWasR.uploadTime}, #{stWasR.ll})
+    </insert>
+
+    <select id="selectRiverByTimeCode" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, z FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY) AND DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00' ) HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+    </select>
+
+    <select id="selectTideByTimeCode" resultType="com.ygkj.gragh.model.StTideR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,TDZ FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY) AND DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+    </select>
+
+    <select id="selectWasByTimeCode" resultType="com.ygkj.gragh.model.StWasR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm,UPZ,DWZ,MXGTQ,OVS,LL FROM ${table}
+        <where>
+                and FLAG=0
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY) AND DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+
+        </where>
+        ) a
+    </select>
+</mapper>

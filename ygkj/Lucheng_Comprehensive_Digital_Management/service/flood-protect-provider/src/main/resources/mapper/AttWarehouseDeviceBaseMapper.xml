@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.AttWarehouseDeviceBaseMapper">
+    <select id="selectDevice" resultType="com.ygkj.flood.vo.response.AttWarehouseDeviceBaseRespVo" parameterType="com.ygkj.flood.vo.request.AttWarehouseDeviceBaseReqVo">
+        SELECT
+        a.id,
+        a.name,
+        a.type,
+        a.num,
+        a.measure,
+        a.material_price,
+        warehouse_id
+        FROM att_warehouse_device_base a WHERE del_flag=0
+        <if test="null!= id and ''!= id">
+            AND id=#{id}
+        </if>
+        <if test="null!= warehouseId and ''!= warehouseId">
+            AND warehouse_id=#{warehouseId}
+        </if>
+        <if test="null!= name and ''!= name">
+            AND name like concat ('%',#{name},'%')
+        </if>
+        <if test="null!= type and ''!= type">
+            AND type=#{type}
+        </if>
+    </select>
+    <select id="batchSelect" resultType="com.ygkj.flood.vo.response.AttWarehouseDeviceBaseRespVo">
+        select * from att_warehouse_device_base WHERE del_flag=0 AND id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insertDevice" parameterType="com.ygkj.flood.model.AttWarehouseDeviceBase">
+        INSERT INTO att_warehouse_device_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != name and '' != name">
+                name,
+            </if>
+            <if test="null != type and '' != type">
+                type,
+            </if>
+            <if test="null != warehouseId and '' != warehouseId">
+                warehouse_id,
+            </if>
+            <if test="null != num and '' != num">
+                num,
+            </if>
+            <if test="null != measure and '' != measure">
+                measure,
+            </if>
+            <if test="null != materialPrice and '' != materialPrice">
+                material_price,
+            </if>
+            <if test="null != createTime and '' != createTime">
+                create_time,
+            </if>
+            <if test="null != createId and '' != createId">
+                create_id,
+            </if>
+            <if test="null != updateTime and '' != updateTime">
+                update_time,
+            </if>
+            <if test="null != updateId and '' != updateId">
+                update_id,
+            </if>
+            <if test="null != delFlag and '' != delFlag">
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != name and '' != name">
+                #{name},
+            </if>
+            <if test="null != type and '' != type">
+                #{type},
+            </if>
+            <if test="null != warehouseId and '' != warehouseId">
+                #{warehouseId},
+            </if>
+            <if test="null != num and '' != num">
+                #{num},
+            </if>
+            <if test="null != measure and '' != measure">
+                #{measure},
+            </if>
+            <if test="null != materialPrice and '' != materialPrice">
+                #{materialPrice},
+            </if>
+            <if test="null != createTime">
+                #{createTime},
+            </if>
+            <if test="null != createId and '' != createId">
+                #{createId},
+            </if>
+            <if test="null != updateTime">
+                #{updateTime},
+            </if>
+            <if test="null != updateId and '' != updateId">
+                #{updateId},
+            </if>
+            <if test="null != delFlag and '' != delFlag">
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateDevice" parameterType="com.ygkj.flood.model.AttWarehouseDeviceBase">
+        UPDATE att_warehouse_device_base
+        <set>
+            <if test="null != name and '' != name">name = #{name},</if>
+            <if test="null != type and '' != type">`type` = #{type},</if>
+            <if test="null != warehouseId and '' != warehouseId">warehouse_id = #{warehouseId},</if>
+            <if test="null != num and '' != num">num = #{num},</if>
+            <if test="null != measure and '' != measure">measure = #{measure},</if>
+            <if test="null != materialPrice and '' != materialPrice">material_price = #{materialPrice},</if>
+            <if test="null != createTime">create_time = #{createTime},</if>
+            <if test="null != createId and '' != createId">create_id = #{createId},</if>
+            <if test="null != updateTime">update_time = #{updateTime},</if>
+            <if test="null != updateId and '' != updateId">update_id = #{updateId},</if>
+            <if test="null != delFlag and '' != delFlag">del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteDevice" parameterType="com.ygkj.flood.vo.request.AttWarehouseDeviceBaseReqVo">
+        UPDATE att_warehouse_device_base set del_flag=1 WHERE id=#{id}
+    </delete>
+
+
+    <select id="selectOneByCondition" resultType="com.ygkj.flood.model.AttWarehouseDeviceBase">
+        select * from att_warehouse_device_base
+        <where>
+            <if test="name !=null and name !=''">
+                and `name` = #{name}
+            </if>
+            <if test="null!= warehouseId and ''!= warehouseId">
+                AND warehouse_id=#{warehouseId}
+            </if>
+            <if test="true">
+                and del_flag = 0 and limit 1
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

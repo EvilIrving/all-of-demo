@@ -1,0 +1,40 @@
+.plTableBox .el-table__fixed-right::before,
+.plTableBox .el-table__fixed::before {
+  background: rgba(0, 0, 0, 0);
+}
+
+.plTableBox .el-table--border::after,
+.plTableBox .el-table--group::after,
+.plTableBox .el-table::before {
+  background: rgba(0, 0, 0, 0);
+}
+
+.plTableBox .el-table--striped .el-table__body tr.el-table__row--striped td {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.plTableBox .el-table {
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0);
+  border: 0;
+}
+
+.plTableBox .el-table tr {
+  background: rgba(0, 0, 0, 0);
+}
+
+.plTableBox .el-table tr th {
+  background: rgba(0, 0, 0, 0);
+  border: 0;
+}
+
+.plTableBox .el-table tr td {
+  background: rgba(0, 0, 0, 0);
+  border: 0;
+  padding: 0;
+}
+
+.plTableBox .el-table tr.hover-row td {
+  background: rgba(0, 0, 0, 0);
+}
+/*# sourceMappingURL=element.css.map */

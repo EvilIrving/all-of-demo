@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.GiveAnAlarmMapper">
+
+    <select id="getTideLevels" resultType="java.util.Map">
+        select t.MGSTCD stcd, t.TDZ tdz,TM tm from
+        (select MGSTCD, TDZ, TM from ${tableName} where 1=1
+        <choose>
+            <when test="time!=null and time !=''">
+                AND tm &lt;= #{time}
+            </when>
+            <otherwise>
+                AND TM &gt;= date_sub(now(), interval 1 day)
+            </otherwise>
+        </choose>
+        AND MGSTCD IN
+        <foreach collection="set" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+         having 1 order by TM desc) t
+        group by t.MGSTCD
+
+    </select>
+
+    <select id="getYbTideLevels" resultType="java.util.Map">
+        select t.MGSTCD stcd, t.TDZ tdz, YMDH tm from
+        (select MGSTCD, TDZ,YMDH  from st_astrotd_r where 1=1
+        <choose>
+            <when test="time!=null and time !=''">
+                AND  YMDH &gt;=  DATE_FORMAT(DATE_ADD(#{time},INTERVAL 1 DAY),'%Y-%m-%d 00:00:00')
+            </when>
+            <otherwise>
+                AND YMDH &gt;=  DATE_FORMAT(DATE_ADD(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00')
+            </otherwise>
+        </choose>
+        AND MGSTCD IN
+        <foreach collection="set" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        having 1 ORDER BY YMDH DESC) t
+        group by t.MGSTCD
+    </select>
+
+
+    <select id="getSectionStorm" resultType="com.alibaba.fastjson.JSONObject">
+        select t.h2 tdz, t.tm from
+        (select  h2,tm  from section_storm where  section_id =1
+        <choose>
+            <when test="time!=null and time !=''">
+                AND  tm &gt;=  DATE_FORMAT(DATE_ADD(#{time},INTERVAL 1 DAY),'%Y-%m-%d 00:00:00')
+            </when>
+            <otherwise>
+                AND tm &gt;=  DATE_FORMAT(DATE_ADD(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00')
+            </otherwise>
+        </choose>
+        having 1 ORDER BY tm DESC) t
+    </select>
+
+    <select id="getRains" resultType="java.util.Map">
+        select t.mgstcd stcd, t.drp, t.tm from
+        (select mgstcd, drp, tm from ${tableName} where tm >= date_sub(now(), interval 1 hour)
+        AND mgstcd IN
+        <foreach collection="set" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        having 1 order by tm desc) t
+        group by t.mgstcd
+
+    </select>
+
+    <select id="getHoursRain" resultType="java.util.Map">
+        SELECT * FROM st_pptn_r_assist WHERE time = #{time} AND stcd IN
+        <foreach collection="set" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getseawall" resultType="com.ygkj.big.screen.model.AttSeawallBase" parameterType="String">
+        SELECT * FROM att_seawall_base WHERE del_flag = 0
+        <if test="seawallCode != null and seawallCode != ''">
+            AND seawall_code = #{seawallCode}
+        </if>
+        ORDER BY sort
+    </select>
+
+    <sql id="Base_Column_List">
+                id,
+                name,
+                begin_time,
+                end_time,
+                code,
+                year,
+                land_power,
+                english_name,
+                affected_area,
+                land_time,
+                `feature`
+    </sql>
+
+    <select id="selectDetail" resultType="com.ygkj.visualization.model.RealTyphoonData">
+        SELECT <include refid="Base_Column_List" />,points,land FROM real_typhoon_data WHERE code = #{code} limit 1
+    </select>
+
+    <select id="getTyphoonByDate" resultType="com.ygkj.visualization.model.RealTyphoonData">
+        SELECT id,name,begin_time,end_time,points,land FROM real_typhoon_data WHERE REPLACE(begin_time,'T',' ') &lt;= #{date} AND (end_time IS NULL OR REPLACE(end_time,'T',' ') &gt;= #{date})
+    </select>
+
+    <select id="getStationData" resultType="com.ygkj.big.screen.vo.response.WagaScattergramVo">
+        SELECT st_code,st_name,st_type FROM att_st_base WHERE del_flag = 0
+        and st_code in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        order by
+        <foreach collection="list" open="field(st_code," item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getWageData" resultType="com.ygkj.big.screen.vo.response.AttWagaBaseVo" parameterType="String">
+        select
+            a.waga_code,a.waga_name,a.gaor_num,b.stcd,a.river_name,a.des_lock_disc,a.hennessy_deal_level
+        from
+            att_waga_base a
+            left join sl_proj_st_r b on a.waga_code = b.project_code AND b.st_type = 'DD'
+        where
+              a.waga_code in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        order by
+        <foreach collection="list" open="field(a.waga_code," item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="listFcstVal" resultType="java.util.Map">
+        SELECT
+            st_code stcd,tdz,tm
+        FROM
+            att_tide_fcst_val_base
+        WHERE
+            fcst_id = #{fcstId}
+          AND st_code IN
+            <foreach collection="set" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+          AND tm = #{time}
+    </select>
+
+    <select id="getHourRain" resultType="java.util.Map">
+        select t.mgstcd stcd, sum(t.drp) rain, t.tm from
+        (select mgstcd, drp, tm from ${tableName} where tm >= date_sub(now(), interval ${hour} hour)
+        AND mgstcd IN
+        <foreach collection="set" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        having 1 order by tm desc) t
+        group by t.mgstcd
+
+    </select>
+
+    <select id="getCwsqList" resultType="java.util.Map">
+        <foreach collection="cwTables" item="item" separator="UNION ALL">
+            (SELECT MGSTCD, STCD,TM,TDZ FROM ${item}
+            WHERE TM &gt;= #{startTime} AND TM &lt;= #{endTime} AND STCD IN
+            <foreach collection="codes" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            )
+        </foreach>
+    </select>
+
+    <select id="getHdsqList" resultType="java.util.Map">
+        <foreach collection="hdTables" item="item" separator="UNION ALL">
+            (SELECT MGSTCD, STCD,TM,Z FROM ${item}
+            WHERE TM &gt;= #{startTime} AND TM &lt;= #{endTime} AND STCD IN
+            <foreach collection="hdCodes" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            )
+        </foreach>
+    </select>
+
+    <select id="getSzsqList" resultType="java.util.Map">
+        <foreach collection="szTables" item="item" separator="UNION ALL">
+            (SELECT MGSTCD, STCD,TM,UPZ,DWZ,OVS,LL FROM ${item}
+            WHERE TM &gt;= #{startTime} AND TM &lt;= #{endTime} AND STCD IN
+            <foreach collection="szCodes" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            )
+        </foreach>
+    </select>
+
+    <select id="getsksqList" resultType="java.util.Map">
+        <foreach collection="skTables" item="item" separator="UNION ALL">
+            (SELECT MGSTCD, STCD,TM,rz FROM ${item}
+            WHERE TM &gt;= #{startTime} AND TM &lt;= #{endTime} AND STCD IN
+            <foreach collection="skCodes" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            )
+        </foreach>
+    </select>
+
+    <select id="getRainsSum" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT b.stcd,SUM(b.drp) drp FROM (
+            <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT stcd,SUM(drp) drp FROM ${item}
+            WHERE TM &gt;= #{start} AND TM &lt;= #{end} AND stcd IN
+            <foreach collection="stCodes" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            GROUP BY stcd
+            )
+            </foreach>
+        ) b GROUP BY b.stcd ORDER BY SUM(b.drp) DESC
+    </select>
+
+    <select id="getLastRainsSum" resultType="com.alibaba.fastjson.JSONObject">
+            SELECT stcd,SUM(drp) drp FROM att_perennial_rainfall
+            WHERE MONTH &gt;= #{start} AND MONTH &lt;= #{end} AND stcd IN
+            <foreach collection="stCodes" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            GROUP BY stcd
+    </select>
+
+    <select id="getLastYearRainsSum" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT stcd,SUM(drp) drp FROM att_last_year_rainfall
+        WHERE MONTH &gt;= #{start} AND MONTH &lt;= #{end} AND stcd IN
+        <foreach collection="stCodes" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        GROUP BY stcd
+    </select>
+
+    <select id="getJyDayCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM (SELECT LEFT(TM,10), SUM(drp) drp FROM ${table} where stcd IN
+        <foreach collection="stCodes" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        GROUP BY LEFT(TM,10)) b WHERE drp > 0
+    </select>
+
+    <select id="getJmxjyList" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT * FROM (SELECT * FROM (SELECT LEFT(TM,10) TM,STCD,SUM(drp) DRP FROM ${table} where stcd IN
+        <foreach collection="stCodes" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        GROUP BY LEFT(TM,10),STCD) b WHERE b.drp >= 30 HAVING 1 ORDER BY drp DESC)c GROUP BY c.TM ORDER BY c.TM
+    </select>
+
+    <select id="getRainsqlList" resultType="java.util.Map">
+       select b.* from (select a.stcd,sum(a.drp) drp from (
+        <foreach collection="rainTables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd,tm,drp FROM ${item}
+            WHERE TM &gt;= #{startTime} AND TM &lt;= #{endTime} AND STCD IN
+            <foreach collection="stCodes" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            )
+        </foreach>
+        )a group by a.stcd) b
+        <where>
+            <if test="minRain !=null">
+                and b.drp > #{minRain}
+            </if>
+            <if test="maxRain !=null">
+                and b.drp &lt; #{maxRain}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ygkj</groupId>
+        <artifactId>lucheng-comprehensive-digital-management</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <groupId>com.ygkj</groupId>
+    <artifactId>common-module</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>common-module</name>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <modules>
+        <module>jwt-auth</module>
+        <module>mybatis-interceptors</module>
+        <module>common-utils</module>
+        <module>common-exception-handlers</module>
+        <module>common-result</module>
+        <module>common-swagger</module>
+        <module>common-graceful-stop-bootstrap</module>
+        <module>common-notify-center</module>
+        <module>common-aspects</module>
+        <module>sms</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.83</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

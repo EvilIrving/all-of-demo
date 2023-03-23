@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.MonitorContactMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.MonitorContact" >
+        <result column="id" property="id" />
+        <result column="contact_type" property="contactType" />
+        <result column="contact_name" property="contactName" />
+        <result column="phone" property="phone" />
+        <result column="fax" property="fax" />
+        <result column="create_time" property="createTime" />
+        <result column="create_id" property="createId" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_id" property="updateId" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                contact_type,
+                contact_name,
+                phone,
+                fax,
+                create_time,
+                create_id,
+                update_time,
+                update_id,
+                del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.MonitorContact">
+        INSERT INTO monitor_contact
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != contactType'>
+                contact_type,
+            </if>
+            <if test ='null != contactName'>
+                contact_name,
+            </if>
+            <if test ='null != phone'>
+                phone,
+            </if>
+            <if test ='null != fax'>
+                fax,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != createId'>
+                create_id,
+            </if>
+            <if test ='null != updateTime'>
+                update_time,
+            </if>
+            <if test ='null != updateId'>
+                update_id,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != contactType'>
+                #{contactType},
+            </if>
+            <if test ='null != contactName'>
+                #{contactName},
+            </if>
+            <if test ='null != phone'>
+                #{phone},
+            </if>
+            <if test ='null != fax'>
+                #{fax},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != createId'>
+                #{createId},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test ='null != updateId'>
+                #{updateId},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM monitor_contact
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.MonitorContact">
+        UPDATE monitor_contact
+        <set>
+            <if test ='null != contactType'>contact_type = #{contactType},</if>
+            <if test ='null != contactName'>contact_name = #{contactName},</if>
+            <if test ='null != phone'>phone = #{phone},</if>
+            <if test ='null != fax'>fax = #{fax},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != createId'>create_id = #{createId},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime},</if>
+            <if test ='null != updateId'>update_id = #{updateId},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM monitor_contact
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM monitor_contact
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM monitor_contact
+    </select>
+
+    <select id="queryByNameAndType" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM monitor_contact
+        <where>
+            <if test="true">
+                AND del_flag=0
+            </if>
+            <if test="contactName != null and contactName != ''">
+                AND contact_name LIKE concat(concat('%', #{contactName}),'%')
+            </if>
+            <if test="contactType!=null">
+                AND contact_type=#{contactType}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM monitor_contact WHERE del_flag=0 and id=#{id}
+    </select>
+
+    <update id="deleteManyByIdList">
+        <choose>
+            <when test="idList !=null and idList.size!=0">
+                update monitor_contact set del_flag=1 where id in
+                <foreach collection="idList" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                select 0
+            </otherwise>
+        </choose>
+    </update>
+
+</mapper>

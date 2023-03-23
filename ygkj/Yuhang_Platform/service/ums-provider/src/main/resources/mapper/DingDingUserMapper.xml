@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.DingDingUserMapper">
+
+  <insert id="batchInsert" parameterType="com.alibaba.fastjson.JSONObject">
+      INSERT INTO dingding_user(id,`userCode`,`userName`,trueName,mobile,
+        modifyTime,orderId,jobs,`position`,deptId)
+      VALUE
+      <foreach collection="list" separator="," item="item">
+        (#{item.id},#{item.userCode},#{item.userName},#{item.trueName},#{item.mobile},
+        #{item.modifyTime},#{item.orderId},#{item.jobs},#{item.position},#{item.deptId})
+      </foreach>
+  </insert>
+
+    <update id="batchUpdate" parameterType="com.alibaba.fastjson.JSONObject">
+        UPDATE dingding_user
+        <trim prefix="set" suffixOverrides=",">
+
+            <trim prefix="`userName` =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.userName != null">
+                        WHEN id=#{item.id} THEN #{item.userName}
+                    </if>
+                </foreach>
+            </trim>
+
+            <trim prefix="trueName =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.trueName != null">
+                        WHEN id=#{item.id} THEN #{item.trueName}
+                    </if>
+                </foreach>
+            </trim>
+
+            <trim prefix="mobile =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.mobile != null">
+                        WHEN id=#{item.id} THEN #{item.mobile}
+                    </if>
+                </foreach>
+            </trim>
+
+            <trim prefix="modifyTime =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.modifyTime != null">
+                        WHEN id=#{item.id} THEN #{item.modifyTime}
+                    </if>
+                </foreach>
+            </trim>
+
+            <trim prefix="orderId =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.orderId != null">
+                        WHEN id=#{item.id} THEN #{item.orderId}
+                    </if>
+                </foreach>
+            </trim>
+
+            <trim prefix="jobs =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.jobs != null">
+                        WHEN id=#{item.id} THEN #{item.jobs}
+                    </if>
+                </foreach>
+            </trim>
+
+            <trim prefix="position =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.position != null">
+                        WHEN id=#{item.id} THEN #{item.position}
+                    </if>
+                </foreach>
+            </trim>
+
+        </trim>
+        WHERE id IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="listBind" resultType="com.ygkj.entity.DingDingUser">
+        SELECT
+            su.id,ddu.userCode,ddu.userName,ddu.mobile,
+            ddu.deptId,ddu.trueName,ddu.orderId,ddu.modifyTime
+        FROM
+            `dingding_user` ddu
+            LEFT JOIN sys_user su ON ddu.userCode = su.id
+        WHERE
+            ddu.modifyTime != su.update_time
+            OR (ISNULL(su.update_time) AND !ISNULL(ddu.modifyTime))
+            OR ISNULL(su.id)
+    </select>
+</mapper>

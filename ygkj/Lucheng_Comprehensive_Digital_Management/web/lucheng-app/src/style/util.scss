@@ -1,0 +1,310 @@
+.title_box {
+  @include flexbox;
+  @include flexJC(space-between);
+  @include flexAI(center);
+  margin-bottom: 10px;
+  .title_flex {
+    width: 30%;
+    @include flexbox;
+    @include flexJC(flex-start);
+    @include flexAI(center);
+    img {
+      width: 8px;
+      margin-right: 5px;
+    }
+  }
+  .el-select {
+    width: 30%;
+  }
+}
+
+//字体颜色
+.gray-color {
+  color: #c8c9cc;
+}
+.green-color {
+  color: #01a59c;
+}
+.blue-color {
+  color: #276af0;
+}
+.orange-color {
+  color: #fa6400;
+}
+.light-orange-color {
+  color: #ffa01e;
+}
+.red-color {
+  color: #ff4d4f;
+}
+.pink-color {
+  color: #ff52d1;
+}
+.yellow-color {
+  color: #ffcb27;
+}
+.light-green-color {
+  color: #40bb5a;
+}
+.text-space-overflow {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+// .van-nav-bar{
+//   margin-top: 30px !important;
+// }
+
+.van-nav-bar__arrow {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+}
+
+.wrap-page {
+  background-color: #f2f6f9;
+  min-height: 100%;
+  width: 100%;
+  .detail-page-title {
+    background-color: #ffffff;
+    padding: 12px;
+    .page-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .title-text {
+        font-weight: 600;
+        color: #1e1e1f;
+        font-size: 16px;
+      }
+      .tip-text {
+        font-weight: 500;
+        color: #ff0000;
+        font-size: 14px;
+      }
+    }
+    .detail-page {
+      padding-top: 12px;
+      font-size: 12px;
+      color: #666666;
+      > span {
+        color: #276af0;
+      }
+    }
+  }
+}
+
+.badge {
+  position: absolute;
+  top: 7px;
+  right: 20px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: #e02020;
+  font-size: 10px;
+  text-align: center;
+  line-height: 16px;
+  border-radius: 16px;
+  color: #fff;
+  font-family: none;
+}
+.bottom_btn {
+  position: fixed;
+  bottom: 20px;
+  left: 10px;
+  right: 10px;
+  height: 45px;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 45px;
+  color: #fff;
+  background-color: #0089ff;
+  &:active {
+    background-color: rgba($color: #0089ff, $alpha: 0.8);
+  }
+  &.white {
+    background-color: #fff;
+    color: #000;
+    &:active {
+      background-color: #fff;
+    }
+  }
+}
+
+//顶部下拉菜单的样式
+.van-dropdown-menu {
+  height: 100%;
+  .van-dropdown-menu__bar {
+    height: 100%;
+    box-shadow: none;
+    .title-class-name {
+      font-size: 12px;
+      font-weight: 400;
+      color: #666666;
+      padding: 0px 12px;
+      &::after {
+        border: 4px solid;
+        margin-top: -6px;
+        border-color: transparent transparent #aaaaaa #aaaaaa;
+      }
+      &.van-dropdown-menu__title--down::after {
+        margin-top: -1px;
+      }
+    }
+  }
+}
+
+.nodata {
+  height: 180px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  img {
+    width: 30%;
+  }
+  p {
+    margin-top: 5px;
+  }
+}
+
+.old-class {
+  .van-field {
+    .van-field__label {
+      font-size: 20px;
+    }
+    .van-field__left-icon {
+      margin-right: 7px;
+      padding-right: 7px;
+      border-right: 1px solid #e6e6e6;
+      .van-icon {
+        font-size: 18px;
+      }
+    }
+    .van-field__control {
+      font-size: 20px;
+    }
+    .van-field__control {
+      &::-webkit-input-placeholder {
+        color: #999999;
+      }
+      &::-moz-placeholder {
+        color: #999999;
+      }
+    }
+  }
+  .van-picker {
+    .van-picker__toolbar {
+      button {
+        font-size: 18px;
+      }
+    }
+    .van-picker__columns {
+      .van-picker-column__wrapper {
+        .van-picker-column__item {
+          .van-ellipsis {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+  .van-dropdown-menu {
+    height: 100%;
+    .van-dropdown-menu__item {
+      justify-content: flex-start;
+    }
+    .van-cell {
+      font-size: 18px;
+    }
+    .van-dropdown-menu__bar {
+      height: 100%;
+      box-shadow: none;
+      .title-class-name {
+        font-size: 20px;
+        font-weight: 400;
+        color: #666666;
+        padding: 0px 12px;
+        &::after {
+          border: 4px solid;
+          margin-top: -6px;
+          border-color: transparent transparent #aaaaaa #aaaaaa;
+        }
+        &.van-dropdown-menu__title--down::after {
+          margin-top: -1px;
+        }
+      }
+    }
+  }
+  .data-picker {
+    .el-input__inner {
+      border: none;
+      height: 43px;
+      line-height: 43px;
+      padding: 0 10px;
+      font-size: 20px;
+      text-align: center;
+    }
+    .el-input__prefix {
+      top: 1px;
+      color: #aaaaaa;
+      font-size: 16px;
+      left: 75%;
+      color: #aaaaaa;
+    }
+  }
+  .el-picker-panel {
+    .el-date-picker__header {
+      .el-date-picker__header-label {
+        font-size: 20px;
+        position: relative;
+        top: -2px;
+      }
+      .el-picker-panel__icon-btn {
+        font-size: 18px;
+      }
+    }
+    .el-picker-panel__content {
+      .el-year-table {
+        .available {
+          .cell {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+  .wrap-page {
+    background-color: #f2f6f9;
+    min-height: 100%;
+    width: 100%;
+    .detail-page-title {
+      background-color: #ffffff;
+      padding: 12px;
+      .page-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .title-text {
+          font-weight: 600;
+          color: #1e1e1f;
+          font-size: 24px;
+        }
+        .tip-text {
+          font-weight: 500;
+          color: #ff0000;
+          font-size: 24px;
+        }
+      }
+      .detail-page {
+        padding-top: 12px;
+        font-size: 20px;
+        color: #666666;
+        > span {
+          color: #276af0;
+        }
+      }
+    }
+  }
+}

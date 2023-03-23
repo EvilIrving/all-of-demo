@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.IrsApprovalFileMapper">
+
+
+    <insert id="replaceIrsApprovalFile" parameterType="com.ygkj.lcsyn.model.IrsApprovalFile">
+        REPLACE INTO irs_approval_file
+        (approval_date,
+        approval_doc_id,
+        approval_itemid,
+        approval_number,
+        approval_title,
+        file_path,
+        validity_date,
+        validity_flag)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.approvalDate},#{item.approvalDocId},#{item.approvalItemid},#{item.approvalNumber},#{item.approvalTitle},
+            #{item.filePath},#{item.validityDate},#{item.validityFlag})
+        </foreach>
+    </insert>
+
+</mapper>

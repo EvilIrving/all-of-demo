@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.AttTeamBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.flood.vo.response.AttTeamBaseResVo" >
+        <result column="id" property="id" />
+        <result column="name" property="name"/>
+        <result column="type_id" property="typeId" />
+        <result column="type_name" property="typeName" />
+        <result column="address" property="address" />
+        <result column="longitude" property="longitude" />
+        <result column="latitude" property="latitude" />
+        <result column="area_code" property="areaCode" />
+        <result column="area_name" property="areaName" />
+        <result column="charge_person" property="chargePerson" />
+        <result column="charge_phone" property="chargePhone" />
+        <result column="organization_number" property="organizationNumber" />
+        <result column="existing_number" property="existingNumber" />
+        <result column="technicality" property="technicality" />
+        <result column="existing_assets" property="existingAssets" />
+        <result column="unit_nature" property="unitNature" />
+        <result column="rescue_specialty" property="rescueSpecialty" />
+        <result column="organizational_form" property="organizationalForm" />
+        <result column="rescue_field" property="rescueField" />
+        <result column="rescue_capability" property="rescueCapability" />
+        <result column="fax" property="fax" />
+        <result column="remarks" property="remarks" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                name,
+                type_id,
+                type_name,
+                address,
+                longitude,
+                latitude,
+                area_code,
+                area_name,
+                charge_person,
+                charge_phone,
+                organization_number,
+                existing_number,
+                technicality,
+                existing_assets,
+                unit_nature,
+                rescue_specialty,
+                organizational_form,
+                rescue_field,
+                rescue_capability,
+                fax,
+                remarks
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.flood.model.AttTeamBase">
+        INSERT INTO att_team_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != name'>
+                name,
+            </if>
+            <if test ='null != typeId'>
+                type_id,
+            </if>
+            <if test ='null != typeName'>
+                type_name,
+            </if>
+            <if test ='null != address'>
+                address,
+            </if>
+            <if test ='null != longitude'>
+                longitude,
+            </if>
+            <if test ='null != latitude'>
+                latitude,
+            </if>
+            <if test ='null != areaCode'>
+                area_code,
+            </if>
+            <if test ='null != areaName'>
+                area_name,
+            </if>
+            <if test ='null != chargePerson'>
+                charge_person,
+            </if>
+            <if test ='null != chargePhone'>
+                charge_phone,
+            </if>
+            <if test ='null != organizationNumber'>
+                organization_number,
+            </if>
+            <if test ='null != existingNumber'>
+                existing_number,
+            </if>
+            <if test="null != unitNature and '' != unitNature">
+                unit_nature,
+            </if>
+            <if test="null != rescueSpecialty and '' != rescueSpecialty">
+                rescue_specialty,
+            </if>
+            <if test="null != organizationalForm and '' != organizationalForm">
+                organizational_form,
+            </if>
+            <if test="null != rescueField and '' != rescueField">
+                rescue_field,
+            </if>
+            <if test="null != rescueCapability and '' != rescueCapability">
+                rescue_capability,
+            </if>
+            <if test="null != fax and '' != fax">
+                fax,
+            </if>
+            <if test="null != remarks and '' != remarks">
+                remarks
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != name'>
+                #{name},
+            </if>
+            <if test ='null != typeId'>
+                #{typeId},
+            </if>
+            <if test ='null != typeName'>
+                #{typeName},
+            </if>
+            <if test ='null != address'>
+                #{address},
+            </if>
+            <if test ='null != longitude'>
+                #{longitude},
+            </if>
+            <if test ='null != latitude'>
+                #{latitude},
+            </if>
+            <if test ='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test ='null != areaName'>
+                #{areaName},
+            </if>
+            <if test ='null != chargePerson'>
+                #{chargePerson},
+            </if>
+            <if test ='null != chargePhone'>
+                #{chargePhone},
+            </if>
+            <if test ='null != organizationNumber'>
+                #{organizationNumber},
+            </if>
+            <if test ='null != existingNumber'>
+                #{existingNumber},
+            </if>
+            <if test="null != unitNature and '' != unitNature">
+                #{unitNature},
+            </if>
+            <if test="null != rescueSpecialty and '' != rescueSpecialty">
+                #{rescueSpecialty},
+            </if>
+            <if test="null != organizationalForm and '' != organizationalForm">
+                #{organizationalForm},
+            </if>
+            <if test="null != rescueField and '' != rescueField">
+                #{rescueField},
+            </if>
+            <if test="null != rescueCapability and '' != rescueCapability">
+                #{rescueCapability},
+            </if>
+            <if test="null != fax and '' != fax">
+                #{fax}
+            </if>
+            <if test="null != remarks and '' != remarks">
+                #{remarks}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        UPDATE att_team_base SET del_flag = 1 WHERE FIND_IN_SET(id,#{ids})
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.flood.model.AttTeamBase">
+        UPDATE att_team_base
+        <set>
+            <if test ='null != name'>name = #{name},</if>
+            <if test ='null != typeId'>type_id = #{typeId},</if>
+            <if test ='null != typeName'>type_name = #{typeName},</if>
+            <if test ='null != address'>address = #{address},</if>
+            <if test ='null != longitude'>longitude = #{longitude},</if>
+            <if test ='null != latitude'>latitude = #{latitude},</if>
+            <if test ='null != areaCode'>area_code = #{areaCode},</if>
+            <if test ='null != areaName'>area_name = #{areaName},</if>
+            <if test ='null != chargePerson'>charge_person = #{chargePerson},</if>
+            <if test ='null != chargePhone'>charge_phone = #{chargePhone},</if>
+            <if test ='null != organizationNumber'>organization_number = #{organizationNumber},</if>
+            <if test ='null != existingNumber'>existing_number = #{existingNumber},</if>
+            <if test="null != unitNature and '' != unitNature">unit_nature = #{unitNature},</if>
+            <if test="null != rescueSpecialty and '' != rescueSpecialty">rescue_specialty = #{rescueSpecialty},</if>
+            <if test="null != organizationalForm and '' != organizationalForm">organizational_form = #{organizationalForm},</if>
+            <if test="null != rescueField and '' != rescueField">rescue_field = #{rescueField},</if>
+            <if test="null != rescueCapability and '' != rescueCapability">rescue_capability = #{rescueCapability},</if>
+            <if test="null != fax and '' != fax">fax = #{fax}</if>
+            <if test="null != remarks and '' != remarks">remarks = #{remarks}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_team_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_team_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_team_base
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        a.id,
+        a.name,
+        a.type_id,
+        a.type_name,
+        a.address,
+        a.longitude,
+        a.latitude,
+        a.area_code,
+        a.area_name,
+        a.charge_person,
+        a.charge_phone,
+        a.organization_number,
+        a.existing_number,
+        a.unit_nature,
+        a.rescue_specialty,
+        a.organizational_form,
+        a.rescue_field,
+        a.rescue_capability,
+        a.fax,
+        a.remarks
+        FROM att_team_base a LEFT JOIN att_adcd_base b ON a.area_code = b.adcd
+        WHERE a.del_flag = 0
+        <if test="name != null and name != ''">
+            AND a.name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="typeId != null and typeId != ''">
+            AND a.type_id = #{typeId}
+        </if>
+        <if test="id != null and id != ''">
+            AND a.id = #{id}
+        </if>
+        <if test="areaCode != null and areaCode != ''">
+            AND a.area_code = #{areaCode}
+        </if>
+        <if test="unitNature != null and unitNature != ''">
+            AND a.unit_nature LIKE CONCAT('%',#{unitNature},'%')
+        </if>
+        <if test="rescueSpecialty != null and rescueSpecialty != ''">
+            AND a.rescue_specialty LIKE CONCAT('%',#{rescueSpecialty},'%')
+        </if>
+        order by a.existing_number desc
+    </select>
+
+    <select id="teamGroupByType" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.type_name type,COUNT(1) number FROM `att_team_base` tbl where tbl.del_flag = 0 GROUP BY tbl.type_name asc
+    </select>
+
+    <select id="staticPeopleNumByType" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.type_name,SUM(tbl.existing_number) peopleNum FROM `att_team_base` tbl where tbl.del_flag = 0 GROUP BY tbl.type_name asc
+    </select>
+
+
+    <select id="teamDeviceList" resultType="com.ygkj.flood.vo.request.AttTeamDeviceBaseReqVo" parameterType="com.ygkj.flood.vo.response.AttTeamDeviceBaseRespVo">
+        select * from att_team_device_base where del_flag=0
+        <if test="null!=name and '' != name">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="null!=teamId and '' != teamId">
+            AND team_id =#{teamId}
+        </if>
+        <if test="null!=id">
+            AND id =#{id}
+        </if>
+    </select>
+</mapper>

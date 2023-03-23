@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.WaterAffairsMapper">
+
+    <select id="getSoilEros" resultType="com.ygkj.big.screen.vo.response.WaSoilErosionRespVo">
+        select a.name, b.file_url
+        from lc_business_db.wt_soil_erosion_rs a
+        left join lc_basic_db.sys_file b on a.file_id = b. id and b.deleted = 0
+        where a.del_flag = 0 and a.file_type = '1' and a.year = #{year}
+    </select>
+
+    <select id="getSoilEroProjs" resultType="com.ygkj.big.screen.model.WtSoilErosionProjBase">
+        select a.id,
+        a.proj_name,
+        a.adcd,
+        a.adnm,
+        a.involve_town,
+        a.involve_village,
+        a.govern_area,
+        a.implement_year,
+        a.report_file_id,
+        a.lng,
+        a.lat,
+        a.check_time,
+        a.bid,
+        a.approval_unit,
+        a.land_area,
+        a.soil_erosion_area,
+        a.erosion,
+        a.erosion_mo,
+        a.img_ids,
+        b.boundary
+        from wt_soil_erosion_proj_base a
+        left join wt_soil_erosion_proj_boundary b on a.id = b.proj_id and b.del_flag = 0
+        where a.del_flag = 0 and a.implement_year = #{year}
+        <if test="id != null and id != ''">
+            and a.id = #{id}
+        </if>
+    </select>
+
+    <select id="getCameraAdcdStats" resultType="java.util.Map">
+        select area_code adcd, count(1) num from hikvision_camera_record where del_flag = 0
+        <if test='"1".equals(warnStatus)'>
+            and status = 1
+        </if>
+        <if test='"2".equals(warnStatus)'>
+            and status is null
+        </if>
+        group by area_code
+    </select>
+
+    <select id="getProjTypeCameraStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select t.project_type txt, count(1) num from
+        (select b.project_type from hikvision_camera_record a
+        left join design_standard_project b on a.project_code = b.project_code
+        where a.del_flag = 0
+        <if test='"1".equals(warnStatus)'>
+            and a.status = 1
+        </if>
+        <if test='"2".equals(warnStatus)'>
+            and a.status is null
+        </if>) t
+        where t.project_type is not null
+        group by t.project_type
+    </select>
+
+    <select id="getCameras" resultType="com.ygkj.big.screen.model.HikvisionCameraRecord">
+        select * from hikvision_camera_record where del_flag = 0
+        <if test='"1".equals(status)'>
+            and status = 1
+        </if>
+        <if test='"2".equals(status)'>
+            and status is null
+        </if>
+    </select>
+
+    <select id="getStBases" resultType="com.ygkj.big.screen.vo.response.RpWaterLevelsRespVo">
+        select st_code, st_name, limit_level from att_st_base where st_type = #{stType}
+    </select>
+    <select id="getResWaterLevels" resultType="java.util.Map">
+        select t.stcd, t.z from
+        (select stcd, rz z from ${tableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by tm desc) t
+        group by t.stcd
+    </select>
+
+    <select id="getResStas" resultType="com.ygkj.big.screen.vo.response.WaResStaWaterLevelInfo">
+        select a.res_code, a.res_name, a.tot_cap, a.adcd, b.st_code, b.st_name
+        from att_res_base a
+        left join att_st_base b on b.st_type = 'RR' and a.res_code = b.proj_code
+        where a.del_flag = 0
+    </select>
+    <select id="getCapacityCurveByStCode" resultType="com.ygkj.big.screen.model.ReservoirCapacityCurve">
+        select `code`, water_level, capacity from reservoir_capacity_curve where `code` = #{stCode} order by water_level
+    </select>
+
+    <select id="yearSoilErosionStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select implement_year txt, sum(soil_erosion_area) `value` from wt_soil_erosion_proj_base where del_flag = 0
+        group by implement_year
+    </select>
+    <select id="adcdSoilErosionStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select adcd, sum(soil_erosion_area) `value` from wt_soil_erosion_proj_base where del_flag = 0 and `year` =
+        #{year} group by adcd
+    </select>
+
+    <select id="yearSoilErosionGovernStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select implement_year txt, sum(govern_area) `value` from wt_soil_erosion_proj_base where del_flag = 0 group by
+        implement_year
+    </select>
+    <select id="adcdSoilErosionGovernStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select adcd, sum(govern_area) `value` from wt_soil_erosion_proj_base where del_flag = 0 and `year` = #{year}
+        group by adcd
+    </select>
+
+    <select id="yearSoilErosionProjStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select implement_year txt, count(1) num from wt_soil_erosion_proj_base where del_flag = 0 group by
+        implement_year
+    </select>
+    <select id="adcdSoilErosionProjStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select adcd, count(1) num from wt_soil_erosion_proj_base where del_flag = 0 and `year` = #{year} group by adcd
+    </select>
+
+    <select id="getAllCwsBase" resultType="com.ygkj.project.model.AttCwsBaseWcp">
+        select * from att_cws_base_wcp
+    </select>
+
+    <select id="getWaterOperateNum" resultType="com.ygkj.gragh.vo.response.WaterOperateResVo">
+        select cwv.water_plant_code,
+        cwv.water_plant_name,
+        cwv.supply_flow,
+        acb.citycode as adcd,
+        cwv.update_time,
+        cwv.location,
+        cwv.supply_status,
+        cwv.total_supply_quantity,
+        cwq.ph_value,
+        cwq.cl_value,
+        cwq.ntu_value,
+        cwq.time_record,
+        acb.des_wasu_pop,
+        cwq.is_normal
+        from att_cws_base acb
+        inner join (select * from (select * from lc_business_db.cws_water_volume having 1 order by update_time
+        desc)b group by b.water_plant_name) cwv on acb.cws_name = cwv.water_plant_name
+        inner join (select * from ( select * from lc_business_db.cws_water_quality having 1 order by time_record
+        desc ) q group by q.water_plant_code ) cwq on cwv.water_plant_code = cwq.water_plant_code
+        where cwv.update_time = cwq.time_record
+        <if test="adcd != null and adcd !=''">
+            and cwv.adcd = #{adcd}
+        </if>
+        <if test="supplyStatus !=null and supplyStatus!=''">
+            and cwv.supply_status = #{supplyStatus}
+        </if>
+        <if test="abnormal !=null and abnormal!=''">
+            <if test="abnormal == 1">
+                and cwq.is_normal = 0
+            </if>
+            <if test="abnormal == 0">
+                and cwv.supplyStatus = 0
+            </if>
+        </if>
+        <if test="key !=null and key!=''">
+            and cwv.water_plant_name like concat('%',#{key},'%')
+        </if>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,106 @@
+server:
+  port: 8999
+  undertow:
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+    io-threads: 4
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+    worker-threads: 20
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分
+    buffer-size: 1024
+    # 是否分配的直接内存
+    direct-buffers: true
+
+dubbo:
+  application:
+    qos-enable: false
+    id: graph
+  scan:
+    base-packages: com.ygkj.gragh.rpc
+  protocol:
+    # 约定端口号为20+服务端端口号后3位
+    port: 20999
+    name: dubbo
+  registry:
+    address: spring-cloud://127.0.0.1
+    check: false
+  consumer:
+    check: false
+  cloud:
+    subscribed-services: graph
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        #        server-addr: localhost:8848
+        namespace: public
+  application:
+    name: graph
+  #  datasource:
+  #    druid:
+  #      url: jdbc:mysql://192.168.2.116:3306/soft-database?useUnicode=true&characterEncoding=utf-8&useSSL=false
+  ##      url: jdbc:mysql://127.0.0.1:3306/soft-database?useUnicode=true&characterEncoding=utf-8&useSSL=false
+  #      username: root
+  #      password: root
+  #      driver-class-name: com.mysql.jdbc.Driver
+  #      keep-alive: true
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  datasource:
+    dynamic:
+      primary: basic
+      strict: false
+      datasource:
+        basic:
+          url: jdbc:mysql://10.37.89.42:33061/lc_basic_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: root
+          password: OMcpBgCxvAdZ8317
+          driver-class-name: com.mysql.jdbc.Driver
+        business:
+          url: jdbc:mysql://10.37.89.42:33061/lc_business_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: root
+          password: OMcpBgCxvAdZ8317
+          driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 20
+      min-idle: 10
+      max-active: 30
+      max-wait: 30000
+      min-evictable-idle-time-millis: 180000
+  #  AbstractType: com.alibaba.druid.pool.DruidDataSource
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+
+
+#rocketmq:
+#  name-server: 192.168.2.188:9876   #rocketMQ服务的地址
+#  producer:
+#    group: soft-data # 生产者组
+
+
+## 日志输出配置
+logging:
+  file:
+    name: ${logging.file.path}/${spring.application.name}.log
+    path: log
+  level:
+    com.ygkj: error
+
+jwt:
+  secretKey: 78944878877848fg)
+  accessTokenExpireTime: PT2H
+  refreshTokenExpireTime: PT8H
+  refreshTokenExpireAppTime: P30D
+  issuer: yingxue.com
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    call-setters-on-nulls: true
+    map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+

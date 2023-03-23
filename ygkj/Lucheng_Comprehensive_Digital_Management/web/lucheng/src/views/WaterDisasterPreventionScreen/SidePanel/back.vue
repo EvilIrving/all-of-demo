@@ -1,0 +1,1565 @@
+<template>
+	<screen-silde-panel
+		:class="[isBigScrren && 'is-big-screen']"
+		position="left"
+		top="8%"
+		:height="height"
+		@change="handleLeftPanelchange"
+	>
+		<template #slot-panel>
+			<div>
+				<!-- 左侧边栏 -->
+				<div class="collapse-panel__border" style="width: 450px">
+					<div class="collapse-panel__content">
+						<!-- 气象预警 六天预报 -->
+						<panel-weather-meteor />
+						<!-- 短临预报降雨 1h, 3h, 6h -->
+						<panel-item title="短临预报" hasSwitch>
+							<!-- 短临预报降雨 标题右侧图标点击事件 -->
+							<template #title-switch>
+								<!-- <i class="icon-yinzhang-1 icon-sty" /> -->
+								<i class="icon-liebiao icon-sty" @click="openDetailsDialog('短临预报')" />
+								<!-- <i class="icon-yizhangtu icon-sty" /> -->
+							</template>
+							<!-- 1h, 3h, 6h 降雨量数据 -->
+							<card-tabs
+								:tabs-active="cardSelect == 'forecast'"
+								v-model="forecastPreCardSelect"
+								:list="forecastPreCardList"
+								@change="precipitationCardClick"
+							/>
+							<!-- 翻页 -->
+							<div class="sidebar-list switch-list">
+								<el-carousel height="230px" trigger="click" arrow="never" :autoplay="false">
+									<el-carousel-item>
+										<!-- 短临预报降雨极值列表 -->
+										<precipition-max-list :max-list="forecastMaxList" @change="forecastMaxListChange" />
+									</el-carousel-item>
+									<el-carousel-item>
+										<!-- 一小时面雨量 -->
+										<div class="areal-rainfall-sty">
+											<div>
+												<i class="icon-diamond icon-sty" />
+												<span>{{ `${forecastPreCardList[forecastPreCardSelect].label}面雨量` }}</span>
+											</div>
+											<capsule-tabs
+												v-model="forecastPreChartTab"
+												:tabs="['行政区划', '流域']"
+												@change="forecastChartTabChange"
+											/>
+										</div>
+										<!-- 图表信息 -->
+										<ve-histogram
+											:loading="forecastChartLoading"
+											height="180px"
+											:judge-width="true"
+											:data="forecastChartData"
+											:settings="forecastChartOption.setting"
+											:extend="forecastChartOption.extend"
+											:grid="forecastChartOption.grid"
+											:after-config="forecastConfig"
+										/>
+									</el-carousel-item>
+								</el-carousel>
+							</div>
+						</panel-item>
+						<!-- 山洪 -->
+						<panel-mountain-torrents />
+					</div>
+				</div>
+
+				<!-- 左侧第二屏 -->
+				<div class="collapse-panel__border" style="width: 450px; margin-left: 0.5rem">
+					<!-- 第二场景台风 -->
+					<typhoon-module v-if="false" />
+					<!-- 第三场景台风 -->
+					<three-typhoo-module v-if="false" />
+					<!-- v-if="false" -->
+					<div class="collapse-panel__content">
+						<!-- 1h, 3h, 6h, 12h, 24h, 72h 实时降雨量 -->
+						<panel-item title="实时降雨" hasSwitch>
+							<!-- 预报降雨量 标题右侧图标点击事件 -->
+							<template #title-switch>
+								<i
+									v-if="cardSelect == 'realtime'"
+									title="地图落点"
+									@click="handleRainStationChange('ylbtn')"
+									:class="[ylbtn == true ? 'icon-yinzhang-active' : 'icon-yinzhang-1', 'icon-sty']"
+								/>
+								<i
+									style="margin: 0 10px"
+									title="查看详表"
+									class="icon-liebiao icon-sty"
+									@click="openDetailsDialog('实时降雨')"
+								/>
+								<i @click="goToAMap('雨量')" title="一张图" class="icon-yizhangtu icon-sty" />
+							</template>
+							<!-- 雨量站 -->
+							<div class="rainfall-style" style="justify-content: center">
+								<div>
+									雨量站
+									<span class="number">
+										{{ realtimePreList.totalStationNumber || "0" }}
+									</span>
+									个
+								</div>
+							</div>
+							<!-- 1h, 3h, 6h, 12h, 24h, 72h 实时降雨量数据 -->
+							<card-tabs
+								v-model="realtimePreCardSelect"
+								:tabs-active="cardSelect == 'realtime'"
+								:list="realtimePreCardList"
+								@change="realtimePreCardClick"
+							/>
+							<!-- 1小时超过 30mm -->
+							<div class="prediction-sty">
+								<el-row>
+									<!-- 影响人口 -->
+									<el-col :span="12">
+										<div class="early-warning-sty">
+											<p>1小时超过30mm</p>
+											<p>
+												<span>
+													{{ realtimePreList["1hourBeyond30"] || "0" }}
+													<span>个</span>
+												</span>
+											</p>
+										</div>
+									</el-col>
+									<!-- 3小时超过60mm -->
+									<el-col :span="12">
+										<div class="early-warning-style">
+											<p>3小时超过60mm</p>
+											<p>
+												<span>
+													{{ realtimePreList["3hourBeyond60"] || "0" }}
+													<span>个</span>
+												</span>
+											</p>
+										</div>
+									</el-col>
+								</el-row>
+							</div>
+							<!-- 实时降雨极值列表 -->
+							<precipition-max-list :max-list="realtimeMaxList" @change="realtimeMaxListChange" />
+							<!-- 一小时面雨量图表 -->
+							<div class="areal-rainfall-sty">
+								<div>
+									<i class="icon-diamond icon-sty" />
+									<span>{{ `${realtimePreCardList[realtimePreCardSelect].label}面雨量` }}</span>
+								</div>
+								<capsule-tabs
+									v-model="realtimePreChartTab"
+									:tabs="realtimePreChartTabList"
+									@change="realtimePreChartTabChange"
+								/>
+							</div>
+							<ve-histogram
+								height="270px"
+								:loading="realtimeChartLoading"
+								:data="realtimeChartData"
+								:settings="realtimeChartOption.setting"
+								:extend="realtimeChartOption.extend"
+								:grid="realtimeChartOption.grid"
+								:tooltip-visible="false"
+								:legend-visible="false"
+								:after-config="realtimeConfig"
+							/>
+						</panel-item>
+					</div>
+				</div>
+			</div>
+		</template>
+	</screen-silde-panel>
+</template>
+<script>
+import axios from "axios";
+import "@/style/v-charts/style.css";
+import { ScreenSildePanel } from "@/components";
+import { disasterPreventionApi } from "@/api/waterDisasterPrevention";
+import PanelItem from "../components/PanelItem";
+import CardTabs from "../components/CardTabs.vue";
+import CapsuleTabs from "../components/CapsuleTabs.vue";
+import PrecipitionMaxList from "../components/PrecipitionMaxList.vue";
+import PanelWeatherMeteor from "./components/PanelWeatherInfo.vue";
+import PanelMountainTorrents from "./components/PanelMountainTorrents.vue";
+
+import TyphoonModule from "./TyphoonModule.vue";
+import ThreeTyphooModule from "./ThreeTyphooModule.vue";
+import { mapGetters, mapActions } from "vuex";
+import { goAMap } from "@/views/water_disaster_custom/cards/utils/common";
+
+export default {
+	name: "LeftSildePanel",
+	props: {
+		height: { type: [Number, String] }
+	},
+	components: {
+		ScreenSildePanel,
+		PanelItem,
+		CapsuleTabs,
+		CardTabs,
+		ThreeTyphooModule,
+		PrecipitionMaxList,
+		PanelWeatherMeteor,
+		PanelMountainTorrents,
+
+		TyphoonModule
+	},
+	data() {
+		return {
+			//两个卡片选择中
+			cardSelect: "",
+			//短临预报降雨图表tab
+			forecastPreChartTabList: ["行政区划", "流域"],
+			forecastPreChartTab: 0,
+			forecastAreaRainfallChart: [],
+			forecastBasinRainfallChart: [],
+			//短临预报降雨卡片
+			forecastPreCardSelect: 0,
+			//短临预报降雨数据
+			forecastPreList: {},
+			//短临预报降雨极值
+			forecastPreMaxList: {},
+			//短临预报降雨图表
+			forecastChartLoading: false,
+			forecastChartData: {
+				columns: ["name", "min", "max"],
+				rows: [
+					{ name: "永嘉县", min: 136, max: 178 },
+					{ name: "乐清市", min: 136, max: 178 },
+					{ name: "瓯海区", min: 136, max: 178 },
+					{ name: "鹿城区", min: 136, max: 178 },
+					{ name: "洞头区", min: 136, max: 178 }
+				]
+			},
+			forecastChartOption: {
+				grid: {
+					top: "30%",
+					bottom: "0%",
+					containLabel: true
+				},
+				setting: {
+					yAxisName: ["mm", ""],
+					labelMap: { min: "最小值", max: "最大值" },
+					label: {
+						show: true,
+						fontSize: 14,
+						position: "top",
+						color: "#00C1FF",
+						formatter: ({ value }) => Number(value).toFixed(1)
+					}
+				},
+				extend: {
+					legend: {
+						right: "0%",
+						icon: "circle",
+						itemWidth: 10,
+						textStyle: { color: "#FFF" }
+					},
+					"textStyle.color": "#fff",
+					barWidth: 15,
+					yAxis: {
+						nameTextStyle: { color: "#ffffff99" },
+						max: value => {
+							return value.max > 1 ? null : 1;
+						},
+						axisLabel: {
+							color: "#fff"
+						},
+						splitLine: {
+							lineStyle: {
+								color: "#00C1FF",
+								opacity: 0.5
+							}
+						}
+					},
+					"series.0.itemStyle": { color: "#00C1FF" },
+					"series.1.itemStyle": { color: "#EEC80B" }
+				}
+			},
+			//实时降雨图表tab
+			realtimePreChartTabList: ["行政区划", "流域", "水库"],
+			realtimePreChartTab: 0,
+			//实时降雨
+			realtimePreCardSelect: 0,
+			//短临预报降雨数据
+			realtimePreList: {},
+			//实时降雨极值
+			realtimePreMaxList: {},
+			//实时降雨图表
+			realtimeChartLoading: true,
+			realtimeChartData: {
+				columns: ["name", "data"],
+				rows: []
+			},
+			realtimeChartOption: {
+				grid: {
+					top: "10%",
+					bottom: "1%",
+					containLabel: true
+				},
+				setting: {
+					yAxisName: ["mm"],
+					itemStyle: { color: "#00C1FF" },
+					label: {
+						show: true,
+						fontSize: 18,
+						fontWeight: "bold",
+						position: "top",
+						color: "#fff",
+						formatter: ({ value }) => Number(value).toFixed(1)
+					}
+				},
+				extend: {
+					"textStyle.color": "#fff",
+					barWidth: 15,
+					xAxis: {
+						axisLabel: {
+							interval: 0
+						}
+					},
+					yAxis: {
+						nameTextStyle: { color: "#ffffff99" },
+						axisLine: {
+							show: false
+						},
+						axisLabel: {
+							color: "#fff"
+						},
+						splitLine: {
+							lineStyle: {
+								color: "#00C1FF",
+								opacity: 0.5
+							}
+						},
+						max: value => {
+							return value.max > 1 ? null : 1;
+						}
+					}
+				}
+			},
+
+			//预报降雨量
+			show: false,
+			rainList: [], //雨量测站列表
+			ylbtn: false //雨量单位展示标记
+		};
+	},
+	filters: {
+		numFilter(val) {
+			let num = val ? Number(val).toFixed(1) : 0;
+			return Number(num);
+		}
+	},
+	computed: {
+		...mapGetters(["ScreenMap", "currentSelectArea"]),
+		isBigScrren() {
+			return this.$route.query.large == "true";
+		},
+		/** 短临预报卡片数据 */
+		forecastPreCardList() {
+			let list = [this.forecastPreList.rainfall_1, this.forecastPreList.rainfall_3, this.forecastPreList.rainfall_6];
+			return [
+				{
+					label: "1小时",
+					data: { number: list[0], unit: "mm" }
+				},
+				{
+					label: "3小时",
+					data: { number: list[1], unit: "mm" }
+				},
+				{
+					label: "6小时",
+					data: { number: list[2], unit: "mm" }
+				}
+			];
+		},
+		/** 预报极值列表数据 */
+		forecastPreMaxStation() {
+			let name = this.forecastPreMaxList.maxRainfallStationName;
+			let max = Number(this.forecastPreMaxList.maxRainfall).toFixed(1) || "0";
+			let min = Number(this.forecastPreMaxList.minRainfall).toFixed(1) || "0";
+			let lng = this.forecastPreMaxList.maxRainfallLongitude;
+			let lat = this.forecastPreMaxList.maxRainfallLatitude;
+			return {
+				name: name || "",
+				value: `${max}` || "0",
+				type: "station",
+				lng,
+				lat
+			};
+		},
+		forecastPreMaxArea() {
+			let name = this.forecastPreMaxList.maxRainfallAreaName;
+			let max = Number(this.forecastPreMaxList.areaMaxRainfall).toFixed(1) || "0";
+			let min = Number(this.forecastPreMaxList.areaMinRainfall).toFixed(1) || "0";
+			return {
+				name: name || "",
+				value: `${max}` || "0",
+				type: "area"
+			};
+		},
+		forecastPreMaxBasin() {
+			let name = this.forecastPreMaxList.maxRainfallBasinName;
+			let max = Number(this.forecastPreMaxList.maxBasinRainfall).toFixed(1) || "0";
+			let min = Number(this.forecastPreMaxList.minBasinRainfall).toFixed(1) || "0";
+			return {
+				name: name || "",
+				value: `${max}` || "0",
+				type: "basin"
+			};
+		},
+		forecastMaxList() {
+			let time = this.forecastPreCardList[this.forecastPreCardSelect].label;
+			return [
+				{
+					label: `预计${time}最大降雨`,
+					data: this.forecastPreMaxStation
+				},
+				{
+					label: `预计${time}最大降雨区域`,
+					data: this.forecastPreMaxArea
+				},
+				{
+					label: `预计${time}最大降雨流域`,
+					data: this.forecastPreMaxBasin
+				}
+			];
+		},
+		/** 实时降雨卡片数据 */
+		realtimePreCardList() {
+			let list = [
+				this.realtimePreList.rainfall_newsest_1,
+				this.realtimePreList.rainfall_1,
+				this.realtimePreList.rainfall_3,
+				this.realtimePreList.rainfall_6,
+				this.realtimePreList.rainfall_24,
+				this.realtimePreList.rainfall_72
+			];
+			return [
+				{
+					label: "近1小时",
+					//to do
+					data: { number: null, unit: "mm" }
+				},
+				{
+					label: "前1小时",
+					data: { number: list[0], unit: "mm" }
+				},
+				{
+					label: "前3小时",
+					data: { number: list[1], unit: "mm" }
+				},
+				{
+					label: "前6小时",
+					data: { number: list[2], unit: "mm" }
+				},
+				{
+					label: "前24小时",
+					data: { number: list[4], unit: "mm" }
+				},
+				{
+					label: "前72小时",
+					data: { number: list[5], unit: "mm" }
+				}
+			];
+		},
+		/** 实时极值列表数据 */
+		realtimeMaxPoint() {
+			return {
+				name: this.realtimePreMaxList.maxPointName || "",
+				value: Number(this.realtimePreMaxList.maxPointRainfall).toFixed(1) || 0,
+				type: "station"
+			};
+		},
+		realtimeMaxArea() {
+			return {
+				name: this.realtimePreMaxList.maxRainfallAreaName || "",
+				value: Number(this.realtimePreMaxList.areaMaxRainfall).toFixed(1) || 0,
+				type: "area"
+			};
+		},
+		realtimeMaxBasin() {
+			return {
+				name: this.realtimePreMaxList.maxRainfallBasinName || "",
+				value: Number(this.realtimePreMaxList.basinMaxRainfall).toFixed(1) || 0,
+				type: "basin"
+			};
+		},
+		realtimeMaxList() {
+			let time = this.realtimePreCardList[this.realtimePreCardSelect].label;
+			return [
+				{
+					label: `${time}最大降雨点`,
+					data: this.realtimeMaxPoint
+				},
+				{
+					label: `${time}最大降雨区域`,
+					data: this.realtimeMaxArea
+				},
+				{
+					label: `${time}最大降雨流域`,
+					data: this.realtimeMaxBasin
+				}
+			];
+		}
+	},
+	watch: {
+		currentSelectArea(val) {
+			this.getRainfallData(val);
+		}
+	},
+	mounted() {
+		this.getRainfallData();
+	},
+	methods: {
+		...mapActions(["changeArea", "changeBasin", "getForecastRainfallLayer", "setCollapseLeft"]),
+		handleLeftPanelchange(status) {
+			this.setCollapseLeft(status);
+		},
+		/** 短临预报极值点击 */
+		forecastMaxListChange(status, data) {
+			let type = data.type;
+			if (type == "station") {
+				let point = [{ lng: data.lng, lat: data.lat, no_pointermove: true }];
+				let style = {
+					src: require("@/assets/images/WaterDisastersImage/torrent-flag.png"),
+					anchor: [0.5, 1],
+					anchorXUnits: "fraction",
+					anchorYUnits: "fraction"
+				};
+				// console.log(point, style);
+				status
+					? this.ScreenMap.drawPoint(point, style, "torrentLayer")
+					: this.ScreenMap.drawPoint([], {}, "torrentLayer");
+			} else if (type == "area") {
+				status ? this.changeArea(data.name) : this.changeArea("温州市");
+			} else if (type == "basin") {
+				status ? this.changeBasin(`${data.name}流域`) : this.changeBasin("全流域");
+			}
+		},
+		/** 实时降雨极值点击 */
+		realtimeMaxListChange(status, data) {
+			let type = data.type;
+			if (type == "station") {
+			} else if (type == "area") {
+				status ? this.changeArea(data.name) : this.changeArea("温州市");
+			} else if (type == "basin") {
+				status ? this.changeBasin(`${data.name}流域`) : this.changeBasin("全流域");
+			}
+		},
+		forecastConfig(options) {
+			const minData = options.series[0].data;
+			const maxData = options.series[1].data;
+			let colorArr = ["#15ddd7", "#7dfefa", "#9dfffc"];
+			let colorArr2 = ["#2886c6", "#50bfda", "#89e3ec"];
+
+			let color = {
+				type: "linear",
+				x: 0,
+				x2: 1,
+				y: 0,
+				y2: 0,
+				colorStops: [
+					{
+						offset: 0,
+						color: colorArr[0]
+					},
+					{
+						offset: 0.5,
+						color: colorArr[0]
+					},
+					{
+						offset: 0.5,
+						color: colorArr[1]
+					},
+					{
+						offset: 1,
+						color: colorArr[1]
+					}
+				]
+			};
+			let color2 = {
+				type: "linear",
+				x: 0,
+				x2: 1,
+				y: 0,
+				y2: 0,
+				colorStops: [
+					{
+						offset: 0,
+						color: colorArr2[0]
+					},
+					{
+						offset: 0.5,
+						color: colorArr2[0]
+					},
+					{
+						offset: 0.5,
+						color: colorArr2[1]
+					},
+					{
+						offset: 1,
+						color: colorArr2[1]
+					}
+				]
+			};
+			let barWidth = 20;
+			let constData = [];
+			let showData = [];
+
+			/** 最小柱形 */
+			constData = minData.map(item => (item ? 1 : 0));
+			showData = minData.map(item =>
+				item
+					? item
+					: {
+							value: 1,
+							itemStyle: {
+								normal: {
+									borderColor: "rgba(0,0,0,0)",
+									borderWidth: 2,
+									color: "rgba(0,0,0,0)"
+								}
+							}
+					  }
+			);
+			const minSeries = [
+				{
+					z: 1,
+					name: "最小值",
+					type: "bar",
+					barWidth: barWidth,
+					barGap: "0%",
+					data: minData,
+					itemStyle: {
+						normal: {
+							color: color
+						}
+					},
+					label: {
+						show: true,
+						fontSize: 18,
+						fontWeight: "bold",
+						position: "top",
+						color: "#00C1FF",
+						formatter: ({ value }) => Number(value).toFixed(1)
+					}
+				},
+				{
+					z: 2,
+					name: "最小值",
+					type: "pictorialBar",
+					data: constData,
+					symbol: "diamond",
+					symbolOffset: [(-1 * barWidth) / 2, "50%"],
+					symbolSize: [barWidth, 10],
+					itemStyle: {
+						normal: {
+							color: color
+						}
+					},
+					tooltip: {
+						show: false
+					}
+				},
+				{
+					z: 3,
+					name: "最小值",
+					type: "pictorialBar",
+					symbolPosition: "end",
+					data: showData,
+					symbol: "diamond",
+					symbolOffset: [(-1 * barWidth) / 2, "-50%"],
+					symbolSize: [barWidth - 4, (10 * (barWidth - 4)) / barWidth],
+					itemStyle: {
+						normal: {
+							borderColor: colorArr[2],
+							borderWidth: 2,
+							color: colorArr[2]
+						}
+					},
+					tooltip: {
+						show: false
+					}
+				}
+			];
+			/** 最大柱形 */
+			constData = maxData.map(item => (item ? 1 : 0));
+			showData = maxData.map(item =>
+				item
+					? item
+					: {
+							value: 1,
+							itemStyle: {
+								normal: {
+									borderColor: "rgba(0,0,0,0)",
+									borderWidth: 2,
+									color: "rgba(0,0,0,0)"
+								}
+							}
+					  }
+			);
+			const maxSeries = [
+				{
+					z: 1,
+					name: "最大值",
+					type: "bar",
+					barWidth: barWidth,
+					barGap: "0%",
+					data: maxData,
+					itemStyle: {
+						normal: {
+							color: color2
+						}
+					},
+					label: {
+						show: true,
+						fontSize: 18,
+						fontWeight: "bold",
+						position: "top",
+						color: "#00C1FF",
+						formatter: ({ value }) => Number(value).toFixed(1)
+					}
+				},
+				{
+					z: 2,
+					name: "最大值",
+					type: "pictorialBar",
+					data: constData,
+					symbol: "diamond",
+					symbolOffset: [barWidth / 2, "50%"],
+					symbolSize: [barWidth, 10],
+					itemStyle: {
+						normal: {
+							color: color2
+						}
+					},
+					tooltip: {
+						show: false
+					}
+				},
+				{
+					z: 3,
+					name: "最大值",
+					type: "pictorialBar",
+					symbolPosition: "end",
+					data: showData,
+					symbol: "diamond",
+					symbolOffset: [barWidth / 2, "-50%"],
+					symbolSize: [barWidth - 4, (10 * (barWidth - 4)) / barWidth],
+					itemStyle: {
+						normal: {
+							borderColor: colorArr2[2],
+							borderWidth: 2,
+							color: colorArr2[2]
+						}
+					},
+					tooltip: {
+						show: false
+					}
+				}
+			];
+			/** 平均 */
+			let len = options.series[0].data.length;
+			let data = new Array(len).fill(null).map((item, index) => {
+				return Number((minData[index] + maxData[index]) / 2).toFixed(1);
+			});
+			let series = options.series;
+			options.series = [
+				...minSeries,
+				...maxSeries,
+				{
+					name: "平均值",
+					smooth: false,
+					type: "line",
+					data: data
+				}
+			];
+
+			options.legend.data = [...options.legend.data, "平均值"];
+			options.legend.selectedMode = false;
+			return options;
+		},
+		realtimeConfig(options) {
+			let data = options.series[0].data;
+			let colorArr = [];
+			colorArr = ["#2886c6", "#50bfda", "#89e3ec"];
+			let color = {
+				type: "linear",
+				x: 0,
+				x2: 1,
+				y: 0,
+				y2: 0,
+				colorStops: [
+					{
+						offset: 0,
+						color: colorArr[0]
+					},
+					{
+						offset: 0.5,
+						color: colorArr[0]
+					},
+					{
+						offset: 0.5,
+						color: colorArr[1]
+					},
+					{
+						offset: 1,
+						color: colorArr[1]
+					}
+				]
+			};
+			let barWidth = 30;
+			let constData = [];
+			let showData = [];
+			data.filter(function(item) {
+				if (item) {
+					constData.push(1);
+					showData.push(item);
+				} else {
+					constData.push(0);
+					showData.push({
+						value: 1,
+						itemStyle: {
+							normal: {
+								borderColor: "rgba(0,0,0,0)",
+								borderWidth: 2,
+								color: "rgba(0,0,0,0)"
+							}
+						}
+					});
+				}
+			});
+
+			options.series = [
+				{
+					z: 1,
+					name: "数据",
+					type: "bar",
+					barWidth: barWidth,
+					barGap: "0%",
+					data: data,
+					itemStyle: {
+						normal: {
+							color: color
+						}
+					},
+					label: {
+						show: true,
+						fontSize: 18,
+						fontWeight: "bold",
+						position: "top",
+						color: "#00C1FF",
+						formatter: ({ value }) => Number(value).toFixed(1)
+					}
+				},
+				{
+					z: 2,
+					name: "数据",
+					type: "pictorialBar",
+					data: constData,
+					symbol: "diamond",
+					symbolOffset: ["0%", "50%"],
+					symbolSize: [barWidth, 10],
+					itemStyle: {
+						normal: {
+							color: color
+						}
+					},
+					tooltip: {
+						show: false
+					}
+				},
+				{
+					z: 3,
+					name: "数据",
+					type: "pictorialBar",
+					symbolPosition: "end",
+					data: showData,
+					symbol: "diamond",
+					symbolOffset: ["0%", "-50%"],
+					symbolSize: [barWidth - 4, (10 * (barWidth - 4)) / barWidth],
+					itemStyle: {
+						normal: {
+							borderColor: colorArr[2],
+							borderWidth: 2,
+							color: colorArr[2]
+						}
+					},
+					tooltip: {
+						show: false
+					}
+				}
+			];
+			return options;
+		},
+		openDetailsDialog(val) {
+			this.$emit("open-analyse-dialog", val);
+		},
+		/** 初始化雨量数据 */
+		getRainfallData(areaName) {
+			let opt = {
+				areaName: ""
+			};
+			if (areaName && areaName != "温州市") {
+				opt.areaName = areaName;
+			} else {
+				opt.areaName = "";
+			}
+			disasterPreventionApi.predictRainfallByAreaName(opt).then(res => {
+				if (res.code == 0) {
+					this.forecastPreList = res.data;
+					// console.log(this.forecastPreList);
+				}
+			});
+			disasterPreventionApi.realtimeRainfallByAreaName(opt).then(res => {
+				if (res.code == 0) {
+					this.realtimePreList = res.data;
+				}
+			});
+			this.getForecastPreMaxValue(1);
+			this.getRealtimePreMaxValue(0);
+		},
+		/** 获得预报极值数据 */
+		getForecastPreMaxValue(hour) {
+			this.forecastChartLoading = true;
+			disasterPreventionApi.rainfallMaxValuePredict({ hour }).then(res => {
+				this.forecastPreMaxList = { ...res.data };
+			});
+			if (this.forecastAreaRainfallChart.length == 0 && this.forecastBasinRainfallChart.length == 0) {
+				disasterPreventionApi.rainfallPredictGrid({ type: "流域" }).then(res => {
+					this.forecastBasinRainfallChart = res.data;
+				});
+				disasterPreventionApi.rainfallPredictGrid({ type: "行政区划" }).then(res => {
+					this.forecastAreaRainfallChart = res.data;
+					this.forecastChartTabChange(this.forecastPreChartTab, hour);
+				});
+			}
+			this.forecastChartTabChange(this.forecastPreChartTab, hour);
+			this.forecastChartLoading = false;
+		},
+		/** 获得实时极值数据 */
+		getRealtimePreMaxValue(hour) {
+			this.realtimeChartLoading = true;
+			disasterPreventionApi.rainfallMaxValueAndGridRealtime({ hour }).then(res => {
+				this.realtimePreMaxList = res.data;
+				disasterPreventionApi.grandTotalReservoirRainfall({ hour }).then(res => {
+					this.realtimePreMaxList.resRainfallChart = res.data;
+					this.realtimePreChartTabChange(0);
+					this.realtimeChartLoading = false;
+				});
+			});
+		},
+		/** 选中1，3，6小时降雨卡片降切换 */
+		precipitationCardClick(val) {
+			if (val == null) {
+				this.ScreenMap.removeLayerByName("rainfall");
+				this.ScreenMap.clearTextLayer();
+				this.$emit("legend-change", "实时降雨量", {});
+				this.$emit("legend-change", "预报降雨量", {});
+				return;
+			}
+			let valMap = [1, 3, 6];
+			this.cardSelect = "forecast";
+			let data = this.forecastPreList[`rainfall_${valMap[val]}_data`];
+			if (data) {
+				this.$emit("change-rainfall-loading", true);
+				let params = this.formatRainfallParam(data, "rainfall");
+				/* this.getIsohyetArea(params); */
+				this.getForecastRainfallLayer({
+					opt: params,
+					area: this.currentSelectArea,
+					hour: valMap[val]
+				}).then(result => {
+					let mapImage = result.mapImage;
+					this.$emit("change-rainfall-loading", false);
+					this.getIsohyetOpacity(mapImage.xmin, mapImage.ymin, mapImage.xmax, mapImage.ymax, result.jobId, result.type);
+					this.getTextPoint(result.jobId);
+				});
+			}
+			this.getForecastPreMaxValue(valMap[val]);
+			this.$emit("legend-change", "实时降雨量", {});
+			this.$emit("legend-change", "预报降雨量", {
+				label: "预报降雨量",
+				children: [
+					{
+						label: ">70",
+						icon: "forecast-100"
+					},
+					{ label: "50~70", icon: "forecast-70" },
+					{ label: "20~50", icon: "forecast-50" },
+					{ label: "10~20", icon: "forecast-25" },
+					{ label: "3~10", icon: "forecast-10" },
+					{ label: "1~3", icon: "forecast-1" },
+					{ label: "<1", icon: "forecast-0" }
+				]
+			});
+		},
+		/** 实时降雨1，3，6，12，24，72小时卡片降雨切换 */
+		realtimePreCardClick(val) {
+			if (val == null) {
+				this.ScreenMap.removeLayerByName("rainfall");
+				this.ScreenMap.clearTextLayer();
+				this.$emit("legend-change", "实时降雨量", {});
+				this.$emit("legend-change", "预报降雨量", {});
+				return;
+			}
+			let valMap = [0, 1, 3, 6, 24, 72];
+			this.cardSelect = "realtime";
+			let data = this.realtimePreList[`rainfall_${valMap[val] != 0 ? valMap[val] : "newsest_1"}_data`];
+			this.rainList = data;
+			if (data) {
+				this.$emit("change-rainfall-loading", true);
+				let params = this.formatRainfallParam(data, "drp");
+				this.getIsohyetArea(params, true);
+			}
+			this.getRealtimePreMaxValue(valMap[val]);
+			this.$emit("legend-change", "预报降雨量", {});
+			this.$emit("legend-change", "实时降雨量", {
+				label: "实时降雨量",
+				children: [
+					{ label: ">250", icon: "realtime-250" },
+					{ label: "100~250", icon: "realtime-100" },
+					{ label: "50~100", icon: "realtime-50" },
+					{ label: "25~50", icon: "realtime-25" },
+					{ label: "10~25", icon: "realtime-10" },
+					{ label: "0.1~10", icon: "realtime-0_1" }
+				]
+			});
+		},
+		/** 实时降雨图表tabs切换 */
+		realtimePreChartTabChange(index) {
+			let tab = this.realtimePreChartTabList[index];
+			let data = {
+				行政区划: this.realtimePreMaxList.areaRainfallChart || [],
+				流域: this.realtimePreMaxList.basinRainfallChart || [],
+				水库: this.realtimePreMaxList.resRainfallChart || []
+			};
+			if (!data[tab]) return;
+			data[tab].sort((a, b) => b.value - a.value);
+			this.realtimeChartData.rows = [];
+			let rows = [];
+			for (let item of data[tab]) {
+				if (rows.length < 5) rows.push({ name: item.key, data: item.value });
+				else break;
+			}
+			this.realtimeChartData.rows = rows;
+		},
+		/** 短临预报降雨图表tabs切换 */
+		forecastChartTabChange(index, hour) {
+			hour = hour || [1, 3, 6][this.forecastPreCardSelect];
+			let tab = this.forecastPreChartTabList[index];
+			let data = {
+				行政区划: this.forecastAreaRainfallChart || [],
+				流域: this.forecastBasinRainfallChart || []
+			};
+			if (!data[tab]) return;
+			this.forecastChartData.rows = [];
+			let rows = [];
+			for (let item of data[tab]) {
+				if (rows.length < 5) {
+					rows.push({
+						name: item.key,
+						max: item[`${hour}hourMaxRainfall`],
+						min: item[`${hour}hourMinRainfall`]
+					});
+				} else break;
+			}
+			this.forecastChartData.rows = rows;
+		},
+		/** 雨量数据转换成等雨量面参数格式 */
+		formatRainfallParam(list, paramName) {
+			let geoJson = {
+				features: []
+			};
+			let featuresArr = [];
+			list.forEach(item => {
+				// let drp = item.drp > 0 ? item.drp : 0;
+				if (item[paramName] != "-") {
+					let obj = {
+						attributes: {
+							x: Number(item.longitude),
+							y: Number(item.latitude),
+							value: item[paramName]
+						},
+						geometry: {
+							x: Number(item.longitude),
+							y: Number(item.latitude)
+						}
+					};
+					featuresArr.push(obj);
+				}
+			});
+			geoJson.features = featuresArr;
+			return geoJson;
+		},
+		/** 获取等雨量面 type为true时 实时等雨量面 展示数字 */
+		async getIsohyetArea(opt, type) {
+			this.ScreenMap.clearTextLayer();
+			this.ScreenMap._showTestPoint(opt.features);
+			let params = new URLSearchParams();
+			params.append("station", JSON.stringify(opt));
+			params.append("f", "json");
+			let _this = this;
+			let areaUrl =
+				"http://117.149.227.112:6080/arcgis/rest/services/gps/DZPIDWFurLabel/GPServer/DZPIDWFurLabel/submitJob";
+			if (type) {
+				areaUrl =
+					"http://117.149.227.112:6080/arcgis/rest/services/gps/dengzhiPIDWReal0522/GPServer/dengzhiPIDWReal/submitJob";
+			}
+			// http://117.149.227.112:6080/arcgis/rest/services/gps/dengzhiPolygonWithLabel0518/GPServer/dengzhiPolygonIDWWithLabel/submitJob
+			// http://117.149.227.112:6080/arcgis/rest/services/gps/dengzhiPolygonIDW/GPServer/dengzhiPolygonIDW/submitJob
+			await axios({
+				url: areaUrl,
+				method: "post",
+				headers: { "content-type": "application/x-www-form-urlencoded" },
+				data: params
+			}).then(async res => {
+				let interVal = setInterval(async () => {
+					let url =
+						"http://117.149.227.112:6080/arcgis/rest/services/gps/DZPIDWFurLabel/GPServer/DZPIDWFurLabel/jobs/" +
+						res.data.jobId +
+						"/results/Idwres?f=pjson";
+					if (type) {
+						url =
+							"http://117.149.227.112:6080/arcgis/rest/services/gps/dengzhiPIDWReal0522/GPServer/dengzhiPIDWReal/jobs/" +
+							res.data.jobId +
+							"/results/Idwres?f=pjson";
+					}
+					await axios({
+						url: url,
+						method: "get"
+					}).then(async result => {
+						if (!result.data.value.mapImage.error) {
+							clearInterval(interVal);
+							//加载透明等雨量面
+							let mapImage = result.data.value.mapImage.extent;
+							// _this.ScreenMap.showIsohyetLayer(mapImage);
+							// this.$emit("change-rainfall-loading", false);
+							_this.getIsohyetOpacity(mapImage.xmin, mapImage.ymin, mapImage.xmax, mapImage.ymax, res.data.jobId, type);
+							// if (!type) {
+							//   _this.getTextPoint(res.data.jobId);
+							// }
+							// _this.$refs.waterWorkMap.showIsohyetLayer(result.data.value.mapImage);
+						}
+					});
+				}, 1000);
+			});
+		},
+		async getTextPoint(jobId) {
+			// console.log("jobId", jobId);
+			let url = `http://117.149.227.112:6080/arcgis/rest/services/gps/DZPIDWFurLabel/MapServer/jobs/${jobId}/1/query?where=1=1&outFields=*&f=json`;
+			await axios({
+				url: url,
+				method: "get"
+			}).then(async result => {
+				// console.log("getTextPoint", result);
+				// let esrijsonFormat = new EsriJSON();
+				// let features = esrijsonFormat.readFeatures(result.data.features);
+				this.ScreenMap._showTestPoint(result.data.features);
+			});
+		},
+		async getIsohyetOpacity(xmin, ymin, xmax, ymax, jobId, type) {
+			let bbox = xmin + "," + ymin + "," + xmax + "," + ymax;
+			let params = new URLSearchParams();
+			params.append("bbox", bbox);
+			params.append("f", "pjson");
+			params.append("transparent", true);
+			let url = `http://117.149.227.112:6080/arcgis/rest/services/gps/dengzhiPolygonIDW/MapServer/jobs/${jobId}/export`;
+			// if(type){
+			//    url = "http://117.149.227.112:6080/arcgis/rest/services/gps/dengzhiPolygonIDW/MapServer/jobs/" +
+			//   jobId +
+			//   "/export";
+			// }
+			await axios({
+				url: url,
+				method: "post",
+				headers: { "content-type": "application/x-www-form-urlencoded" },
+				data: params
+			}).then(res => {
+				this.$emit("change-rainfall-loading", false);
+				this.ScreenMap.showIsohyetLayer(res.data);
+			});
+		},
+		/**
+		 * 雨量点位开关
+		 * @param {number} index 开关的序号
+		 */
+		handleRainStationChange(btnType) {
+			this[btnType] = !this[btnType];
+			let style = {
+				src: require("@/assets/images/legend-rain0.png"),
+				anchor: [5, 5],
+				anchorXUnits: "pixels"
+			};
+			let pointList = [];
+			for (let point of this.rainList) {
+				let imgSrc = require("@/assets/images/legend/rain_0.png");
+				if (point.drp < 1) {
+					imgSrc = require("@/assets/images/legend/rain_0.png");
+				} else if (point.drp < 3) {
+					imgSrc = require("@/assets/images/legend/rain_10_25.png");
+				} else if (point.drp < 10) {
+					imgSrc = require("@/assets/images/legend/rain_10_25.png");
+				} else if (point.drp < 20) {
+					imgSrc = require("@/assets/images/legend/rain_10.png");
+				} else if (point.drp < 50) {
+					imgSrc = require("@/assets/images/legend/rain_50_100.png");
+				} else if (point.drp < 70) {
+					imgSrc = require("@/assets/images/legend/rain_100_250.png");
+				} else if (point.drp >= 70) {
+					imgSrc = require("@/assets/images/legend/rain_250.png");
+				}
+				pointList.push({
+					name: point.stationName,
+					type: "雨量",
+					lng: point.longitude,
+					lat: point.latitude,
+					code: point.stcd,
+					props: { 雨量: `${point.drp}mm` },
+					src: imgSrc
+				});
+			}
+			if (this[btnType]) {
+				this.ScreenMap.drawPoint(pointList, style, "rainLayer");
+				this.$emit("legend-change", "雨量", {
+					label: "雨量",
+					children: [
+						{
+							label: "< 3",
+							icon: "icon-rain_0"
+						},
+						{
+							label: "< 10",
+							icon: "icon-rain_10_25"
+						},
+						{
+							label: "< 20",
+							icon: "icon-rain_10"
+						},
+						{
+							label: "< 50",
+							icon: "icon-rain_50_100"
+						},
+						{
+							label: "< 70",
+							icon: "icon-rain_100_250"
+						},
+						{
+							label: ">= 70",
+							icon: "icon-rain_250"
+						}
+					]
+				});
+			} else {
+				this.ScreenMap.drawPoint([], {}, "rainLayer");
+				this.$emit("legend-change", "雨量", {});
+			}
+		},
+		/**
+		 * 跳转一张图
+		 */
+		goToAMap(type) {
+			goAMap(type);
+		}
+	}
+};
+</script>
+
+<style lang="scss" scoped>
+@import "../style/SildePanel.scss";
+::v-deep .panel-item__title--switch {
+	i {
+		cursor: pointer;
+	}
+}
+.weather-forecast {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	color: #ffffff;
+	.week-date {
+		font-size: 14px;
+		padding: 5px 0;
+		color: #ffffff;
+		text-align: center;
+		> i {
+			width: 30px;
+			height: 25px;
+		}
+	}
+}
+.date-sty {
+	padding: 10px 0;
+	color: #00c1ff;
+	font-size: 15px;
+}
+.typhoon-search {
+	width: 360px;
+	height: 100%;
+	@include flexbox;
+	@include flexflow(column, nowrap);
+	> p {
+		padding: 8px 0 12px 0;
+		color: #fff;
+	}
+	.search-row {
+		margin-bottom: 12px;
+		line-height: 44px;
+		.search-label {
+			color: #fff;
+			height: 100%;
+			@include flexbox;
+			@include flexAC;
+			@include flexJC(center);
+		}
+	}
+	.primary-btn {
+		color: #fff;
+		margin: 6px 0;
+	}
+	.typhoon-list {
+		height: 270px;
+	}
+}
+#precipitation {
+	width: 100%;
+	height: 180px;
+}
+
+.pitch-on-bg {
+	background: url(~assets/images/WaterDisastersImage/pitch-on-bg.png) no-repeat top center;
+	background-size: 100% 100%;
+}
+.rainfall-switch-sty {
+	padding: 20px 10px;
+	margin: 0 10px;
+}
+.real-time-bg {
+	margin: 0 10px;
+	background: url(~assets/images/WaterDisastersImage/pitch-on-bg.png) no-repeat top center;
+	background-size: 100% 100%;
+}
+.prediction-sty {
+	text-align: center;
+	color: #ffffff;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	.border-sty {
+		border-left: 1px solid rgba(35, 140, 239, 0.4);
+		border-right: 1px solid rgba(35, 140, 239, 0.4);
+	}
+	.rainfall-sty {
+		font-size: 20px;
+		color: #1cfff5;
+	}
+}
+.flow-style {
+	width: 100%;
+	padding: 5px 10px;
+	background: #00c1ff;
+}
+.areal-rainfall-sty {
+	display: flex;
+	justify-content: space-between; /* 横向中间自动空间 */
+	> div:nth-child(1) {
+		vertical-align: middle;
+		> i {
+			vertical-align: middle;
+		}
+		> span {
+			color: #fff;
+		}
+	}
+	> div:nth-child(2) {
+		line-height: 21px;
+		.tab-switch-sty {
+			padding: 2px 10px;
+			border-radius: 15px;
+			background: #00c1ff;
+		}
+		> span {
+			color: #fff;
+			margin-left: 15px;
+			font-size: 15px;
+		}
+	}
+}
+.early-warning {
+	margin: 15px 15px 0 0;
+	height: 140px;
+	background: url(~assets/images/WaterDisastersImage/shanhong-left.png) no-repeat top center;
+	background-size: 100% 100%;
+	position: relative;
+	> div:nth-child(1) {
+		padding: 15px 0 0 15px;
+		float: left;
+		> p {
+			color: #1cfff5;
+		}
+		> p:nth-child(1) {
+			font-size: 28px;
+			> span {
+				font-size: 16px;
+				color: #fff;
+			}
+		}
+		> p:nth-child(2) {
+			text-align: left;
+			font-size: 16px;
+			margin-top: 10px;
+		}
+	}
+	> div:nth-child(2) {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		text-align: right;
+		float: right;
+		margin-right: 10px;
+		color: #1cfff5;
+		> p:nth-child(1) {
+			margin-bottom: 10px;
+		}
+		> p:nth-child(2) {
+			font-size: 28px;
+			> span {
+				color: #fff;
+				font-size: 16px;
+			}
+		}
+	}
+}
+.warning-possibility {
+	height: 140px;
+	padding: 15px;
+	color: #ff7144;
+	background: url(~assets/images/WaterDisastersImage/shanghong-red.png) no-repeat top center;
+	background-size: 100% 100%;
+	> p:nth-child(1) {
+		font-size: 18px;
+		padding-bottom: 10px;
+	}
+	> p:nth-child(2) {
+		font-size: 30px;
+		> span {
+			font-size: 14px;
+			color: #ffffff;
+		}
+	}
+	> div {
+		display: flex;
+		padding: 6px;
+		justify-content: space-between; /* 横向中间自动空间 */
+		> p {
+			> span {
+				font-size: 14px;
+				color: #ffffff;
+			}
+		}
+	}
+	&.warning-possibility-light {
+		color: #eec80b;
+	}
+}
+.early-warning-sty {
+	font-size: 20px;
+	font-weight: bold;
+	padding: 15px 20px;
+	background-image: linear-gradient(to right, rgba(117, 124, 52, 0.3), rgba(0, 0, 0, 0));
+	> p {
+		color: #eec80b;
+	}
+	> p:nth-child(2) {
+		margin-top: 16px;
+		> span {
+			color: #eec80b;
+			> span {
+				color: #fff;
+				font-size: 14px;
+			}
+		}
+	}
+}
+.early-warning-style {
+	font-size: 20px;
+	font-weight: bold;
+	padding: 15px 20px;
+	background-image: linear-gradient(to right, rgba(192, 110, 63, 0.3), rgba(0, 0, 0, 0));
+	> p {
+		color: #ff7144;
+	}
+	> p:nth-child(2) {
+		margin-top: 16px;
+		> span {
+			color: #ff7144;
+
+			> span {
+				color: #fff;
+				font-size: 14px;
+			}
+		}
+	}
+}
+
+.switch-list {
+	::v-deep.el-carousel--horizontal {
+		overflow-x: hidden;
+		overflow-y: hidden;
+	}
+}
+
+.sidebar-list {
+	.warning-style {
+		font-size: 16px;
+		color: #ffffff;
+		line-height: 24px;
+		font-weight: 400;
+	}
+	::v-deep.el-carousel--horizontal {
+		overflow-x: hidden;
+		overflow-y: hidden;
+		height: unset;
+	}
+}
+.no-typhoon {
+	width: 100%;
+	// height: 90px;
+	margin-top: 10px;
+	background: url(~assets/images/wu-tai-feng.png) no-repeat top center;
+}
+.typhoon-sty {
+	padding-bottom: 10px;
+	color: #fff;
+	font-size: 14px;
+}
+.tab-style {
+	height: 20px;
+	margin: 0 5px;
+	padding: 3px 10px;
+	border-radius: 10px;
+	line-height: 20px;
+	color: #fff;
+	font-size: 14px;
+}
+.tab-sty-bg {
+	background: #00c1ff;
+}
+</style>
+<style lang="scss">
+.icon-diamond {
+	display: inline-block;
+	height: 24px;
+	width: 24px;
+	background-image: url(~assets/images/WaterDisastersImage/diamond.gif);
+}
+.v-charts-data-empty {
+	background-color: transparent;
+}
+.v-charts-component-loading {
+	background-color: transparent;
+}
+</style>

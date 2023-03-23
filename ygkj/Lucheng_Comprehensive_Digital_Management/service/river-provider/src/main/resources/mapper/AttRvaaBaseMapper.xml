@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttRvaaBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttRvaaBase">
+        <result column="fid" property="fid"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="length" property="length"/>
+        <result column="width" property="width"/>
+        <result column="sname" property="sname"/>
+        <result column="ename" property="ename"/>
+        <result column="grade" property="grade"/>
+        <result column="mntrb" property="mntrb"/>
+        <result column="trntype" property="trntype"/>
+        <result column="town" property="town"/>
+        <result column="bas" property="bas"/>
+        <result column="landform" property="landform"/>
+        <result column="function" property="function"/>
+        <result column="area" property="area"/>
+        <result column="vol" property="vol"/>
+        <result column="mu" property="mu"/>
+        <result column="imp" property="imp"/>
+        <result column="contdiff" property="contdiff"/>
+        <result column="spcl" property="spcl"/>
+        <result column="sdl" property="sdl"/>
+        <result column="edl" property="edl"/>
+        <result column="rchief" property="rchief"/>
+        <result column="rcode" property="rcode"/>
+        <result column="remark" property="remark"/>
+        <result column="geometry" property="geometry"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        fid,
+        name,
+        code,
+        city,
+        county,
+        length,
+        width,
+        sname,
+        ename,
+        grade,
+        mntrb,
+        trntype,
+        town,
+        bas,
+        landform,
+        function,
+        area,
+        vol,
+        mu,
+        imp,
+        contdiff,
+        spcl,
+        sdl,
+        edl,
+        rchief,
+        rcode,
+        remark,
+        geometry,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.river.model.AttRvaaBase">
+        INSERT INTO att_rvaa_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != fid'>
+                fid,
+            </if>
+            <if test='null != name'>
+                name,
+            </if>
+            <if test='null != code'>
+                code,
+            </if>
+            <if test='null != city'>
+                city,
+            </if>
+            <if test='null != county'>
+                county,
+            </if>
+            <if test='null != length'>
+                length,
+            </if>
+            <if test='null != width'>
+                width,
+            </if>
+            <if test='null != sname'>
+                sname,
+            </if>
+            <if test='null != ename'>
+                ename,
+            </if>
+            <if test='null != grade'>
+                grade,
+            </if>
+            <if test='null != mntrb'>
+                mntrb,
+            </if>
+            <if test='null != trntype'>
+                trntype,
+            </if>
+            <if test='null != town'>
+                town,
+            </if>
+            <if test='null != bas'>
+                bas,
+            </if>
+            <if test='null != landform'>
+                landform,
+            </if>
+            <if test='null != function'>
+                function,
+            </if>
+            <if test='null != area'>
+                area,
+            </if>
+            <if test='null != vol'>
+                vol,
+            </if>
+            <if test='null != mu'>
+                mu,
+            </if>
+            <if test='null != imp'>
+                imp,
+            </if>
+            <if test='null != contdiff'>
+                contdiff,
+            </if>
+            <if test='null != spcl'>
+                spcl,
+            </if>
+            <if test='null != sdl'>
+                sdl,
+            </if>
+            <if test='null != edl'>
+                edl,
+            </if>
+            <if test='null != rchief'>
+                rchief,
+            </if>
+            <if test='null != rcode'>
+                rcode,
+            </if>
+            <if test='null != remark'>
+                remark,
+            </if>
+            <if test='null != geometry'>
+                geometry,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != fid'>
+                #{fid},
+            </if>
+            <if test='null != name'>
+                #{name},
+            </if>
+            <if test='null != code'>
+                #{code},
+            </if>
+            <if test='null != city'>
+                #{city},
+            </if>
+            <if test='null != county'>
+                #{county},
+            </if>
+            <if test='null != length'>
+                #{length},
+            </if>
+            <if test='null != width'>
+                #{width},
+            </if>
+            <if test='null != sname'>
+                #{sname},
+            </if>
+            <if test='null != ename'>
+                #{ename},
+            </if>
+            <if test='null != grade'>
+                #{grade},
+            </if>
+            <if test='null != mntrb'>
+                #{mntrb},
+            </if>
+            <if test='null != trntype'>
+                #{trntype},
+            </if>
+            <if test='null != town'>
+                #{town},
+            </if>
+            <if test='null != bas'>
+                #{bas},
+            </if>
+            <if test='null != landform'>
+                #{landform},
+            </if>
+            <if test='null != function'>
+                #{function},
+            </if>
+            <if test='null != area'>
+                #{area},
+            </if>
+            <if test='null != vol'>
+                #{vol},
+            </if>
+            <if test='null != mu'>
+                #{mu},
+            </if>
+            <if test='null != imp'>
+                #{imp},
+            </if>
+            <if test='null != contdiff'>
+                #{contdiff},
+            </if>
+            <if test='null != spcl'>
+                #{spcl},
+            </if>
+            <if test='null != sdl'>
+                #{sdl},
+            </if>
+            <if test='null != edl'>
+                #{edl},
+            </if>
+            <if test='null != rchief'>
+                #{rchief},
+            </if>
+            <if test='null != rcode'>
+                #{rcode},
+            </if>
+            <if test='null != remark'>
+                #{remark},
+            </if>
+            <if test='null != geometry'>
+                #{geometry},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="loadPage" resultType="com.ygkj.river.vo.response.AttRvaaBaseRespVo">
+        SELECT tbl.* FROM `att_rvaa_base` tbl WHERE tbl.del_flag = 0
+    </select>
+
+
+</mapper>

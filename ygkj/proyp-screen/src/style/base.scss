@@ -1,0 +1,45 @@
+html,
+body {
+  height: 100%;
+  color: #ffffff;
+  font-family: PingFangSC-Regular, PingFang SC;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+li {
+  list-style: none;
+}
+
+*:focus {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track-piece {
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 5px;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  background-color: rgba(125, 125, 125, 0.7);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 5px;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  background-color: rgba(125, 125, 125, 0.7);
+}

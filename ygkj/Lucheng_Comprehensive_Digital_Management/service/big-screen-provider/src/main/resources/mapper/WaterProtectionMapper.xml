@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.WaterProtectionMapper">
+
+    <select id="waterSourceAdcdStats" resultType="java.util.Map">
+        select t.adcd, count(1) num from (select concat(left(swhs_loc, 6), '000000') adcd from att_swhs_base) t group by
+        t.adcd
+    </select>
+
+    <!-- 0.地下水1.水库2.山塘3.河流 -->
+    <select id="waterSourceTypeStats" resultType="com.ygkj.big.screen.vo.response.DataStatisticsInfo">
+        select
+        case wain_waso_type
+        when '0' then '地下水'
+        when '1' then '水库'
+        when '2' then '山塘'
+        when '3' then '河流'
+        else '其他' end txt,
+        count(1) num from att_swhs_base group by wain_waso_type
+    </select>
+
+    <select id="getWaterSource" resultType="com.ygkj.big.screen.model.AttSwhsBase">
+        select swhs_code,
+        swhs_name,
+        swhs_long,
+        swhs_lat,
+        swhs_loc,
+        wain_waso_type,
+        wat_area,
+        wain_num,
+        main_wain_use,
+        wasu_obj_type,
+        wasu_town_name,
+        des_ann_wain,
+        des_ann_wasu_pop,
+        run_year,
+        waqu_goal,
+        note,
+        eff_date,
+        expr_date,
+        date_max_wat,
+        master,
+        master_phone
+        from att_swhs_base where 1 = 1
+        <if test="type ! = null and type != ''">
+            and wain_waso_type = #{type}
+        </if>
+    </select>
+
+    <select id="wiuValidStats" resultType="com.ygkj.big.screen.vo.response.DataStatisticsInfo">
+        select count(1) num from
+        (select distinct wr_org_code from att_wpt_base
+        where del_flag = 0 and wr_org_code is not null and wr_org_code &lt;&gt; '' and int_dl >= now()) t
+    </select>
+
+    <!-- 取水户用水规模（>50万吨,40-50,30-40,20-30,<20） -->
+    <select id="wiuScaleStats" resultType="com.ygkj.big.screen.vo.response.DataStatisticsInfo">
+        select m.txt, count(1) num from
+        (select
+        case
+        when t.wper &lt; 20 then '小于20万吨'
+        when t.wper &gt;= 20 and t.wper &lt; 30 then '20-30万吨'
+        when t.wper &gt;= 30 and t.wper &lt; 40 then '30-40万吨'
+        when t.wper &gt;= 40 and t.wper &lt; 50 then '40-50万吨'
+        when t.wper &gt;= 50 then '大于50万吨'
+        else '其他'
+        end txt
+        from
+        (select wr_org_code, sum(wpermitsize) wper from att_wpt_base
+        where del_flag = 0 and wr_org_code is not null and wr_org_code &lt;&gt; '' and int_dl &gt;= now() group by
+        wr_org_code) t) m group by m.txt
+    </select>
+
+    <select id="wiuUseWaterMonthStats" resultType="com.ygkj.big.screen.vo.response.DataStatisticsInfo">
+        select concat(`month`,'月') txt, sum(wat_use)/10000 double_value from wiu_use_month where `year` = #{year} group
+        by `month`
+    </select>
+
+    <select id="wiuUseWaterAdcdStats" resultType="java.util.Map">
+        select t.wiu_loc adcd, sum(t.wat_use) num from
+        (select a.wiu_code, a.year, a.wat_use, b.wiu_loc from lc_business_db.wiu_use a
+        left join lc_basic_db.att_wiu_base b on b.del_flag = 0 and a.wiu_code = b.wiu_code
+        where a.year = #{year}) t group by t.wiu_loc
+    </select>
+</mapper>

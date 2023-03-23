@@ -1,0 +1,241 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: sca-gateway
+  cloud:
+    sentinel:
+      filter:
+        enabled: true
+    nacos:
+      discovery:
+        #        server-addr: 192.168.0.106:8848
+        server-addr: 192.168.0.111:8888
+    gateway:
+      httpclient:
+        pool:
+          max-connections: 100
+      discovery:
+        locator:
+          enabled: true # 让gateway可以发现nacos中的微服务
+      routes: # 路由，不配置默认以 网关ip:port/server_name/**
+        - id: auth-service # id保证唯一
+          uri: lb://auth-consumer       # lb指的是从nacos中按照名称获取微服务,并遵循负载均 衡策略
+          predicates: # 断言(就是路由转发要满足的条件)
+            - Path=/auth-service/** # 当请求路径满足Path指定的规则时,才进行路由转发
+          filters: # 过滤器,请求在传递过程中可以通过过滤器对其进行一定的修改
+            - StripPrefix=1 # 转发之前去掉1层路径+-
+        - id: gdp # id保证唯一
+          uri: lb://gdp       # lb指的是从nacos中按照名称获取微服务,并遵循负载均 衡策略
+          predicates: # 断言(就是路由转发要满足的条件)
+            - Path=/gdp/** # 当请求路径满足Path指定的规则时,才进行路由转发
+          filters: # 过滤器,请求在传递过程中可以通过过滤器对其进行一定的修改
+            - StripPrefix=1 # 转发之前去掉1层路径
+        - id: cockpit
+          uri: lb://sca-water-consumer-monitor
+          predicates:
+            - Path=/cockpit/**
+          filters:
+            - StripPrefix=1
+        - id: api
+          uri: lb://soft-database
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /busApi/api/$\{segment}
+        ## 用户角色权限服务直接转发到服务提供方
+        - id: sys-role-permission
+          uri: lb://authentication-system
+          predicates:
+            - Path=/sys-role-permission/**
+          filters:
+            - RewritePath=/sys-role-permission/(?<segment>.*), /$\{segment}
+        - id: graph
+          uri: lb://graph
+          predicates:
+            - Path=/graph/**
+          filters:
+            - RewritePath=/graph/(?<segment>.*), /$\{segment}
+        - id: shanxi
+          uri: lb://sca-shanxi
+          predicates:
+            - Path=/shanxi/**
+          filters:
+            - RewritePath=/shanxi/(?<segment>.*), /$\{segment}
+        - id: project-manage
+          uri: lb://project-manage
+          predicates:
+            - Path=/project-manage/**
+          filters:
+            - RewritePath=/project-manage/(?<segment>.*), /$\{segment}
+        - id: water-saving
+          uri: lb://water-saving
+          predicates:
+            - Path=/water-saving/**
+          filters:
+            - RewritePath=/water-saving/(?<segment>.*), /$\{segment}
+        - id: digitization
+          uri: lb://hydrology-digitization
+          predicates:
+            - Path=/digitization/**
+          filters:
+            - RewritePath=/digitization/(?<segment>.*), /$\{segment}
+        - id: user-system
+          uri: lb://authentication-system
+          predicates:
+            - Path=/user-system/**
+          filters:
+            - RewritePath=/user-system/(?<segment>.*), /$\{segment}
+        - id: flood-protect
+          uri: lb://flood-protect
+          predicates:
+            - Path=/flood-protect/**
+          filters:
+            - RewritePath=/flood-protect/(?<segment>.*), /$\{segment}
+        - id: meteorological-visualization
+          uri: lb://meteorological-visualization
+          predicates:
+            - Path=/meteorological-visualization/**
+          filters:
+            - RewritePath=/meteorological-visualization/(?<segment>.*), /$\{segment}
+        - id: water-resource-ability
+          uri: lb://water-resource-ability
+          predicates:
+            - Path=/wra/**
+          filters:
+            - RewritePath=/wra/(?<segment>.*), /$\{segment}
+        - id: common-service
+          uri: lb://common-service
+          predicates:
+            - Path=/common/**
+          filters:
+            - RewritePath=/common/(?<segment>.*), /$\{segment}
+        - id: river-service
+          uri: lb://river-service
+          predicates:
+            - Path=/river-service/**
+          filters:
+            - RewritePath=/river-service/(?<segment>.*), /$\{segment}
+        - id: water-area
+          uri: lb://water-area
+          predicates:
+            - Path=/waterArea/**
+          filters:
+            - RewritePath=/waterArea/(?<segment>.*), /$\{segment}
+        - id: water-research
+          uri: lb://water-research
+          predicates:
+            - Path=/water-research/**
+          filters:
+            - RewritePath=/water-research/(?<segment>.*), /$\{segment}
+        - id: plan-digitization
+          uri: lb://plan-digitization
+          predicates:
+            - Path=/plan-digitization/**
+          filters:
+            - RewritePath=/plan-digitization/(?<segment>.*), /$\{segment}
+        - id: soil-erosion
+          uri: lb://soil-erosion
+          predicates:
+            - Path=/soil-erosion/**
+          filters:
+            - RewritePath=/soil-erosion/(?<segment>.*), /$\{segment}
+        - id: circle-construct
+          uri: lb://circle-construct
+          predicates:
+            - Path=/circle-construct/**
+          filters:
+            - RewritePath=/circle-construct/(?<segment>.*), /$\{segment}
+        - id: data-aggregation
+          uri: lb://data-aggregation
+          predicates:
+            - Path=/data-aggregation/**
+          filters:
+            - RewritePath=/data-aggregation/(?<segment>.*), /$\{segment}
+        - id: warning-service
+          uri: lb://warning-service
+          predicates:
+            - Path=/warning-service/**
+          filters:
+            - RewritePath=/warning-service/(?<segment>.*), /$\{segment}
+        - id: data-management
+          uri: lb://data-management
+          predicates:
+            - Path=/data-management/**
+          filters:
+            - RewritePath=/data-management/(?<segment>.*), /$\{segment}
+        - id: smart-construction
+          uri: lb://smart-construction
+          predicates:
+            - Path=/smart-construction/**
+          filters:
+            - RewritePath=/smart-construction/(?<segment>.*), /$\{segment}
+        - id: mobile-service
+          uri: lb://mobile-service
+          predicates:
+            - Path=/mobile-service/**
+          filters:
+            - RewritePath=/mobile-service/(?<segment>.*), /$\{segment}
+        - id: big-screen
+          uri: lb://big-screen
+          predicates:
+            - Path=/big-screen/**
+          filters:
+            - RewritePath=/big-screen/(?<segment>.*), /$\{segment}
+        - id: platform-management
+          uri: lb://platform-management
+          predicates:
+            - Path=/platform-management/**
+          filters:
+            - RewritePath=/platform-management/(?<segment>.*), /$\{segment}
+        - id: office-automation
+          uri: lb://office-automation
+          predicates:
+            - Path=/office-automation/**
+          filters:
+            - RewritePath=/office-automation/(?<segment>.*), /$\{segment}
+        - id: supervision-service
+          uri: lb://supervision-service
+          predicates:
+            - Path=/supervision-service/**
+          filters:
+            - RewritePath=/supervision-service/(?<segment>.*), /$\{segment}
+        - id: water-dispatch
+          uri: lb://water-dispatch
+          predicates:
+            - Path=/water-dispatch/**
+          filters:
+            - RewritePath=/water-dispatch/(?<segment>.*), /$\{segment}
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+  redis:
+    database: 15
+    #    host: 192.168.2.116
+    #    port: 6379
+    host: 112.17.127.75
+    port: 20006
+    password: xB239MCfg3321Pq002
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+## 日志输出配置
+logging:
+  file:
+    name: ${logging.file.path}/${spring.application.name}.log
+    path: log
+  level:
+    com.ygkj: info
+
+jwt:
+  secretKey: 78944878877848fg)
+  accessTokenExpireTime: PT8H
+  refreshTokenExpireTime: PT3H
+  refreshTokenExpireAppTime: P30D
+  issuer: yingxue.com
+

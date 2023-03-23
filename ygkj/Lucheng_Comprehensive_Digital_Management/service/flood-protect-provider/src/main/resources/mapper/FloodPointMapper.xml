@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.FloodPointMapper">
+    <select id="listNewestFloodPoint" resultType="com.ygkj.flood.model.FloodPoint">
+        select * from
+        ( select * from flood_point where del_flag=0
+        <if test="recentDays!=null and recentDays>0">
+            <choose>
+                <when test="dataTime!=null">
+                    and acquisition_time &gt;= date_sub(#{dataTime}, interval #{recentDays} day)
+                </when>
+                <otherwise>
+                    and acquisition_time &gt;= date_sub(NOW(), interval #{recentDays} day)
+                </otherwise>
+            </choose>
+        </if>
+        <if test="name!=null and name!=''">
+            and FIND_IN_SET(name,#{name})
+        </if>
+        <if test="areaCode !=null and areaCode!='' and areaCode.length>=6">
+            and area_code like CONCAT(SUBSTR(#{areaCode},1,6),'%')
+        </if>
+        having 1 order by acquisition_time desc) as a
+        group by a.name
+    </select>
+
+    <select id="selectNewestFloodPointByName" resultType="com.ygkj.flood.model.FloodPoint">
+        select * from flood_point where del_flag=0
+        <if test="name!=null and name!=''">
+            and name = #{name}
+        </if>
+        order by acquisition_time desc limit 1
+    </select>
+
+    <select id="selectByName" resultType="com.ygkj.flood.model.FloodPoint">
+        select * from flood_point where del_flag=0
+        <if test="name!=null and name!=''">
+            and name=#{name}
+        </if>
+        <if test="start!=null and end!=null">
+            and acquisition_time between #{start} and #{end}
+        </if>
+        order by acquisition_time asc
+    </select>
+
+    <select id="selectFloodPointDefine" resultType="com.ygkj.flood.model.AttFloodPoint">
+        select * from att_flood_point where del_flag=0
+        <if test="name!=null and name!=''">
+            and FIND_IN_SET(name,#{name})
+        </if>
+        <if test="areaCode !=null and areaCode!='' and areaCode.length>=6">
+            and area_code like CONCAT(SUBSTR(#{areaCode},1,6),'%')
+        </if>
+    </select>
+
+    <select id="loadFloodPointDefine" resultType="com.ygkj.flood.model.AttFloodPoint">
+        select * from att_flood_point where del_flag=0
+        <if test="name!=null and name!=''">
+            and name=#{name}
+        </if>
+        limit 1
+    </select>
+
+    <select id="maxPondingTimes" resultType="com.ygkj.entity.SingletonMap">
+        select a.num as `value`,a.name as `key`
+        from(
+        select count(1) as num,`name`
+        from flood_point
+        <where>
+            <if test="true">
+                and water_level &gt; 0
+            </if>
+            <if test="dataTime!=null">
+                and acquisition_time &lt;= #{dataTime}
+            </if>
+        </where>
+        GROUP BY `name`)
+        as a order by a.num desc
+        limit 1
+    </select>
+
+    <select id="pondingTimes" resultType="com.ygkj.entity.SingletonMap">
+        select count(1) as value,`name` as `key`
+        from flood_point
+        <where>
+            <if test="true">
+                and water_level &gt; 0
+            </if>
+            <if test="dataTime!=null">
+                and acquisition_time &lt;= #{dataTime}
+            </if>
+        </where>
+        GROUP BY `name`
+    </select>
+</mapper>

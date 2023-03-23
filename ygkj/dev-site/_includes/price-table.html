@@ -1,0 +1,44 @@
+{% for group in site.data.price %}
+{%- if group.data.ref -%}
+{% assign group_doc = site.documents | where: "lang", page.lang | where: "ref", group.data.ref | first %}
+<h3 id="{{group_doc.url | split: "/" | last}}">{{ group_doc.title }}</h3>
+{%- else -%}
+<h3 id="{{group.data.en | slugify}}">{{ group.data[page.lang] }}</h3>
+{%- endif -%}
+<div class="price-content{{- forloop.index }} {% if forloop.first %}default{% endif %}">
+    <div class="data-desc mb-3">
+        <p class="mr-2">{{ site.data.t[page.lang]doc-incl-data-pricing }}:</p>
+        <p>
+            {% for incl_data in group.incl %}
+            {%- assign incl_doc = site.documents | where: "lang", page.lang | where: "ref", incl_data | first  -%}
+                <span class="mr-2">&bull; <a href="{{ incl_doc.url }}">{{ incl_doc.title }}</a></span>
+            {% endfor %} 
+        </p>
+        {%- if group.excl -%}
+        <blockquote class="bqwarning">
+            {{ group.excl[page.lang] | markdownify }}
+        </blockquote>
+        {%- endif -%}
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>{{ site.data.t[page.lang].pi-req-mo }}</th>
+                <th>{{ site.data.t[page.lang].pi-price-req }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%- for price in group.price -%}
+            <tr>
+                <td>
+                    {% assign tier = forloop.index | prepend: "pi-tier" %}
+                    {{ site.data.t[page.lang][tier]}}
+                    </td>
+                <td>CNY {{ price }}</td>
+            </tr>    
+            {%- endfor -%}
+        </tbody>
+    </table>
+</div>
+{% endfor %}

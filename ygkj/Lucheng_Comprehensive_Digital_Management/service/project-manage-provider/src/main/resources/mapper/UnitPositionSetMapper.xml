@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ygkj.water.project.mapper.UnitPositionSetMapper">
+    <select id="queryList" parameterType="com.ygkj.project.vo.request.UnitPositionSetReqVo" resultType="com.ygkj.project.model.UnitPositionSet">
+        select   id,project_code,project_name,project_category,
+        <choose>
+            <when test="projectCategory=='水库'">
+                (case when project_scale = 1 then '大（1）型'
+                when project_scale = 2 then '大（2）型'
+                when project_scale = 3 then '中型'
+                when project_scale = 4 then '小（1）型'
+                when project_scale = 5 then '小（2）型' end) as project_scale,
+            </when>
+            <when test="projectCategory=='海塘'">
+                (case when project_scale = 1 then '1级海塘'
+                when project_scale = 2 then '2级海塘'
+                when project_scale = 3 then '3级海塘'
+                when project_scale = 4 then '4级海塘'
+                when project_scale = 5 then '5级海塘'
+                when project_scale = 6 then '规模以下' end) as project_scale,
+            </when>
+            <when test="projectCategory=='堤防'">
+                (case when project_scale = 1 then '1级堤防'
+                when project_scale = 2 then '2级堤防'
+                when project_scale = 3 then '3级堤防'
+                when project_scale = 4 then '4级堤防'
+                when project_scale = 5 then '5级堤防'
+                when project_scale = 6 then '规模以下'
+                when project_scale = 7 then '护岸' end) as project_scale,
+            </when>
+            <when test="projectCategory=='水闸'">
+                (case when project_scale = 1 then '大（1）型'
+                when project_scale = 2 then '大（2）型'
+                when project_scale = 3 then '中型'
+                when project_scale = 4 then '小（1）型'
+                when project_scale = 5 then '小（2）型'
+                when project_scale = 6 then '规模以下' end) as project_scale,
+            </when>
+        </choose>
+        town_adnm,jsonarray,type,creator_id,create_time,updater_id,update_time,del_flag
+        from unit_position_set
+        where del_flag = '0'
+        <if test="null != projectName and ''!=projectName">
+            and project_name like concat('%',#{projectName},'%')
+        </if>
+        <if test="null != projectCategory and ''!=projectCategory">
+            and project_category = #{projectCategory}
+        </if>
+        <if test="null != projectScale and ''!=projectScale">
+            and project_scale = #{projectScale}
+        </if>
+        <if test="null != townAdnm and ''!=townAdnm">
+            and town_adnm like concat('%',#{townAdnm},'%')
+        </if>
+        <if test="null != type and ''!=type">
+            and type = #{type}
+        </if>
+        <if test="null != type and 2==type">
+            and FIND_IN_SET(project_code,(select group_concat(prcd) from company_binding_prcd
+            <if test="null != deptId and ''!=deptId">
+                where wyh_id = #{deptId}
+            </if>
+            ))
+        </if>
+    </select>
+
+    <update id="updateBatch" parameterType="com.ygkj.project.model.UnitPositionSet">
+        update unit_position_set set jsonArray = #{jsonarray} where project_code = #{projectCode}
+    </update>
+</mapper>

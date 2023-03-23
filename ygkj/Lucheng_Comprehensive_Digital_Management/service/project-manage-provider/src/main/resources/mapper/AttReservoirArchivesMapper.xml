@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.AttReservoirArchivesMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.project.model.AttReservoirArchives" >
+        <result column="id" property="id" />
+        <result column="reservoir_code" property="reservoirCode" />
+        <result column="run_file_id" property="runFileId" />
+        <result column="construct_file_id" property="constructFileId" />
+        <result column="program_file_id" property="programFileId" />
+        <result column="planning_file_id" property="planningFileId" />
+        <result column="emergency_file_id" property="emergencyFileId" />
+        <result column="year" property="year" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+                reservoir_code,
+                run_file_id,
+                construct_file_id,
+                program_file_id,
+                planning_file_id,
+                emergency_file_id,
+                year
+    </sql>
+
+    <sql id="Res_Column_List">
+        ara.id,
+        ara.reservoir_code,
+        ara.emergency_file_id,
+        ara.year,
+        arb.res_name,
+        arb.low_left_long,
+        arb.low_left_lat,
+        arb.up_left_lon,
+        arb.up_right_lat,
+        arb.res_loc,
+        arb.res_type
+    </sql>
+
+    <sql id="File_Column_List">
+        sf.id,
+        sf.file_name,
+        sf.file_url,
+        sf.file_type,
+        sf.file_size
+    </sql>
+
+
+    <select id="reservoirArchivesFileCount" resultType="integer">
+        SELECT count(emergency_file_id) as count FROM att_reservoir_archives
+        WHERE reservoir_code IN
+              (SELECT RES_CODE FROM att_res_base WHERE ENG_GRAD &lt; 4 AND DEL_FLAG = 0)
+        AND YEAR = (select year(now()))
+    </select>
+
+
+    <select id="reservoirArchivesAndResBase" resultType="com.ygkj.project.vo.response.AttReservoirArchivesResVo">
+        select <include refid="Res_Column_List" />
+          from att_reservoir_archives ara
+          inner join att_res_base arb
+          on ara.reservoir_code = arb.res_code
+    </select>
+
+
+    <select id="reservoirArchivesFileList" resultType="com.ygkj.project.model.SysFile">
+        select <include refid="File_Column_List" />
+        from att_reservoir_archives ara
+        inner join lc_basic_db.sys_file sf
+        on ara.emergency_file_id = sf.id
+        where sf.deleted = 0
+    </select>
+
+</mapper>

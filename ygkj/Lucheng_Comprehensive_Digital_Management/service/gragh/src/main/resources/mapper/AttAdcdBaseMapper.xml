@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.AttAdcdBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.gragh.model.AttAdcdBase">
+        <result column="adcd" property="adcd"/>
+        <result column="adnm" property="adnm"/>
+        <result column="parent_adcd" property="parentAdcd"/>
+        <result column="level" property="level"/>
+        <result column="city_adcd" property="cityAdcd"/>
+        <result column="city_adnm" property="cityAdnm"/>
+        <result column="country_adcd" property="countryAdcd"/>
+        <result column="country_adnm" property="countryAdnm"/>
+        <result column="town_adcd" property="townAdcd"/>
+        <result column="town_adnm" property="townAdnm"/>
+        <result column="lgtd" property="lgtd"/>
+        <result column="lttd" property="lttd"/>
+        <result column="map_level" property="mapLevel"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        adcd,
+        adnm,
+        parent_adcd,
+        level,
+        city_adcd,
+        city_adnm,
+        country_adcd,
+        country_adnm,
+        town_adcd,
+        town_adnm,
+        lgtd,
+        lttd,
+        map_level,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.gragh.model.AttAdcdBase">
+        INSERT INTO att_adcd_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != adcd'>
+                adcd,
+            </if>
+            <if test='null != adnm'>
+                adnm,
+            </if>
+            <if test='null != parentAdcd'>
+                parent_adcd,
+            </if>
+            <if test='null != level'>
+                level,
+            </if>
+            <if test='null != cityAdcd'>
+                city_adcd,
+            </if>
+            <if test='null != cityAdnm'>
+                city_adnm,
+            </if>
+            <if test='null != countryAdcd'>
+                country_adcd,
+            </if>
+            <if test='null != countryAdnm'>
+                country_adnm,
+            </if>
+            <if test='null != townAdcd'>
+                town_adcd,
+            </if>
+            <if test='null != townAdnm'>
+                town_adnm,
+            </if>
+            <if test='null != lgtd'>
+                lgtd,
+            </if>
+            <if test='null != lttd'>
+                lttd,
+            </if>
+            <if test='null != mapLevel'>
+                map_level,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != adcd'>
+                #{adcd},
+            </if>
+            <if test='null != adnm'>
+                #{adnm},
+            </if>
+            <if test='null != parentAdcd'>
+                #{parentAdcd},
+            </if>
+            <if test='null != level'>
+                #{level},
+            </if>
+            <if test='null != cityAdcd'>
+                #{cityAdcd},
+            </if>
+            <if test='null != cityAdnm'>
+                #{cityAdnm},
+            </if>
+            <if test='null != countryAdcd'>
+                #{countryAdcd},
+            </if>
+            <if test='null != countryAdnm'>
+                #{countryAdnm},
+            </if>
+            <if test='null != townAdcd'>
+                #{townAdcd},
+            </if>
+            <if test='null != townAdnm'>
+                #{townAdnm},
+            </if>
+            <if test='null != lgtd'>
+                #{lgtd},
+            </if>
+            <if test='null != lttd'>
+                #{lttd},
+            </if>
+            <if test='null != mapLevel'>
+                #{mapLevel},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_adcd_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.gragh.model.AttAdcdBase">
+        UPDATE att_adcd_base
+        <set>
+            <if test='null != adcd'>adcd = #{adcd},</if>
+            <if test='null != adnm'>adnm = #{adnm},</if>
+            <if test='null != parentAdcd'>parent_adcd = #{parentAdcd},</if>
+            <if test='null != level'>level = #{level},</if>
+            <if test='null != cityAdcd'>city_adcd = #{cityAdcd},</if>
+            <if test='null != cityAdnm'>city_adnm = #{cityAdnm},</if>
+            <if test='null != countryAdcd'>country_adcd = #{countryAdcd},</if>
+            <if test='null != countryAdnm'>country_adnm = #{countryAdnm},</if>
+            <if test='null != townAdcd'>town_adcd = #{townAdcd},</if>
+            <if test='null != townAdnm'>town_adnm = #{townAdnm},</if>
+            <if test='null != lgtd'>lgtd = #{lgtd},</if>
+            <if test='null != lttd'>lttd = #{lttd},</if>
+            <if test='null != mapLevel'>map_level = #{mapLevel},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_adcd_base
+        WHERE adcd = #{adcd}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_adcd_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_adcd_base
+    </select>
+
+    <select id="selectAreaCode" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_adcd_base
+        <where>
+            <if test="areaCode != null and areaCode != ''">
+                AND adcd LIKE CONCAT(#{areaCode},'%')
+            </if>
+            <if test="level != null and level != ''">
+                AND LEVEL = #{level}
+            </if>
+        </where>
+        <if test="orderSql != null and orderSql != ''">
+            ${orderSql}
+        </if>
+    </select>
+
+    <select id="selectAdnmByAdcdList" resultMap="BaseResultMap">
+        SELECT adcd,adnm
+        FROM att_adcd_base
+        <where>
+            <if test="adcdList != null and adcdList.size != 0">
+                adcd in
+                <foreach collection="adcdList" separator="," open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAllWzAdNotIncludeCommittee" resultMap="BaseResultMap">
+        SELECT adcd,adnm
+        FROM att_adcd_base
+        where del_flag=0 and parent_adcd='330300000000'
+        <if test="icAdcdList!=null and icAdcdList.size!=0">
+            and adcd not in
+            <foreach collection="icAdcdList" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.project.mapper.PolderMapper">
+
+    <select id="listRange" resultType="com.ygkj.project.api.vo.res.PolderRangeResVo" parameterType="String">
+        SELECT
+            bp.PRCD,bp.`NAME`,pb.shape_area,bp.ADCD,ea.ADNM,
+            pb.shape_leng,bp.project_scale,bp.PRLV,rl.range_line
+        FROM
+            dts_yh_basic_data_db_bm_project bp
+            LEFT JOIN dts_yh_basic_data_db_att_polder_base pb ON bp.PRCD = pb.prcd
+            LEFT JOIN dts_yh_basic_data_db_pro_range_line rl ON rl.prcd = bp.PRCD
+            LEFT JOIN dts_yh_basic_data_db_bm_ei_adcd ea ON bp.ADCD = ea.ADCD
+        WHERE
+            bp.project_category = '圩区'
+            <if test="adcd != null and adcd != ''">
+                AND adcd = #{adcd}
+            </if>
+    </select>
+
+</mapper>

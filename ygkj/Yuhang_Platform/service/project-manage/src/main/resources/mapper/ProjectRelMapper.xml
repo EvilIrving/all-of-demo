@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.project.mapper.ProjectRelMapper">
+
+
+    <select id="listRel" resultType="com.ygkj.project.api.vo.res.ProjectRelResVo" parameterType="com.ygkj.project.api.vo.req.ProjectRelReqVo">
+        SELECT
+            rel.*,bp.project_category,bp2.`NAME` rel_name,bp2.LGTD,bp2.LTTD
+        FROM
+            dts_yh_basic_data_db_project_rel rel
+            INNER JOIN dts_yh_basic_data_db_bm_project bp ON rel.prcd = bp.PRCD
+            INNER JOIN dts_yh_basic_data_db_bm_project bp2 ON rel.rel_code = bp2.PRCD
+        WHERE
+            rel.prcd = #{prcd}
+            AND rel.rel_type IN (1,2,3)
+            AND bp.dts_cmf_deleted = 0
+            AND bp2.dts_cmf_deleted = 0
+            AND rel.rel_type IN
+            <foreach collection="relTypeList" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+        UNION ALL
+        SELECT
+            rel.*,bp.project_category,sb.STNM rel_name,sb.LGTD,sb.LTTD
+        FROM
+            dts_yh_basic_data_db_project_rel rel
+            INNER JOIN dts_yh_basic_data_db_bm_project bp ON rel.prcd = bp.PRCD
+            INNER JOIN dts_yh_basic_data_db_st_stbprp_b sb ON rel.rel_code = sb.STCD
+        WHERE
+            rel.prcd = #{prcd}
+            AND rel.rel_type IN (4,5)
+            AND bp.dts_cmf_deleted = 0
+            AND sb.dts_cmf_deleted = 0
+            AND rel.rel_type IN
+            <foreach collection="relTypeList" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+        UNION ALL
+        SELECT
+            rel.*,bp.project_category,yc.`NAME` rel_name,yc.longitude LGTD,yc.latitude LTTD
+        FROM
+            dts_yh_basic_data_db_project_rel rel
+            INNER JOIN dts_yh_basic_data_db_bm_project bp ON rel.prcd = bp.PRCD
+            INNER JOIN dts_yh_basic_data_db_yxgl_camera yc ON rel.rel_code = yc.id
+        WHERE
+            rel.prcd = #{prcd}
+            AND rel.rel_type = 6
+            AND bp.dts_cmf_deleted = 0
+            AND yc.dts_cmf_deleted = 0
+            AND rel.rel_type IN
+            <foreach collection="relTypeList" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+
+    <select id="countRel" resultType="com.ygkj.project.api.vo.res.RelCountResVo" parameterType="com.ygkj.project.api.vo.req.ProjectRelReqVo">
+        SELECT
+            COUNT(1) num,rel_type
+        FROM
+            dts_yh_basic_data_db_project_rel
+        WHERE
+            prcd = #{prcd}
+        GROUP BY rel_type
+    </select>
+</mapper>

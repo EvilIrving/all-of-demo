@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="20px" viewBox="0 0 33 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>下拉箭头</title>
+    <g id="APP0928" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="14APP-管-维修养护" transform="translate(-191.000000, -246.000000)">
+            <g id="编组-13" transform="translate(0.000000, 1.000000)">
+                <g transform="translate(-66.000000, -1.000000)" id="矩形">
+                    <g transform="translate(66.000000, 238.000000)">
+                        <g id="下拉箭头" transform="translate(207.500000, 18.000000) rotate(-180.000000) translate(-207.500000, -18.000000) translate(191.000000, 8.000000)">
+                            <polygon id="路径" points="0 0 32.8601695 0 32.8601695 20 0 20"></polygon>
+                            <polygon id="路径" fill-opacity="0.48" fill="#000000" fill-rule="nonzero" points="16.9435249 9.18153767 10.1544004 13 8.21504237 11.9092312 16.9435249 7 25.6720074 11.9092312 23.7326494 13"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

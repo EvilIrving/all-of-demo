@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.AttPrevBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.flood.model.AttPrevBase">
+        <result column="prev_code" property="prevCode"/>
+        <result column="fldarea" property="fldarea"/>
+        <result column="htcount" property="htcount"/>
+        <result column="pcount" property="pcount"/>
+        <result column="lgtd" property="lgtd"/>
+        <result column="lttd" property="lttd"/>
+        <result column="prevtp" property="prevtp"/>
+        <result column="risktp" property="risktp"/>
+        <result column="remarks" property="remarks"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="tong_time" property="tongTime"/>
+        <result column="adcd" property="adcd"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        prev_code,
+        fldarea,
+        htcount,
+        pcount,
+        lgtd,
+        lttd,
+        prevtp,
+        risktp,
+        remarks,
+        modify_time,
+        tong_time,
+        adcd
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.flood.model.AttPrevBase">
+        INSERT INTO att_prev_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != prevCode'>
+                prev_code,
+            </if>
+            <if test='null != fldarea'>
+                fldarea,
+            </if>
+            <if test='null != htcount'>
+                htcount,
+            </if>
+            <if test='null != pcount'>
+                pcount,
+            </if>
+            <if test='null != lgtd'>
+                lgtd,
+            </if>
+            <if test='null != lttd'>
+                lttd,
+            </if>
+            <if test='null != prevtp'>
+                prevtp,
+            </if>
+            <if test='null != risktp'>
+                risktp,
+            </if>
+            <if test='null != remarks'>
+                remarks,
+            </if>
+            <if test='null != modifyTime'>
+                modify_time,
+            </if>
+            <if test='null != tongTime'>
+                tong_time,
+            </if>
+            <if test='null != adcd'>
+                adcd
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != prevCode'>
+                #{prevCode},
+            </if>
+            <if test='null != fldarea'>
+                #{fldarea},
+            </if>
+            <if test='null != htcount'>
+                #{htcount},
+            </if>
+            <if test='null != pcount'>
+                #{pcount},
+            </if>
+            <if test='null != lgtd'>
+                #{lgtd},
+            </if>
+            <if test='null != lttd'>
+                #{lttd},
+            </if>
+            <if test='null != prevtp'>
+                #{prevtp},
+            </if>
+            <if test='null != risktp'>
+                #{risktp},
+            </if>
+            <if test='null != remarks'>
+                #{remarks},
+            </if>
+            <if test='null != modifyTime'>
+                #{modifyTime},
+            </if>
+            <if test='null != tongTime'>
+                #{tongTime},
+            </if>
+            <if test='null != adcd'>
+                #{adcd}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_prev_base
+        WHERE prevCode = #{prevCode}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.flood.model.AttPrevBase">
+        UPDATE att_prev_base
+        <set>
+            <if test='null != fldarea'>fldarea = #{fldarea},</if>
+            <if test='null != htcount'>htcount = #{htcount},</if>
+            <if test='null != pcount'>pcount = #{pcount},</if>
+            <if test='null != lgtd'>lgtd = #{lgtd},</if>
+            <if test='null != lttd'>lttd = #{lttd},</if>
+            <if test='null != prevtp'>prevtp = #{prevtp},</if>
+            <if test='null != risktp'>risktp = #{risktp},</if>
+            <if test='null != remarks'>remarks = #{remarks},</if>
+            <if test='null != modifyTime'>modify_time = #{modifyTime},</if>
+            <if test='null != tongTime'>tong_time = #{tongTime},</if>
+            <if test='null != adcd'>adcd = #{adcd}</if>
+        </set>
+        WHERE prevCode = #{prevCode}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_prev_base
+        WHERE prevCode = #{prevCode}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_prev_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_prev_base
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_prev_base
+    </select>
+
+</mapper>

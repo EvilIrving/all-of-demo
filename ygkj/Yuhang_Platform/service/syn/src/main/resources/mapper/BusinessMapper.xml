@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.BusinessMapper">
+
+    <insert id="batchRelaceRainfall" parameterType="com.alibaba.fastjson.JSONObject">
+        REPLACE INTO dts_yh_business_data_db_st_pptn_r(dts_cmf_id,STCD,TM,DRP)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.id},#{item.stcd},#{item.time},#{item.value})
+            </foreach>
+    </insert>
+
+    <insert id="batchRelaceRsvr" parameterType="com.alibaba.fastjson.JSONObject">
+        REPLACE INTO dts_yh_business_data_db_st_rsvr_r(dts_cmf_id,STCD,TM,RZ)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.stcd},#{item.time},#{item.value})
+        </foreach>
+    </insert>
+
+    <insert id="batchRelaceRiver" parameterType="com.alibaba.fastjson.JSONObject">
+        REPLACE INTO dts_yh_business_data_db_st_river_r(dts_cmf_id,STCD,TM,Z)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.stcd},#{item.time},#{item.value})
+        </foreach>
+    </insert>
+
+</mapper>

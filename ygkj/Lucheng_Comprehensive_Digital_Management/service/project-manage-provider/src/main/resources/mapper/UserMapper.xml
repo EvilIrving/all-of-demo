@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.ygkj.project.model.SysUser">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="salt" jdbcType="VARCHAR" property="salt" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+        <result column="real_name" jdbcType="VARCHAR" property="realName" />
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="user_type" jdbcType="VARCHAR" property="userType" />
+        <result column="is_admin" jdbcType="TINYINT" javaType="boolean" property="isAdmin" />
+        <result column="sex" jdbcType="TINYINT" property="sex" />
+        <result column="deleted" jdbcType="TINYINT" property="deleted" />
+        <result column="create_id" jdbcType="VARCHAR" property="createId" />
+        <result column="update_id" jdbcType="VARCHAR" property="updateId" />
+        <result column="create_where" jdbcType="TINYINT" property="createWhere" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+        <result column="job" jdbcType="VARCHAR" property="job" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="identity_number" jdbcType="VARCHAR" property="identityNumber" />
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    </resultMap>
+
+    <resultMap id="simpleMap" type="com.ygkj.project.vo.response.SysUserSimpleResVo">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+        <result column="job" jdbcType="VARCHAR" property="job" />
+    </resultMap>
+
+    <resultMap id="lazyMap" type="com.ygkj.project.model.SysUser" extends="BaseResultMap">
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, username, salt, `password`, phone, dept_id, real_name, nick_name, email, `status`, user_type,is_admin,
+        sex, deleted, create_id, update_id, create_where, create_time, update_time,slogan,job,sort,identity_number
+    </sql>
+
+    <select id="load" resultMap="lazyMap" >
+        SELECT user.id,user.username,user.phone,user.dept_id,user.real_name,user.job,dept.name AS dept_name FROM sys_user user
+        LEFT JOIN sys_dept dept ON user.dept_id = dept.id
+        WHERE user.deleted = 1
+        AND FIND_IN_SET(user.id,#{ids})
+    </select>
+
+    <resultMap id="deptUsersMap" type="com.ygkj.project.vo.response.DeptUserInfo">
+        <collection property="userInfos" fetchType="lazy" column="id"
+                    select="com.ygkj.water.project.mapper.UserMapper.getUsersByDeptId" />
+    </resultMap>
+
+    <select id="getDeptInfos" resultMap="deptUsersMap">
+        select t.id, t.name dept_name from lc_basic_db.sys_dept t where t.deleted = 1
+        union all
+        select t.id, t.company_name dept_name from lc_basic_db.sys_company t where t.deleted = 1
+    </select>
+    <select id="getUsersByDeptId" resultType="com.ygkj.project.model.SysUser">
+        select * from lc_basic_db.sys_user where deleted = 1 and dept_id = #{deptId}
+    </select>
+
+    <select id="getUserByIds" resultType="com.ygkj.project.model.SysUser">
+        select a.id, a.username, a.phone, a.dept_id, b.name dept_name
+        from lc_basic_db.sys_user a, lc_basic_db.sys_dept b where b.deleted = 1 and a.dept_id = b.id
+        and a.deleted = 1 and a.id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        union all
+        select a.id, a.username, a.phone, a.dept_id, b.company_name dept_name
+        from lc_basic_db.sys_user a, lc_basic_db.sys_company b where b.deleted = 1 and a.dept_id = b.id
+        and a.deleted = 1 and a.id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getDepts" resultType="com.ygkj.project.vo.response.DeptUserInfo">
+        select t.id, t.name dept_name from lc_basic_db.sys_dept t where t.deleted = 1
+        union all
+        select t.id, t.company_name dept_name from lc_basic_db.sys_company t where t.deleted = 1
+    </select>
+
+    <select id="getUsers" resultMap="simpleMap">
+        select id,username,phone,dept_id,job from lc_basic_db.sys_user where deleted = 1
+    </select>
+
+    <select id="constructionManagementPerson" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM `sys_user` tbl LEFT JOIN sys_dept tb2 ON tbl.dept_id = tb2.id WHERE tbl.id = #{userID}
+        AND tb2.id='833deee7-1e42-40d6-9997-61ee1edfd926'
+    </select>
+</mapper>

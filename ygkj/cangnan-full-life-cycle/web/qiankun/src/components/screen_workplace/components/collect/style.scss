@@ -1,0 +1,103 @@
+.custom-dialog{
+  background-color: #0000;
+  .el-dialog{
+    background: rgba(0,0,0,0);
+    border: 1px solid #00c1ff;
+    background-image: linear-gradient(180deg, #1c3357 0%, #0b2045 100%);
+    .el-dialog__header {
+      height: 54px;
+      padding: 18px;
+      // border: 1px solid #00c1ff;
+      // box-shadow: inset 0 4px 30px 0 #2351ef40;
+      background-image: linear-gradient(180deg, #1f375f 0%, #1b3047 100%);
+      border-bottom: 0;
+      margin: 2px 2px 0;
+      .el-dialog__title{
+        color: #fff;
+      }
+    }
+    .el-dialog__body {
+      min-height: 100px;
+      padding: 0 18px;
+      border-top: 0;
+      margin: 0 2px;
+    }
+    .el-dialog__footer{
+      padding: 20px;
+      @include flexbox;
+      @include flexflow(row-reverse,nowrap);
+      .el-button--default{
+        background: #00c1ff;
+        color:#fff;
+        border-radius: 6px;
+      }
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      height: calc(100% + 4px);
+      width: 100%;
+      top: -2px;
+      left: 0;
+      background: linear-gradient(to bottom, #35b9e3, #5398f6) left top no-repeat,
+        linear-gradient(to bottom, #5398f6, #608aff) left top no-repeat,
+        linear-gradient(to bottom, #35b9e3, #5398f6) right top no-repeat,
+        linear-gradient(to bottom, #5398f6, #608aff) right top no-repeat,
+        linear-gradient(to bottom, #5398f6, #35b9e3) left bottom no-repeat,
+        linear-gradient(to bottom, #608aff, #5398f6) left bottom no-repeat,
+        linear-gradient(to bottom, #5398f6, #35b9e3) right bottom no-repeat,
+        linear-gradient(to bottom, #608aff, #5398f6) right bottom no-repeat;
+      /*设置大小*/
+      background-size: 18px 2px, 2px 18px;
+      z-index: -1;
+    }
+  }
+  
+}
+
+.main-search-box{
+  .el-input{
+    .el-input__inner{
+      border: 1px solid #fff;
+      height: 32px;
+      line-height: 32px;
+    }
+  }
+}
+
+.custom-table{
+  &.el-table th {
+    background: transparent;
+    color: #56fefe;
+  }
+  .el-table__header {
+    background-image: linear-gradient(90deg, #2c9ebf4d 3%, #2993b41a 100%);
+  }
+  .el-table__empty-text{
+    text-align: center;
+  }
+}
+
+.main-pagination-area {
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  .el-pagination {
+    color: #fff;
+    .el-pagination__total,
+    .el-pagination__jump {
+      color: #fff;
+    }
+    .el-pager {
+      .number {
+        background: #0000;
+        color: #fff;
+        &.active {
+          background-image: linear-gradient(180deg, #36c0e4 20%, #0639ff 100%);
+          border-radius: 2px;
+        }
+      }
+    }
+  }
+}
+

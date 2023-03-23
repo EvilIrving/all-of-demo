@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.WindSpeedMapper">
+
+    <insert id="replaceAll" parameterType="com.ygkj.project.model.WindSpeedRecord">
+        REPLACE INTO wind_speed_record(`time`,wind_speed)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.time},#{item.windSpeed})
+            </foreach>
+    </insert>
+
+    <select id="listAstrotd" resultType="com.ygkj.gragh.model.StAstrotdR">
+        SELECT * FROM st_astrotd_r WHERE MGSTCD = '06896' AND YMDH BETWEEN #{startTime} AND #{endTime}
+    </select>
+</mapper>

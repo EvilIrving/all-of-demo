@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.UnionDispatchResMapper">
+
+    <select id="getResList" resultType="com.ygkj.flood.vo.response.ProResInfo">
+        select a.res_code project_code, a.res_name project_name, a.low_left_long lng, a.low_left_lat lat,
+        a.mei_flood_limit_water_level limit_level, b.st_code, b.st_name,a.flood_id
+        from att_res_base a
+        left join att_st_base b on b.st_type = 'RR' and b.note = 'main' and a.res_code = b.proj_code
+        where a.del_flag = 0 and a.eng_grad &lt; 4
+        <if test="projectCode != null and projectCode != ''">
+            and a.res_code = #{projectCode}
+        </if>
+        GROUP BY a.res_code
+    </select>
+
+    <select id="getResLevels" resultType="com.ygkj.flood.model.StRiverRYyyymm">
+        select t.stcd, t.tm, t.z from
+        (select stcd, tm, rz z from ${tableName} where tm &gt;= date_sub(now(), interval 3 day) having 1 order by tm
+        desc) t
+        group by t.stcd
+    </select>
+    <select id="listNewestFloodPoint" resultType="com.ygkj.flood.model.FloodPoint">
+        select * from
+        ( select * from flood_point where del_flag=0
+        and acquisition_time &gt;= date_sub(now(), interval #{recentDays} day) having 1 order by acquisition_time desc)
+        as a
+        group by a.name
+    </select>
+</mapper>

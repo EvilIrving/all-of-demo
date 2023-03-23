@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.FloodProjectMapper">
+
+    <select id="listRes" resultType="com.ygkj.flood.vo.response.StorageResVo">
+        SELECT
+        res.res_code,res.res_name,res.eng_grad,res.tot_cap,
+        res.wat_shed_area,st.st_code
+        FROM
+        att_res_base res
+        LEFT JOIN att_st_base st ON res.res_code = st.proj_code
+        WHERE
+        res.eng_grad &lt; #{resScal}
+        AND res.del_flag = 0
+    </select>
+
+    <select id="listLatestRsvr" resultType="com.ygkj.flood.vo.response.StorageResVo">
+        SELECT * FROM
+        (
+        SELECT
+        stcd st_code,rz
+        FROM
+        ${tableName}
+        WHERE
+        tm > DATE_ADD(NOW(),INTERVAL -3 HOUR)
+        AND stcd IN
+        <foreach collection="stCodeSet" open="(" separator="," item="item" close=")">
+            #{item}
+        </foreach>
+        ORDER BY tm DESC
+        LIMIT 10000
+        ) a
+        GROUP BY st_code
+    </select>
+
+    <select id="listWaga" resultType="com.ygkj.flood.vo.response.WagaListResVo">
+        SELECT
+        waga.waga_code,waga.waga_name,waga.start_long,
+        waga.start_lat,st.st_code
+        FROM
+        att_waga_base waga
+        INNER JOIN att_st_base st ON waga.waga_code = st.proj_code
+        WHERE
+        waga.del_flag = 0
+        <if test="adcd != null and adcd != ''">
+            AND waga.waga_loc LIKE #{adcd}
+        </if>
+        <if test="projectName != null and projectName != ''">
+            AND waga.waga_name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="bas != null and bas != ''">
+            AND bas = #{bas}
+        </if>
+    </select>
+
+    <select id="listPust" resultType="com.ygkj.flood.vo.response.PustListResVo">
+        select 1 from att_pust_base limit 1;
+    </select>
+
+    <select id="listLatestWas" resultType="com.ygkj.flood.vo.response.WagaListResVo">
+        SELECT * FROM
+        (
+        SELECT
+        STCD st_code,TM,UPZ,DWZ,
+        MXGTQ,OVS,TGTQ
+        FROM
+        ${tableName}
+        WHERE
+        tm > DATE_ADD(NOW(),INTERVAL -3 HOUR)
+        AND stcd IN
+        <foreach collection="set" open="(" separator="," item="item" close=")">
+            #{item}
+        </foreach>
+        ORDER BY tm DESC
+        LIMIT 10000
+        ) a
+        GROUP BY st_code
+    </select>
+
+    <select id="listPustProj" resultType="com.ygkj.flood.model.AttPustBase">
+        select * from att_pust_base where del_flag=0
+        <if test="pustCode!=null and pustCode!=''">
+            and pust_code=#{pustCode}
+        </if>
+    </select>
+
+    <select id="listWagaProj" resultType="com.ygkj.flood.model.AttWagaBase">
+        select * from att_waga_base where del_flag=0
+    </select>
+
+    <select id="listRsvrProj" resultType="com.ygkj.flood.model.AttResBase">
+        select * from att_res_base where del_flag=0
+    </select>
+
+</mapper>

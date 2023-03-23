@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.WarningConfigMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.project.model.WarningConfig" >
+        <result column="id" property="id" />
+        <result column="warning_type" property="warningType" />
+        <result column="equipment_code" property="equipmentCode" />
+        <result column="equipment_name" property="equipmentName" />
+        <result column="template_id" property="templateId" />
+        <result column="person" property="person" />
+        <result column="phone" property="phone" />
+        <result column="pattren" property="pattren" />
+        <result column="status" property="status" />
+        <result column="project_code" property="projectCode" />
+        <result column="project_name" property="projectName"/>
+        <result column="template_name" property="templateName"/>
+        <association property="templateContent"  fetchType="lazy" column="template_id"
+                     select="com.ygkj.water.project.mapper.WarningTemplateMapper.loadContent"></association>
+    </resultMap>
+
+    <resultMap id="loadMap" type="com.ygkj.project.model.WarningConfig">
+        <result column="id" property="id" />
+        <result column="warning_type" property="warningType" />
+        <result column="equipment_code" property="equipmentCode" />
+        <result column="equipment_name" property="equipmentName" />
+        <result column="template_id" property="templateId" />
+        <result column="person" property="person" />
+        <result column="phone" property="phone" />
+        <result column="pattren" property="pattren" />
+        <result column="status" property="status" />
+        <result column="project_code" property="projectCode" />
+        <result column="project_name" property="projectName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                warning_type,
+                equipment_code,
+                equipment_name,
+                template_id,
+                template_name,
+                project_code,
+                project_name,
+                person,
+                phone,
+                pattren,
+                status
+    </sql>
+
+    <insert id="insert"  parameterType="com.ygkj.project.model.WarningConfig">
+        INSERT INTO warning_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != warningType'>
+                warning_type,
+            </if>
+            <if test ='null != equipmentCode'>
+                equipment_code,
+            </if>
+            <if test ='null != equipmentName'>
+                equipment_name,
+            </if>
+            <if test ='null != templateId'>
+                template_id,
+            </if>
+            <if test ='null != templateName'>
+                template_name,
+            </if>
+            <if test ='null != person'>
+                person,
+            </if>
+            <if test ='null != phone'>
+                phone,
+            </if>
+            <if test ='null != pattren'>
+                pattren,
+            </if>
+            <if test ='null != status'>
+                status,
+            </if>
+            <if test ='null != projectCode'>
+                project_code,
+            </if>
+            <if test ='null != projectName'>
+                project_name,
+            </if>
+            <if test ='null != createdBy'>
+                created_by,
+            </if>
+            <if test ='null != createdTime'>
+                created_time,
+            </if>
+            <if test ='null != updatedBy'>
+                updated_by,
+            </if>
+            <if test ='null != updatedTime'>
+                updated_time,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != warningType'>
+                #{warningType},
+            </if>
+            <if test ='null != equipmentCode'>
+                #{equipmentCode},
+            </if>
+            <if test ='null != equipmentName'>
+                #{equipmentName},
+            </if>
+            <if test ='null != templateId'>
+                #{templateId},
+            </if>
+            <if test ='null != templateName'>
+                #{templateName},
+            </if>
+            <if test ='null != person'>
+                #{person},
+            </if>
+            <if test ='null != phone'>
+                #{phone},
+            </if>
+            <if test ='null != pattren'>
+                #{pattren},
+            </if>
+            <if test ='null != status'>
+                #{status},
+            </if>
+            <if test ='null != projectCode'>
+                #{projectCode},
+            </if>
+            <if test ='null != projectName'>
+                #{projectName},
+            </if>
+            <if test ='null != createdBy'>
+                #{createdBy},
+            </if>
+            <if test ='null != createdTime'>
+                #{createdTime},
+            </if>
+            <if test ='null != updatedBy'>
+                #{updatedBy},
+            </if>
+            <if test ='null != updatedTime'>
+                #{updatedTime},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM warning_config
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.project.model.WarningConfig">
+        UPDATE warning_config
+        <set>
+            <if test ='null != warningType'>warning_type = #{warningType},</if>
+            <if test ='null != equipmentCode'>equipment_code = #{equipmentCode},</if>
+            <if test ='null != equipmentName'>equipment_name = #{equipmentName},</if>
+            <if test ='null != templateId'>template_id = #{templateId},</if>
+            <if test ='null != templateName'>template_name = #{templateName},</if>
+            <if test ='null != person'>person = #{person},</if>
+            <if test ='null != phone'>phone = #{phone},</if>
+            <if test ='null != pattren'>pattren = #{pattren},</if>
+            <if test ='null != status'>status = #{status},</if>
+            <if test ='null != projectCode'>project_code = #{projectCode},</if>
+            <if test ='null != projectName'>project_name = #{projectName},</if>
+            <if test ='null != createdBy'>created_by = #{createdBy},</if>
+            <if test ='null != createdTime'>created_time = #{createdTime},</if>
+            <if test ='null != updatedBy'>updated_by = #{updatedBy},</if>
+            <if test ='null != updatedTime'>updated_time = #{updatedTime},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="loadMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM warning_config
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM warning_config
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM warning_config
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM warning_config
+        WHERE del_flag = 0
+        <if test="null != id and '' != id">
+            AND id = #{id}
+        </if>
+        <if test="null != equipmentName and '' != equipmentName">
+            AND equipment_name LIKE CONCAT('%',#{equipmentName},'%')
+        </if>
+        <if test="null != projectCodes">
+            AND project_code IN
+            <foreach item="item" collection="projectCodes" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <update id="batchDelete">
+        UPDATE warning_config SET del_flag = 1 WHERE
+        id IN
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="getContent" resultType="java.lang.String">
+        SELECT b.template_content
+        FROM warning_config a
+        LEFT JOIN warning_template b ON a.template_id = b.id
+        WHERE a.del_flag = 0 AND a.id = #{id}
+    </select>
+
+    <resultMap id="warnConfigMap" type="com.ygkj.project.vo.response.RainWarningConfig">
+        <collection property="userInfos" fetchType="lazy" column="id"
+                    select="com.ygkj.water.project.mapper.WarningConfigMapper.getWarnUserInfo" />
+    </resultMap>
+
+    <select id="getRainWarnConfigs" resultMap="warnConfigMap" parameterType="com.ygkj.project.vo.request.WarningConfigQueryVo">
+        select a.*, a.id config_id, f.template_content, d.rainfall_period, d.threshold,
+               d.warn_condition, d.flow_threshold, d.avg_capacity, e.st_code, e.st_name,
+               e.limit_level, e.flood_level, e.guarantee_level, e.warning_level, e.blue_level,
+               e.yellow_level, e.orange_level, e.red_level
+        from warning_config a
+        left join warning_template f on f.del_flag = 0 and a.template_id = f.id
+        left join warning_threshold d on d.del_flag = 0 and a.id = d.config_id
+        left join att_st_base e on d.st_code = e.st_code
+        where a.del_flag = 0 and d.del_flag = 0
+        <if test="warningType != null and warningType != ''">
+            and a.warning_type like concat('%', #{warningType}, '%')
+        </if>
+        <if test="rainfallPeriod != null and rainfallPeriod != ''">
+            and d.rainfall_period = #{rainfallPeriod}
+        </if>
+        <if test="staType != null and staType != ''">
+            and e.st_type = #{staType}
+        </if>
+        <if test="thresholdType != null and thresholdType != ''">
+            and d.threshold_type = #{thresholdType}
+        </if>
+        <if test="warnCondition != null and warnCondition != ''">
+            and d.warn_condition = #{warnCondition}
+        </if>
+        <if test="bas != null and bas != ''">
+            and e.bas = #{bas}
+        </if>
+        <if test="adcd != null and adcd != ''">
+            and e.area_code = #{adcd}
+        </if>
+        <if test="stName != null and stName != ''">
+            and e.st_name like concat('%', #{stName}, '%')
+        </if>
+        <if test="stCode != null and stCode != ''">
+            and e.st_code = #{stCode}
+        </if>
+        <if test="configId != null and configId != ''">
+            and a.id = #{configId}
+        </if>
+    </select>
+
+    <select id="getWarnUserInfo" resultType="com.ygkj.project.model.WarnUserInfo">
+        select * from warn_user_info
+        where del_flag = 0 and config_id = #{id}
+    </select>
+
+    <select id="getStaInfos" resultType="com.ygkj.project.vo.response.WarnConfigStaInfo" parameterType="com.ygkj.project.vo.request.StaInfoQueryVo">
+        select a.st_code, a.st_name, a.bas, a.area_code, d.adnm, b.id, b.rainfall_period, b.threshold,a.is_surface_rain_station
+        from att_st_base a
+        left join att_adcd_base d on d.del_flag = 0 and a.area_code = d.adcd
+        left join warning_threshold b on b.del_flag = 0 and a.st_code = b.st_code
+        where a.del_flag = 0
+        <if test="rainfallPeriod != null and rainfallPeriod != ''">
+            and b.rainfall_period = #{rainfallPeriod}
+        </if>
+        <if test="stType != null and stType != ''">
+            and a.st_type = #{stType}
+        </if>
+        <if test="isRainStation != null and isRainStation != ''">
+            and a.is_rain_station = #{isRainStation}
+        </if>
+        <if test="bas != null and bas != ''">
+            and a.bas = #{bas}
+        </if>
+        <if test="adcd != null and adcd != ''">
+            and a.area_code = #{adcd}
+        </if>
+        <if test="stName != null and stName != ''">
+            and a.st_name like concat('%', #{stName}, '%')
+        </if>
+    </select>
+
+    <select id="queryExistWarnT" resultType="com.ygkj.project.model.WarningThreshold">
+        select * from warning_threshold where del_flag = 0 and rainfall_period = #{rainfallPeriod}
+        and st_code in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="udpWarnThreshold">
+        update warning_threshold
+        set config_id = #{configId}, threshold = #{threshold}
+        where id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <insert id="addWarnThreshold">
+        insert into warning_threshold (id, config_id, st_code, rainfall_period, threshold)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+             #{item.id}, #{item.configId}, #{item.stCode}, #{item.rainfallPeriod}, #{item.threshold}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="saveWarnUsers">
+        insert into warn_user_info (id, config_id, user_id, user_name, phone, dept_name)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.configId}, #{item.userId}, #{item.userName}, #{item.phone}, #{item.deptName})
+        </foreach>
+    </insert>
+
+    <insert id="saveWarningConfig" parameterType="com.ygkj.project.vo.request.WarningConfigAddReqVo">
+        insert into warning_config (id, warning_type, template_id, template_name, pattren, status)
+        values(#{id}, #{warningType}, #{templateId}, #{templateName}, #{pattren}, #{status})
+    </insert>
+
+    <select id="getWaterStaInfos" resultType="com.ygkj.project.vo.response.WaterStaInfoRespVo" parameterType="com.ygkj.project.vo.request.StaInfoQueryVo">
+        select a.st_code, a.st_name, a.bas, a.area_code, a.limit_level, a.flood_level, a.guarantee_level,
+               a.warning_level, a.blue_level, a.yellow_level, a.orange_level, a.red_level,
+               d.adnm, b.id, b.threshold_type, b.st_type
+        from att_st_base a
+        left join att_adcd_base d on d.del_flag = 0 and a.area_code = d.adcd
+        left join warning_threshold b on b.del_flag = 0 and a.st_code = b.st_code
+        <if test="stType != null and stType != ''">
+            and b.st_type = #{stType}
+        </if>
+        where 1 = 1
+        <if test="stType != null and stType != ''">
+            and a.st_type = #{stType}
+        </if>
+        <if test="bas != null and bas != ''">
+            and a.bas = #{bas}
+        </if>
+        <if test="adcd != null and adcd != ''">
+            and a.area_code = #{adcd}
+        </if>
+        <if test="stName != null and stName != ''">
+            and a.st_name like concat('%', #{stName}, '%')
+        </if>
+    </select>
+
+    <select id="queryExistWaterWarnT" resultType="com.ygkj.project.model.WarningThreshold">
+        select * from warning_threshold where del_flag = 0 and st_type = #{stType}
+        and st_code in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="udpWaterWarnThreshold">
+        update warning_threshold
+        set config_id = #{configId}, threshold_type = #{thresholdType}
+        where id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <insert id="addWaterWarnThreshold">
+        insert into warning_threshold (id, config_id, st_code, st_type, threshold_type)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id}, #{item.configId}, #{item.stCode}, #{item.stType}, #{item.thresholdType}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getFlowStaInfos" resultType="com.ygkj.project.vo.response.FlowStaInfoRespVo">
+        select a.st_code, a.st_name, a.bas, a.area_code, d.adnm, b.id, b.warn_condition, b.flow_threshold
+        from att_st_base a
+        left join att_adcd_base d on d.del_flag = 0 and a.area_code = d.adcd
+        left join warning_threshold b on b.del_flag = 0 and a.st_code = b.st_code
+        <if test="warnCondition != null and warnCondition != ''">
+            and b.warn_condition = #{warnCondition}
+        </if>
+        where 1 = 1
+        <if test="stType != null and stType != ''">
+            and a.st_type = #{stType}
+        </if>
+        <if test="bas != null and bas != ''">
+            and a.bas = #{bas}
+        </if>
+        <if test="adcd != null and adcd != ''">
+            and a.area_code = #{adcd}
+        </if>
+        <if test="stName != null and stName != ''">
+            and a.st_name like concat('%', #{stName}, '%')
+        </if>
+    </select>
+
+    <select id="queryExistFlowWarnT" resultType="com.ygkj.project.model.WarningThreshold">
+        select * from warning_threshold where del_flag = 0 and warn_condition = #{warnCondition}
+        and st_code in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="udpFlowWarnThreshold">
+        update warning_threshold
+        set config_id = #{configId}, flow_threshold = #{flowThreshold}
+        where id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <insert id="addFlowWarnThreshold">
+        insert into warning_threshold (id, config_id, st_code, warn_condition, flow_threshold)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id}, #{item.configId}, #{item.stCode}, #{item.warnCondition}, #{item.flowThreshold}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getCapacityStaInfos" resultType="com.ygkj.project.vo.response.CapacityStaInfoRespVo">
+        select a.st_code, a.st_name, a.bas, a.area_code, d.adnm, b.id, b.avg_capacity
+        from att_st_base a
+        left join att_adcd_base d on d.del_flag = 0 and a.area_code = d.adcd
+        left join warning_threshold b on b.del_flag = 0 and a.st_code = b.st_code
+        where 1 = 1
+        <if test="stType != null and stType != ''">
+            and a.st_type = #{stType}
+        </if>
+        <if test="bas != null and bas != ''">
+            and a.bas = #{bas}
+        </if>
+        <if test="adcd != null and adcd != ''">
+            and a.area_code = #{adcd}
+        </if>
+        <if test="stName != null and stName != ''">
+            and a.st_name like concat('%', #{stName}, '%')
+        </if>
+    </select>
+
+    <select id="queryExistCapacityWarnT" resultType="com.ygkj.project.model.WarningThreshold">
+        select * from warning_threshold where del_flag = 0 and avg_capacity is not null
+        and st_code in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <update id="udpCapacityWarnThreshold">
+        update warning_threshold
+        set config_id = #{configId}, avg_capacity = #{avgCapacity}
+        where id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <insert id="addCapacityWarnThreshold">
+        insert into warning_threshold (id, config_id, st_code, avg_capacity)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id}, #{item.configId}, #{item.stCode}, #{item.avgCapacity}
+            )
+        </foreach>
+    </insert>
+
+    <update id="delWarnSta">
+        update warning_threshold set del_flag = 1
+        where config_id in
+        <foreach collection="configIds" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        and st_code in
+        <foreach collection="stCodes" item="ite" separator="," open="(" close=")">
+            #{ite}
+        </foreach>
+    </update>
+
+    <update id="updWarnThreshold" parameterType="com.ygkj.project.vo.request.WarnConfigUdpReqVo">
+        update warning_threshold
+        <set>
+            <if test="threshold != null and threshold != ''">threshold = #{threshold},</if>
+            <if test="thresholdType != null and thresholdType != ''">threshold_type = #{thresholdType},</if>
+            <if test="flowThreshold != null and flowThreshold != ''">flow_threshold = #{flowThreshold}</if>
+        </set>
+        where config_id = #{configId} and st_code = #{stCode}
+        <if test="rainfallPeriod != null and rainfallPeriod != ''">
+            and rainfall_period = #{rainfallPeriod}
+        </if>
+        <if test="warnCondition != null and warnCondition != ''">
+            and warn_wondition = #{warnCondition}
+        </if>
+        <if test="stType != null and stType != ''">
+            and st_type = #{stType}
+        </if>
+    </update>
+
+    <resultMap id="warnAnalyeMap" type="com.ygkj.project.vo.response.WarnAnalyseRespVo">
+        <collection property="userInfos" fetchType="lazy" column="cid"
+                    select="com.ygkj.water.project.mapper.WarningConfigMapper.getWarnUserInfo" />
+    </resultMap>
+
+    <select id="getWarnAnalyes" resultMap="warnAnalyeMap" parameterType="com.ygkj.project.vo.request.WarningAnalyseQueryVo">
+        select a.id, a.warning_time, a.warning_content, a.rainfall_period, a.rainfall,
+               a.threshold_type, a.water_level, a.warn_condition, a.flow, a.capacity, a.forword_status,
+               a.config_id, a.config_id cid, a.st_code, b.warning_type, b.pattren, d.threshold,
+               d.flow_threshold, d.avg_capacity, e.st_name, e.st_type, e.limit_level, e.flood_level,
+        e.guarantee_level, e.warning_level, e.blue_level, e.yellow_level, e.orange_level, e.red_level
+        from warning_record a
+        left join warning_config b on b.del_flag = 0 and a.config_id = b.id and b.status = 1
+        left join warning_threshold d on d.del_flag = 0 and a.config_id = d.config_id and a.st_code = d.st_code
+        left join att_st_base e on a.st_code = e.st_code
+        where a.del_flag = 0
+        <if test="warningType != null and warningType != ''">
+            and b.warning_type like concat('%', #{warningType}, '%')
+        </if>
+        <if test="bas != null and bas != ''">
+            and e.bas = #{bas}
+        </if>
+        <if test="staType != null and staType != ''">
+            and e.st_code = #{staType}
+        </if>
+        <if test="adcd != null and adcd != ''">
+            and e.area_code = #{adcd}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and a.warning_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and a.warning_time &lt;= #{endTime}
+        </if>
+        <if test="stName != null and stName != ''">
+            and e.st_name like concat('%', #{stName}, '%')
+        </if>
+        <if test="rainfallPeriod != null and rainfallPeriod != ''">
+            and a.rainfall_period = #{rainfallPeriod}
+        </if>
+        <if test="thresholdType != null and thresholdType != ''">
+            and a.threshold_type = #{thresholdType}
+        </if>
+        <if test="warnCondition != null and warnCondition != ''">
+            and a.warn_condition = #{warnCondition}
+        </if>
+        <if test="stCode != null and stCode != ''">
+            and a.st_code = #{stCode}
+        </if>
+        <if test="configId != null and configId != ''">
+            and a.config_id = #{configId}
+        </if>
+        <if test="recordId != null and recordId != ''">
+            and a.id = #{recordId}
+        </if>
+    </select>
+
+    <insert id="saveWarnForword" parameterType="com.ygkj.project.vo.request.ForwordWarnAnalyseReqVo">
+        insert into warning_forword_record(id, record_id, warning_type, warn_content, forword_type)
+        values(
+               #{id}, #{recordId}, #{warningType}, #{warnContent}, #{forwordType}
+              )
+    </insert>
+
+    <insert id="saveWarnForwordUsers">
+        insert into warning_forword_user(id, forword_id, user_id)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.forwordId}, #{item.userId})
+        </foreach>
+    </insert>
+
+    <update id="updateWarnForwordStat">
+        update warning_record set forword_status = '1' where id = #{recordId}
+    </update>
+
+</mapper>

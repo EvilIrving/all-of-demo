@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.ResultsWarnIndicatorMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.ResultsWarnIndicator">
+        <result column="id" property="id"/>
+        <result column="town" property="town"/>
+        <result column="avi" property="avi"/>
+        <result column="nvi" property="nvi"/>
+        <result column="soil_moisture" property="soilMoisture"/>
+        <result column="index_category" property="indexCategory"/>
+        <result column="period" property="period"/>
+        <result column="ready_move" property="readyMove"/>
+        <result column="immediate_transfer" property="immediateTransfer"/>
+        <result column="critical_level" property="criticalLevel"/>
+        <result column="method" property="method"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        town,
+        avi,
+        nvi,
+        soil_moisture,
+        index_category,
+        period,
+        ready_move,
+        immediate_transfer,
+        critical_level,
+        method
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.big.screen.model.ResultsWarnIndicator">
+        replace INTO results_warn_indicator
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                id,
+            </if>
+            <if test="null != town and '' != town">
+                town,
+            </if>
+            <if test="null != avi and '' != avi">
+                avi,
+            </if>
+            <if test="null != nvi and '' != nvi">
+                nvi,
+            </if>
+            <if test="null != soilMoisture and '' != soilMoisture">
+                soil_moisture,
+            </if>
+            <if test="null != indexCategory and '' != indexCategory">
+                index_category,
+            </if>
+            <if test="null != period and '' != period">
+                period,
+            </if>
+            <if test="null != readyMove and '' != readyMove">
+                ready_move,
+            </if>
+            <if test="null != immediateTransfer and '' != immediateTransfer">
+                immediate_transfer,
+            </if>
+            <if test="null != criticalLevel and '' != criticalLevel">
+                critical_level,
+            </if>
+            <if test="null != method and '' != method">
+                method
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                #{id},
+            </if>
+            <if test="null != town and '' != town">
+                #{town},
+            </if>
+            <if test="null != avi and '' != avi">
+                #{avi},
+            </if>
+            <if test="null != nvi and '' != nvi">
+                #{nvi},
+            </if>
+            <if test="null != soilMoisture and '' != soilMoisture">
+                #{soilMoisture},
+            </if>
+            <if test="null != indexCategory and '' != indexCategory">
+                #{indexCategory},
+            </if>
+            <if test="null != period and '' != period">
+                #{period},
+            </if>
+            <if test="null != readyMove and '' != readyMove">
+                #{readyMove},
+            </if>
+            <if test="null != immediateTransfer and '' != immediateTransfer">
+                #{immediateTransfer},
+            </if>
+            <if test="null != criticalLevel and '' != criticalLevel">
+                #{criticalLevel},
+            </if>
+            <if test="null != method and '' != method">
+                #{method}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectList" resultType="com.ygkj.big.screen.model.ResultsWarnIndicator">
+        SELECT * FROM `results_warn_indicator` ORDER BY nvi,period
+    </select>
+
+    <select id="findFlashFloodDetails" resultType="com.ygkj.big.screen.vo.response.FlashFloodDetailsResVo">
+        SELECT rwi.* FROM `results_warn_indicator` rwi where rwi.nvi = #{nvi} AND rwi.avi = #{avi} ORDER BY rwi.period
+    </select>
+
+    <select id="findDataRainNewData" resultType="java.lang.Double">
+        SELECT a.drp FROM ( SELECT mgstcd, stcd, tm, drp FROM ${tableName} WHERE mgstcd =#{stationCode} AND
+        tm >=DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 6 HOUR),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 20000 ) a GROUP BY
+        a.mgstcd
+    </select>
+    <select id="selectByCondition" resultType="com.ygkj.big.screen.vo.response.MountainTorrentIndicatorResVo">
+        SELECT * FROM `results_warn_indicator` ORDER BY nvi,period
+    </select>
+
+
+</mapper>

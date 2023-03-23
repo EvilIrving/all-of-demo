@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.WarningRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.project.model.WarningRecord" >
+        <result column="id" property="id" />
+        <result column="warning_time" property="warningTime" />
+        <result column="config_id" property="configId" />
+        <result column="created_by" property="createdBy" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_by" property="updatedBy" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <resultMap id="lazyMap" type="com.ygkj.project.vo.response.WarningRecordResVo" >
+        <result column="id" property="id" />
+        <result column="warning_time" property="warningTime" />
+        <result column="config_id" property="configId" />
+        <result column="warning_type" property="warningType" />
+        <result column="equipment_code" property="equipmentCode" />
+        <result column="equipment_name" property="equipmentName" />
+        <result column="person" property="person" />
+        <result column="phone" property="phone" />
+        <result column="pattren" property="pattren" />
+        <result column="status" property="status" />
+        <result column="project_code" property="projectCode" />
+        <result column="project_name" property="projectName"/>
+        <association property="templateContent" fetchType="lazy" column="config_id"
+                     select="com.ygkj.water.project.mapper.WarningConfigMapper.getContent" />
+<!--        <association property="config" fetchType="lazy" column="config_id"-->
+<!--                     select="WarningConfigMapper.load"/>-->
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                warning_time,
+                config_id,
+                created_by,
+                created_time,
+                updated_by,
+                updated_time,
+                del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.project.model.WarningRecord">
+        INSERT INTO warning_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != warningTime'>
+                warning_time,
+            </if>
+            <if test ='null != configId'>
+                config_id,
+            </if>
+            <if test ='null != createdBy'>
+                created_by,
+            </if>
+            <if test ='null != createdTime'>
+                created_time,
+            </if>
+            <if test ='null != updatedBy'>
+                updated_by,
+            </if>
+            <if test ='null != updatedTime'>
+                updated_time,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != warningTime'>
+                #{warningTime},
+            </if>
+            <if test ='null != configId'>
+                #{configId},
+            </if>
+            <if test ='null != createdBy'>
+                #{createdBy},
+            </if>
+            <if test ='null != createdTime'>
+                #{createdTime},
+            </if>
+            <if test ='null != updatedBy'>
+                #{updatedBy},
+            </if>
+            <if test ='null != updatedTime'>
+                #{updatedTime},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM warning_record
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.project.model.WarningRecord">
+        UPDATE warning_record
+        <set>
+            <if test ='null != warningTime'>warning_time = #{warningTime},</if>
+            <if test ='null != configId'>config_id = #{configId},</if>
+            <if test ='null != createdBy'>created_by = #{createdBy},</if>
+            <if test ='null != createdTime'>created_time = #{createdTime},</if>
+            <if test ='null != updatedBy'>updated_by = #{updatedBy},</if>
+            <if test ='null != updatedTime'>updated_time = #{updatedTime},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM warning_record
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM warning_record
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM warning_record
+    </select>
+
+    <select id="selectByCondition" resultMap="lazyMap">
+        SELECT a.id,a.warning_time,a.config_id,b.equipment_name,b.pattren,
+        b.person,b.phone,b.project_name,b.warning_type
+        FROM warning_record a
+        LEFT JOIN warning_config b ON a.config_id = b.id
+        WHERE a.del_flag = 0
+        <if test="equipmentName != null and equipmentName != ''">
+            AND b.equipment_name LIKE CONCAT ('%',#{equipmentName},'%')
+        </if>
+        <if test="start != null and start != '' and end != null and end != ''">
+            AND (a.warning_time BETWEEN #{start} AND #{end})
+        </if>
+        <if test="projectCodes">
+            AND b.project_code IN
+            <foreach collection="projectCodes" open="(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

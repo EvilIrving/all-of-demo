@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.project.mapper.GateStationMapper">
+
+
+    <select id="selectByPrcd" resultType="com.ygkj.project.api.vo.res.RelGatestationResVo" parameterType="String">
+        SELECT
+            bp.PRCD,bp.`NAME`,bp.ADCD,ea.ADNM,ea.TOWNADNM,bp.project_scale,bp.PRLV,bp.project_category,
+            po.`NAME` polder_name,ml.MAX_FLOW
+        FROM
+            dts_yh_basic_data_db_bm_project bp
+            LEFT JOIN dts_yh_basic_data_db_bm_ei_adcd ea ON bp.ADCD = ea.ADCD
+            LEFT JOIN dts_yh_basic_data_db_project_rel rel ON rel.rel_code = bp.PRCD
+            LEFT JOIN dts_yh_basic_data_db_bm_project po ON po.PRCD = rel.prcd
+            LEFT JOIN dts_yh_basic_data_db_ml_sluice_directory ml ON ml.PRCD = bp.PRCD
+        WHERE
+            bp.PRCD = #{prcd}
+    </select>
+
+</mapper>

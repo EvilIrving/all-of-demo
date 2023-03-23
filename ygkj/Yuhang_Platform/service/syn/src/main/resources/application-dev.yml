@@ -1,0 +1,52 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: data-synchronized
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  datasource:
+    dynamic:
+      primary: business
+      strict: false
+      datasource:
+        business:
+          url: jdbc:mysql://192.168.2.130:3306/yh_business_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: yh_platform
+          password: WiVlEJ4BoWaP1OEL
+          driver-class-name: com.mysql.jdbc.Driver
+        exchange:
+          url: jdbc:mysql://192.168.2.130:3306/yh_exchange_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: yh_platform
+          password: WiVlEJ4BoWaP1OEL
+          driver-class-name: com.mysql.jdbc.Driver
+        basic:
+          url: jdbc:mysql://192.168.2.130:3306/yh_basic_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: yh_platform
+          password: WiVlEJ4BoWaP1OEL
+          driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 20
+      min-idle: 10
+      max-active: 40
+      max-wait: 30000
+      min-evictable-idle-time-millis: 180000
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    call-setters-on-nulls: true
+
+logging:
+  file:
+    path: logs
+    name: ${logging.file.path}/${spring.application.name}.log
+  level:
+    com:
+      ygkj:
+        lcsyn:
+          dao: debug
+
+zs:
+  username: YhdataHouse
+  password: cc4062642b6aea7b597794cebcf1b542

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttRiverOutletBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttRiverOutletBase">
+        <result column="id" property="id"/>
+        <result column="outlet_name" property="outletName"/>
+        <result column="outlet_unit" property="outletUnit"/>
+        <result column="latitude" property="latitude"/>
+        <result column="longitude" property="longitude"/>
+        <result column="wrz_gdse_nm" property="wrzGdseNm"/>
+        <result column="wrz_gdth_nm" property="wrzGdthNm"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="river_lake_rsvr" property="riverLakeRsvr"/>
+        <result column="is_water_functional_zone" property="isWaterFunctionalZone"/>
+        <result column="wfz_gdfi_nm" property="wfzGdfiNm"/>
+        <result column="wfz_gdse_nm" property="wfzGdseNm"/>
+        <result column="important_wfz_code" property="importantWfzCode"/>
+        <result column="into_river_type" property="intoRiverType"/>
+        <result column="sewage_main_source" property="sewageMainSource"/>
+        <result column="outlet_grad" property="outletGrad"/>
+        <result column="outlet_type" property="outletType"/>
+        <result column="is_supervised" property="isSupervised"/>
+        <result column="is_permit_or_register" property="isPermitOrRegister"/>
+        <result column="sewage_year_outlet" property="sewageYearOutlet"/>
+        <result column="mpyir_cod" property="mpyirCod"/>
+        <result column="mpyir_nh_3_n" property="mpyirNh3N"/>
+        <result column="mpyir_tn" property="mpyirTn"/>
+        <result column="mpyir_tp" property="mpyirTp"/>
+        <result column="mpyir_other" property="mpyirOther"/>
+        <result column="remark" property="remark"/>
+        <result column="fill_unit" property="fillUnit"/>
+        <result column="area_code" property="areaCode"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        outlet_name,
+        outlet_unit,
+        latitude,
+        longitude,
+        wrz_gdse_nm,
+        wrz_gdth_nm,
+        city,
+        county,
+        river_lake_rsvr,
+        is_water_functional_zone,
+        wfz_gdfi_nm,
+        wfz_gdse_nm,
+        important_wfz_code,
+        into_river_type,
+        sewage_main_source,
+        outlet_grad,
+        outlet_type,
+        is_supervised,
+        is_permit_or_register,
+        sewage_year_outlet,
+        mpyir_cod,
+        mpyir_nh_3_n,
+        mpyir_tn,
+        mpyir_tp,
+        mpyir_other,
+        remark,
+        fill_unit,
+        area_code
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.AttRiverOutletBase">
+        INSERT INTO att_river_outlet_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != outletName'>
+                outlet_name,
+            </if>
+            <if test='null != outletUnit'>
+                outlet_unit,
+            </if>
+            <if test='null != latitude'>
+                latitude,
+            </if>
+            <if test='null != longitude'>
+                longitude,
+            </if>
+            <if test='null != wrzGdseNm'>
+                wrz_gdse_nm,
+            </if>
+            <if test='null != wrzGdthNm'>
+                wrz_gdth_nm,
+            </if>
+            <if test='null != city'>
+                city,
+            </if>
+            <if test='null != county'>
+                county,
+            </if>
+            <if test='null != riverLakeRsvr'>
+                river_lake_rsvr,
+            </if>
+            <if test='null != isWaterFunctionalZone'>
+                is_water_functional_zone,
+            </if>
+            <if test='null != wfzGdfiNm'>
+                wfz_gdfi_nm,
+            </if>
+            <if test='null != wfzGdseNm'>
+                wfz_gdse_nm,
+            </if>
+            <if test='null != importantWfzCode'>
+                important_wfz_code,
+            </if>
+            <if test='null != intoRiverType'>
+                into_river_type,
+            </if>
+            <if test='null != sewageMainSource'>
+                sewage_main_source,
+            </if>
+            <if test='null != outletGrad'>
+                outlet_grad,
+            </if>
+            <if test='null != outletType'>
+                outlet_type,
+            </if>
+            <if test='null != isSupervised'>
+                is_supervised,
+            </if>
+            <if test='null != isPermitOrRegister'>
+                is_permit_or_register,
+            </if>
+            <if test='null != sewageYearOutlet'>
+                sewage_year_outlet,
+            </if>
+            <if test='null != mpyirCod'>
+                mpyir_cod,
+            </if>
+            <if test='null != mpyirNh3N'>
+                mpyir_nh_3_n,
+            </if>
+            <if test='null != mpyirTn'>
+                mpyir_tn,
+            </if>
+            <if test='null != mpyirTp'>
+                mpyir_tp,
+            </if>
+            <if test='null != mpyirOther'>
+                mpyir_other,
+            </if>
+            <if test='null != remark'>
+                remark,
+            </if>
+            <if test='null != fillUnit'>
+                fill_unit,
+            </if>
+            <if test='null != areaCode'>
+                area_code
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != outletName'>
+                #{outletName},
+            </if>
+            <if test='null != outletUnit'>
+                #{outletUnit},
+            </if>
+            <if test='null != latitude'>
+                #{latitude},
+            </if>
+            <if test='null != longitude'>
+                #{longitude},
+            </if>
+            <if test='null != wrzGdseNm'>
+                #{wrzGdseNm},
+            </if>
+            <if test='null != wrzGdthNm'>
+                #{wrzGdthNm},
+            </if>
+            <if test='null != city'>
+                #{city},
+            </if>
+            <if test='null != county'>
+                #{county},
+            </if>
+            <if test='null != riverLakeRsvr'>
+                #{riverLakeRsvr},
+            </if>
+            <if test='null != isWaterFunctionalZone'>
+                #{isWaterFunctionalZone},
+            </if>
+            <if test='null != wfzGdfiNm'>
+                #{wfzGdfiNm},
+            </if>
+            <if test='null != wfzGdseNm'>
+                #{wfzGdseNm},
+            </if>
+            <if test='null != importantWfzCode'>
+                #{importantWfzCode},
+            </if>
+            <if test='null != intoRiverType'>
+                #{intoRiverType},
+            </if>
+            <if test='null != sewageMainSource'>
+                #{sewageMainSource},
+            </if>
+            <if test='null != outletGrad'>
+                #{outletGrad},
+            </if>
+            <if test='null != outletType'>
+                #{outletType},
+            </if>
+            <if test='null != isSupervised'>
+                #{isSupervised},
+            </if>
+            <if test='null != isPermitOrRegister'>
+                #{isPermitOrRegister},
+            </if>
+            <if test='null != sewageYearOutlet'>
+                #{sewageYearOutlet},
+            </if>
+            <if test='null != mpyirCod'>
+                #{mpyirCod},
+            </if>
+            <if test='null != mpyirNh3N'>
+                #{mpyirNh3N},
+            </if>
+            <if test='null != mpyirTn'>
+                #{mpyirTn},
+            </if>
+            <if test='null != mpyirTp'>
+                #{mpyirTp},
+            </if>
+            <if test='null != mpyirOther'>
+                #{mpyirOther},
+            </if>
+            <if test='null != remark'>
+                #{remark},
+            </if>
+            <if test='null != fillUnit'>
+                #{fillUnit},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_river_outlet_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.AttRiverOutletBase">
+        UPDATE att_river_outlet_base
+        <set>
+            <if test='null != outletName'>outlet_name = #{outletName},</if>
+            <if test='null != outletUnit'>outlet_unit = #{outletUnit},</if>
+            <if test='null != latitude'>latitude = #{latitude},</if>
+            <if test='null != longitude'>longitude = #{longitude},</if>
+            <if test='null != wrzGdseNm'>wrz_gdse_nm = #{wrzGdseNm},</if>
+            <if test='null != wrzGdthNm'>wrz_gdth_nm = #{wrzGdthNm},</if>
+            <if test='null != city'>city = #{city},</if>
+            <if test='null != county'>county = #{county},</if>
+            <if test='null != riverLakeRsvr'>river_lake_rsvr = #{riverLakeRsvr},</if>
+            <if test='null != isWaterFunctionalZone'>is_water_functional_zone = #{isWaterFunctionalZone},</if>
+            <if test='null != wfzGdfiNm'>wfz_gdfi_nm = #{wfzGdfiNm},</if>
+            <if test='null != wfzGdseNm'>wfz_gdse_nm = #{wfzGdseNm},</if>
+            <if test='null != importantWfzCode'>important_wfz_code = #{importantWfzCode},</if>
+            <if test='null != intoRiverType'>into_river_type = #{intoRiverType},</if>
+            <if test='null != sewageMainSource'>sewage_main_source = #{sewageMainSource},</if>
+            <if test='null != outletGrad'>outlet_grad = #{outletGrad},</if>
+            <if test='null != outletType'>outlet_type = #{outletType},</if>
+            <if test='null != isSupervised'>is_supervised = #{isSupervised},</if>
+            <if test='null != isPermitOrRegister'>is_permit_or_register = #{isPermitOrRegister},</if>
+            <if test='null != sewageYearOutlet'>sewage_year_outlet = #{sewageYearOutlet},</if>
+            <if test='null != mpyirCod'>mpyir_cod = #{mpyirCod},</if>
+            <if test='null != mpyirNh3N'>mpyir_nh_3_n = #{mpyirNh3N},</if>
+            <if test='null != mpyirTn'>mpyir_tn = #{mpyirTn},</if>
+            <if test='null != mpyirTp'>mpyir_tp = #{mpyirTp},</if>
+            <if test='null != mpyirOther'>mpyir_other = #{mpyirOther},</if>
+            <if test='null != remark'>remark = #{remark},</if>
+            <if test='null != fillUnit'>fill_unit = #{fillUnit},</if>
+            <if test='null != areaCode'>area_code = #{areaCode}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_river_outlet_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_river_outlet_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_river_outlet_base
+    </select>
+
+    <select id="selectByCondition" resultType="com.ygkj.river.vo.response.RiverOutletResVo">
+        SELECT *
+        FROM att_river_outlet_base
+        <where>
+            <if test="outletName!=null and outletName!=''">
+                and outlet_name like concat('%',#{outletName},'%')
+            </if>
+            <if test="outletType!=null and outletType!=''">
+                and outlet_type =#{outletType}
+            </if>
+            <if test="outletGrad!=null and outletGrad!=''">
+                and outlet_grad =#{outletGrad}
+            </if>
+            <if test="areaCode!=null and areaCode!=''">
+                and area_code =#{areaCode}
+            </if>
+        </where>
+    </select>
+
+</mapper>

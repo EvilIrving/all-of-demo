@@ -1,0 +1,23 @@
+@import 'style/base.scss';
+@import 'style/font.scss';
+@import 'style/center.scss';
+@import 'style/animation.scss';
+@import 'style/elementui.scss';
+
+/* 文字溢出显示省略 */
+.text_overflow_ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* 清除浮动 */
+.clearfix {
+  *zoom: 1;
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}

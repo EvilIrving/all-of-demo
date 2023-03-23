@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.ComprehensiveAnalysisMapper">
+
+
+    <select id="listResSoftAnalysis" resultType="com.ygkj.digitization.vo.response.ResSoftResVo">
+        SELECT
+            res.res_code,res.res_name,res.res_loc,adcd.adnm,
+            res.bas,res.tot_cap,res.wat_shed_area,res.low_left_long,
+            res.low_left_lat,st.st_code,res.mei_flood_limit_water_level as limitLevel
+        FROM
+            att_res_base res
+            LEFT JOIN att_adcd_base adcd ON res.area_code = adcd.adcd
+            LEFT JOIN att_st_base st ON res.res_code = st.proj_code
+        WHERE
+            res.del_flag = 0
+            <if test="bas != null and bas != ''">
+                <if test="bas == '其他'">
+                    AND res.bas NOT IN ('瓯江','鳌江','飞云江','椒江')
+                </if>
+                <if test="bas != '其他'">
+                    AND res.bas = #{bas}
+                </if>
+            </if>
+            <if test="adcd != null and adcd != ''">
+                AND res.area_code LIKE CONCAT(#{adcd},'%')
+            </if>
+            <if test="name != null and name != ''">
+                AND res.res_name LIKE CONCAT('%',#{name},'%')
+            </if>
+    </select>
+
+    <select id="listSeawallSoftAnalysis" resultType="com.ygkj.digitization.vo.response.SeawallSoftResVo">
+        SELECT
+            seawall.seawall_code,seawall.seawall_name,seawall.bas,seawall.area_code,
+            adcd.adnm,st.st_code,seawall.start_crest_altitude,seawall.final_crest_altitude
+        FROM
+            att_seawall_base seawall
+            LEFT JOIN att_adcd_base adcd ON seawall.area_code = adcd.adcd
+            LEFT JOIN att_st_base st ON seawall.tide_station_code = st.st_code
+        WHERE
+            seawall.del_flag = 0
+            <if test="bas != null and bas != ''">
+                AND seawall.bas = #{bas}
+            </if>
+            <if test="adcd != null and adcd != ''">
+                AND seawall.area_code LIKE CONCAT(#{adcd},'%')
+            </if>
+            <if test="name != null and name != ''">
+                AND seawall.seawall_name LIKE CONCAT('%',#{name},'%')
+            </if>
+    </select>
+
+    <select id="designSoftAnalysis" resultType="com.ygkj.digitization.vo.response.DesignSoftResVo">
+        SELECT
+            *
+        FROM
+            design_standard_project
+        <where>
+            <if test="projectType != null and projectType != ''">
+                project_type = #{projectType}
+            </if>
+            <if test="bas != null and bas != ''">
+                AND bas = #{bas}
+            </if>
+            <if test="adcd != null and adcd != ''">
+                AND adcd LIKE CONCAT(#{adcd},'%')
+            </if>
+            <if test="name != null and name != ''">
+                AND project_name LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

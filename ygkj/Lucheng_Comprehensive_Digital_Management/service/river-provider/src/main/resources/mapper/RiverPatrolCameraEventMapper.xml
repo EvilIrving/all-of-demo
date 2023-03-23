@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.RiverPatrolCameraEventMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.RiverPatrolCameraEvent">
+        <result column="id" property="id"/>
+        <result column="camera_code" property="cameraCode"/>
+        <result column="camera_name" property="cameraName"/>
+        <result column="river_code" property="riverCode"/>
+        <result column="river_name" property="riverName"/>
+        <result column="river_bas" property="riverBas"/>
+        <result column="capture_mode" property="captureMode"/>
+        <result column="event_time" property="eventTime"/>
+        <result column="event_type" property="eventType"/>
+        <result column="event_desc" property="eventDesc"/>
+        <result column="image_link" property="imageLink"/>
+        <result column="adcd" property="adcd"/>
+        <result column="adnm" property="adnm"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="dept_id" property="deptId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        camera_code,
+        camera_name,
+        river_code,
+        river_name,
+        river_bas,
+        capture_mode,
+        event_time,
+        event_type,
+        event_desc,
+        image_link,
+        adcd,
+        adnm,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag,
+        dept_id
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.RiverPatrolCameraEvent">
+        INSERT INTO river_patrol_camera_event
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != cameraCode'>
+                camera_code,
+            </if>
+            <if test='null != cameraName'>
+                camera_name,
+            </if>
+            <if test='null != riverCode'>
+                river_code,
+            </if>
+            <if test='null != riverName'>
+                river_name,
+            </if>
+            <if test='null != riverBas'>
+                river_bas,
+            </if>
+            <if test='null != captureMode'>
+                capture_mode,
+            </if>
+            <if test='null != eventTime'>
+                event_time,
+            </if>
+            <if test='null != eventType'>
+                event_type,
+            </if>
+            <if test='null != eventDesc'>
+                event_desc,
+            </if>
+            <if test='null != imageLink'>
+                image_link,
+            </if>
+            <if test='null != adcd'>
+                adcd,
+            </if>
+            <if test='null != adnm'>
+                adnm,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag,
+            </if>
+            <if test='null != deptId'>
+                dept_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != cameraCode'>
+                #{cameraCode},
+            </if>
+            <if test='null != cameraName'>
+                #{cameraName},
+            </if>
+            <if test='null != riverCode'>
+                #{riverCode},
+            </if>
+            <if test='null != riverName'>
+                #{riverName},
+            </if>
+            <if test='null != riverBas'>
+                #{riverBas},
+            </if>
+            <if test='null != captureMode'>
+                #{captureMode},
+            </if>
+            <if test='null != eventTime'>
+                #{eventTime},
+            </if>
+            <if test='null != eventType'>
+                #{eventType},
+            </if>
+            <if test='null != eventDesc'>
+                #{eventDesc},
+            </if>
+            <if test='null != imageLink'>
+                #{imageLink},
+            </if>
+            <if test='null != adcd'>
+                #{adcd},
+            </if>
+            <if test='null != adnm'>
+                #{adnm},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test='null != deptId'>
+                #{deptId}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM river_patrol_camera_event
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.RiverPatrolCameraEvent">
+        UPDATE river_patrol_camera_event
+        <set>
+            <if test='null != cameraCode'>camera_code = #{cameraCode},</if>
+            <if test='null != cameraName'>camera_name = #{cameraName},</if>
+            <if test='null != riverCode'>river_code = #{riverCode},</if>
+            <if test='null != riverName'>river_name = #{riverName},</if>
+            <if test='null != riverBas'>river_bas = #{riverBas},</if>
+            <if test='null != captureMode'>capture_mode = #{captureMode},</if>
+            <if test='null != eventTime'>event_time = #{eventTime},</if>
+            <if test='null != eventType'>event_type = #{eventType},</if>
+            <if test='null != eventDesc'>event_desc = #{eventDesc},</if>
+            <if test='null != imageLink'>image_link = #{imageLink},</if>
+            <if test='null != adcd'>adcd = #{adcd},</if>
+            <if test='null != adnm'>adnm = #{adnm},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test='null != deptId'>dept_id = #{deptId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_patrol_camera_event
+        WHERE del_flag=0 and id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_patrol_camera_event
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM river_patrol_camera_event
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from river_patrol_camera_event
+        where del_flag=0
+        <if test="riverBas!=null and riverBas!=''">
+            <choose>
+                <when test="riverBas!='其他'">
+                    and river_bas like concat('%',#{riverBas},'%')
+                </when>
+                <otherwise>
+                    and river_bas !='飞云江' and river_bas !='鳌江' and river_bas !='瓯江' and river_bas !='椒江'
+                </otherwise>
+            </choose>
+        </if>
+        <if test="adcd !=null and adcd!='' and adcd.length>=6">
+            and adcd like CONCAT(SUBSTR(#{adcd},1,6),'%')
+        </if>
+        <if test="eventType !=null and eventType!=''">
+            and event_type like CONCAT('%',#{eventType},'%')
+        </if>
+        <if test="captureMode !=null and captureMode!=''">
+            and capture_mode = #{captureMode}
+        </if>
+        <if test="cameraName !=null and cameraName!=''">
+            and camera_name like CONCAT('%',#{cameraName},'%')
+        </if>
+        <if test="eventSTime !=null and eventETime!=null">
+            and event_time between #{eventSTime} and #{eventETime}
+        </if>
+    </select>
+
+    <select id="selectForExport" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from river_patrol_camera_event
+        where del_flag=0
+        <if test="riverBas!=null and riverBas!=''">
+            <choose>
+                <when test="riverBas!='其他'">
+                    and river_bas like concat('%',#{riverBas},'%')
+                </when>
+                <otherwise>
+                    and river_bas !='飞云江' and river_bas !='鳌江' and river_bas !='瓯江' and river_bas !='椒江'
+                </otherwise>
+            </choose>
+        </if>
+        <if test="adcd !=null and adcd!='' and adcd.length>=6">
+            and adcd like CONCAT(SUBSTR(#{adcd},1,6),'%')
+        </if>
+        <if test="eventType !=null and eventType!=''">
+            and event_type like CONCAT('%',#{eventType},'%')
+        </if>
+        <if test="captureMode !=null and captureMode!=''">
+            and capture_mode = #{captureMode}
+        </if>
+        <if test="cameraName !=null and cameraName!=''">
+            and camera_name like CONCAT('%',#{cameraName},'%')
+        </if>
+        <if test="eventSTime !=null and eventETime!=null">
+            and event_time between #{eventSTime} and #{eventETime}
+        </if>
+    </select>
+
+</mapper>

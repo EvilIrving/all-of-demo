@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttRivInletBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttRivInletBase">
+        <result column="exp_no" property="expNo"/>
+        <result column="latitude" property="latitude"/>
+        <result column="longitude" property="longitude"/>
+        <result column="surf_h" property="surfH"/>
+        <result column="feature" property="feature"/>
+        <result column="subid" property="subid"/>
+        <result column="offset" property="offset"/>
+        <result column="road" property="road"/>
+        <result column="p_type" property="pType"/>
+        <result column="record_type" property="recordType"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        exp_no,
+        latitude,
+        longitude,
+        surf_h,
+        feature,
+        subid,
+        offset,
+        road,
+        p_type,
+        record_type
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.AttRivInletBase">
+        INSERT INTO att_riv_inlet_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != expNo'>
+                exp_no,
+            </if>
+            <if test='null != latitude'>
+                latitude,
+            </if>
+            <if test='null != longitude'>
+                longitude,
+            </if>
+            <if test='null != surfH'>
+                surf_h,
+            </if>
+            <if test='null != feature'>
+                feature,
+            </if>
+            <if test='null != subid'>
+                subid,
+            </if>
+            <if test='null != offset'>
+                offset,
+            </if>
+            <if test='null != road'>
+                road,
+            </if>
+            <if test='null != pType'>
+                p_type,
+            </if>
+            <if test='null != recordType'>
+                record_type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != expNo'>
+                #{expNo},
+            </if>
+            <if test='null != latitude'>
+                #{latitude},
+            </if>
+            <if test='null != longitude'>
+                #{longitude},
+            </if>
+            <if test='null != surfH'>
+                #{surfH},
+            </if>
+            <if test='null != feature'>
+                #{feature},
+            </if>
+            <if test='null != subid'>
+                #{subid},
+            </if>
+            <if test='null != offset'>
+                #{offset},
+            </if>
+            <if test='null != road'>
+                #{road},
+            </if>
+            <if test='null != pType'>
+                #{pType},
+            </if>
+            <if test='null != recordType'>
+                #{recordType}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_riv_inlet_base
+        WHERE exp_no = #{expNo}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.AttRivInletBase">
+        UPDATE att_riv_inlet_base
+        <set>
+            <if test='null != expNo'>exp_no = #{expNo},</if>
+            <if test='null != latitude'>latitude = #{latitude},</if>
+            <if test='null != longitude'>longitude = #{longitude},</if>
+            <if test='null != surfH'>surf_h = #{surfH},</if>
+            <if test='null != feature'>feature = #{feature},</if>
+            <if test='null != subid'>subid = #{subid},</if>
+            <if test='null != offset'>offset = #{offset},</if>
+            <if test='null != road'>road = #{road},</if>
+            <if test='null != pType'>p_type = #{pType},</if>
+            <if test='null != recordType'>record_type = #{recordType}</if>
+        </set>
+        WHERE exp_no = #{expNo}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_inlet_base
+        WHERE exp_no = #{expNo}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_inlet_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_riv_inlet_base
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_inlet_base
+        <where>
+            <if test="true">
+                and del_flag=0
+            </if>
+            <if test="areaCode!=null and areaCode!=''">
+                and area_code=#{areaCode}
+            </if>
+            <if test="road!=null and road!=''">
+                and road like concat('%',#{road},'%')
+            </if>
+            <if test="recordType!=null">
+                and record_type=#{recordType}
+            </if>
+        </where>
+    </select>
+
+</mapper>

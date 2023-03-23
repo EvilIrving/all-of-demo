@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.AttStBaseMapper">
+    <select id="selectByCondition" resultType="com.ygkj.big.screen.model.AttStBase">
+        select * from att_st_base
+        <where>
+            <if test="true">
+                and del_flag=0
+            </if>
+            <if test="resGrade !=null and resGrade!=''">
+                and res_grade=#{resGrade}
+            </if>
+            <if test="stCode!=null and stCode!=''">
+                AND st_code=#{stCode}
+            </if>
+            <if test="stcds!=null and stcds!=''">
+                AND FIND_IN_SET(st_code,#{stcds})
+            </if>
+            <if test="stName!=null and stName!=''">
+                AND st_name like concat('%',#{stName},'%')
+            </if>
+            <if test="stType!=null and stType!=''">
+                AND st_type=#{stType}
+            </if>
+            <if test="bas!=null and bas!=''">
+                AND bas like concat('%',#{bas},'%')
+            </if>
+            <if test="projCodes!=null and projCodes!=''">
+                AND FIND_IN_SET(proj_code,#{projCodes})
+            </if>
+            <if test="stNames!=null and stNames!=''">
+                AND FIND_IN_SET(st_name,#{stNames})
+            </if>
+            <if test="areaCode!=null and areaCode!=''">
+                AND area_code like concat(substr(#{areaCode},1,6),'%')
+            </if>
+        </where>
+    </select>
+    <select id="countByCondition" resultType="integer">
+        select
+        <choose>
+            <when test="distinct!=null and distinct!=''">
+                distinct ${distinct}
+            </when>
+            <otherwise>
+                count(1)
+            </otherwise>
+        </choose>
+        from att_st_base
+        <where>
+            <if test="true">
+                and del_flag=0
+            </if>
+            <if test="resGrade !=null and resGrade!=''">
+                and res_grade=#{resGrade}
+            </if>
+            <if test="stCode!=null and stCode!=''">
+                AND st_code=#{stCode}
+            </if>
+            <if test="stcds!=null and stcds!=''">
+                AND FIND_IN_SET(st_code,#{stcds})
+            </if>
+            <if test="stName!=null and stName!=''">
+                AND st_name like concat('%',#{stName},'%')
+            </if>
+            <if test="stType!=null and stType!=''">
+                AND st_type=#{stType}
+            </if>
+            <if test="bas!=null and bas!=''">
+                AND bas like concat('%',#{bas},'%')
+            </if>
+            <if test="projCodes!=null and projCodes!=''">
+                AND FIND_IN_SET(proj_code,#{projCodes})
+            </if>
+        </where>
+    </select>
+
+    <select id="selectRiverNetwork" resultType="com.ygkj.big.screen.model.AttRnBase">
+        select * from att_rn_base
+        <where>
+            <if test="rnNames!=null and rnNames!=''">
+                FIND_IN_SET(rn_name,#{rnNames})
+            </if>
+            <if test="bas!=null and bas!=''">
+                AND bas like concat('%',#{bas},'%')
+            </if>
+            <if test="areaCode!=null and areaCode!=''">
+                AND area_code like concat(substr(#{areaCode},1,6),'%')
+            </if>
+        </where>
+    </select>
+</mapper>

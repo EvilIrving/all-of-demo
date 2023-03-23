@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.WaterRuleConfigurationMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.WaterRuleConfiguration" >
+        <result column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="warn_templte_id" property="warnTemplteId" />
+        <result column="send_type" property="sendType" />
+        <result column="station_ids" property="stationIds" />
+        <result column="people_ids" property="peopleIds" />
+        <result column="create_time" property="createTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="creator_id" property="creatorId" />
+        <result column="create_name" property="createName" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        type,
+        warn_templte_id,
+        send_type,
+        station_ids,
+        people_ids,
+        create_time,
+        del_flag,
+        creator_id,
+        create_name
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.WaterRuleConfiguration">
+        INSERT INTO water_rule_configuration
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != type'>
+                type,
+            </if>
+            <if test ='null != warnTemplteId'>
+                warn_templte_id,
+            </if>
+            <if test ='null != sendType'>
+                send_type,
+            </if>
+            <if test ='null != stationIds'>
+                station_ids,
+            </if>
+            <if test ='null != peopleIds'>
+                people_ids,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != creatorId'>
+                creator_id,
+            </if>
+            <if test ='null != createName'>
+                create_name,
+            </if>
+            <if test ='null != ruleContent'>
+                rule_content,
+            </if>
+            <if test ='null != ruleDetailInfoStr'>
+                rule_detail_info_str,
+            </if>
+            <if test ='null != lsPerson'>
+                ls_person,
+            </if>
+            <if test ='null != stationNames and "" != stationNames'>
+                station_names,
+            </if>
+            <if test ='null != peopleNames  and "" != peopleNames'>
+                people_names,
+            </if>
+            <if test ='null != lsTime'>
+                ls_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != type'>
+                #{type},
+            </if>
+            <if test ='null != warnTemplteId'>
+                #{warnTemplteId},
+            </if>
+            <if test ='null != sendType'>
+                #{sendType},
+            </if>
+            <if test ='null != stationIds'>
+                #{stationIds},
+            </if>
+            <if test ='null != peopleIds'>
+                #{peopleIds},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != creatorId'>
+                #{creatorId},
+            </if>
+            <if test ='null != createName'>
+                #{createName},
+            </if>
+            <if test ='null != ruleContent'>
+                #{ruleContent},
+            </if>
+            <if test ='null != ruleDetailInfoStr'>
+                #{ruleDetailInfoStr},
+            </if>
+            <if test ='null != lsPerson'>
+                #{lsPerson},
+            </if>
+            <if test ='null != stationNames and "" != stationNames'>
+                #{stationNames},
+            </if>
+            <if test ='null != peopleNames  and "" != peopleNames'>
+                #{peopleNames},
+            </if>
+            <if test ='null != lsTime'>
+                #{lsTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        update water_rule_configuration set del_flag = 1 WHERE id = #{id}
+    </delete>
+
+    <select id="loadPage" resultType="com.ygkj.digitization.vo.response.WaterRuleConfigurationRespVo">
+        SELECT tbl.*,tb2.content warnTemplteConent,IFNULL((SELECT COUNT(1) FROM `att_st_base` asb WHERE asb.del_flag = 0 AND
+        FIND_IN_SET(asb.st_code,tbl.station_ids)),0) stNum from water_rule_configuration tbl
+        LEFT JOIN water_warn_template tb2 ON tb2.id = tbl.warn_templte_id WHERE tbl.del_flag = 0
+        <if test ='null != ruleContent and "" != ruleContent'>
+            and tbl.rule_content like CONCAT('%',#{ruleContent},'%')
+        </if>
+        <if test ='null != id and "" != id'>
+            and tbl.id = #{id}
+        </if>
+        <if test ='null != type and "" != type'>
+            and tbl.type = #{type}
+        </if>
+    </select>
+
+    <select id="countPeopleNum" resultType="java.lang.Integer">
+        SELECT COUNT(1) peopleNum FROM warn_user tbl WHERE tbl.del_flag = 0 AND FIND_IN_SET(tbl.id,#{peopleIds})
+    </select>
+
+    <select id="selectHourRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT mgstcd, stcd,SUM(drp) drp FROM ${item}
+            <where>
+                <if test="codes != null and '' != codes">
+                    AND FIND_IN_SET(mgstcd, #{codes})
+                </if>
+                <if test="startTime != null and endTime != null">
+                    and (tm between #{startTime} AND #{endTime})
+                </if>
+            </where>
+            GROUP BY mgstcd
+            )
+        </foreach>
+    </select>
+
+    <select id="selectRiverByTimeCode" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, z FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY)  AND  DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectTideByTimeCode" resultType="com.ygkj.gragh.model.StTideR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,TDZ FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY)  AND  DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+    <select id="selectRsvrWaterLevelByTimeCode" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, rz z FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY)  AND  DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.WaterRuleConfiguration">
+        UPDATE water_rule_configuration
+        <set>
+            <if test ='null != type'>type = #{type},</if>
+            <if test ='null != warnTemplteId'>warn_templte_id = #{warnTemplteId},</if>
+            <if test ='null != sendType'>send_type = #{sendType},</if>
+            <if test ='null != stationIds'>station_ids = #{stationIds},</if>
+            <if test ='null != peopleIds'>people_ids = #{peopleIds},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != creatorId'>creator_id = #{creatorId},</if>
+            <if test ='null != createName'>create_name = #{createName},</if>
+            <if test ='null != ruleContent'>rule_content = #{ruleContent},</if>
+            <if test ='null != ruleDetailInfoStr'>rule_detail_info_str = #{ruleDetailInfoStr},</if>
+            <if test ='null != lsPerson'>ls_person = #{lsPerson},</if>
+            <if test ='null != stationNames and "" != stationNames'>station_names = #{stationNames},</if>
+            <if test ='null != peopleNames and "" != peopleNames'>people_names = #{peopleNames},</if>
+            <if test ='null != lsTime'>ls_time = #{lsTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.GmGeneralMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.GmGeneral" >
+        <result column="id" property="id" />
+        <result column="task_name" property="taskName" />
+        <result column="task_target" property="taskTarget" />
+        <result column="exist_problem" property="existProblem" />
+        <result column="fill_dept_id" property="fillDeptId" />
+        <result column="fill_dept_name" property="fillDeptName" />
+        <result column="report_time" property="reportTime" />
+        <result column="task_state" property="taskState" />
+        <result column="attach_id" property="attachId" />
+        <result column="adcd" property="adcd" />
+        <result column="adnm" property="adnm" />
+        <result column="create_time" property="createTime" />
+        <result column="create_id" property="createId" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_id" property="updateId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="dept_id" property="deptId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                task_name,
+                task_target,
+                exist_problem,
+                fill_dept_id,
+                fill_dept_name,
+                report_time,
+                task_state,
+                attach_id,
+                adcd,
+                adnm,
+                create_time,
+                create_id,
+                update_time,
+                update_id,
+                del_flag,
+                dept_id
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.GmGeneral">
+        INSERT INTO gm_general
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != taskName'>
+                task_name,
+            </if>
+            <if test ='null != taskTarget'>
+                task_target,
+            </if>
+            <if test ='null != existProblem'>
+                exist_problem,
+            </if>
+            <if test ='null != fillDeptId'>
+                fill_dept_id,
+            </if>
+            <if test ='null != fillDeptName'>
+                fill_dept_name,
+            </if>
+            <if test ='null != reportTime'>
+                report_time,
+            </if>
+            <if test ='null != taskState'>
+                task_state,
+            </if>
+            <if test ='null != attachId'>
+                attach_id,
+            </if>
+            <if test ='null != adcd'>
+                adcd,
+            </if>
+            <if test ='null != adnm'>
+                adnm,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != createId'>
+                create_id,
+            </if>
+            <if test ='null != updateTime'>
+                update_time,
+            </if>
+            <if test ='null != updateId'>
+                update_id,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != deptId'>
+                dept_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != taskName'>
+                #{taskName},
+            </if>
+            <if test ='null != taskTarget'>
+                #{taskTarget},
+            </if>
+            <if test ='null != existProblem'>
+                #{existProblem},
+            </if>
+            <if test ='null != fillDeptId'>
+                #{fillDeptId},
+            </if>
+            <if test ='null != fillDeptName'>
+                #{fillDeptName},
+            </if>
+            <if test ='null != reportTime'>
+                #{reportTime},
+            </if>
+            <if test ='null != taskState'>
+                #{taskState},
+            </if>
+            <if test ='null != attachId'>
+                #{attachId},
+            </if>
+            <if test ='null != adcd'>
+                #{adcd},
+            </if>
+            <if test ='null != adnm'>
+                #{adnm},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != createId'>
+                #{createId},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test ='null != updateId'>
+                #{updateId},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != deptId'>
+                #{deptId}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM gm_general
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.GmGeneral">
+        UPDATE gm_general
+        <set>
+            <if test ='null != taskName'>task_name = #{taskName},</if>
+            <if test ='null != taskTarget'>task_target = #{taskTarget},</if>
+            <if test ='null != existProblem'>exist_problem = #{existProblem},</if>
+            <if test ='null != fillDeptId'>fill_dept_id = #{fillDeptId},</if>
+            <if test ='null != fillDeptName'>fill_dept_name = #{fillDeptName},</if>
+            <if test ='null != reportTime'>report_time = #{reportTime},</if>
+            <if test ='null != taskState'>task_state = #{taskState},</if>
+            <if test ='null != attachId'>attach_id = #{attachId},</if>
+            <if test ='null != adcd'>adcd = #{adcd},</if>
+            <if test ='null != adnm'>adnm = #{adnm},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != createId'>create_id = #{createId},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime},</if>
+            <if test ='null != updateId'>update_id = #{updateId},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != deptId'>dept_id = #{deptId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM gm_general
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM gm_general
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM gm_general
+    </select>
+
+    <select id="selectByAdcdFillTimeTaskName" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from gm_general
+        where del_flag=0
+        <if test="adcd!=null and adcd!=''">
+            and adcd =#{adcd}
+        </if>
+        <if test="taskName!=null and taskName!=''">
+            and task_name like concat('%',concat(#{taskName},'%'))
+        </if>
+        <if test="rtStart!=null and rtEnd!=null">
+            and report_time BETWEEN #{rtStart} and #{rtEnd}
+        </if>
+    </select>
+
+    <update id="virtualDeleteById">
+        update gm_general set del_flag=0 where WHERE id = #{id}
+    </update>
+
+</mapper>

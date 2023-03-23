@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcy.datamanage.biz.mapper.ResourceSourceRelMapper">
+
+    <insert id="replaceAll" parameterType="com.dcy.datamanage.api.model.BusDataResourceSourceRel">
+        INSERT INTO bus_data_resource_source_rel
+            (id,data_resource_id,data_source_id,`table_name`)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.id},#{item.dataResourceId},#{item.dataSourceId},#{item.tableName})
+            </foreach>
+    </insert>
+
+    <delete id="removeBySourceTable">
+        DELETE FROM bus_data_resource_source_rel WHERE
+            (data_source_id,table_name)
+        IN
+            <foreach collection="list" open="(" item="item" separator="," close=")">
+                (#{item.dataSourceId},#{item.tableName})
+            </foreach>
+    </delete>
+
+
+    <select id="list" resultType="com.dcy.datamanage.biz.dto.output.ResourceSourceRelOutputDTO" parameterType="com.dcy.datamanage.biz.dto.input.ResourceSourceRelSearchInputDTO">
+        SELECT
+            rel.*,tb.custom_table_name
+        FROM
+            bus_data_resource_source_rel rel
+            LEFT JOIN bus_data_table tb ON rel.data_source_id = tb.data_source_id AND tb.table_name = rel.table_name
+        WHERE
+            rel.data_resource_id = #{dataResourceId}
+    </select>
+
+    <select id="list2" resultType="com.dcy.datamanage.biz.dto.output.BusDataTableOutputDTO" parameterType="com.dcy.datamanage.biz.dto.input.BusDataTableSearchInputDTO">
+        SELECT
+            rel.data_source_id,rel.data_resource_id,res.resource_name,rel.table_name
+        FROM
+            bus_data_resource_source_rel rel
+            LEFT JOIN bus_data_resource res ON rel.data_resource_id = res.id
+        WHERE
+            rel.data_source_id = #{dataSourceId}
+            <if test="tableNameList != null and tableNameList.size > 0">
+                AND rel.table_name IN
+                <foreach collection="tableNameList" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+    </select>
+
+</mapper>

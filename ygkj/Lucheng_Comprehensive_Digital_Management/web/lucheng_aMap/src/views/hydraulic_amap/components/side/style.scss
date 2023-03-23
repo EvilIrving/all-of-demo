@@ -1,0 +1,46 @@
+.table-title {
+	.table-title__label {
+		font-size: 18px;
+		color: #ffffff;
+		letter-spacing: 0;
+		line-height: 32px;
+		font-weight: 600;
+		margin-left: 36px;
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		.table-title__append {
+			i[class^="icon-"] {
+				cursor: pointer;
+			}
+		}
+		&::before {
+			content: "";
+			position: absolute;
+			display: inline-block;
+			height: 24px;
+			width: 24px;
+			background-image: url(~assets/images/WaterDisastersImage/diamond.gif);
+			left: -35px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+	}
+	.table-title__bottom {
+		opacity: 0.8;
+		height: 3px;
+		width: 100%;
+		background-image: linear-gradient(to right, #56fefe, #0000);
+		background-position-x: 30px;
+		position: relative;
+		margin-bottom: 16px;
+		&::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			height: 3px;
+			width: 30px;
+			background-image: repeating-linear-gradient(to right, #56fefe 0, #0000 15px);
+		}
+	}
+}

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttWaterareaCompensationMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttWaterareaCompensation">
+        <result column="id" property="id"/>
+        <result column="year" property="year"/>
+        <result column="area_name" property="areaName"/>
+        <result column="occupied_area" property="occupiedArea"/>
+        <result column="compensation_area" property="compensationArea"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        year,
+        area_name,
+        occupied_area,
+        compensation_area,
+        del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.river.model.AttWaterareaCompensation">
+        INSERT INTO att_waterarea_compensation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != year'>
+                year,
+            </if>
+            <if test='null != areaName'>
+                area_name,
+            </if>
+            <if test='null != occupiedArea'>
+                occupied_area,
+            </if>
+            <if test='null != compensationArea'>
+                compensation_area,
+            </if>
+            <if test='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != year'>
+                #{year},
+            </if>
+            <if test='null != areaName'>
+                #{areaName},
+            </if>
+            <if test='null != occupiedArea'>
+                #{occupiedArea},
+            </if>
+            <if test='null != compensationArea'>
+                #{compensationArea},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_waterarea_compensation
+        WHERE id = #{id}
+    </delete>
+    <select id="statisticsReclaimedAreaWater"
+            resultType="com.ygkj.river.vo.response.AttWaterareaCompensationRespVo">
+        SELECT SUM(occupied_area) occupiedArea, SUM(compensation_area) compensationArea FROM
+        `att_waterarea_compensation` where del_flag =0 AND year = #{year}
+    </select>
+
+    <select id="calYear" resultType="java.lang.Integer">
+        SELECT year FROM `att_waterarea_compensation` where del_flag =0 GROUP BY year asc
+    </select>
+
+    <select id="statisticsReclaimedByYear" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT SUM(occupied_area) occupiedArea, SUM(compensation_area) compensationArea,area_name FROM
+        `att_waterarea_compensation`
+        where del_flag =0 AND year = #{year} GROUP BY area_name
+    </select>
+
+    <select id="waterAreaEachAdministrative"
+            resultType="com.ygkj.river.vo.response.AttWaterareaCompensationRespVo">
+        SELECT area_name areaName,SUM(occupied_area) occupied_area,SUM(compensation_area) compensation_area,"2"
+        valueType
+        FROM att_waterarea_compensation WHERE `year` = #{year} GROUP BY area_name ORDER BY SUM(compensation_area)
+    </select>
+
+    <update id="update" parameterType="com.ygkj.river.model.AttWaterareaCompensation">
+        UPDATE att_waterarea_compensation
+        <set>
+            <if test='null != year'>year = #{year},</if>
+            <if test='null != areaName'>area_name = #{areaName},</if>
+            <if test='null != occupiedArea'>occupied_area = #{occupiedArea},</if>
+            <if test='null != compensationArea'>compensation_area = #{compensationArea},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>

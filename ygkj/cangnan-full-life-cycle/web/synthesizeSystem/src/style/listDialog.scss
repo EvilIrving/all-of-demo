@@ -1,0 +1,209 @@
+@import "../style/theme.scss";
+
+.list-dialog {
+    .el-input-group__append {
+        background-color: #F4F4F4;
+        border-top: 0;
+        border-right: 0;
+    }
+
+    .el-form-item__content {
+        line-height: 1;
+    }
+
+    .el-date-editor.el-input,
+    .el-date-editor.el-input__inner {
+        width: 100%;
+    }
+
+    .el-form-item {
+        margin-bottom: 0;
+    }
+
+    .el-table--striped .el-table__body tr.el-table__row--striped td,
+    .el-table--striped .el-table__body tr.el-table__row--striped td:hover,
+    .el-table--enable-row-hover .el-table__body tr:hover>td {
+        background-color: $dialogTableBg !important;
+    }
+
+    .el-checkbox__inner {
+        border-color: #979797;
+    }
+
+    .el-checkbox__inner:hover {
+        border-color: $primaryDialog;
+    }
+
+    .el-checkbox__input.is-checked .el-checkbox__inner,
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+        background-color: $primaryDialog;
+        border-color: $primaryDialog;
+        color: #fff;
+    }
+
+    .green {
+        color: $primaryDialog;
+    }
+
+    .el-dialog--center .el-dialog__body {
+        padding: 0 15px 30px;
+    }
+
+    .el-dialog {
+        background-color: $dialogBackground;
+
+        .item-label {
+            font-size: 14px;
+            color: $dialogFontColor;
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+
+        .el-select {
+            width: 100%;
+        }
+
+        .el-input .el-input__inner {
+            height: 40px;
+        }
+
+        .el-input .el-input__inner,
+        .el-input.is-disabled .el-input__inner,
+        .el-textarea .el-textarea__inner,
+        .el-textarea.is-disabled .el-textarea__inner {
+            background: $dialogInputBackground;
+            border: 0;
+            border-bottom: 1px solid $dialogInputBorder;
+        }
+
+        .el-input__inner {
+            color: #333;
+        }
+    }
+
+    .el-dialog__header {
+        height: 64px;
+        background: $primaryDialog;
+        box-shadow: 0 2px 4px 0 rgba(158, 158, 158, 0.50);
+        border-radius: 4px 4px 0 0;
+        font-size: 24px;
+        padding-left: 20px;
+        text-align: left;
+
+        .el-dialog__title {
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .el-dialog__close.el-icon.el-icon-close {
+            color: #fff;
+        }
+    }
+
+    .dialog-tab {
+        >span {
+            display: inline-block;
+            height: $dialogTabHeight;
+            line-height: $dialogTabHeight;
+            min-width: $dialogTabWidth;
+            padding: 0 16px;
+            text-align: center;
+            cursor: pointer;
+
+            &.active {
+                background-color: $primaryDialog;
+                color: #FFFFFF;
+                border-radius: 4px;
+            }
+        }
+    }
+
+    .list-item-opearte {
+        color: #3ebeb6;
+        cursor: pointer;
+    }
+
+    .form-footer {
+        width: 100%;
+        height: $dialogFooterHeight;
+        line-height: $dialogFooterHeight;
+        border-top: 1px solid $dialogFooterBorder;
+        text-align: right;
+        padding: 0 20px;
+    }
+
+    .el-table {
+        margin-top: 20px;
+
+        th {
+            background-color: $dialogTableBg;
+            color: rgba(0, 0, 0, 0.48);
+        }
+
+        tr {
+            color: #000000;
+        }
+    }
+
+    .dialog-pagination {
+        height: 30px;
+        margin-top: 16px;
+    }
+
+    // 上传样式
+    .el-upload.el-upload--text {
+        width: 100%;
+        margin-top: 24px;
+
+        .upload-btn {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+
+            >span {
+                font-size: 14px;
+                color: #858585;
+            }
+        }
+    }
+
+    .el-upload__tip {
+        font-size: 14px;
+        color: #C6C6C6;
+        margin-top: 8px;
+    }
+
+    .el-upload-list__item .el-upload-list__item-name:focus,
+    .el-upload-list__item .el-upload-list__item-name:hover,
+    .el-upload-list__item .el-upload-list__item-name {
+        color: #333333;
+    }
+
+    .el-icon-close-tip {
+        color: $primaryDialog;
+        ;
+    }
+}
+
+.el-dialog__footer {
+    padding: 0;
+    font-size: 16px;
+
+    .el-button {
+        border: 0;
+        border-radius: 0;
+    }
+
+    .btn-cancel.el-button,
+    .btn-cancel.el-button:focus,
+    .btn-cancel.el-button:hover {
+        color: #999999;
+        background-color: transparent;
+    }
+
+    .btn-save.el-button,
+    .btn-save.el-button:focus,
+    .btn-save.el-button:hover {
+        color: #fff;
+        background: #328173;
+    }
+}

@@ -1,0 +1,49 @@
+//当HTML的data-theme为custom-theme时，样式引用custom-theme
+//data-theme为其他值时，就采用组件库的默认样式
+//这里我只定义了两套主题方案，想要再多只需在`$themes`里加就行了
+//注意一点是，每套配色方案里的key可以自定义但必须一致，不然就会混乱
+
+$themes: (
+
+    default: (
+        //字体
+        font_color1: #fff,
+        font_color2: #333,
+
+        //背景
+        background_color1: #f7f8fa,
+        background_color2: #fff,
+        background_color3: #1492ff,
+        background_color4: #e8effa,
+
+        //边框
+        border_color1: #eeeeee,
+        border_color2: #1492ff,
+
+        //阴影
+        box_shadow_color1: rgba(14, 31, 53, 0.06),
+        box_shadow_color2: rgba(14, 31, 53, 0.12),
+
+    ),
+
+    custom-theme: (
+        //字体
+        font_color1: #a7a7a7,
+        font_color2: white,
+
+        //背景
+        background_color1: #1b2531,
+        background_color2: #283142,
+        background_color3: #1e6ceb,
+        background_color4: #323e4e,
+
+        //边框
+        border_color1: #3d414a,
+        border_color2: #1492ff,
+
+        //阴影
+        box_shadow_color1: rgba(14, 31, 53, 0.06),
+        box_shadow_color2: rgba(14, 31, 53, 0.12),
+
+    )
+);

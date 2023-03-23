@@ -1,0 +1,94 @@
+/*
+ * @Author: hanyu
+ * @LastEditTime: 2020-09-10 16:01:22
+ * @Description: 存放mixin函数
+ * @LastEditors: wupengfei
+ * @FilePath: \ruiAnWaterPlatform\src\style\mixin.scss
+ */
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin flex($values) {
+  -webkit-box-flex: $values;
+  -moz-box-flex: $values;
+  -webkit-flex: $values;
+  -ms-flex: $values;
+  flex: $values;
+}
+
+@mixin flexflow($direction, $wrap) {
+  -webkit-flex-flow: $direction $wrap;
+  -moz-flex-flow: $direction $wrap;
+  -ms-flex-flow: $direction $wrap;
+  flex-flow: $direction $wrap;
+}
+
+@mixin flexJC($values) {
+  -webkit-box-pack: $values;
+  -moz-justify-content: $values;
+  -webkit-justify-content: $values;
+  justify-content: $values;
+}
+
+@mixin flexAC() {
+  -webkit-box-align: center;
+  -moz-align-items: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+@mixin flexAI($value) {
+  -webkit-box-align: $value;
+  -moz-align-items: $value;
+  -webkit-align-items: $value;
+  align-items: $value;
+}
+
+@mixin transform($x) {
+  transform: $x;
+  -ms-transform: $x;
+  -moz-transform: $x;
+  -webkit-transform: $x;
+  -o-transform: $x;
+}
+
+@mixin shadow($color, $a, $b, $c) {
+  box-shadow: $color $a $b $c;
+  -webkit-box-shadow: $color $a $b $c;
+  -moz-box-shadow: $color $a $b $c;
+  -ms-box-shadow: $color $a $b $c;
+  -o-shadow: $color $a $b $c;
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin text-ellipsis() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin icon() {
+  border-radius: 50%;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+}
+
+@mixin chart-icon() {
+  border-radius: 50%;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+}

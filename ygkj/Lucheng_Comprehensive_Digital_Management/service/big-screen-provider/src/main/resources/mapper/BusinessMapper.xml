@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.BusinessMapper">
+
+    <insert id="batchInsertMeteorologicalWarningData">
+        REPLACE INTO st_me_warn_r
+        (warn_code,warn_measure,area_code,longitude,latitude,publish_unit,warn_area,warn_content,warn_level,warn_period,warn_type,publish_date,title)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.warnCode},#{item.warnMeasure},#{item.areaCode},#{item.longitude},#{item.latitude},#{item.publishUnit},#{item.warnArea}
+            ,#{item.warnContent},#{item.warnLevel},#{item.warnPeriod},#{item.warnType},#{item.publishDate},#{item.title})
+        </foreach>
+    </insert>
+</mapper>

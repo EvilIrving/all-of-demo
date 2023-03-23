@@ -1,0 +1,109 @@
+@import "vxe-table/styles/variable.scss";
+
+// $vxe-primary-color: rgba(0,0,0,0.2);
+$vxe-success-color: #67c23a;
+$vxe-info-color: #909399;
+$vxe-warning-color: #e6a23c;
+$vxe-danger-color: #f56c6c;
+$vxe-disabled-color: #bfbfbf;
+$vxe-primary-disabled-color: #c0c4cc;
+
+$vxe-table-border-width: 0px;
+$vxe-table-header-background-color: rgba(0,0,0,0);
+$vxe-table-header-font-color: #fff;
+$vxe-table-header-font-weight: normal;
+
+$vxe-table-row-line-height: 48px;
+
+@import "vxe-table/styles/modules.scss";
+
+.vxe-cell {
+	.vxe-button {
+		margin-left: 0;
+	}
+}
+.blank-table {
+	.vxe-table--render-default.border--default .vxe-table--header-wrapper,
+	.vxe-table--render-default.border--full .vxe-table--header-wrapper,
+	.vxe-table--render-default.border--outer .vxe-table--header-wrapper,
+	.vxe-table--render-default.border--inner .vxe-table--header-wrapper,
+	.vxe-table--render-default.border--none .vxe-table--header-wrapper {
+		background-color: #e6e6e6;
+		color: #000;
+		font-weight: bold;
+	}
+	.vxe-table--render-default .vxe-table--body-wrapper {
+		background-color: transparent;
+	}
+	.vxe-body--row {
+		position: relative;
+		&::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			border-bottom: solid 1px #0002;
+		}
+	}
+
+	.vxe-table ::-webkit-scrollbar-thumb {
+		background-color: #0005;
+		border: 1px solid #0005;
+	}
+	.vxe-table ::-webkit-scrollbar-track {
+		background-color: #0001;
+		border-radius: 5px;
+	}
+}
+.list-dialog {
+	.vxe-table--render-default.border--default .vxe-table--header-wrapper,
+	.vxe-table--render-default.border--full .vxe-table--header-wrapper,
+	.vxe-table--render-default.border--outer .vxe-table--header-wrapper,
+	.vxe-table--render-default.border--inner .vxe-table--header-wrapper,
+	.vxe-table--render-default.border--none .vxe-table--header-wrapper {
+		background-color: #e6e6e6;
+		color: #000;
+		font-weight: bold;
+	}
+}
+// 去除button focus的边框
+.vxe-button.type--text:not(.is--disabled):focus {
+	box-shadow: none;
+}
+.vxe-header--column .vxe-cell--title {
+	line-height: 48px;
+}
+/*滚动条整体部分*/
+.vxe-table ::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+/*滚动条的轨道*/
+.vxe-table ::-webkit-scrollbar-track {
+	background-color: #ffffff;
+}
+/*滚动条里面的小方块，能向上向下移动*/
+.vxe-table ::-webkit-scrollbar-thumb {
+	background-color: #bfbfbf;
+	border-radius: 5px;
+	border: 1px solid #f1f1f1;
+}
+.vxe-table ::-webkit-scrollbar-thumb:hover {
+	background-color: #a8a8a8;
+}
+.vxe-table ::-webkit-scrollbar-thumb:active {
+	background-color: #787878;
+}
+/*边角，即两个滚动条的交汇处*/
+.vxe-table ::-webkit-scrollbar-corner {
+	background-color: #ffffff;
+}
+/* 对el-popover中空数据表格的修复*/
+.el-popover {
+	.vxe-table {
+		.vxe-table--empty-placeholder {
+			top: 50px !important;
+		}
+	}
+}

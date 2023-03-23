@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttPdmpBaseMapper">
+
+
+    <select id="loadPage" resultType="com.ygkj.river.vo.response.AttPdmpBaseRespVo">
+        SELECT tbl.* FROM `att_pdmp_base` tbl WHERE tbl.del_flag = 0
+    </select>
+</mapper>

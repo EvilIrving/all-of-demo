@@ -1,0 +1,1221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.ProjectMapper">
+
+    <select id="selectReservoirByCondition" resultType="com.ygkj.gragh.model.AttResBase">
+        SELECT * FROM att_res_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND res_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+<!--            <if test="type != null and type != ''">-->
+<!--                AND res_type = #{type}-->
+<!--            </if>-->
+            <if test="code != null and code != ''">
+                AND res_code = #{code}
+            </if>
+<!--            <if test="bas != null and bas != ''">-->
+<!--                AND bas = #{bas}-->
+<!--            </if>-->
+            <if test="bas!=null and bas!=''">
+                <choose>
+                    <when test="bas!='其他'">
+                        and bas like concat('%',#{bas},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="codes != null">
+                AND res_code IN
+                <foreach collection="codes" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="level != null and level != ''">
+                AND eng_scal = #{level}
+            </if>
+            <if test="levels != null and levels != ''">
+                AND find_in_set(eng_scal,#{levels})
+            </if>
+            <if test="dilapProj != null">
+                <choose>
+                    <when test="dilapProj">
+                        AND safety_conclusion not like '%一类%' and TRIM(safety_conclusion)!=''
+                    </when>
+                    <otherwise>
+                        AND safety_conclusion like '%一类%'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="safetyConclusion != null and safetyConclusion!=''">
+                AND safety_conclusion = #{safetyConclusion}
+            </if>
+            <if test="true">
+                AND del_flag=0
+            </if>
+        </where>
+        <if test="orderSql!=null and orderSql!=''">
+            ${orderSql}
+        </if>
+    </select>
+
+    <select id="selectPumpByCondition" resultType="com.ygkj.gragh.model.AttPustBase">
+        SELECT * FROM att_pust_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND pust_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND pust_code = #{code}
+            </if>
+<!--            <if test="bas != null and bas != ''">-->
+<!--                AND bas = #{bas}-->
+<!--            </if>-->
+            <if test="bas!=null and bas!=''">
+                <choose>
+                    <when test="bas!='其他'">
+                        and bas like concat('%',#{bas},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="codes != null">
+                AND pust_code IN
+                <foreach collection="codes" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="level != null and level != ''">
+                AND eng_scal = #{level}
+            </if>
+            <if test="levels!=null and levels !=''">
+                find_in_set(eng_scal,#{levels})
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDikeByCondition" resultType="com.ygkj.gragh.model.AttDikeBase">
+        SELECT * FROM att_dike_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND dike_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+<!--            <if test="bas != null and bas != ''">-->
+<!--                AND bas = #{bas}-->
+<!--            </if>-->
+            <if test="bas!=null and bas!=''">
+                <choose>
+                    <when test="bas!='其他'">
+                        and bas like concat('%',#{bas},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND dike_code = #{code}
+            </if>
+            <if test="codes != null">
+                AND dike_code IN
+                <foreach collection="codes" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="grade != null and grade != ''">
+                AND dike_grad = #{grade}
+            </if>
+            <if test="dikeType != null and dikeType != ''">
+                AND dike_type = #{dikeType}
+            </if>
+            <if test="dikeForm != null and dikeForm != ''">
+                AND dike_patt = #{dikeForm}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectMountainPoolByCondition" resultType="com.ygkj.gragh.model.AttMnpdBase">
+        SELECT * FROM att_mnpd_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND mnpd_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+<!--            <if test="bas != null and bas != ''">-->
+<!--                AND bas = #{bas}-->
+<!--            </if>-->
+            <if test="bas!=null and bas!=''">
+                <choose>
+                    <when test="bas!='其他'">
+                        and bas like concat('%',#{bas},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND mnpd_code = #{code}
+            </if>
+            <if test="mnpdCate != null and mnpdCate !=''">
+                AND mnpd_cate = #{mnpdCate}
+            </if>
+            <if test="codes != null">
+                AND mnpd_code IN
+                <foreach collection="codes" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="dilapProj != null">
+                <choose>
+                    <when test="dilapProj">
+                        AND safety_conclusion not like '%一类%' and TRIM(safety_conclusion)!=''
+                    </when>
+                    <otherwise>
+                        AND safety_conclusion like '%一类%'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="safetyConclusion != null and safetyConclusion!=''">
+                AND safety_conclusion = #{safetyConclusion}
+            </if>
+            <if test="true">
+                AND del_flag=0
+            </if>
+        </where>
+    </select>
+
+    <select id="selectWagaByCondition" resultType="com.ygkj.gragh.model.AttWagaBase">
+        SELECT * FROM att_waga_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND waga_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+<!--            <if test="bas != null and bas != ''">-->
+<!--                AND bas = #{bas}-->
+<!--            </if>-->
+            <if test="bas!=null and bas!=''">
+                <choose>
+                    <when test="bas!='其他'">
+                        and bas like concat('%',#{bas},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND waga_code = #{code}
+            </if>
+            <if test="codes != null">
+                AND waga_code IN
+                <foreach collection="codes" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="level != null and level != ''">
+                AND eng_scal = #{level}
+            </if>
+            <if test="levels != null and levels != ''">
+                AND find_in_set(eng_scal,#{levels})
+            </if>
+            <if test="wrpWaga != null ">
+                <choose>
+                    <when test="wrpWaga">
+                       AND wrp_waga=1
+                    </when>
+                    <otherwise>
+                       AND wrp_waga=0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="dilapProj != null">
+                <choose>
+                    <when test="dilapProj">
+                        AND safety_conclusion not like '%一类%' and TRIM(safety_conclusion)!=''
+                    </when>
+                    <otherwise>
+                        AND safety_conclusion like '%一类%'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="safetyConclusion != null and safetyConclusion!=''">
+                AND safety_conclusion = #{safetyConclusion}
+            </if>
+            <if test="true">
+                AND del_flag=0
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSeawallByCondition" resultType="com.ygkj.gragh.model.AttSeawallBase">
+        SELECT * FROM att_seawall_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND seawall_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+<!--            <if test="bas != null and bas != ''">-->
+<!--                AND bas = #{bas}-->
+<!--            </if>-->
+            <if test="bas!=null and bas!=''">
+                <choose>
+                    <when test="bas!='其他'">
+                        and bas like concat('%',#{bas},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND seawall_code = #{code}
+            </if>
+            <if test="codes != null">
+                AND seawall_code IN
+                <foreach collection="codes" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="grade != null and grade != ''">
+                AND seawall_level = #{grade}
+            </if>
+            <if test="designTideStandardStart != null and designTideStandardEnd != null">
+                AND design_tide_standard between #{designTideStandardStart} and #{designTideStandardEnd}
+            </if>
+            <if test="designTideStandardStart == null and designTideStandardEnd != null">
+                AND design_tide_standard &lt; #{designTideStandardEnd}
+            </if>
+            <if test="designTideStandardStart != null and designTideStandardEnd == null">
+                AND design_tide_standard &gt; #{designTideStandardStart}
+            </if>
+            <if test="dilapProj != null">
+                <choose>
+                    <when test="dilapProj">
+                        AND safety_conclusion not like '%一类%' and TRIM(safety_conclusion)!=''
+                    </when>
+                    <otherwise>
+                        AND safety_conclusion like '%一类%'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="safetyConclusion != null and safetyConclusion!=''">
+                AND safety_conclusion = #{safetyConclusion}
+            </if>
+            <if test="true">
+                AND del_flag=0
+            </if>
+        </where>
+    </select>
+    <select id="selectHydristByCondition" resultType="com.ygkj.gragh.model.AttHystBase">
+        SELECT * FROM att_hyst_base
+        <where>
+            <if test="true ">
+                AND del_flag=0
+            </if>
+            <if test="projectName != null and projectName != ''">
+                AND hyst_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+<!--            <if test="bas != null and bas != ''">-->
+<!--                AND bas = #{bas}-->
+<!--            </if>-->
+            <if test="bas!=null and bas!=''">
+                <choose>
+                    <when test="bas!='其他'">
+                        and bas like concat('%',#{bas},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+<!--            <if test="areaCode != null and areaCode != ''">-->
+<!--                AND adcd = #{areaCode}-->
+<!--            </if>-->
+            <if test="areaCode != null and areaCode != ''">
+                AND hyst_loc = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND hyst_code = #{code}
+            </if>
+            <if test="codes != null">
+                AND hyst_code IN
+                <foreach collection="codes" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="level != null and level != ''">
+                AND eng_scal = #{level}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectWaterSupplyProjectByCondition" resultType="com.ygkj.gragh.model.WaterSupplyProject">
+        SELECT * FROM water_supply_project
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND project_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+<!--            <if test="bas != null and bas != ''">-->
+<!--                AND bas = #{bas}-->
+<!--            </if>-->
+            <if test="bas!=null and bas!=''">
+                <choose>
+                    <when test="bas!='其他'">
+                        and bas like concat('%',#{bas},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND adcd = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND FIND_IN_SET(project_code,#{code})
+            </if>
+        </where>
+    </select>
+
+    <select id="selectGateProjectByCondition" resultType="com.ygkj.gragh.model.AttGateBase">
+        SELECT * FROM att_gate_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND gate_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code like concat(substr(#{areaCode},1,6),'%')
+            </if>
+<!--            <if test="bas != null and bas != ''">-->
+<!--                AND bas = #{bas}-->
+<!--            </if>-->
+            <if test="bas!=null and bas!=''">
+                <choose>
+                    <when test="bas!='其他'">
+                        and bas like concat('%',#{bas},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="code != null and code != ''">
+                AND gate_code = #{code}
+            </if>
+            <if test="codes != null">
+                AND gate_code IN
+                <foreach collection="codes" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="level!=null and level !=''">
+                eng_scal = #{level}
+            </if>
+            <if test="levels!=null and levels !=''">
+                find_in_set(eng_scal,#{levels})
+            </if>
+            <if test="true">
+                AND del_flag=0
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCwsProjectByCondition" resultType="com.ygkj.gragh.model.AttCwsBase">
+        SELECT * FROM att_cws_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND cws_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND citycode like concat(substr(#{areaCode},1,6),'%')
+            </if>
+            <if test="code != null and code != ''">
+                AND cws_code = #{code}
+            </if>
+            <if test="codes != null">
+                AND cws_code IN
+                <foreach collection="codes" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="true">
+                AND del_flag=0
+            </if>
+            <if test="engType !=null and engType !=''">
+                AND eng_type = #{engType}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectIrrProjectByCondition" resultType="com.ygkj.gragh.model.AttIrrBase">
+        SELECT * FROM att_irr_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND irr_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND adcd = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND irr_code = #{code}
+            </if>
+<!--            <if test="bas != null and bas != ''">-->
+<!--                AND bas = #{bas}-->
+<!--            </if>-->
+            <if test="bas!=null and bas!=''">
+                <choose>
+                    <when test="bas!='其他'">
+                        and bas like concat('%',#{bas},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="codes != null">
+                AND irr_code IN
+                <foreach collection="codes" open="(" close=")" item="item" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="level != null and level != ''">
+                AND eng_scal = #{level}
+            </if>
+            <if test="levels!=null and levels !=''">
+                AND find_in_set(eng_scal,#{levels})
+            </if>
+            <if test="true">
+                AND del_flag=0
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBuildingProjectByCondition" resultType="com.ygkj.gragh.model.BuildingProject">
+        SELECT * FROM building_project
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND project_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND project_code = #{code}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectRiverProject" resultType="com.ygkj.gragh.model.AttProjBase">
+        SELECT * FROM att_proj_base
+        <where>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="bas != null and bas != ''">
+                AND basin = #{bas}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                AND project_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="projectCode != null and projectCode != ''">
+                AND project_code = #{code}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectProjectType" resultType="java.lang.String">
+        	SELECT DISTINCT(project_type) FROM att_real_all_project_base
+    </select>
+
+    <select id="selectProjectByProCode" resultType="com.ygkj.project.vo.response.ProjectResVo">
+        SELECT * FROM att_real_all_project_base where FIND_IN_SET(project_code,#{code})
+    </select>
+
+    <select id="countProjTypeNumByAdcdBasin" resultType="com.ygkj.project.vo.response.ChartResVo">
+        select count(1) as `value` ,project_type as `key`
+        from att_real_all_project_base
+        <where>
+            <if test="true">
+                and del_flag=0
+            </if>
+            <if test="adcd !=null and adcd!='' and adcd.length>=6">
+                and adcd like CONCAT(SUBSTR(#{adcd},1,6),'%')
+            </if>
+            <if test="basin!=null and basin!=''">
+                <choose>
+                    <when test="basin!='其他'">
+                        and bas like concat('%',#{basin},'%')
+                    </when>
+                    <otherwise>
+                        and bas !='飞云江' and bas !='鳌江' and bas !='瓯江' and bas !='椒江'
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="stType !=null and stType !=''">
+                and project_type = #{stType}
+            </if>
+        </where>
+        group by project_type
+        ORDER BY FIELD( project_type, '水库', '山塘', '河道','堤防', '海塘', '水电站', '泵站', '水闸', '闸站', '灌区', '农村供水工程', '其他' )
+    </select>
+
+
+    <select id="attStBaseCountByCondition" resultType="com.ygkj.project.vo.response.StCountResVo">
+        select count(bas) as countNum,
+        CASE bas WHEN '瓯江' THEN '瓯江'
+                 WHEN '飞云江' THEN '飞云江'
+                 WHEN '鳌江' THEN '鳌江'
+                 ELSE '其他' END  as countKey
+        from att_st_base
+        <where>
+            <if test="stType != null and stType != ''">
+                and st_type = #{stType}
+            </if><if test="isWrp != null">
+            <choose>
+                <when test="isWrp">
+                    and wrp_waga = 1
+                </when>
+                <otherwise>
+                    and wrp_waga = 0
+                </otherwise>
+            </choose>
+        </if>
+            and del_flag = 0
+        </where>
+        group by countKey ORDER BY FIELD(bas,'瓯江','飞云江','鳌江','其他') DESC
+    </select>
+
+
+    <select id="attStBaseCountByAreaCode" resultType="com.ygkj.project.vo.response.StCountResVo">
+        select aab.adnm as countKey,count(1) as countNum
+        from att_st_base asb inner join att_adcd_base aab on asb.area_code = aab.adcd
+        <where>
+            <if test="stType != null and stType != ''">
+                and asb.st_type = #{stType}
+            </if>
+            <if test="isWrp != null">
+                <choose>
+                    <when test="isWrp">
+                        and asb.wrp_waga = 1
+                    </when>
+                    <otherwise>
+                        and asb.wrp_waga = 0
+                    </otherwise>
+                </choose>
+            </if>
+            and asb.del_flag = 0 and aab.del_flag = 0
+        </where>
+        group by asb.area_code
+    </select>
+
+
+    <select id="attStBaseCountByStType" resultType="com.ygkj.project.vo.response.StCountResVo">
+        select count(st_type) as countNum,
+               CASE st_type WHEN 'RR' THEN '水库水位站'
+                        WHEN 'PP' THEN '雨量站'
+                        WHEN 'DD' THEN '闸坝水位站'
+                        WHEN 'TT' THEN '潮位站'
+                        WHEN 'ZG' THEN '地下水位站'
+                        WHEN 'ZQ' THEN '流量站'
+                        WHEN 'ZZ' THEN '河道'
+                        ELSE '其他' END  as countKey
+        from att_st_base
+        <where>
+            <if test="stType != null and stType !=''">
+                and st_type = #{stType}
+            </if>
+            and del_flag = 0
+        </where>
+        group by countKey
+    </select>
+
+
+    <select id="selectProjCode" resultType="java.lang.String">
+        select proj_code from att_st_base
+        <where>
+            <if test="stType != null and stType !=''">
+                and st_type = #{stType}
+            </if>
+            and proj_code is not null and proj_code != ''
+        </where>
+    </select>
+
+
+    <select id="attStBaseCountByProjType" resultType="com.ygkj.project.vo.response.StCountResVo">
+        select project_type as countKey ,count(1) as countNum from att_real_all_project_base
+        where project_code in
+        <foreach collection="projCodes" item="projCode" separator="," open="(" close=")">
+            #{projCode}
+        </foreach>
+        group by project_type
+    </select>
+
+
+    <select id="countProjectTypeByAdcd" resultType="com.ygkj.project.vo.response.ChartResVo">
+        select count(1) AS `value`, CONCAT(SUBSTR(adcd,1,6),'000000') AS `KEY`
+        from att_real_all_project_base
+        <where>
+            <if test="stType !=null and stType !=''">
+                and project_type = #{stType}
+            </if>
+            and del_flag=0 AND adcd IS NOT NULL
+        </where>
+            GROUP BY `KEY`
+    </select>
+
+
+    <select id="countProjectTypeByBasin" resultType="com.ygkj.project.vo.response.ChartResVo">
+        SELECT count( 1 ) AS `value`,CASE bas
+            WHEN '飞云江' THEN '飞云江'
+            WHEN '鳌江' THEN '鳌江'
+            WHEN '瓯江' THEN '瓯江'
+            ELSE '其他' END AS `KEY`
+            FROM att_real_all_project_base
+        <where>
+            <if test="stType !=null and stType !=''">
+                and project_type = #{stType}
+            </if>
+            and del_flag = 0
+        </where>
+            GROUP BY `KEY` ORDER BY FIELD(bas,'瓯江','飞云江','鳌江','其他') DESC
+    </select>
+
+    <select id="candidateRecords" resultType="com.ygkj.project.vo.response.ProjectResVo">
+        SELECT * FROM att_real_all_project_base
+        WHERE project_code IN
+        <foreach collection="codes" open="(" item="item" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND DEL_FLAG = 0
+    </select>
+
+    <!-- 查询病险工程 -->
+    <select id="selectDilapProjByCondition" resultType="com.ygkj.project.vo.response.DilapProjResVo">
+        select * from att_all_dilap_proj
+        <where>
+            <if test="projName!=null and projName!=''">
+               and project_name = #{projName}
+            </if>
+            <if test="projType!=null and projType!=''">
+               and project_type = #{projType}
+            </if>
+            <if test="adcd!=null and adcd!=''">
+               and adcd like CONCAT(SUBSTR(#{adcd},1,6),'%')
+            </if>
+            <if test="bas!=null and bas!=''">
+               and bas like CONCAT('%',#{bas},'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询风险工程 -->
+    <select id="selectProjRiskByCondition" resultType="com.ygkj.project.vo.response.ProjRiskResVo">
+        select * from project_risk
+        <where>
+            <if test="projName!=null and projName!=''">
+               and project_name like CONCAT('%',#{projName},'%')
+            </if>
+            <if test="projType!=null and projType!=''">
+               and project_type = #{projType}
+            </if>
+            <if test="recType!=null and recType!=''">
+               and rec_type = #{recType}
+            </if>
+            <if test="riskType!=null and riskType!=''">
+               and risk_type = #{riskType}
+            </if>
+            <if test="areaCode!=null and areaCode!=''">
+               and area_code like CONCAT(SUBSTR(#{areaCode},1,6),'%')
+            </if>
+            <if test="discoverChannel!=null and discoverChannel!=''">
+                and discover_channel = #{discoverChannel}
+            </if>
+            <if test="rectifyStatus!=null and rectifyStatus!=''">
+                and rectify_status = #{rectifyStatus}
+            </if>
+            <if test="startDate!=null and endDate!=null">
+                and discover_time between #{startDate} and #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="reservoirProjectList" resultType="com.ygkj.project.vo.response.ReservoirProjectResp">
+        SELECT arb.res_name,arb.res_name projectName,aab.city_adnm,aab.country_adnm,arb.eng_scal,arb.tot_cap,arb.dead_cap,arb.low_left_long,arb.low_left_lat,arb.management_level
+        FROM `lc_basic_db`.`att_res_base` arb
+                 LEFT JOIN att_st_base asb on arb.main_stcd = asb.st_code
+                 LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code
+                 LEFT JOIN att_sixcharge_base asib ON asib.project_code = arb.res_code
+        WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        <if test="resName != null and resName != ''">
+            and arb.res_name like CONCAT('%',#{resName},'%')
+        </if>
+        <if test="engScal != null and engScal != ''">
+            and arb.eng_scal  = #{engScal}
+        </if>
+    </select>
+
+    <select id="reservoirProjectStatic" resultType="com.ygkj.project.vo.response.StatisticsReservoirTypeResp">
+        SELECT COUNT(1) num,arb.eng_scal,
+        case arb.eng_scal when '1' then '大（Ⅰ）型' when '2' then '大（Ⅱ）型' when '3' then '中型' when '4' then '小（Ⅰ）型' else '小（Ⅱ）型' end scalName FROM `att_res_base` arb LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        GROUP BY arb.eng_scal
+    </select>
+
+    <select id="seawallProject" resultType="com.ygkj.project.vo.response.SeawallProjectResp">
+        SELECT arb.seawall_name,arb.seawall_name projectName,aab.city_adnm,aab.country_adnm,arb.seawall_level,arb.seawall_length,arb.management_level,arb.longitude,arb.latitude
+        FROM `att_seawall_base` arb
+        LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code
+        WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        <if test="resName != null and resName != ''">
+            and arb.seawall_name like CONCAT('%',#{resName},'%')
+        </if>
+        <if test="engScal != null and engScal != ''">
+            and arb.seawall_level  = #{engScal}
+        </if>
+    </select>
+
+    <select id="seawallProjectStatic" resultType="com.ygkj.project.vo.response.StatisticsSeawallTypeResp">
+        SELECT COUNT(1) num,arb.seawall_level engGrad,case arb.seawall_level when '1' then '大（Ⅰ）型' when '2' then '大（Ⅱ）型' when '3' then '中型' when '4' then '小（Ⅰ）型' else '小（Ⅱ）型' end scalName FROM `att_seawall_base` arb
+        LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        GROUP BY arb.seawall_level
+    </select>
+
+    <select id="dikeProject" resultType="com.ygkj.project.vo.response.DikeProjectResp">
+        SELECT aab.city_adnm,aab.country_adnm,arb.*
+        FROM `att_dike_base` arb
+        LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code
+        WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        <if test="dikeName != null and dikeName != ''">
+            and arb.dike_name like CONCAT('%',#{dikeName},'%')
+        </if>
+        <if test="dikeDrad != null and dikeDrad != ''">
+            and arb.dike_grad  = #{dikeDrad}
+        </if>
+    </select>
+
+    <select id="dikeProjectStatic" resultType="com.ygkj.project.vo.response.StatisticsDikeTypeResp">
+        SELECT COUNT(1) num,arb.dike_grad engGrad,case arb.dike_grad when '1' then '1级' when '2' then '2级' when '3' then '3级' when '4' then '4级' else '5级' end scalName FROM `att_dike_base` arb LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        GROUP BY arb.dike_grad
+    </select>
+
+    <select id="wagaProject" resultType="com.ygkj.project.vo.response.WagaProjectResp">
+        SELECT arb.waga_name,arb.waga_name projectName,aab.city_adnm,aab.country_adnm,arb.eng_scal,arb.bas,arb.des_lock_disc,
+               arb.management_level managementLevel,arb.start_long longitude,arb.start_lat latitude
+        FROM `att_waga_base` arb
+        LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code
+        WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        <if test="wagaName != null and wagaName != ''">
+            and arb.waga_name like CONCAT('%',#{wagaName},'%')
+        </if>
+        <if test="engGrad != null and engGrad != ''">
+            and arb.eng_scal  = #{engGrad}
+        </if>
+    </select>
+
+    <select id="wagaProjectStatic" resultType="com.ygkj.project.vo.response.StatisticsWagaTypeResp">
+        SELECT COUNT(1) num,arb.eng_scal,case arb.eng_scal when '1' then '大（Ⅰ）型' when '2' then '大（Ⅱ）型' when '3'
+        then '中型' when '4' then '小（Ⅰ）型' else '小（Ⅱ）型' end scalName FROM `att_waga_base` arb
+        LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0' AND arb.eng_scal != '' AND arb.eng_scal IN (1,2,3,4,5)
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        GROUP BY arb.eng_scal
+    </select>
+
+    <select id="irrProject" resultType="com.ygkj.project.vo.response.IrrProjectResp">
+        SELECT arb.irr_name,arb.irr_name projectName,aab.city_adnm,aab.country_adnm,arb.management_level,
+        arb.des_irr_area,arb.eff_irr_area,arb.ben_ran,arb.maj_waso_type,arb.low_left_long longitude,arb.low_left_lat latitude
+        FROM `att_irr_base` arb
+        LEFT JOIN att_adcd_base aab ON aab.adcd = arb.adcd
+        WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        <if test="irrName != null and irrName != ''">
+            and arb.irr_name like CONCAT('%',#{irrName},'%')
+        </if>
+        <if test="engscal != null and engscal != ''">
+            and arb.eng_scal  = #{engscal}
+        </if>
+    </select>
+
+    <select id="irrProjectStatic" resultType="com.ygkj.project.vo.response.StatisticsIrrTypeResp">
+        SELECT COUNT(1) num,arb.eng_scal,case arb.eng_scal when '1' then '大（Ⅰ）型' when '2' then '大（Ⅱ）型' when '3'
+        then '中型' when '4' then '小（Ⅰ）型' else '小（Ⅱ）型' end scalName FROM `att_irr_base` arb
+        LEFT JOIN att_adcd_base aab ON aab.adcd = arb.adcd WHERE arb.`del_flag` = '0' AND arb.eng_scal IN (1,2,3,4,5)
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        GROUP BY arb.eng_scal
+    </select>
+
+    <select id="gateProject" resultType="com.ygkj.project.vo.response.GateProjectResp">
+        SELECT arb.gate_name,arb.gate_name projectName,arb.longitude,arb.latitude,aab.city_adnm,aab.country_adnm,arb.eng_scal,
+        arb.single_ins_flow,arb.single_ins_pow,arb.management_level managementLevel
+        FROM `att_gate_base` arb
+        LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code
+        WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        <if test="gateName != null and gateName != ''">
+            and arb.gate_name like CONCAT('%',#{gateName},'%')
+        </if>
+        <if test="engScal != null and engScal != ''">
+            and arb.eng_scal  = #{engscal}
+        </if>
+    </select>
+
+    <select id="gateProjectStatic" resultType="com.ygkj.project.vo.response.StatisticsGateTypeResp">
+        SELECT COUNT(1) num,arb.eng_scal,case arb.eng_scal when '1' then '大（Ⅰ）型' when '2' then '大（Ⅱ）型' when '3' then '中型' when '4' then '小（Ⅰ）型' else '小（Ⅱ）型' end scalName FROM `att_gate_base` arb LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        GROUP BY arb.eng_scal
+    </select>
+
+    <select id="pustProject" resultType="com.ygkj.project.vo.response.PustProjectResp">
+        SELECT aab.city_adnm,aab.country_adnm,arb.*
+        FROM `att_pust_base` arb
+        LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code
+        WHERE arb.`del_flag` = '0'
+        <if test="pustCode != null and pustCode != ''">
+            and arb.pust_code = #{pustCode}
+        </if>
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        <if test="pustName != null and pustName != ''">
+            and arb.pust_name like CONCAT('%',#{pustName},'%')
+        </if>
+        <if test="engScal != null and engScal != ''">
+            and arb.eng_scal  = #{engScal}
+        </if>
+    </select>
+
+    <select id="pustProjectStatic" resultType="com.ygkj.project.vo.response.StatisticsPustTypeResp">
+        SELECT COUNT(1) num,arb.eng_scal,case arb.eng_scal when '1' then '大（Ⅰ）型' when '2' then '大（Ⅱ）型'
+            when '3' then '中型' when '4' then '小（Ⅰ）型' else '小（Ⅱ）型' end scalName FROM `att_pust_base` arb
+                LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0'
+        and arb.eng_scal is not null
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        GROUP BY arb.eng_scal
+    </select>
+
+    <select id="reservoirProjectAreaStatic" resultType="com.ygkj.project.vo.response.ProjectAreaStatic">
+        SELECT COUNT(1) num,aab.adcd areaCode,aab.adnm areaName FROM `att_res_base` arb LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            AND (aab.parent_adcd = #{areaCode} OR aab.country_adcd = #{areaCode} OR aab.city_adcd = #{areaCode} OR aab.town_adcd = #{areaCode})
+        </if>
+        GROUP BY aab.adcd
+    </select>
+
+    <select id="seawallProjectAreaStatic" resultType="com.ygkj.project.vo.response.ProjectAreaStatic">
+        SELECT COUNT(1) num,aab.adcd areaCode,aab.adnm areaName FROM `att_seawall_base` arb LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            AND (aab.parent_adcd = #{areaCode} OR aab.country_adcd = #{areaCode} OR aab.city_adcd = #{areaCode} OR aab.town_adcd = #{areaCode})
+        </if>
+        GROUP BY aab.adcd
+    </select>
+
+    <select id="dikeProjectAreaStatic" resultType="com.ygkj.project.vo.response.ProjectAreaStatic">
+        SELECT COUNT(1) num,aab.adcd areaCode,aab.adnm areaName FROM `att_dike_base` arb LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            AND (aab.parent_adcd = #{areaCode} OR aab.country_adcd = #{areaCode} OR aab.city_adcd = #{areaCode} OR aab.town_adcd = #{areaCode})
+        </if>
+        GROUP BY aab.adcd
+    </select>
+
+    <select id="wagaProjectAreaStatic" resultType="com.ygkj.project.vo.response.ProjectAreaStatic">
+        SELECT COUNT(1) num,aab.adcd areaCode,aab.adnm areaName FROM `att_waga_base` arb LEFT JOIN att_adcd_base aab
+            ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0' AND arb.area_code != ''
+        <if test="areaCode != null and areaCode != ''">
+            AND (aab.parent_adcd = #{areaCode} OR aab.country_adcd = #{areaCode} OR aab.city_adcd = #{areaCode} OR aab.town_adcd = #{areaCode})
+        </if>
+        GROUP BY aab.adcd
+    </select>
+
+    <select id="irrProjectAreaStatic" resultType="com.ygkj.project.vo.response.ProjectAreaStatic">
+        SELECT COUNT(1) num,aab.adcd areaCode,aab.adnm areaName FROM `att_irr_base` arb
+            LEFT JOIN att_adcd_base aab ON aab.adcd = arb.adcd WHERE arb.`del_flag` = '0' AND arb.adcd != ''
+        <if test="areaCode != null and areaCode != ''">
+            AND (aab.parent_adcd = #{areaCode} OR aab.country_adcd = #{areaCode} OR aab.city_adcd = #{areaCode} OR aab.town_adcd = #{areaCode})
+        </if>
+        GROUP BY aab.adcd
+    </select>
+
+    <select id="gateProjectAreaStatic" resultType="com.ygkj.project.vo.response.ProjectAreaStatic">
+        SELECT COUNT(1) num,aab.adcd areaCode,aab.adnm areaName FROM `att_gate_base` arb
+            LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0' AND arb.area_code != ''
+        <if test="areaCode != null and areaCode != ''">
+            AND (aab.parent_adcd = #{areaCode} OR aab.country_adcd = #{areaCode} OR aab.city_adcd = #{areaCode} OR aab.town_adcd = #{areaCode})
+        </if>
+        GROUP BY aab.adcd
+    </select>
+
+    <select id="pustProjectAreaStatic" resultType="com.ygkj.project.vo.response.ProjectAreaStatic">
+        SELECT COUNT(1) num,aab.adcd areaCode,aab.adnm areaName FROM `att_pust_base` arb
+            LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code WHERE arb.`del_flag` = '0' AND arb.area_code != ''
+        <if test="areaCode != null and areaCode != ''">
+            AND (aab.parent_adcd = #{areaCode} OR aab.country_adcd = #{areaCode} OR aab.city_adcd = #{areaCode} OR aab.town_adcd = #{areaCode})
+        </if>
+        GROUP BY aab.adcd
+    </select>
+
+    <select id="listTenProject" resultType="com.ygkj.project.model.AttAllRealProjectBase">
+        SELECT * FROM att_ten_project
+        <where>
+            <if test="true">
+                AND del_flag=0
+            </if>
+            <if test="projectCode != null and projectCode != ''">
+                AND project_code =#{projectCode}
+            </if>
+            <if test="projectType != null and projectType != ''">
+                AND project_type =#{projectType}
+            </if>
+            <if test="bas != null and bas != ''">
+                AND bas =#{bas}
+            </if>
+            <if test="adcd != null and adcd != ''">
+                AND adcd =#{adcd}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                AND project_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="engGrad != null">
+                AND eng_grad = #{engGrad}
+            </if>
+            <if test="engScal != null">
+                AND eng_scal = #{engScal}
+            </if>
+        </where>
+    </select>
+
+    <select id="listAllRealProject" resultType="com.ygkj.project.model.AttAllRealProjectBase">
+        SELECT * FROM att_real_all_project_base
+        <where>
+            <if test="true">
+                AND del_flag=0
+            </if>
+            <if test="projectCode != null and projectCode != ''">
+                AND  find_in_set(project_code,#{projectCode})
+            </if>
+            <if test="projectType != null and projectType != ''">
+                AND project_type =#{projectType}
+            </if>
+            <if test="bas != null and bas != ''">
+                AND bas =#{bas}
+            </if>
+            <if test="adcd != null and adcd != ''">
+                AND adcd =#{adcd}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                AND project_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="engGrad != null">
+                AND eng_grad = #{engGrad}
+            </if>
+            <if test="engScal != null">
+                AND eng_scal = #{engScal}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="countReservoirNumByDilapProj" resultType="java.lang.Integer">
+        SELECT count(1) FROM att_res_base
+        <where>
+            <if test="dilapProj != null">
+                <choose>
+                    <when test="dilapProj">
+                        AND safety_conclusion not like '%一类%' and TRIM(safety_conclusion)!=''
+                    </when>
+                    <otherwise>
+                        AND safety_conclusion like '%一类%'
+                    </otherwise>
+                </choose>
+            </if>
+            and del_flag = 0
+        </where>
+    </select>
+
+    <select id="countMountainPoolNumByDilapProj" resultType="java.lang.Integer">
+        SELECT count(1) FROM att_mnpd_base
+        <where>
+            <if test="dilapProj != null">
+                <choose>
+                    <when test="dilapProj">
+                        AND safety_conclusion not like '%一类%' and TRIM(safety_conclusion)!=''
+                    </when>
+                    <otherwise>
+                        AND safety_conclusion like '%一类%'
+                    </otherwise>
+                </choose>
+            </if>
+            and del_flag = 0
+        </where>
+    </select>
+
+    <select id="countSeawallNumByDilapProj" resultType="java.lang.Integer">
+        SELECT count(1) FROM att_seawall_base
+        <where>
+            <if test="dilapProj != null">
+                <choose>
+                    <when test="dilapProj">
+                        AND safety_conclusion not like '%一类%' and TRIM(safety_conclusion)!=''
+                    </when>
+                    <otherwise>
+                        AND safety_conclusion like '%一类%'
+                    </otherwise>
+                </choose>
+            </if>
+            and del_flag = 0
+        </where>
+    </select>
+
+
+    <select id="countProjectNumByDilapProjAndType" resultType="java.lang.Integer">
+        SELECT count(1) FROM ${tableName}
+        <where>
+            <if test="dilapProj != null">
+                <choose>
+                    <when test="dilapProj">
+                        AND safety_conclusion not like '%一类%' and TRIM(safety_conclusion)!=''
+                    </when>
+                    <otherwise>
+                        AND safety_conclusion like '%一类%'
+                    </otherwise>
+                </choose>
+            </if>
+            and del_flag = 0
+        </where>
+    </select>
+
+    <select id="statisticalProjectDikeNum" resultType="java.lang.Integer">
+        SELECT COUNT(1) num FROM `att_dike_base` tbl where tbl.del_flag = 0
+    </select>
+
+    <select id="statisticalProjectPustNum" resultType="java.lang.Integer">
+        SELECT COUNT(1) num FROM `att_pust_base` tbl where tbl.del_flag = 0
+    </select>
+
+    <select id="statisticalProjectMnpdNum" resultType="java.lang.Integer">
+        SELECT COUNT(1) num FROM `att_mnpd_base` tbl where tbl.del_flag = 0
+    </select>
+
+    <select id="statisticalProjectDikeNumByArea" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT COUNT(1) num,tb2.adnm FROM `att_dike_base` tbl LEFT JOIN att_adcd_base tb2 ON tb2.adcd = tbl.area_code
+        where tbl.del_flag = 0 GROUP BY tbl.area_code
+    </select>
+
+    <select id="statisticalProjectPustNumByArea" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT COUNT(1) num,tb2.adnm FROM `att_pust_base` tbl LEFT JOIN att_adcd_base tb2 ON tb2.adcd = tbl.area_code
+        where tbl.del_flag = 0 GROUP BY tbl.area_code
+    </select>
+
+    <select id="statisticalProjectMnpdNumByArea" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT COUNT(1) num,tb2.adnm FROM `att_mnpd_base` tbl LEFT JOIN att_adcd_base tb2 ON tb2.adcd = tbl.area_code
+        where tbl.del_flag = 0 GROUP BY tbl.area_code
+    </select>
+
+    <select id="selectMnpdGroupByZygn" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT COUNT(1) num,zygn FROM `att_mnpd_base` WHERE zygn IS not null GROUP BY zygn
+    </select>
+
+    <select id="mnpdProject" resultType="com.ygkj.project.vo.response.AttMnpdBaseReqVo">
+        SELECT aab.city_adnm,aab.country_adnm,arb.*
+        FROM `att_mnpd_base` arb
+        LEFT JOIN att_adcd_base aab ON aab.adcd = arb.area_code
+        WHERE arb.`del_flag` = '0'
+        <if test="areaCode != null and areaCode != ''">
+            and aab.adcd = #{areaCode}
+        </if>
+        <if test="mnpdName != null and mnpdName != ''">
+            and arb.mnpd_name like CONCAT('%',#{mnpdName},'%')
+        </if>
+        <if test="mnpdCate != null and mnpdCate != ''">
+            and arb.mnpd_cate  = #{mnpdCate}
+        </if>
+    </select>
+
+    <select id="selectRsvrWatSrc" resultType="com.ygkj.project.vo.response.WatSrcResVo">
+        select a.res_code as code,a.res_name as name,
+                a.low_left_lat as latitude,a.low_left_long as longitude,
+                a.main_stcd,a.dead_lev,a.dead_cap,a.day_wat_supply,a.dry_limit_level,a.ben_lower_level,
+                b.eng_type,b.area_name,b.protect_area,b.target_quality,b.volume_warn
+        from att_res_base as a
+        left join att_rsvr_swhs_base as b on a.res_code = b.res_code
+        <where>
+            <if test="true">
+                and a.del_flag=0
+            </if>
+            <if test="true">
+                and a.is_wat_src=1
+            </if>
+            <if test="watSrcName !=null and watSrcName!=''">
+                and a.res_name like concat('%',#{watSrcName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectBmAccBuildByCondition"  resultType="com.ygkj.project.vo.response.BmAccBuildResVo">
+        select tbl.*,pro.NAME prnm,b.file_url imgFileURL from bm_acc_build tbl
+        left join bm_project pro on tbl.PRCD=pro.PRCD
+        left join sys_file b on tbl.IMG_FILE=b.id
+        <where>
+            <if test="null!=type and ''!=type">
+                and tbl.PRO_TYPE like concat ('%',#{type},'%')
+            </if>
+            <if test="null!=projectName and ''!=projectName">
+                and tbl.PRO_NAME like concat ('%',#{projectName},'%')
+            </if>
+            <if test="null!=code and ''!=code">
+                and tbl.PRCD =#{code}
+            </if>
+        </where>
+    </select>
+</mapper>

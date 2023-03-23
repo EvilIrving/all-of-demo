@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "./mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.SysResMapper">
+
+    <select id="listPage" parameterType="com.ygkj.entity.SysRes" resultType="com.ygkj.entity.SysRes">
+        SELECT * FROM sys_res WHERE DEL_FLAG = 0
+        <if test="sysRes.id!=null and sysRes.id!='' ">
+            AND id = #{sysRes.id}
+        </if>
+        <if test="sysRes.pId!=null and sysRes.pId!='' ">
+            AND P_ID = #{sysRes.pId}
+        </if>
+        <if test="sysRes.resType!=null and sysRes.resType!=''">
+            AND RES_TYPE = #{sysRes.resType}
+        </if>
+        <if test="sysRes.flag!=null and sysRes.flag!='' ">
+            AND FLAG = #{sysRes.flag}
+        </if>
+        ORDER BY SORT ASC
+    </select>
+
+    <select id="getPidSysRes" parameterType="com.ygkj.entity.SysRes" resultType="com.ygkj.entity.SysRes">
+        SELECT * FROM sys_res WHERE DEL_FLAG = 0
+        <if test="sysRes.id!=null and sysRes.id!='' ">
+            AND P_ID = #{sysRes.id}
+        </if>
+        ORDER BY SORT ASC
+    </select>
+</mapper>

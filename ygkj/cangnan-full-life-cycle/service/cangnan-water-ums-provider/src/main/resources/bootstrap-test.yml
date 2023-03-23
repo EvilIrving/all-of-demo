@@ -1,0 +1,126 @@
+spring:
+  redis:
+    timeout: "PT10S"
+    password: "xB239MCfg3321Pq002"
+    lettuce:
+      pool:
+        max-active: "100"
+        min-idle: "1"
+        max-wait: "PT10S"
+        max-idle: "30"
+    database: "15 "
+    port: "20006"
+    host: "112.17.127.75"
+  #    host: 192.168.0.106
+  #    host: 127.0.0.1
+  #    port: 6379
+  datasource:
+    druid:
+      max-pool-prepared-statement-per-connection-size: "20"
+      max-active: "20"
+      validation-query: "SELECT 1 FROM DUAL"
+      driver-class-name: "com.mysql.jdbc.Driver"
+      filters: "stat,wall"
+      url: jdbc:mysql://112.17.127.75:20002/main_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+      test-on-return: "false"
+      initial-size: "5"
+      min-idle: "5"
+      validation-query-timeout: "30000"
+      max-wait: "60000"
+      pool-prepared-statements: "true"
+      test-while-idle: "true"
+      password: SPLAhezHZZmZc2Sd
+      username: wz_plt
+      time-between-eviction-runs-millis: "60000"
+      min-evictable-idle-time-millis: "300000"
+      test-on-borrow: "false"
+    type: "com.alibaba.druid.pool.DruidDataSource"
+  servlet:
+    multipart:
+      max-request-size: "60MB"
+      enabled: "true"
+      max-file-size: "60MB"
+  thymeleaf:
+    cache: "false"
+    prefix: "classpath:/templates/"
+    suffix: ".html"
+    servlet:
+      content-type: "text/html"
+    charset: "UTF-8"
+  main:
+    allow-bean-definition-overriding: "true"
+  application:
+    name: "authentication-system"
+  devtools:
+    restart:
+      poll-interval: "3000ms"
+      quiet-period: "2999ms"
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+#      config:
+#        server-addr: "127.0.0.1:8848"
+jwt:
+  issuer: "yingxue.com"
+  refreshTokenExpireTime: "PT3H"
+  secretKey: "78944878877848fg)"
+  refreshTokenExpireAppTime: "P30D"
+  accessTokenExpireTime: "PT8H"
+sca:
+  file:
+    upload:
+      mode: "qiniu"
+  logging:
+    password: "root"
+    url: "jdbc:mysql://192.168.2.116:3306/logging-system?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai"
+    username: "root"
+    driver: "com.mysql.jdbc.Driver"
+    enabled: "true"
+watermanage:
+  appkey: "82f5607189d941e9baac01b197e11478"
+  appsecret: "99d88e20f18b4fe9"
+  tokenkey: "DC_ACCESS_TOKEN"
+  data_appkey: "7568dedf05264df69c2cf4105c790b4d"
+  data_appsecret: "58eb56d0da52473a"
+  data_tokenkey: "DC_DATA_ACCESS_TOKEN"
+  user:
+    roleid: "11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9"
+server:
+  port: "8099"
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: "300000"
+        read-timeout: "300000"
+logging:
+  level:
+    com:
+      xh:
+        lesson: "debug"
+  file: "${logging.path}/${spring.application.name}.log"
+  path: "logs"
+swagger2:
+  enable: "true"
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: "true"
+    log-impl: "org.apache.ibatis.logging.stdout.StdOutImpl"
+  mapper-locations: "classpath:mapper/*.xml"
+
+#xxl:
+#  job:
+#    accessToken:
+#    admin:
+#      addresses: http://192.168.2.133:8180/xxl-job-admin
+#    executor:
+#      address:
+#      appname: ums-job
+#      ip:
+#      port: 8098
+#      logpath: xxjoblog
+#      logretentiondays: 30

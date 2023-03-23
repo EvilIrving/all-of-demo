@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.BsDrillAffairMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.BsDrillAffair">
+        <result column="drill_affair_id" property="drillAffairId"/>
+        <result column="drill_case_id" property="drillCaseId"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="drill_state" property="drillState"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        drill_affair_id,
+        drill_case_id,
+        begin_time,
+        drill_state
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.big.screen.model.BsDrillAffair">
+        INSERT INTO bs_drill_affair
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != drillAffairId'>
+                drill_affair_id,
+            </if>
+            <if test='null != drillCaseId'>
+                drill_case_id,
+            </if>
+            <if test='null != beginTime'>
+                begin_time,
+            </if>
+            <if test='null != drillState'>
+                drill_state
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != drillAffairId'>
+                #{drillAffairId},
+            </if>
+            <if test='null != drillCaseId'>
+                #{drillCaseId},
+            </if>
+            <if test='null != beginTime'>
+                #{beginTime},
+            </if>
+            <if test='null != drillState'>
+                #{drillState}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM bs_drill_affair
+        WHERE drill_affair_id = #{drillAffairId}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.big.screen.model.BsDrillAffair">
+        UPDATE bs_drill_affair
+        <set>
+            <if test='null != drillAffairId'>drill_affair_id = #{drillAffairId},</if>
+            <if test='null != drillCaseId'>drill_case_id = #{drillCaseId},</if>
+            <if test='null != beginTime'>begin_time = #{beginTime},</if>
+            <if test='null != drillState'>drill_state = #{drillState}</if>
+        </set>
+        WHERE drill_affair_id = #{drillAffairId}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_affair
+        WHERE drill_affair_id = #{drillAffairId}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_affair
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM bs_drill_affair
+    </select>
+
+</mapper>

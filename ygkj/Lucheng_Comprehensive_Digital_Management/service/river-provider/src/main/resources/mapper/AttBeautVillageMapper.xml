@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttBeautVillageMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttBeautVillage">
+        <result column="id" property="id"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="progress" property="progress"/>
+        <result column="project_name" property="projectName"/>
+        <result column="project_status" property="projectStatus"/>
+        <result column="section_name" property="sectionName"/>
+        <result column="start_location" property="startLocation"/>
+        <result column="end_location" property="endLocation"/>
+        <result column="project_overview" property="projectOverview"/>
+        <result column="plan_investment" property="planInvestment"/>
+        <result column="complete_investment" property="completeInvestment"/>
+        <result column="investment_proportion" property="investmentProportion"/>
+        <result column="overall_progress" property="overallProgress"/>
+        <result column="task_status" property="taskStatus"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        city,
+        county,
+        progress,
+        project_name,
+        project_status,
+        section_name,
+        start_location,
+        end_location,
+        project_overview,
+        plan_investment,
+        complete_investment,
+        investment_proportion,
+        overall_progress,
+        task_status,
+        start_lng,
+        start_lat
+    </sql>
+
+    <select id="loadPage" resultType="com.ygkj.river.vo.response.AttBeautVillageRespVo">
+        SELECT tbl.* FROM `att_beaut_village` tbl where 1=1 and tbl.county != '温州市'
+        <if test='null != id and "" != id'>
+            and tbl.id = #{id}
+        </if>
+        <if test='null != county and "" != county'>
+            and tbl.county = #{county}
+        </if>
+        <if test='null != projectStatus and "" != projectStatus'>
+            and tbl.project_status = #{projectStatus}
+        </if>
+        <if test='null != projectName and "" != projectName'>
+            and tbl.project_name like CONCAT('%',#{projectName},'%')
+        </if>
+    </select>
+
+    <select id="attSmallMediumRiverService" resultType="cn.hutool.json.JSONObject">
+        SELECT tbl.project_status,COUNT(1) num FROM `att_beaut_village` tbl WHERE tbl.county != '温州市' GROUP BY
+        tbl.project_status
+    </select>
+
+
+</mapper>

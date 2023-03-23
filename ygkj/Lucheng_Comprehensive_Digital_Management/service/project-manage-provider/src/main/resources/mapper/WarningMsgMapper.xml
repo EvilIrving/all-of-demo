@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.WarningMsgMapper">
+
+    <select id="getListByCondition" resultType="com.ygkj.project.model.WarningInfo">
+        select wi.*,wm.status as readStatus from warning_info wi
+            left join warning_msg wm on wi.id = wm.warning_id
+        <where>
+            <if test="status != null and status !=''">
+                and wi.status = #{status}
+            </if>
+            <if test="warningrule != null and warningrule != ''">
+                and wi.warningrule = #{warningrule}
+            </if>
+            <if test="ruletype != null and ruletype != ''">
+                and wi.ruletype = #{ruletype}
+            </if>
+            <if test="warningtime!= null">
+                and wi.warningtime between #{startTime} and #{endTime}
+            </if>
+            <if test="phone != null and phone != ''">
+                and wm.phone = #{phone}
+            </if>
+            <if test="readStatus != null and readStatus != ''">
+                and wm.status = #{readStatus}
+            </if>
+            order by wm.status,
+                    warningtime desc
+        </where>
+    </select>
+
+
+    <select id="getTotalAlarmNum" resultType="java.lang.Integer">
+        select count(1) from warning_info wi left join warning_msg wm on wi.id = wm.warning_id
+        where wm.phone = #{phone} and wm.status = 1 and wi.ruleType = 1
+    </select>
+
+    <select id="getTotalRemindNum" resultType="java.lang.Integer">
+        select count(1) from warning_info wi left join warning_msg wm on wi.id = wm.warning_id
+        where wm.phone = #{phone} and wm.status = 1 and wi.ruleType = 2
+    </select>
+
+</mapper>

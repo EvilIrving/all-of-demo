@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.GmAssignMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.GmAssign" >
+        <result column="id" property="id" />
+        <result column="item_name" property="itemName" />
+        <result column="task_request" property="taskRequest" />
+        <result column="plan_finish_times" property="planFinishTimes" />
+        <result column="real_finish_times" property="realFinishTimes" />
+        <result column="exe_dept_id" property="exeDeptId" />
+        <result column="exe_dept_name" property="exeDeptName" />
+        <result column="exe_start_time" property="exeStartTime" />
+        <result column="exe_end_time" property="exeEndTime" />
+        <result column="task_state" property="taskState" />
+        <result column="finish_time" property="finishTime" />
+        <result column="adcd" property="adcd" />
+        <result column="adnm" property="adnm" />
+        <result column="create_time" property="createTime" />
+        <result column="create_id" property="createId" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_id" property="updateId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="dept_id" property="deptId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                item_name,
+                task_request,
+                plan_finish_times,
+                real_finish_times,
+                exe_dept_id,
+                exe_dept_name,
+                exe_start_time,
+                exe_end_time,
+                task_state,
+                finish_time,
+                adcd,
+                adnm,
+                create_time,
+                create_id,
+                update_time,
+                update_id,
+                del_flag,
+                dept_id,
+                file_name,
+                file_url,
+                upload_name
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.GmAssign">
+        INSERT INTO gm_assign
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != itemName'>
+                item_name,
+            </if>
+            <if test ='null != taskRequest'>
+                task_request,
+            </if>
+            <if test ='null != planFinishTimes'>
+                plan_finish_times,
+            </if>
+            <if test ='null != realFinishTimes'>
+                real_finish_times,
+            </if>
+            <if test ='null != exeDeptId'>
+                exe_dept_id,
+            </if>
+            <if test ='null != exeDeptName'>
+                exe_dept_name,
+            </if>
+            <if test ='null != exeStartTime'>
+                exe_start_time,
+            </if>
+            <if test ='null != exeEndTime'>
+                exe_end_time,
+            </if>
+            <if test ='null != taskState'>
+                task_state,
+            </if>
+            <if test ='null != finishTime'>
+                finish_time,
+            </if>
+            <if test ='null != adcd'>
+                adcd,
+            </if>
+            <if test ='null != adnm'>
+                adnm,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != createId'>
+                create_id,
+            </if>
+            <if test ='null != updateTime'>
+                update_time,
+            </if>
+            <if test ='null != updateId'>
+                update_id,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != deptId'>
+                dept_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != itemName'>
+                #{itemName},
+            </if>
+            <if test ='null != taskRequest'>
+                #{taskRequest},
+            </if>
+            <if test ='null != planFinishTimes'>
+                #{planFinishTimes},
+            </if>
+            <if test ='null != realFinishTimes'>
+                #{realFinishTimes},
+            </if>
+            <if test ='null != exeDeptId'>
+                #{exeDeptId},
+            </if>
+            <if test ='null != exeDeptName'>
+                #{exeDeptName},
+            </if>
+            <if test ='null != exeStartTime'>
+                #{exeStartTime},
+            </if>
+            <if test ='null != exeEndTime'>
+                #{exeEndTime},
+            </if>
+            <if test ='null != taskState'>
+                #{taskState},
+            </if>
+            <if test ='null != finishTime'>
+                #{finishTime},
+            </if>
+            <if test ='null != adcd'>
+                #{adcd},
+            </if>
+            <if test ='null != adnm'>
+                #{adnm},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != createId'>
+                #{createId},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test ='null != updateId'>
+                #{updateId},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != deptId'>
+                #{deptId}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM gm_assign
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.GmAssign">
+        UPDATE gm_assign
+        <set>
+            <if test ='null != itemName'>item_name = #{itemName},</if>
+            <if test ='null != taskRequest'>task_request = #{taskRequest},</if>
+            <if test ='null != planFinishTimes'>plan_finish_times = #{planFinishTimes},</if>
+            <if test ='null != realFinishTimes'>real_finish_times = #{realFinishTimes},</if>
+            <if test ='null != exeDeptId'>exe_dept_id = #{exeDeptId},</if>
+            <if test ='null != exeDeptName'>exe_dept_name = #{exeDeptName},</if>
+            <if test ='null != exeStartTime'>exe_start_time = #{exeStartTime},</if>
+            <if test ='null != exeEndTime'>exe_end_time = #{exeEndTime},</if>
+            <if test ='null != taskState'>task_state = #{taskState},</if>
+            <if test ='null != finishTime'>finish_time = #{finishTime},</if>
+            <if test ='null != adcd'>adcd = #{adcd},</if>
+            <if test ='null != adnm'>adnm = #{adnm},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != createId'>create_id = #{createId},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime},</if>
+            <if test ='null != updateId'>update_id = #{updateId},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != fileUrl'>file_url = #{fileUrl},</if>
+            <if test ='null != fileName'>file_name = #{fileName},</if>
+            <if test ='null != uploadName'>upload_name = #{uploadName},</if>
+            <if test ='null != deptId'>dept_id = #{deptId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM gm_assign
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM gm_assign
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM gm_assign
+    </select>
+
+    <!--
+
+
+    int insertMany(List<AssignManage> list);
+
+    int insertOne(@Param("assMan")AssignManage assMan);
+
+    -->
+
+
+    <select id="selectByAdcdItemNameExetime" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM gm_assign
+        where del_flag=0
+        <if test="adcd!=null and adcd!=''">
+            and adcd=#{adcd}
+        </if>
+        <if test="itemName!=null and itemName!=''">
+            and item_name like concat('%',concat(#{itemName},'%'))
+        </if>
+        <if test="fileName!=null and fileName!=''">
+            and file_name like concat('%',concat(#{fileName},'%'))
+        </if>
+        <if test="etStart!=null and etEnd!=null">
+            and exe_start_time &gt;=#{etStart} and exe_end_time &lt;=#{etEnd}
+        </if>
+        <if test="taskStateList!=null and taskStateList.size!=0">
+            and task_state in
+            <foreach collection="taskStateList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <update id="virtualDeleteById">
+        update gm_assign set del_flag=1 WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM gm_assign
+        where del_flag=0 and id=#{id}
+    </select>
+
+    <update id="updateTaskStateFromState">
+        update gm_assign
+        set task_state=#{newState}
+        WHERE del_flag=0 AND task_state=#{oldState}
+        <if test="id!=null and id!=''">
+            and id=#{id}
+        </if>
+    </update>
+
+    <insert id="insertMany">
+        INSERT INTO gm_assign
+        (<include refid="Base_Column_List"/>)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.itemName},
+            #{item.taskRequest},
+            #{item.planFinishTimes},
+            #{item.realFinishTimes},
+            #{item.exeDeptId},
+            #{item.exeDeptName},
+            #{item.exeStartTime},
+            #{item.exeEndTime},
+            #{item.taskState},
+            #{item.finishTime},
+            #{item.adcd},
+            #{item.adnm},
+            #{item.createTime},
+            #{item.createId},
+            #{item.updateTime},
+            #{item.updateId},
+            #{item.delFlag},
+            #{item.deptId}),
+            #{item.fileName}),
+            #{item.fileUrl}),
+            #{item.uploadName})
+        </foreach>
+    </insert>
+
+    <insert id="insertOne" >
+        INSERT INTO gm_assign
+        (<include refid="Base_Column_List" />)
+        values
+        (#{assMan.id},
+        #{assMan.itemName},
+        #{assMan.taskRequest},
+        #{assMan.planFinishTimes},
+        #{assMan.realFinishTimes},
+        #{assMan.exeDeptId},
+        #{assMan.exeDeptName},
+        #{assMan.exeStartTime},
+        #{assMan.exeEndTime},
+        #{assMan.taskState},
+        #{assMan.finishTime},
+        #{assMan.adcd},
+        #{assMan.adnm},
+        #{assMan.createTime},
+        #{assMan.createId},
+        #{assMan.updateTime},
+        #{assMan.updateId},
+        #{assMan.delFlag},
+        #{assMan.deptId},
+        #{assMan.fileName},
+        #{assMan.fileUrl},
+        #{assMan.uploadName}
+        )
+    </insert>
+</mapper>

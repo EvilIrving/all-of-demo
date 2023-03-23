@@ -1,0 +1,148 @@
+server:
+  port: 8981
+  undertow:
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+    io-threads: 4
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+    worker-threads: 128
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分
+    buffer-size: 1024
+    # 是否分配的直接内存
+    direct-buffers: true
+
+dubbo:
+  registry:
+    address: spring-cloud://127.0.0.1
+  cloud:
+    subscribed-services: graph
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        #        server-addr: 192.168.0.106:8848
+        server-addr: localhost:8848
+        namespace: public
+  application:
+    name: big-screen
+  #  datasource:
+  #    druid:
+  #      url: jdbc:mysql://192.168.2.116:3306/soft-database?useUnicode=true&characterEncoding=utf-8&useSSL=false
+  ##      url: jdbc:mysql://127.0.0.1:3306/soft-database?useUnicode=true&characterEncoding=utf-8&useSSL=false
+  #      username: root
+  #      password: root
+  #      driver-class-name: com.mysql.jdbc.Driver
+  #      keep-alive: true
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  datasource:
+    dynamic:
+      primary: basic
+      strict: false
+      datasource:
+        basic:
+          url: jdbc:mysql://192.168.2.130:3306/lc_basic_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&useAffectedRows=true
+          username: lc_plt
+          password: GXvJaDjeuyPCZSKO
+          driver-class-name: com.mysql.jdbc.Driver
+        business:
+          url: jdbc:mysql://192.168.2.130:3306/lc_business_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: lc_plt
+          password: GXvJaDjeuyPCZSKO
+          driver-class-name: com.mysql.jdbc.Driver
+        meta:
+          url: jdbc:mysql://192.168.2.130:3306/lc_meta_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: lc_plt
+          password: GXvJaDjeuyPCZSKO
+          driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 20
+      min-idle: 10
+      max-active: 30
+      max-wait: 30000
+      min-evictable-idle-time-millis: 180000
+  #  AbstractType: com.alibaba.druid.pool.DruidDataSource
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+
+
+#rocketmq:
+#  name-server: 192.168.2.188:9876   #rocketMQ服务的地址
+#  producer:
+#    group: soft-data # 生产者组
+
+
+## 日志输出配置
+logging:
+  file:
+    name: ${logging.file.path}/${spring.application.name}.log
+    path: log
+  level:
+    com.ygkj: debug
+
+jwt:
+  secretKey: 78944878877848fg)
+  accessTokenExpireTime: PT2H
+  refreshTokenExpireTime: PT8H
+  refreshTokenExpireAppTime: P30D
+  issuer: yingxue.com
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    call-setters-on-nulls: true
+    map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#dict:
+#  basin: 瓯江,鳌江,飞云江,椒江,其他
+#  scale: 大（Ⅰ）型,大（Ⅱ）型,中型,小（Ⅰ）型,小（Ⅱ）型
+#  grad: 1,2,3,4,5
+
+
+feign:
+  httpclient:
+    enabled: false
+    max-connections: 100 # 最大连接数
+    connection-timeout: 30000 # 连接超时时间
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        # 设置Fegin的超时时间
+        connectTimeout: 10000 # 设置10s 连接超时
+        readTimeout: 300000 # 设置5min 读取超时
+  okhttp:
+    enabled: true #开启OKhttp
+
+
+dict:
+  astrotd: "{'鳌江':'SWZ_01664','洞头':'SWZ_05883','郭公山':'SWZ_06896','灵昆':'SWZ_10303','龙湾':'SWZ_01538','瑞安':'SWZ_01252','温州':'SWZ_06896'}"
+#ribbon:
+#  okhttp:
+#    enabled: true
+#  MaxAutoRetries: 0
+
+
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 300000
+
+
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 0
+  OkToRetryOnAllOperations: false
+
+#工程监测数据查询地址
+gcjc:
+  #安全监测报警数据列表
+  aqjcList: https://dam.ygwjg.com/ygkjdam/dam/project/equipment/warningData/pageQuery
+  #安全监测，测点实时数据列表
+  aqjcData: https://dam.ygwjg.com/ygkjdam/dam/project/measuringPoint/queryByAttr
+  token: eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.DHF-MO7BlALzsMs8NH0KMBNg1_xPACfDl0fZWBu1fL6difgGAq7Lk1EPT9fS0tHbmL72bHsYNxd2YI7yvm7ibDeJUUC3wi57k_93CwI-yNOCN2FxNzJKEjU3WFSsYexB7fopkzRTWnW3DrIUR4_Y9bweOtM4AP2Xg32DPIDb7R8.xg_Y5QSoNeTMHVrO.2vW-SAfGImqZC9WCIgnT6igPaOtMh-Ct1uCKYPxqLHyzfu4aGKA1KBh4TfeZ.CzaLmzLWqzD31GeAWs6qVg
+qrcode:
+  mobile:
+    seawall: http://192.168.2.212:8080/lucheng-mobile/homePage?seawallCode=

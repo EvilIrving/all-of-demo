@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.AttendanceMapper">
+
+
+    <insert id="batchReplacePersonnel" parameterType="com.ygkj.lcsyn.model.AttendancePersonnelBase">
+        REPLACE INTO attendance_personnel_base
+        (id,
+        cname,
+        `name`,
+        department,
+        department_id,
+        phone,
+        picture_path,
+        job_number,
+        post,
+        sex,
+        tenant_id,
+        update_time)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.cname}, #{item.name},#{item.department},
+            #{item.departmentId},#{item.phone},#{item.picturePath},#{item.jobNumber},
+            #{item.post},#{item.sex}, #{item.tenantId},#{item.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="batchReplaceDatas" parameterType="com.ygkj.lcsyn.model.AttendanceDataBase">
+        REPLACE INTO attendance_data_base
+        (id,
+        tenant_id,
+        create_time,
+        create_user,
+        `name`,
+        department_name,
+        job_number,
+        corporation_name,
+        cpu_id,
+        device_name,
+        temperature,
+        checking_type,
+        checking_desc,
+        attendance_time)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.tenantId}, #{item.createTime},#{item.createUser},#{item.name},#{item.departmentName},
+            #{item.jobNumber},#{item.corporationName},#{item.cpuId},
+            #{item.deviceName},#{item.temperature},#{item.checkingType},
+            #{item.checkingDesc},#{item.attendanceTime})
+        </foreach>
+    </insert>
+</mapper>

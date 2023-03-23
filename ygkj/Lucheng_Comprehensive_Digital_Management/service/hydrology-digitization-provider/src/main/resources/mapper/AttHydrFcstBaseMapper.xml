@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.AttHydrFcstBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.AttHydrFcstBase" >
+        <result column="id" property="id" />
+        <result column="st_code" property="stCode" />
+        <result column="st_name" property="stName" />
+        <result column="st_type" property="stType" />
+        <result column="release_time" property="releaseTime" />
+        <result column="peak_level" property="peakLevel" />
+        <result column="peak_level_time" property="peakLevelTime" />
+        <result column="peak_flow" property="peakFlow" />
+        <result column="peak_flow_time" property="peakFlowTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+                st_code,
+                st_name,
+                st_type,
+                release_time,
+                peak_level,
+                peak_level_time,
+                peak_flow,
+                peak_flow_time
+    </sql>
+
+
+
+    <resultMap id="ValBaseResultMap" type="com.ygkj.digitization.model.AttHydrFcstValBase" >
+        <result column="fcst_id" property="fcstId" />
+        <result column="tm" property="tm" />
+        <result column="st_code" property="stCode" />
+        <result column="level" property="level" />
+        <result column="flow" property="flow" />
+    </resultMap>
+
+    <sql id="Val_Base_Column_List">
+        fcst_id,
+                tm,
+                st_code,
+                level,
+                flow
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.digitization.model.AttHydrFcstBase">
+        INSERT INTO att_hydr_fcst_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != stCode'>
+                st_code,
+            </if>
+            <if test ='null != stName'>
+                st_name,
+            </if>
+            <if test ='null != stType'>
+                st_type,
+            </if>
+            <if test ='null != releaseTime'>
+                release_time,
+            </if>
+            <if test ='null != peakLevel'>
+                peak_level,
+            </if>
+            <if test ='null != peakLevelTime'>
+                peak_level_time,
+            </if>
+            <if test ='null != peakFlow'>
+                peak_flow,
+            </if>
+            <if test ='null != peakFlowTime'>
+                peak_flow_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != stCode'>
+                #{stCode},
+            </if>
+            <if test ='null != stName'>
+                #{stName},
+            </if>
+            <if test ='null != stType'>
+                #{stType},
+            </if>
+            <if test ='null != releaseTime'>
+                #{releaseTime},
+            </if>
+            <if test ='null != peakLevel'>
+                #{peakLevel},
+            </if>
+            <if test ='null != peakLevelTime'>
+                #{peakLevelTime},
+            </if>
+            <if test ='null != peakFlow'>
+                #{peakFlow},
+            </if>
+            <if test ='null != peakFlowTime'>
+                #{peakFlowTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM att_hydr_fcst_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.AttHydrFcstBase">
+        UPDATE att_hydr_fcst_base
+        <set>
+            <if test ='null != stCode'>st_code = #{stCode},</if>
+            <if test ='null != stName'>st_name = #{stName},</if>
+            <if test ='null != stType'>st_type = #{stType},</if>
+            <if test ='null != releaseTime'>release_time = #{releaseTime},</if>
+            <if test ='null != peakLevel'>peak_level = #{peakLevel},</if>
+            <if test ='null != peakLevelTime'>peak_level_time = #{peakLevelTime},</if>
+            <if test ='null != peakFlow'>peak_flow = #{peakFlow},</if>
+            <if test ='null != peakFlowTime'>peak_flow_time = #{peakFlowTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_hydr_fcst_base
+        WHERE id = #{id}
+    </select>
+
+    <insert id="replaceVal" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.AttHydrFcstValBase">
+        REPLACE INTO att_hydr_fcst_val_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != fcstId'>
+                fcst_id,
+            </if>
+            <if test ='null != tm'>
+                tm,
+            </if>
+            <if test ='null != stCode'>
+                st_code,
+            </if>
+            <if test ='null != level'>
+                level,
+            </if>
+            <if test ='null != flow'>
+                flow
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != fcstId'>
+                #{fcstId},
+            </if>
+            <if test ='null != tm'>
+                #{tm},
+            </if>
+            <if test ='null != stCode'>
+                #{stCode},
+            </if>
+            <if test ='null != level'>
+                #{level},
+            </if>
+            <if test ='null != flow'>
+                #{flow}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateVal" parameterType="com.ygkj.digitization.model.AttHydrFcstValBase">
+        UPDATE att_hydr_fcst_val_base
+        <set>
+            <if test ='null != fcstId'>fcst_id = #{fcstId},</if>
+            <if test ='null != tm'>tm = #{tm},</if>
+            <if test ='null != stCode'>st_code = #{stCode},</if>
+            <if test ='null != level'>level = #{level},</if>
+            <if test ='null != flow'>flow = #{flow}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteValByByFcstId">
+        delete from att_hydr_fcst_val_base
+        <where>
+            <if test="fcstId!=null and fcstId!=''">
+                and fcst_id=#{fcstId}
+            </if>
+            <if test="tmList!=null and tmList.size!=0">
+                and tm in
+                <foreach collection="tmList" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <select id="selectFcstByCondition" resultType="com.ygkj.digitization.vo.response.HydrFcstResVo">
+        select <include refid="Base_Column_List"/>
+        from att_hydr_fcst_base
+        <where>
+            <if test="id!=null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="stName!=null and stName!=''">
+                and st_name like concat('%',#{stName},'%')
+            </if>
+            <if test="stCode!=null and stCode!=''">
+                and st_code=#{stCode}
+            </if>
+            <if test="stType!=null and stType!=''">
+                and st_type=#{stType}
+            </if>
+            <if test="releaseStartTm!=null and releaseEndTm!=null">
+                and release_time between #{releaseStartTm} and #{releaseEndTm}
+            </if>
+        </where>
+    </select>
+    <select id="selectNewestFcst" resultType="com.ygkj.digitization.vo.response.HydrFcstResVo">
+        select a.* from (
+        select *
+        from att_hydr_fcst_base
+        <where>
+            <if test="true">
+                and release_time between DATE_ADD(CURDATE(),INTERVAL -5 DAY) and DATE_ADD(CURDATE(),INTERVAL 1 DAY)
+            </if>
+        </where>
+        having 1 order by release_time desc
+        ) a
+        group by a.st_code
+    </select>
+
+</mapper>

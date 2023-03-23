@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.visualization.mapper.WindFarmMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.visualization.model.WindFarm" >
+        <result column="id" property="id" />
+        <result column="predict_time" property="predictTime" />
+        <result column="data_json" property="dataJson" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                predict_time,
+                data_json
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.visualization.model.WindFarm">
+        INSERT INTO wind_farm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != predictTime'>
+                predict_time,
+            </if>
+            <if test ='null != dataJson'>
+                data_json
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != predictTime'>
+                #{predictTime},
+            </if>
+            <if test ='null != dataJson'>
+                #{dataJson}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM wind_farm
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.visualization.model.WindFarm">
+        UPDATE wind_farm
+        <set>
+            <if test ='null != predictTime'>predict_time = #{predictTime},</if>
+            <if test ='null != dataJson'>data_json = #{dataJson}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM wind_farm
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM wind_farm
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM wind_farm
+    </select>
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.visualization.model.WindFarm">
+        INSERT INTO wind_farm (predict_time,data_json)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.predictTime},#{item.dataJson})
+        </foreach>
+    </insert>
+
+    <select id="selectTimes" resultType="java.lang.String">
+        SELECT DISTINCT(predict_time) FROM wind_farm
+    </select>
+
+    <select id="selectWithoutDetail" resultType="java.util.Map">
+        SELECT id,predict_time FROM wind_farm WHERE predict_time >= NOW()
+    </select>
+
+</mapper>

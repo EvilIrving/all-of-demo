@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.AttBasBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.gragh.model.AttBasBase">
+        <result column="bas_code" property="basCode"/>
+        <result column="bas_name" property="basName"/>
+        <result column="low_left_long" property="lowLeftLong"/>
+        <result column="low_left_lat" property="lowLeftLat"/>
+        <result column="up_right_long" property="upRightLong"/>
+        <result column="up_right_lat" property="upRightLat"/>
+        <result column="cr_over_type" property="crOverType"/>
+        <result column="bas_ad_name" property="basAdName"/>
+        <result column="bas_grad" property="basGrad"/>
+        <result column="bas_area" property="basArea"/>
+        <result column="mea_ann_prec" property="meaAnnPrec"/>
+        <result column="mea_ann_dept" property="meaAnnDept"/>
+        <result column="mea_ann_ruof" property="meaAnnRuof"/>
+        <result column="bas_ovw" property="basOvw"/>
+        <result column="mstr_len" property="mstrLen"/>
+        <result column="note" property="note"/>
+        <result column="eff_date" property="effDate"/>
+        <result column="expr_date" property="exprDate"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        bas_code,
+        bas_name,
+        low_left_long,
+        low_left_lat,
+        up_right_long,
+        up_right_lat,
+        cr_over_type,
+        bas_ad_name,
+        bas_grad,
+        bas_area,
+        mea_ann_prec,
+        mea_ann_dept,
+        mea_ann_ruof,
+        bas_ovw,
+        mstr_len,
+        note,
+        eff_date,
+        expr_date
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.gragh.model.AttBasBase">
+        INSERT INTO att_bas_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != basCode'>
+                bas_code,
+            </if>
+            <if test='null != basName'>
+                bas_name,
+            </if>
+            <if test='null != lowLeftLong'>
+                low_left_long,
+            </if>
+            <if test='null != lowLeftLat'>
+                low_left_lat,
+            </if>
+            <if test='null != upRightLong'>
+                up_right_long,
+            </if>
+            <if test='null != upRightLat'>
+                up_right_lat,
+            </if>
+            <if test='null != crOverType'>
+                cr_over_type,
+            </if>
+            <if test='null != basAdName'>
+                bas_ad_name,
+            </if>
+            <if test='null != basGrad'>
+                bas_grad,
+            </if>
+            <if test='null != basArea'>
+                bas_area,
+            </if>
+            <if test='null != meaAnnPrec'>
+                mea_ann_prec,
+            </if>
+            <if test='null != meaAnnDept'>
+                mea_ann_dept,
+            </if>
+            <if test='null != meaAnnRuof'>
+                mea_ann_ruof,
+            </if>
+            <if test='null != basOvw'>
+                bas_ovw,
+            </if>
+            <if test='null != mstrLen'>
+                mstr_len,
+            </if>
+            <if test='null != note'>
+                note,
+            </if>
+            <if test='null != effDate'>
+                eff_date,
+            </if>
+            <if test='null != exprDate'>
+                expr_date
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != basCode'>
+                #{basCode},
+            </if>
+            <if test='null != basName'>
+                #{basName},
+            </if>
+            <if test='null != lowLeftLong'>
+                #{lowLeftLong},
+            </if>
+            <if test='null != lowLeftLat'>
+                #{lowLeftLat},
+            </if>
+            <if test='null != upRightLong'>
+                #{upRightLong},
+            </if>
+            <if test='null != upRightLat'>
+                #{upRightLat},
+            </if>
+            <if test='null != crOverType'>
+                #{crOverType},
+            </if>
+            <if test='null != basAdName'>
+                #{basAdName},
+            </if>
+            <if test='null != basGrad'>
+                #{basGrad},
+            </if>
+            <if test='null != basArea'>
+                #{basArea},
+            </if>
+            <if test='null != meaAnnPrec'>
+                #{meaAnnPrec},
+            </if>
+            <if test='null != meaAnnDept'>
+                #{meaAnnDept},
+            </if>
+            <if test='null != meaAnnRuof'>
+                #{meaAnnRuof},
+            </if>
+            <if test='null != basOvw'>
+                #{basOvw},
+            </if>
+            <if test='null != mstrLen'>
+                #{mstrLen},
+            </if>
+            <if test='null != note'>
+                #{note},
+            </if>
+            <if test='null != effDate'>
+                #{effDate},
+            </if>
+            <if test='null != exprDate'>
+                #{exprDate}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_bas_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.gragh.model.AttBasBase">
+        UPDATE att_bas_base
+        <set>
+            <if test='null != basCode'>bas_code = #{basCode},</if>
+            <if test='null != basName'>bas_name = #{basName},</if>
+            <if test='null != lowLeftLong'>low_left_long = #{lowLeftLong},</if>
+            <if test='null != lowLeftLat'>low_left_lat = #{lowLeftLat},</if>
+            <if test='null != upRightLong'>up_right_long = #{upRightLong},</if>
+            <if test='null != upRightLat'>up_right_lat = #{upRightLat},</if>
+            <if test='null != crOverType'>cr_over_type = #{crOverType},</if>
+            <if test='null != basAdName'>bas_ad_name = #{basAdName},</if>
+            <if test='null != basGrad'>bas_grad = #{basGrad},</if>
+            <if test='null != basArea'>bas_area = #{basArea},</if>
+            <if test='null != meaAnnPrec'>mea_ann_prec = #{meaAnnPrec},</if>
+            <if test='null != meaAnnDept'>mea_ann_dept = #{meaAnnDept},</if>
+            <if test='null != meaAnnRuof'>mea_ann_ruof = #{meaAnnRuof},</if>
+            <if test='null != basOvw'>bas_ovw = #{basOvw},</if>
+            <if test='null != mstrLen'>mstr_len = #{mstrLen},</if>
+            <if test='null != note'>note = #{note},</if>
+            <if test='null != effDate'>eff_date = #{effDate},</if>
+            <if test='null != exprDate'>expr_date = #{exprDate}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_bas_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_bas_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_bas_base
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_bas_base
+    </select>
+
+</mapper>

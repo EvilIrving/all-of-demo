@@ -1,0 +1,137 @@
+.van-form.styled-form {
+  margin-top: 8px;
+  .van-cell-group--inset {
+    margin: 0;
+  }
+  .van-cell-group__title {
+    margin-top: 15px;
+    position: relative;
+    font-size: 36px;
+    color: #000000;
+    font-weight: 500;
+    padding-left: 78px;
+    line-height: 48px;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      height: 33px;
+      left: 40px;
+      border-left: 8px solid #3897f7;
+    }
+    .title-with-append {
+      display: flex;
+      justify-content: space-between;
+      > i {
+        margin-right: 16px;
+        font-size: 40px;
+        color: #3897f7;
+      }
+    }
+  }
+
+  .van-field {
+    margin-top: 18px;
+    border-bottom: 1px solid #b7c0c6;
+    padding: 24px 40px;
+    &.border-none {
+      border: none;
+    }
+    .van-field__label {
+      width: 194px;
+      font-size: 32px;
+      color: #999999;
+      font-weight: 400;
+    }
+    .van-field__body {
+      input,
+      textarea {
+        font-size: 36px;
+        color: #1f1f1f;
+        font-weight: 500;
+        &::-webkit-input-placeholder {
+          font-size: 28px;
+          color: #999;
+          font-weight: 500;
+        }
+      }
+
+      .preview-cover {
+        position: absolute;
+        bottom: 0;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 4px;
+        color: #fff;
+        font-size: 12px;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.3);
+      }
+    }
+    textarea {
+      border: 1px solid #c6c6c6;
+      border-radius: 16px;
+      padding: 36px 32px 24px 32px;
+    }
+    .van-field__append {
+      font-size: 32px;
+      color: #999999;
+      font-weight: 400;
+    }
+    &.label-position-top {
+      flex-direction: column;
+      .van-field__label {
+        margin-bottom: 24px;
+      }
+    }
+  }
+
+  .submit-button {
+    margin: 40px 40px 0 40px;
+    padding-bottom: 40px;
+  }
+}
+.van-uploader {
+  .van-uploader__border-box {
+    height: 160px;
+    width: 160px;
+    display: flex;
+    background: #eeeeee;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.van-dialog.styled-dialog {
+  .van-dialog__content {
+    .van-dialog__message {
+      font-size: 36px;
+      color: #000000;
+      letter-spacing: 0;
+      line-height: 58px;
+      font-weight: 500;
+      span.primary {
+        color: #1477fe;
+        padding: 0 6px;
+      }
+      span.error {
+        color: #e02020;
+        padding: 0 6px;
+      }
+    }
+  }
+  .van-button {
+    margin: 0 16px;
+    &.van-dialog__cancel {
+      background: #0000;
+      border: #e02020 1px solid;
+      color: #e02020;
+      border-radius: 44px;
+    }
+    &.van-dialog__confirm {
+      background: #1477fe;
+      border-radius: 44px;
+    }
+  }
+}

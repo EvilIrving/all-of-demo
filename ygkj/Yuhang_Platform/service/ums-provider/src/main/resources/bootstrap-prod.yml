@@ -1,0 +1,140 @@
+spring:
+  redis:
+    timeout: "PT10S"
+    password: "xB239MCfg3321Pq002"
+    lettuce:
+      pool:
+        max-active: "100"
+        min-idle: "1"
+        max-wait: "PT10S"
+        max-idle: "30"
+    database: "15 "
+    port: "6379"
+    host: "192.168.2.130"
+  datasource:
+    druid:
+      max-pool-prepared-statement-per-connection-size: "20"
+      max-active: "20"
+      validation-query: "SELECT 1 FROM DUAL"
+      driver-class-name: "com.mysql.jdbc.Driver"
+      filters: "stat,wall"
+      url: "jdbc:mysql://192.168.2.130:3306/yh_subject_db?useUnicode=true&characterEncoding=utf-8&useSSL=false"
+      test-on-return: "false"
+      initial-size: "5"
+      min-idle: "5"
+      validation-query-timeout: "30000"
+      max-wait: "60000"
+      pool-prepared-statements: "true"
+      test-while-idle: "true"
+      password: "WiVlEJ4BoWaP1OEL"
+      username: "yh_platform"
+      time-between-eviction-runs-millis: "60000"
+      min-evictable-idle-time-millis: "300000"
+      test-on-borrow: "false"
+    type: "com.alibaba.druid.pool.DruidDataSource"
+  servlet:
+    multipart:
+      max-request-size: "20MB"
+      enabled: "true"
+      max-file-size: "20MB"
+  thymeleaf:
+    cache: "false"
+    prefix: "classpath:/templates/"
+    suffix: ".html"
+    servlet:
+      content-type: "text/html"
+    charset: "UTF-8"
+  main:
+    allow-bean-definition-overriding: "true"
+  application:
+    name: "authentication-system"
+  devtools:
+    restart:
+      poll-interval: "3000ms"
+      quiet-period: "2999ms"
+  cloud:
+    nacos:
+      discovery:
+        server-addr: "127.0.0.1:8848"
+  jackson:
+    time-zone: GMT+8
+jwt:
+  issuer: "yingxue.com"
+  refreshTokenExpireTime: "P30D"
+  secretKey: "78944878877848fg)"
+  refreshTokenExpireAppTime: "P30D"
+  accessTokenExpireTime: "P30D"
+sca:
+  file:
+    upload:
+      mode: "qiniu"
+watermanage:
+  syn:
+    appkey: "f0881c44e28711e9b14d6c92bfce09d6"
+    appsecret: "915e0e28711e9b14d6c92bfc"
+    tokenkey: "DC_ACCESS_TOKEN"
+    data_appkey: "080f22723726487db3a4a018465435f8"
+    data_appsecret: "ca0a5de7a2174c65"
+    data_tokenkey: "DC_DATA_ACCESS_TOKEN"
+  #各个系统的秘钥
+  appkey: 2c582c07bd6849c1b444561d5ce9ad8d
+  appsecret: 7a60c594555f42e9
+  graph:
+    appkey: 2c582c07bd6849c1b444561d5ce9ad8d
+    appsecret: 7a60c594555f42e9
+  digital:
+    appkey: c5f506dc2ed842e68a5d0a949cba776a
+    appsecret: 04f3fa83c02a4d41
+  document:
+    appkey: 93e72f67471d42d9a3710fa7cd482443
+    appsecret: b67b5e67c2334153
+  equipment:
+    appkey: f550897e84bd4fe59dd2e6f32783d7ec
+    appsecret: a90629f3e14f48e2
+  drone:
+    appkey: 1fd662d77a1f48dc924333bb153b3026
+    appsecret: 70871c313b764c13
+  polder:
+    appkey: eab17ec9853f487fb5d9d57b410c1a13
+    appsecret: 7949f2a0413c487d
+  signage:
+    appkey: 19a54e9d51f049b8b21c34082d450377
+    appsecret: 7925177419a94c03
+  user:
+    roleid: "11b3b80c-4a0b-4a92-96ea-fdd4f7a4a7e9"
+server:
+  port: "8099"
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: "300000"
+        read-timeout: "300000"
+logging:
+  level:
+    com:
+      xh:
+        lesson: "debug"
+  file: "${logging.path}/${spring.application.name}.log"
+  path: "logs"
+swagger2:
+  enable: "true"
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: "true"
+    log-impl: "org.apache.ibatis.logging.stdout.StdOutImpl"
+  mapper-locations: "classpath:mapper/*.xml"
+
+
+#xxl:
+#  job:
+#    accessToken:
+#    admin:
+#      addresses: http://192.168.2.133:8180/xxl-job-admin
+#    executor:
+#      address:
+#      appname: ums-job
+#      ip:
+#      port: 8098
+#      logpath: xxjoblog
+#      logretentiondays: 30

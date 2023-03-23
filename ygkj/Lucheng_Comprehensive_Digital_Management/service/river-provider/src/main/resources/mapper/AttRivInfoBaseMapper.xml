@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttRivInfoBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttRivInfoBase">
+        <result column="id" property="id"/>
+        <result column="river_no" property="riverNo"/>
+        <result column="river_name" property="riverName"/>
+        <result column="level" property="level"/>
+        <result column="arealevel" property="arealevel"/>
+        <result column="startname" property="startname"/>
+        <result column="endname" property="endname"/>
+        <result column="length" property="length"/>
+        <result column="pathstr" property="pathstr"/>
+        <result column="watershedname" property="watershedname"/>
+        <result column="startlocation" property="startlocation"/>
+        <result column="endlocation" property="endlocation"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        river_no,
+        river_name,
+        level,
+        arealevel,
+        startname,
+        endname,
+        length,
+        pathstr,
+        watershedname,
+        startlocation,
+        endlocation,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.AttRivInfoBase">
+        INSERT INTO att_riv_info_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != riverNo'>
+                river_no,
+            </if>
+            <if test='null != riverName'>
+                river_name,
+            </if>
+            <if test='null != level'>
+                level,
+            </if>
+            <if test='null != arealevel'>
+                arealevel,
+            </if>
+            <if test='null != startname'>
+                startname,
+            </if>
+            <if test='null != endname'>
+                endname,
+            </if>
+            <if test='null != length'>
+                length,
+            </if>
+            <if test='null != pathstr'>
+                pathstr,
+            </if>
+            <if test='null != watershedname'>
+                watershedname,
+            </if>
+            <if test='null != startlocation'>
+                startlocation,
+            </if>
+            <if test='null != endlocation'>
+                endlocation,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != riverNo'>
+                #{riverNo},
+            </if>
+            <if test='null != riverName'>
+                #{riverName},
+            </if>
+            <if test='null != level'>
+                #{level},
+            </if>
+            <if test='null != arealevel'>
+                #{arealevel},
+            </if>
+            <if test='null != startname'>
+                #{startname},
+            </if>
+            <if test='null != endname'>
+                #{endname},
+            </if>
+            <if test='null != length'>
+                #{length},
+            </if>
+            <if test='null != pathstr'>
+                #{pathstr},
+            </if>
+            <if test='null != watershedname'>
+                #{watershedname},
+            </if>
+            <if test='null != startlocation'>
+                #{startlocation},
+            </if>
+            <if test='null != endlocation'>
+                #{endlocation},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_riv_info_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.AttRivInfoBase">
+        UPDATE att_riv_info_base
+        <set>
+            <if test='null != riverNo'>river_no = #{riverNo},</if>
+            <if test='null != riverName'>river_name = #{riverName},</if>
+            <if test='null != level'>level = #{level},</if>
+            <if test='null != arealevel'>arealevel = #{arealevel},</if>
+            <if test='null != startname'>startname = #{startname},</if>
+            <if test='null != endname'>endname = #{endname},</if>
+            <if test='null != length'>length = #{length},</if>
+            <if test='null != pathstr'>pathstr = #{pathstr},</if>
+            <if test='null != watershedname'>watershedname = #{watershedname},</if>
+            <if test='null != startlocation'>startlocation = #{startlocation},</if>
+            <if test='null != endlocation'>endlocation = #{endlocation},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_info_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_info_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_riv_info_base
+    </select>
+
+</mapper>

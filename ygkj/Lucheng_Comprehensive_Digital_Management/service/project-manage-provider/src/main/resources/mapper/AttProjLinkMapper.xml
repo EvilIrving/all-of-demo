@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.AttProjLinkMapper">
+
+    <sql id="Base_Column_List">
+        id,
+        proj_code,
+        link_name,
+        url,
+        created_by,
+        created_time,
+        updated_by,
+        updated_time,
+        del_flag
+    </sql>
+
+    <select id="getProjLinksByProC" resultType="com.ygkj.project.model.AttProjLink">
+        select <include refid="Base_Column_List" />
+        from att_proj_link where del_flag = 0
+        <if test="projCode != null and projCode != ''">
+            and proj_code = #{projCode}
+        </if>
+        order by sort
+    </select>
+</mapper>

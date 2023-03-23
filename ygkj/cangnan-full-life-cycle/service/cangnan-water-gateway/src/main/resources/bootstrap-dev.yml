@@ -1,0 +1,67 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: sca-gateway
+  cloud:
+    sentinel:
+      filter:
+        enabled: true
+    nacos:
+      discovery:
+#        server-addr: 192.168.0.106:8848
+        server-addr: 127.0.0.1:8848
+    gateway:
+      httpclient:
+        pool:
+          max-connections: 100
+      discovery:
+        locator:
+          enabled: true # 让gateway可以发现nacos中的微服务
+      routes: # 路由，不配置默认以 网关ip:port/server_name/**
+      - id: auth-service # id保证唯一
+        uri: lb://auth-service-consumer       # lb指的是从nacos中按照名称获取微服务,并遵循负载均 衡策略
+        predicates: # 断言(就是路由转发要满足的条件)
+        - Path=/auth-service/** # 当请求路径满足Path指定的规则时,才进行路由转发
+        filters: # 过滤器,请求在传递过程中可以通过过滤器对其进行一定的修改
+        - StripPrefix=1 # 转发之前去掉1层路径+-
+      ## 用户角色权限服务直接转发到服务提供方
+      - id: sys-role-permission
+        uri: lb://authentication-system
+        predicates:
+        - Path=/sys-role-permission/**
+        filters:
+        - RewritePath=/sys-role-permission/(?<segment>.*), /$\{segment}
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+  redis:
+    database: 15
+#    host: 192.168.2.116
+#    port: 6379
+    host: 112.17.127.75
+    port: 20006
+    password: xB239MCfg3321Pq002
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+## 日志输出配置
+logging:
+  file:
+    name: ${logging.file.path}/${spring.application.name}.log
+    path: log
+  level:
+    com.ygkj: info
+
+jwt:
+  secretKey: 78944878877848fg)
+  accessTokenExpireTime: PT8H
+  refreshTokenExpireTime: PT3H
+  refreshTokenExpireAppTime: P30D
+  issuer: yingxue.com
+

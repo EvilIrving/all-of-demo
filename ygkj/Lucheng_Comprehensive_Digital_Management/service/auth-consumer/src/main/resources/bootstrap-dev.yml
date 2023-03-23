@@ -1,0 +1,62 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: auth-service-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    #        server-addr: 192.168.0.106:8848
+    sentinel:
+      #      eager: true # sentinel默认为懒加载模式，此配置更改为饿加载
+      transport:
+        port: 9999 #跟控制台交流的端口,随意指定一个未使用的端口即可
+        dashboard: localhost:8081 # 指定控制台服务的地址
+  main:
+    allow-bean-definition-overriding: true #允许同名的bean存在，这样做的意义是可以根据同一个实例ID演化出多个基于特定业务的FeignClient
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 60MB
+      max-request-size: 60MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+
+# 开启feign对sentinel的支持
+feign:
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        # 设置Fegin的超时时间
+        connectTimeout: 300000
+        readTimeout: 300000
+
+sca:
+  logging:
+    enabled: false
+    driver: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.2.116:3306/logging-system?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+
+
+jwt:
+  secretKey: 78944878877848fg)
+  accessTokenExpireTime: PT2H
+  refreshTokenExpireTime: PT8H
+  refreshTokenExpireAppTime: P30D
+  issuer: yingxue.com
+
+## 日志输出配置
+logging:
+  file:
+    name: ${logging.file.path}/${spring.application.name}.log
+    path: log
+  level:
+    com.ygkj: info

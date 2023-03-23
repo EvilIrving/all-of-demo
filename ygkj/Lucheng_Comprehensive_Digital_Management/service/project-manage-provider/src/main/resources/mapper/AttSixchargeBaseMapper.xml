@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ygkj.water.project.mapper.AttSixchargeBaseMapper">
+    <select id="queryPage" parameterType="com.ygkj.project.vo.request.AttSixchargeBaseReqVo" resultType="com.ygkj.project.vo.response.AttSixchargeBaseRespVo">
+        select tbl.*,pro.name projectName,pro.project_scale projectScale,att.city_adnm cityAdnm,att.country_adnm countryAdnm,att.town_adnm townAdnm
+        from att_sixcharge_base tbl left join bm_project pro on tbl.project_code = pro.PRCD left join att_adcd_base att on pro.ADCD = att.adcd
+        where tbl.DEL_FLAG=0 and pro.DEL_FLAG=0 and att.del_flag=0
+        <if test="null != type and ''!=type">
+            and tbl.project_type=#{type}
+        </if>
+        <if test="null != projectName and ''!=projectName">
+            and pro.name like concat('%',#{projectName},'%')
+        </if>
+        <if test="null != projectScale and ''!=projectScale">
+            and pro.project_scale=#{projectScale}
+        </if>
+    </select>
+
+    <select id="queryOne" parameterType="com.ygkj.project.vo.request.AttSixchargeBaseReqVo" resultType="com.ygkj.project.vo.response.AttSixchargeBaseRespVo">
+        select * from att_sixcharge_base tbl where tbl.DEL_FLAG=0
+        <if test="null != id and ''!=id">
+            and tbl.id=#{id}
+        </if>
+
+    </select>
+
+    <select id="queryChangeRecord" parameterType="com.ygkj.project.model.AttSixchargeChangeRecord" resultType="com.ygkj.project.model.AttSixchargeChangeRecord">
+        select tbl.*,bm.NAME projectName from att_sixcharge_change_record tbl
+        left join bm_project bm on tbl.project_code = bm.PRCD
+        where 1=1
+        <if test="null != keyWord and ''!=keyWord">
+            and concat(IFNULL(tbl.charge_name_before,''),IFNULL(tbl.charge_phone_before,''),IFNULL(tbl.charge_job_before,''),IFNULL(tbl.charge_dept_before,''),IFNULL(tbl.charge_name_after,''),IFNULL(tbl.charge_phone_after,''),IFNULL(tbl.charge_job_after,''),IFNULL(tbl.charge_dept_after,''),IFNULL(bm.NAME,'')) like concat('%',#{keyWord},'%')
+        </if>
+        order by change_time desc
+    </select>
+</mapper>

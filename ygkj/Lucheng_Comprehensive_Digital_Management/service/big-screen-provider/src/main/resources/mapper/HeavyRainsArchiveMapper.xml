@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.HeavyRainsArchiveMapper">
+
+    <select id="getAvgSumDrp" resultType="String">
+        SELECT ROUND(AVG(m.drp),2) FROM (SELECT SUM(f.drp) drp, f.STCD FROM (
+        <foreach collection="tableNames" item="item" separator="UNION ALL">
+            (SELECT mgstcd, stcd,tm,drp FROM ${item}
+            WHERE TM &gt;= #{heavyRainsArchive.startTime} AND TM &lt;= #{heavyRainsArchive.endTime} AND STCD IN
+            <foreach collection="heavyRainsArchive.codes" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            )
+        </foreach>
+        ) f  GROUP BY f.STCD ) m
+    </select>
+
+    <select id="getAvgHourDrp" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT ROUND(AVG(drp),2) drp,tm  FROM (
+        <foreach collection="tableNames" item="item" separator="UNION ALL">
+            (SELECT mgstcd, stcd,tm,drp FROM ${item}
+            WHERE TM &gt;= #{heavyRainsArchive.startTime} AND TM &lt;= #{heavyRainsArchive.endTime} AND STCD IN
+            <foreach collection="heavyRainsArchive.codes" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            )
+        </foreach>
+        ) f  GROUP BY f.tm order by f.tm
+    </select>
+
+</mapper>

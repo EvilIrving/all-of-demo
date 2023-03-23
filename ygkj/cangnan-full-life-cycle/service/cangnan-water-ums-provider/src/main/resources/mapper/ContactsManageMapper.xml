@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.ContactsManageMapper">
+    <resultMap id="BaseResultMap" type="com.ygkj.entity.Contacts">
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="sex" jdbcType="TINYINT" property="sex" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="job" jdbcType="VARCHAR" property="job" />
+        <result column="adcd" jdbcType="VARCHAR" property="adcd" />
+        <result column="adnm" jdbcType="VARCHAR" property="adnm" />
+    </resultMap>
+
+    <resultMap id="OrganSchemaResultMap" type="com.ygkj.entity.OrganSchema">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="pid" jdbcType="VARCHAR" property="pid" />
+    </resultMap>
+
+    <resultMap id="DeptIdUserNumMap" type="com.ygkj.entity.DeptIdUserNum">
+        <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+        <result column="num" jdbcType="VARCHAR" property="num" />
+    </resultMap>
+    <select id="selectAllContacts" resultMap="BaseResultMap">
+        select su.id as user_id,username,sex,su.phone as phone,dept_id,sd.`name` as dept_name, email,job,adcd
+        from sys_user as su
+        INNER JOIN sys_dept as sd on su.dept_id=sd.id and sd.deleted=1
+        where su.deleted=1
+    </select>
+
+    <select id="selectContactByParam" resultMap="BaseResultMap">
+        select su.id as user_id,username,sex,su.phone as phone,dept_id,sd.`name` as dept_name, email,job,adcd
+        from sys_user as su
+        INNER JOIN sys_dept as sd on su.dept_id=sd.id and sd.deleted=1
+        where su.deleted=1
+        <if test="deptId!=null and deptId!=''">
+           and su.dept_id=#{deptId}
+        </if>
+        <if test="id!=null and id!=''">
+           and su.id=#{id}
+        </if>
+        <if test="userName!=null and userName!=''">
+           and su.username like concat('%',#{userName},'%')
+        </if>
+    </select>
+
+    <select id="selectContactsByDeptId" resultMap="BaseResultMap">
+select su.id as user_id,username,sex,su.phone as phone,dept_id,sd.`name` as dept_name, email,job,adcd  from sys_user as su INNER JOIN sys_dept as sd on su.dept_id=sd.id and sd.deleted=1  where su.deleted=1 AND dept_id =#{deptId}
+    </select>
+
+    <select id="selectAllDeptIdNamePid" resultMap="OrganSchemaResultMap">
+        select id,name,pid from sys_dept where deleted=1 and dept_type = 1 and status = 1
+    </select>
+
+    <select id="selectDeptUserNum" resultMap="DeptIdUserNumMap">
+        select dept_id,COUNT(DISTINCT id) as num from sys_user where deleted=1 GROUP BY dept_id
+    </select>
+</mapper>

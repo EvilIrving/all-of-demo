@@ -1,0 +1,313 @@
+/* 风险管控清单表格 */
+.detailed-list.el-table {
+  background-color: transparent;
+
+  &::before {
+    background-color: transparent;
+  }
+
+  .el-table__header-wrapper {
+    .el-table__header {
+      .has-gutter {
+        color: #00d5ff;
+        font-weight: 500;
+
+        tr {
+          // background-color: transparent;
+          // background-image: linear-gradient(90deg,
+          //     rgba(44, 158, 191, 0.18) 0%,
+          //     rgba(41, 147, 180, 0.06) 100%);
+          background-color: rgba(18, 53, 127, 0.5);
+
+          th.el-table__cell {
+            background-color: transparent;
+            border: none;
+            padding: 5px 0;
+
+            .cell {
+              font-size: 14px;
+              font-weight: 500;
+              color: #228ae2;
+              padding-left: 3px;
+              padding-right: 3px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+            }
+
+            &:first-child .cell {
+              padding-left: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .el-table__body-wrapper {
+    .el-table__body {
+      tr {
+        background-color: transparent;
+
+        &:nth-child(even) {
+          // background-image: linear-gradient(to right,
+          //     rgba(255, 255, 255, 0.12),
+          //     rgba(249, 249, 249, 0));
+          background-color: rgba(11, 45, 95, 0.75);
+        }
+
+        td.el-table__cell {
+          border: none;
+          padding: 5px 0;
+
+          .cell {
+            font-size: 14px;
+            font-weight: 400;
+            color: #ffffff;
+            padding-left: 3px;
+            padding-right: 3px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+
+          &:first-child .cell {
+            padding-left: 10px;
+          }
+        }
+
+        &:hover > td.el-table__cell {
+          background-color: rgba(255, 255, 255, 0.12);
+        }
+      }
+    }
+  }
+
+  .caret-wrapper {
+    width: 0;
+  }
+}
+// 动态loading
+.el-loading-mask {
+  background-color: rgba(5, 33, 118, 0.5) !important;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+/* 风险管控清单表格（弹窗内） */
+.dialog-detailed-list.el-table {
+  background-color: transparent;
+  border-color: #3c527f;
+
+  &::before {
+    background-color: #3c527f;
+  }
+
+  &::after {
+    background-color: #3c527f;
+  }
+
+  .el-table__header-wrapper {
+    .el-table__header {
+      .has-gutter {
+        color: #00d5ff;
+        font-weight: 500;
+
+        tr {
+          background-color: rgba(18, 53, 127, 0.5);
+
+          th.el-table__cell {
+            background-color: transparent;
+            border-left: none;
+            border-right: none;
+            border-color: #3c527f;
+            padding: 10px 0;
+
+            .cell {
+              font-size: 14px;
+              font-weight: 500;
+              color: #228ae2;
+              padding-left: 18px;
+              padding-right: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .el-table__body-wrapper {
+    .el-table__body {
+      tr {
+        background-color: transparent;
+
+        &:nth-child(even) {
+          background-color: #052045;
+        }
+
+        &:nth-child(odd) {
+          background-color: #112442;
+        }
+
+        td.el-table__cell {
+          border-color: #3c527f;
+          padding: 15px 0;
+
+          .cell {
+            font-size: 14px;
+            font-weight: 400;
+            color: #ffffff;
+            padding-left: 18px;
+            padding-right: 18px;
+            line-height: 16px;
+            white-space: pre-line;
+          }
+
+          &:first-child .cell {
+            color: #88c9ff;
+            font-family: "digiface";
+            font-style: italic;
+          }
+        }
+
+        &:hover > td.el-table__cell {
+          background-color: rgba(255, 255, 255, 0.12);
+        }
+      }
+    }
+  }
+
+  .caret-wrapper {
+    width: 0;
+  }
+}
+
+/* 地图图例多选框 */
+.map-legend-checkbox.el-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+
+  .el-checkbox {
+    display: flex;
+    align-items: center;
+    margin: 0;
+
+    + .el-checkbox {
+      margin-top: 10px;
+    }
+
+    .el-checkbox__input {
+      .el-checkbox__inner {
+        border: 1px solid #12dbed;
+        background-color: transparent;
+
+        &::after {
+          border-color: #12dbed;
+        }
+      }
+    }
+
+    .el-checkbox__label {
+      display: flex;
+      align-items: center;
+      padding-left: 6px;
+
+      img {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 6px;
+      }
+
+      span {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        color: #b1dcff;
+      }
+    }
+  }
+}
+.map-legend-radio.el-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+
+  .el-radio {
+    display: flex;
+    align-items: center;
+    margin: 0;
+
+    + .el-radio {
+      margin-top: 10px;
+    }
+
+    .el-radio__input {
+      .el-radio__inner {
+        border: 1px solid #12dbed;
+        background-color: transparent;
+
+        &::after {
+          border-color: #12dbed;
+        }
+      }
+    }
+
+    .el-radio__label {
+      display: flex;
+      align-items: center;
+      padding-left: 6px;
+
+      img {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 6px;
+      }
+
+      span {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        color: #b1dcff;
+      }
+    }
+  }
+}
+/* 功能模块标题后的选择器 */
+.module-extra-select.el-select {
+  .el-input.el-input--suffix {
+    .el-input__inner {
+      width: 254px;
+      height: 26px;
+      background-color: transparent;
+      border-radius: 4px;
+      border: solid 1px #248fe8;
+      color: #b1dcff;
+    }
+
+    .el-input__suffix {
+      .el-input__suffix-inner {
+        .el-select__caret.el-input__icon {
+          line-height: 26px;
+          color: #fff;
+
+          &.el-icon-arrow-up {
+            font-family: "icomoon" !important;
+            font-size: 12px;
+            transform: rotateZ(0) scale(0.75);
+
+            &.is-reverse {
+              transform: rotateZ(-180deg) scale(0.75);
+            }
+
+            &:before {
+              content: "\e900";
+            }
+          }
+        }
+      }
+    }
+  }
+}

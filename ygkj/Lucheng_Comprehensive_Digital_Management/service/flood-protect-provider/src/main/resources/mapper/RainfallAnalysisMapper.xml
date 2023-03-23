@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.RainfallAnalysisMapper">
+
+    <select id="selectWzAdSt" resultType="map">
+        select a.st_code,b.adcd,b.adnm
+        from att_st_base as a
+        RIGHT JOIN
+        (select adcd,adnm from att_adcd_base where parent_adcd =330300000000 and del_flag=0
+        <if test="adnm!=null and adnm!=''">
+            and adnm like concat('%',concat(#{adnm},'%'))
+        </if>
+        )
+        as b on b.adcd= a.area_code;
+    </select>
+
+    <select id="selectStationBasin" resultType="map">
+        select a.st_code,b.adcd,b.adnm
+        from att_st_base as a
+        RIGHT JOIN
+        (select adcd,adnm from att_adcd_base where parent_adcd =330300000000 and del_flag=0
+        <if test="adnm!=null and adnm!=''">
+            and adnm like concat('%',concat(#{adnm},'%'))
+        </if>
+        )
+        as b on b.adcd= a.area_code;
+    </select>
+
+    <select id="selectRainStationWarningThresholdByRainfallPeroid" resultType="map">
+        select st_code,threshold from warning_threshold WHERE del_flag=0 and st_type='PP' and
+        rainfall_period=#{rainfallPeroid};
+    </select>
+
+    <resultMap id="RainfallExtremumResultMap" type="com.ygkj.flood.vo.response.RainfallExtremumResVo">
+        <result column="st_code" jdbcType="VARCHAR" property="stCode"/>
+        <result column="st_name" jdbcType="VARCHAR" property="stName"/>
+        <result column="extremum" jdbcType="DOUBLE" property="extremum"/>
+        <result column="occurred_time" jdbcType="TIMESTAMP" property="occurredTime"/>
+        <result column="duration_time" jdbcType="INTEGER" property="durationTime"/>
+    </resultMap>
+
+    <select id="selectRainfallExtremumByDurationTime" resultMap="RainfallExtremumResultMap">
+        select a.st_code,a.st_name,a.extremum,a.occurred_time,a.duration_time
+        from att_rain_extre as a
+        INNER JOIN
+        (SELECT st_code,max(extremum) as extremum,duration_time
+        FROM att_rain_extre WHERE del_flag=0 and duration_time=#{durationMinutes}
+        <if test="stName!=null and stName!=''">
+            and st_name like concat('%',concat(#{stName},'%'))
+        </if>
+        GROUP BY st_code) as b on a.st_code=b.st_code and a.extremum=b.extremum and a.duration_time=b.duration_time
+    </select>
+
+    <select id="selectAllRainfallExtremum" resultMap="RainfallExtremumResultMap">
+        select st_code,st_name,extremum,occurred_time,duration_time
+        from att_rain_extre
+        WHERE del_flag=0
+        <if test="stName!=null and stName!=''">
+            and st_name like concat('%',concat(#{stName},'%'))
+        </if>
+        ORDER BY st_code asc,duration_time desc
+    </select>
+
+</mapper>

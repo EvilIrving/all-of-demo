@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.EngineeringSupervisionMapper">
+    <update id="delProject">
+        UPDATE
+            att_${projectType}_base
+        SET
+            del_flag = 1
+        WHERE
+            ${projectType}_code IN
+            <foreach collection="idList" open="(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+    </update>
+
+    <update id="delOtherProject">
+        UPDATE
+            att_project_other_base
+        SET
+            del_flag = 1
+        WHERE
+            project_code IN
+            <foreach collection="idList" open="(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+    </update>
+
+
+    <select id="countProject" resultType="com.ygkj.project.vo.response.DictResVo">
+        SELECT
+            COUNT(1) dictValue,${colName} dictCode
+        FROM
+            att_real_all_project_base
+        WHERE
+            del_flag = 0
+        GROUP BY
+            ${colName}
+    </select>
+
+    <select id="listProject" resultType="com.ygkj.project.vo.response.AllProjectResVo">
+        SELECT
+            base.project_code,base.project_name,base.bas,base.adcd,
+            base.longitude,base.latitude,base.project_type,base.eng_grad,
+            base.eng_scal,six.goverment_charge_name,six.goverment_charge_phone,six.water_department_charge_name,
+            six.water_department_charge_phone,six.competent_department_charge_name,six.competent_department_charge_phone,
+            six.manage_department_charge_name,six.manage_department_charge_phone,six.technology_charge_name,six.technology_charge_phone,
+            six.patrol_charge_name,six.patrol_charge_phone,COUNT(cam.project_code) cameraNum,aab.adnm
+        FROM
+            att_real_all_project_base base
+            LEFT JOIN hikvision_camera_record cam ON base.project_code = cam.project_code
+            LEFT JOIN att_adcd_base aab ON base.adcd = aab.adcd
+            LEFT JOIN att_sixcharge_base six ON base.project_code = six.project_code
+        WHERE
+            base.del_flag = 0
+            <if test="projectType != null and projectType != ''">
+                AND base.project_type = #{projectType}
+            </if>
+            <if test="bas != null and bas != ''">
+                AND base.bas = #{bas}
+            </if>
+            <if test="adcd != null and adcd != ''">
+                AND base.adcd LIKE CONCAT(REPLACE(#{adcd},'00',''),'%')
+            </if>
+            <if test="engGrad != null and engGrad != ''">
+                AND base.eng_grad = #{engGrad}
+            </if>
+            <if test="engScal != null and engScal != ''">
+                AND base.eng_scal = #{engScal}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                AND base.project_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+        <if test="projectCode != null and projectCode != ''">
+            AND base.project_code = #{projectCode}
+        </if>
+        GROUP BY base.project_code
+    </select>
+
+    <select id="projectDetail" resultType="com.ygkj.project.vo.response.AllProjectResVo">
+        SELECT
+            a.project_code,a.project_name,a.bas,a.adcd, b.adnm,
+            a.longitude,a.latitude,a.project_type,a.eng_grad,
+            a.eng_scal,a.goverment_charge_id,a.water_department_charge_id,a.competent_department_charge_id,
+            a.manage_department_charge_id,a.technology_charge_id,a.patrol_charge_id
+        FROM
+            att_real_all_project_base a left join att_adcd_base b on a.adcd = b.adcd
+        WHERE
+            a.project_code = #{projectCode}
+    </select>
+
+    <select id="countProjectNew" resultType="com.ygkj.project.vo.response.DictResVo">
+        SELECT
+            COUNT(1) dictValue,${colName} dictCode
+        FROM
+            att_real_all_project_base
+        WHERE
+            del_flag = 0 AND project_type IN ("水库", "泵站", "水闸", "堤防", "海塘", "闸站", "灌区")
+        <if test="areaCode != null and areaCode != ''">
+            AND adcd = #{areaCode}
+        </if>
+        GROUP BY
+            ${colName}
+    </select>
+</mapper>

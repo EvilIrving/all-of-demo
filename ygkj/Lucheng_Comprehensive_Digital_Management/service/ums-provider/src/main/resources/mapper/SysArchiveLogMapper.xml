@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.SysArchiveLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.auth.api.archivelog.model.SysArchiveLog">
+        <result column="id" property="id"/>
+        <result column="ip" property="ip"/>
+        <result column="archive_name" property="archiveName"/>
+        <result column="file_name" property="fileName"/>
+        <result column="status" property="status"/>
+        <result column="create_name" property="createName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator_id" property="creatorId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="operation_type" property="operationType"/>
+        <result column="file_id" property="fileId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                ip,
+                archive_name,
+                file_name,
+                status,
+                create_name,
+                create_time,
+                creator_id,
+                update_time,
+                del_flag,
+                operation_type,
+                file_id
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.auth.api.archivelog.model.SysArchiveLog">
+        INSERT INTO sys_archive_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != ip'>
+                ip,
+            </if>
+            <if test='null != archiveName'>
+                archive_name,
+            </if>
+            <if test='null != fileName'>
+                file_name,
+            </if>
+            <if test='null != status'>
+                status,
+            </if>
+            <if test='null != createName'>
+                create_name,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != creatorId'>
+                creator_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != delFlag'>
+                del_flag,
+            </if>
+            <if test='null != operationType'>
+                operation_type,
+            </if>
+            <if test='null != fileId'>
+                file_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != ip'>
+                #{ip},
+            </if>
+            <if test='null != archiveName'>
+                #{archiveName},
+            </if>
+            <if test='null != fileName'>
+                #{fileName},
+            </if>
+            <if test='null != status'>
+                #{status},
+            </if>
+            <if test='null != createName'>
+                #{createName},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != creatorId'>
+                #{creatorId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test='null != operationType'>
+                #{operationType},
+            </if>
+            <if test='null != fileId'>
+                #{fileId}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="delete">
+        UPDATE sys_archive_log set del_flag = 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="update" parameterType="com.ygkj.auth.api.archivelog.model.SysArchiveLog">
+        UPDATE sys_archive_log
+        <set>
+            <if test='null != ip'>ip = #{ip},</if>
+            <if test='null != archiveName'>archive_name = #{archiveName},</if>
+            <if test='null != fileName'>file_name = #{fileName},</if>
+            <if test='null != status'>status = #{status},</if>
+            <if test='null != createName'>create_name = #{createName},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != creatorId'>creator_id = #{creatorId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test='null != operationType'>operation_type = #{operationType},</if>
+            <if test='null != fileId'>file_id = #{fileId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_archive_log
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM sys_archive_log
+    </select>
+
+
+    <select id="selectAll" resultType="com.ygkj.auth.api.archivelog.model.SysArchiveLog">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_archive_log  where del_flag = 0
+        <if test="queryTime != null and queryTime != ''">
+            and DATE_FORMAT(create_time,'%Y-%m-%d') = #{queryTime}
+        </if>
+        <if test="status != null and status != ''">
+            and status = #{status}
+        </if>
+        <if test="fileName != null and fileName != ''">
+            and file_name LIKE concat('%',#{fileName},'%')
+        </if>
+        <if test="id != null and id != ''">
+            and file_id = #{id}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="trafficFileRank" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.username,tbl.id,(SELECT COUNT(1) num FROM `sys_archive_log` log WHERE log.del_flag = 0 AND log.creator_id = tbl.id) num
+        FROM sys_user tbl where tbl.deleted = 1 ORDER BY num DESC
+    </select>
+
+    <select id="trafficFileGraph" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT COUNT(1) num,DATE_FORMAT(log.create_time,'%m-%d') time FROM `sys_archive_log` log WHERE log.del_flag = 0 AND
+        DATE_FORMAT(log.create_time,'%Y-%m') = #{time} GROUP BY time ORDER BY time
+    </select>
+
+    <select id="archiveLogTimeParameter" resultType="java.lang.String">
+        SELECT DATE_FORMAT(log.create_time,'%Y-%m-%d') time FROM `sys_archive_log` log WHERE log.del_flag = 0 AND DATE_FORMAT(log.create_time,'%Y-%m') = #{time} AND log.create_time
+        IS NOT NULL GROUP BY time ORDER BY time desc
+    </select>
+
+</mapper>

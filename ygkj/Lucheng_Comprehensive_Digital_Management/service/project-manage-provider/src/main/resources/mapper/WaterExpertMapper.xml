@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.WaterExpertMapper">
+    <sql id="Base_Column_List">
+        dts_cmf_id, `name`, department, title, `type`, good_at, mobile, `level`
+    </sql>
+    <select id="selectWaterExpert" parameterType="java.lang.String"
+            resultType="com.ygkj.project.model.DtsRaBasicDataDbWaterExpert">
+        select
+        <include refid="Base_Column_List"/>
+        from dts_ra_basic_data_db_water_expert
+        where dts_cmf_id = #{dtsCmfId}
+    </select>
+    <update id="updateWaterExpert" parameterType="com.ygkj.project.vo.response.WaterExpertResVo">
+    update dts_ra_basic_data_db_water_expert
+    set `name` = #{name,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER},
+      good_at = #{goodAt,jdbcType=INTEGER},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      `level` = #{level,jdbcType=INTEGER}
+    where dts_cmf_id = #{dtsCmfId,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="saveWaterExpert" keyColumn="dts_cmf_id" keyProperty="dtsCmfId"
+            parameterType="com.ygkj.project.vo.response.WaterExpertResVo">
+    insert into dts_ra_basic_data_db_water_expert (dts_cmf_id,`name`, department, title,
+      `type`, good_at, mobile, `level`)
+    values (#{dtsCmfId},#{name,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+      #{type,jdbcType=INTEGER}, #{goodAt,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER})
+     </insert>
+    <select id="listWaterExpert" resultType="com.ygkj.project.vo.response.WaterExpertResVo"
+            parameterType="com.ygkj.project.vo.request.WaterExpertReqVo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        dts_ra_basic_data_db_water_expert
+        WHERE
+        dts_cmf_deleted = 0
+        <if test="goodAt != null">
+            AND good_at = #{goodAt}
+        </if>
+        <if test="type != null">
+            AND `type` = #{type}
+        </if>
+        <if test="level != null">
+            AND `level` = #{level}
+        </if>
+        <if test="name != null and name != ''">
+            AND `name` LIKE CONCAT('%',#{name},'%')
+        </if>
+    </select>
+
+    <delete id="delWaterExpert" parameterType="java.lang.String">
+        UPDATE dts_ra_basic_data_db_water_expert SET dts_cmf_deleted = 1 WHERE dts_cmf_id = #{dtsCmfId}
+    </delete>
+
+    <select id="countWaterExpert" resultType="java.util.Map"
+            parameterType="com.ygkj.project.vo.request.WaterExpertReqVo">
+        SELECT
+        COUNT(1) num,`level`
+        FROM
+        dts_ra_basic_data_db_water_expert
+        WHERE
+        dts_cmf_deleted = 0
+        <if test="goodAt != null">
+            AND good_at = #{goodAt}
+        </if>
+        <if test="type != null">
+            AND `type` = #{type}
+        </if>
+        GROUP BY
+        `level`
+    </select>
+
+</mapper>

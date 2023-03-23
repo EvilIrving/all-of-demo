@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.AttWarehouseBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.flood.vo.response.AttWarehouseResVo" >
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="area_code" property="areaCode" />
+        <result column="area_name" property="areaName" />
+        <result column="address" property="address" />
+        <result column="longitude" property="longitude" />
+        <result column="latitude" property="latitude" />
+        <result column="type" property="type" />
+        <result column="material_price" property="materialPrice" />
+        <result column="charge_person" property="chargePerson" />
+        <result column="charge_phone" property="chargePhone" />
+        <result column="acreage" property="acreage" />
+        <result column="adnm" property="areaName" />
+        <result column="geographical_position" property="geographicalPosition" />
+        <result column="storage_conditions" property="storageConditions" />
+        <result column="warehouse_structure" property="warehouseStructure" />
+        <result column="traffic_conditions" property="trafficConditions" />
+        <result column="warehouse_materials" property="warehouseMaterials" />
+        <result column="bulid_time" property="bulidTime" />
+        <result column="remark_information" property="remarkInformation" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                name,
+                area_code,
+                area_name,
+                address,
+                longitude,
+                latitude,
+                type,
+                material_price,
+                charge_person,
+                charge_phone,
+                acreage,
+                geographical_position,
+                storage_conditions,
+                warehouse_structure,
+                traffic_conditions,
+                warehouse_materials,
+                bulid_time,
+                remark_information
+    </sql>
+
+    <insert id="insert"  parameterType="com.ygkj.flood.model.AttWarehouseBase">
+        INSERT INTO att_warehouse_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != name'>
+                name,
+            </if>
+            <if test ='null != areaCode'>
+                area_code,
+            </if>
+            <if test ='null != areaName'>
+                area_name,
+            </if>
+            <if test="null != geographicalPosition and '' != geographicalPosition">
+                geographical_position,
+            </if>
+            <if test ='null != address'>
+                address,
+            </if>
+            <if test ='null != longitude'>
+                longitude,
+            </if>
+            <if test ='null != latitude'>
+                latitude,
+            </if>
+            <if test ='null != type'>
+                type,
+            </if>
+            <if test ='null != materialPrice'>
+                material_price,
+            </if>
+            <if test="null != acreage and '' != acreage">
+                acreage,
+            </if>
+            <if test="null != storageConditions and '' != storageConditions">
+                storage_conditions,
+            </if>
+            <if test="null != warehouseStructure and '' != warehouseStructure">
+                warehouse_structure,
+            </if>
+            <if test="null != trafficConditions and '' != trafficConditions">
+                traffic_conditions,
+            </if>
+            <if test="null != warehouseMaterials and '' != warehouseMaterials">
+                warehouse_materials,
+            </if>
+            <if test="null != bulidTime and '' != bulidTime">
+                bulid_time,
+            </if>
+            <if test="null != remarkInformation and '' != remarkInformation">
+                remark_information,
+            </if>
+            <if test="null != chargePerson and '' != chargePerson">
+                charge_person,
+            </if>
+            <if test="null != chargePhone and '' != chargePhone">
+                charge_phone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != name'>
+                #{name},
+            </if>
+            <if test ='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test ='null != areaName'>
+                #{areaName},
+            </if>
+            <if test="null != geographicalPosition and '' != geographicalPosition">
+                #{geographicalPosition},
+            </if>
+            <if test ='null != address'>
+                #{address},
+            </if>
+            <if test ='null != longitude'>
+                #{longitude},
+            </if>
+            <if test ='null != latitude'>
+                #{latitude},
+            </if>
+            <if test ='null != type'>
+                #{type},
+            </if>
+            <if test ='null != materialPrice'>
+                #{materialPrice},
+            </if>
+            <if test="null != acreage and '' != acreage">
+                #{acreage},
+            </if>
+            <if test="null != storageConditions and '' != storageConditions">
+                #{storageConditions},
+            </if>
+            <if test="null != warehouseStructure and '' != warehouseStructure">
+                #{warehouseStructure},
+            </if>
+            <if test="null != trafficConditions and '' != trafficConditions">
+                #{trafficConditions},
+            </if>
+            <if test="null != warehouseMaterials and '' != warehouseMaterials">
+                #{warehouseMaterials},
+            </if>
+            <if test="null != bulidTime and '' != bulidTime">
+                #{bulidTime},
+            </if>
+            <if test="null != remarkInformation and '' != remarkInformation">
+                #{remarkInformation},
+            </if>
+            <if test="null != chargePerson and '' != chargePerson">
+                #{chargePerson},
+            </if>
+            <if test="null != chargePhone and '' != chargePhone">
+                #{chargePhone},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        UPDATE att_warehouse_base SET del_flag = 1 WHERE FIND_IN_SET(id,#{ids})
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.flood.model.AttWarehouseBase">
+        UPDATE att_warehouse_base
+        <set>
+            <if test ='null != name'>name = #{name},</if>
+            <if test ='null != areaCode'>area_code = #{areaCode},</if>
+            <if test ='null != areaName'>area_name = #{areaName},</if>
+            <if test="null != geographicalPosition and '' != geographicalPosition">geographical_position = #{geographicalPosition},</if>
+            <if test ='null != address'>address = #{address},</if>
+            <if test ='null != longitude'>longitude = #{longitude},</if>
+            <if test ='null != latitude'>latitude = #{latitude},</if>
+            <if test ='null != type'>type = #{type},</if>
+            <if test ='null != materialPrice'>material_price = #{materialPrice},</if>
+            <if test="null != acreage and '' != acreage">acreage = #{acreage},</if>
+            <if test="null != storageConditions and '' != storageConditions">storage_conditions = #{storageConditions},</if>
+            <if test="null != warehouseStructure and '' != warehouseStructure">warehouse_structure = #{warehouseStructure},</if>
+            <if test="null != trafficConditions and '' != trafficConditions">traffic_conditions = #{trafficConditions},</if>
+            <if test="null != warehouseMaterials and '' != warehouseMaterials">warehouse_materials = #{warehouseMaterials},</if>
+            <if test="null != bulidTime">bulid_time = #{bulidTime},</if>
+            <if test="null != remarkInformation and '' != remarkInformation">remark_information = #{remarkInformation},</if>
+            <if test="null != chargePerson and '' != chargePerson">charge_person = #{chargePerson},</if>
+            <if test="null != chargePhone and '' != chargePhone">charge_phone = #{chargePhone}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_warehouse_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_warehouse_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_warehouse_base
+    </select>
+
+    <select id="selectWarehouse" resultMap="BaseResultMap">
+        SELECT
+        a.id,
+        a.name,
+        a.area_code,
+        a.area_name,
+        a.geographical_position,
+        a.address,
+        a.longitude,
+        a.latitude,
+        a.type,
+        a.material_price,
+        a.charge_person,
+        a.charge_phone,
+        a.acreage,
+        a.storage_conditions,
+        a.warehouse_structure,
+        a.traffic_conditions,
+        a.warehouse_materials,
+        a.bulid_time,
+        a.remark_information
+        FROM att_warehouse_base a LEFT JOIN att_adcd_base b ON a.area_code = b.adcd
+        WHERE a.del_flag = 0
+        <if test="name != null and name != ''">
+            AND a.name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="type != null and type != ''">
+            AND a.type Like CONCAT('%',#{type},'%')
+        </if>
+        <if test="id != null and id != ''">
+            AND a.id = #{id}
+        </if>
+        <if test="areaCode != null and areaCode != ''">
+            AND a.area_code = #{areaCode}
+        </if>
+        <if test="warehouseStructure != null and warehouseStructure != ''">
+            AND a.warehouse_structure Like CONCAT('%',#{warehouseStructure},'%')
+        </if>
+        <if test="trafficConditions != null and trafficConditions != ''">
+            AND a.warehouseStructure Like CONCAT('%',#{trafficConditions},'%')
+        </if>
+        order by a.acreage desc
+    </select>
+
+    <select id="warehousesGroupByType" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.type,COUNT(1) number FROM `att_warehouse_base` tbl where tbl.del_flag = 0 GROUP BY tbl.type ORDER BY tbl.type desc
+    </select>
+
+    <select id="staticAcreageByType" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.type,SUM(tbl.acreage) acreageData FROM `att_warehouse_base` tbl where tbl.del_flag = 0 GROUP BY tbl.type ORDER BY tbl.type desc
+    </select>
+
+    <select id="staticMaterialPriceByType" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.type,SUM(tbl.material_price) materialPriceData FROM `att_warehouse_base` tbl where tbl.del_flag = 0 GROUP BY tbl.type ORDER BY tbl.type desc
+    </select>
+    <select id="findUserByPhone" resultType="com.ygkj.flood.model.SysUser">
+        SELECT * FROM `sys_user` WHERE `deleted` = '1' AND `phone` = #{phone}
+    </select>
+
+</mapper>

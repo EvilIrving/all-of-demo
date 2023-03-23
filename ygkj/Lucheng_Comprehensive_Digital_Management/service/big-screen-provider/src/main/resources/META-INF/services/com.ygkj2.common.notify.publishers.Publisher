@@ -1,0 +1,8 @@
+com.ygkj.big.screen.drill.notify.publisher.MountainTorrentDrillPublisher
+com.ygkj.big.screen.drill.notify.publisher.MountainTorrentDrillCasePublisher
+com.ygkj.big.screen.drill.notify.publisher.RainfallDrillPublisher
+com.ygkj.big.screen.drill.notify.publisher.RainfallDrillCasePublisher
+com.ygkj.big.screen.drill.notify.publisher.RsvrDrillPublisher
+com.ygkj.big.screen.drill.notify.publisher.RsvrDrillCasePublisher
+com.ygkj.big.screen.unit.notify.publish.UnitCachePublisher
+com.ygkj.big.screen.drill.notify.publisher.RainfallSurfaceImgCasePublisher

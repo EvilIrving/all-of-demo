@@ -1,0 +1,131 @@
+.station-side {
+    width: 100%;
+    height: 100%;
+    @include flexbox;
+    @include flexflow(column, nowrap);
+
+    .statistics-chart {
+        position: relative;
+        flex: 1;
+
+        .title-right {
+            position: absolute;
+            right: 0;
+
+            .icon-btn-reset {
+                cursor: pointer;
+                height: 30px;
+            }
+        }
+
+        .chart-tabs {
+            margin-top: 10px;
+            @include flexbox;
+            @include flexAC;
+
+            span {
+                display: inline-block;
+                padding: 4px 8px;
+                width: 80px;
+                color: #4898fb;
+                border: 1px solid #4898fb;
+                text-align: center;
+                line-height: 16px;
+                font-size: 12px;
+                margin-right: 16px;
+                cursor: pointer;
+
+                &.active {
+                    color: #a6e9fb;
+                    background: rgba(72, 152, 251, 0.1);
+                    border: 1px solid #23e3fb;
+                }
+            }
+        }
+
+        .chart-box {
+            padding-top: 8px;
+
+            .split-line {
+                display: inline-block;
+                width: 100%;
+                height: 4px;
+            }
+
+            ::v-deep .dv-capsule-chart {
+                height: 100%;
+            }
+
+            .type-chart {
+                padding: 16px 0;
+
+                .type-chart-item {
+                    @include flexbox;
+                    @include flexflow(row, nowrap);
+                    color: #00c1ff;
+                    margin-bottom: 20px;
+
+                    .chart-item-title {
+                        width: 25px;
+                        letter-spacing: 10px;
+                        border-right: 1px solid #00c1ff;
+
+                        &.cursor {
+                            cursor: pointer;
+                        }
+                    }
+
+                    .chart-item-content {
+                        @include flex(1);
+                        @include flexbox;
+                        @include flexflow(row, nowrap);
+                        padding-left: 18px;
+
+                        .param-item {
+                            width: 49%;
+                            @include flexbox;
+                            @include flexAC;
+                            @include flexflow(row, nowrap);
+                            cursor: pointer;
+                            padding: 6px 12px;
+
+                            &.active {
+                                // border: 1px dashed #4CE3FB;
+                                background: url(~assets/images/param-item-bg.png) no-repeat center center;
+                                background-size: 100% 100%;
+                            }
+
+                            .param-item-icon {
+                                width: 43px;
+                                height: 43px;
+                            }
+
+                            .param-item-data {
+                                margin-left: 10px;
+
+                                p {
+                                    line-height: 24px;
+
+                                    span {
+                                        font-weight: bold;
+                                        color: #1cfef4;
+                                        margin-right: 6px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .statistics-list {
+        @include flex(2);
+
+        .table-list {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}

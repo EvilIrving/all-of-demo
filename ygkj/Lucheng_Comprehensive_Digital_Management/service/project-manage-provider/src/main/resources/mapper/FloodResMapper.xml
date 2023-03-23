@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.FloodResMapper">
+
+    <select id="listRain" resultType="com.ygkj.project.model.StPptnR">
+        SELECT stcd,SUM(drp) drp FROM
+            (
+                <foreach collection="list" separator="UNION ALL" item="item">
+                    SELECT stcd,drp FROM ${item} WHERE tm BETWEEN #{startTime} AND NOW()
+                </foreach>
+            ) a
+        GROUP BY stcd
+    </select>
+
+    <select id="listRainStation" resultType="com.ygkj.project.vo.response.StResVo">
+        SELECT
+            base.st_code,base.st_name,
+            rel.threshold,base.st_long,base.st_lat
+        FROM
+            att_st_base base
+            LEFT JOIN rel_st_threshold rel ON base.st_code = rel.st_code AND minutes = #{minutes}
+        WHERE
+            base.is_rain_station = 1
+            <if test="areaCode != null and areaCode != ''">
+                AND base.area_code LIKE CONCAT('%',#{areaCode},'%')
+            </if>
+            <if test="stName != null and stName != ''">
+                AND base.st_name LIKE CONCAT('%',#{stName},'%')
+            </if>
+    </select>
+
+    <select id="selectHourRainfall" resultType="com.ygkj.project.model.StPptnR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT stcd, DATE_ADD(DATE_FORMAT(tm,'%Y-%m-%d %H:00:00'),INTERVAL 1 hour) tm,SUM(drp) drp FROM ${item}
+            <where>
+                <if test="queryVo.start != null and queryVo.end != null">
+                    and (tm between #{queryVo.start} AND #{queryVo.end})
+                </if>
+                <if test="queryVo.stationCode != null">
+                    AND stcd = #{queryVo.stationCode}
+                </if>
+            </where>
+            GROUP BY DATE_FORMAT(tm,'%Y-%m-%d %H')
+            ORDER BY tm DESC
+            )
+        </foreach>
+    </select>
+
+    <select id="listWater" resultType="com.ygkj.project.vo.response.WaterResVo">
+        SELECT
+            *
+        FROM
+            att_water_project_base
+        <where>
+            <if test="projectType != null and projectType != ''">
+                project_type IN
+                <foreach collection="typeList" open="(" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND adcd = #{areaCode}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                AND project_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="listResProject" resultType="com.ygkj.project.vo.response.ResProjectResVo">
+        SELECT * FROM att_all_project_base
+        <where>
+            <if test="projectType != null and projectType != ''">
+                project_type = #{projectType}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                AND project_type LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="projGrad != null">
+                AND proj_grad = #{projGrad}
+            </if>
+        </where>
+    </select>
+
+    <select id="listWaterLevel" resultType="com.ygkj.project.vo.response.WaterResVo">
+        SELECT * FROM (
+            SELECT * FROM (
+                SELECT
+                    stcd st_code,tm,z water_level
+                FROM
+                st_river_r_${tableTime}
+                WHERE tm BETWEEN #{startTime} AND NOW()
+                union all
+                SELECT
+                 stcd,tm,rz water_level
+                 FROM st_rsvr_r_${tableTime}
+                 WHERE tm BETWEEN #{startTime} AND NOW()
+                 union all
+                 SELECT
+                 stcd,tm,upz water_level
+                 FROM
+                 st_was_r_${tableTime}
+                 WHERE tm BETWEEN #{startTime} AND NOW()
+            ) a ORDER BY tm DESC LIMIT 30000 ) b
+             GROUP BY st_code
+    </select>
+
+    <select id="selectStationsByProjectCode" resultType="com.ygkj.gragh.model.AttStBase">
+        SELECT st_code,st_name FROM att_st_base WHERE proj_code = #{projectCode}
+    </select>
+
+    <select id="selectNewestReserviorWaterLevelFromTable" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT a.* FROM
+	    (SELECT stcd, tm, rz FROM ${table}
+	    WHERE tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') AND stcd = #{stationCode} ORDER BY tm DESC LIMIT 1 ) a
+        GROUP BY a.stcd
+    </select>
+
+</mapper>

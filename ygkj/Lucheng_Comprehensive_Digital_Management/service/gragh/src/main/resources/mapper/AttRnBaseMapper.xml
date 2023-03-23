@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.AttRnBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.gragh.model.AttRnBase">
+        <result column="rn_name" property="rnName"/>
+        <result column="main_st_code" property="mainStCode"/>
+        <result column="main_st_name" property="mainStName"/>
+        <result column="warning_level" property="warningLevel"/>
+        <result column="gurantee_level" property="guranteeLevel"/>
+        <result column="highest_level" property="highestLevel"/>
+        <result column="highest_date" property="highestDate"/>
+        <result column="bas" property="bas"/>
+        <result column="water_area" property="waterArea"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="dept_id" property="deptId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        rn_name,
+        main_st_code,
+        main_st_name,
+        warning_level,
+        gurantee_level,
+        highest_level,
+        highest_date,
+        bas,
+        water_area,
+        area_code,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag,
+        dept_id
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.gragh.model.AttRnBase">
+        INSERT INTO att_rn_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != rnName'>
+                rn_name,
+            </if>
+            <if test='null != mainStCode'>
+                main_st_code,
+            </if>
+            <if test='null != mainStName'>
+                main_st_name,
+            </if>
+            <if test='null != warningLevel'>
+                warning_level,
+            </if>
+            <if test='null != guranteeLevel'>
+                gurantee_level,
+            </if>
+            <if test='null != highestLevel'>
+                highest_level,
+            </if>
+            <if test='null != highestDate'>
+                highest_date,
+            </if>
+            <if test='null != bas'>
+                bas,
+            </if>
+            <if test='null != waterArea'>
+                water_area,
+            </if>
+            <if test='null != areaCode'>
+                area_code,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag,
+            </if>
+            <if test='null != deptId'>
+                dept_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != rnName'>
+                #{rnName},
+            </if>
+            <if test='null != mainStCode'>
+                #{mainStCode},
+            </if>
+            <if test='null != mainStName'>
+                #{mainStName},
+            </if>
+            <if test='null != warningLevel'>
+                #{warningLevel},
+            </if>
+            <if test='null != guranteeLevel'>
+                #{guranteeLevel},
+            </if>
+            <if test='null != highestLevel'>
+                #{highestLevel},
+            </if>
+            <if test='null != highestDate'>
+                #{highestDate},
+            </if>
+            <if test='null != bas'>
+                #{bas},
+            </if>
+            <if test='null != waterArea'>
+                #{waterArea},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test='null != deptId'>
+                #{deptId}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_rn_base
+        WHERE rn_name = #{rnName}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.gragh.model.AttRnBase">
+        UPDATE att_rn_base
+        <set>
+            <if test='null != mainStCode'>main_st_code = #{mainStCode},</if>
+            <if test='null != mainStName'>main_st_name = #{mainStName},</if>
+            <if test='null != warningLevel'>warning_level = #{warningLevel},</if>
+            <if test='null != guranteeLevel'>gurantee_level = #{guranteeLevel},</if>
+            <if test='null != highestLevel'>highest_level = #{highestLevel},</if>
+            <if test='null != highestDate'>highest_date = #{highestDate},</if>
+            <if test='null != bas'>bas = #{bas},</if>
+            <if test='null != waterArea'>water_area = #{waterArea},</if>
+            <if test='null != areaCode'>area_code = #{areaCode},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test='null != deptId'>dept_id = #{deptId}</if>
+        </set>
+        WHERE rn_name = #{rnName}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_rn_base
+        WHERE rn_name = #{rnName}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_rn_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_rn_base
+    </select>
+
+    <select id="selectByCondition" resultType="com.ygkj.gragh.model.AttRnBase">
+        select
+        <include refid="Base_Column_List"/>
+        from att_rn_base
+        <where>
+            <if test="true">
+                and del_flag=0
+            </if>
+            <if test="rnName!=null and rnName!=''">
+                AND rn_name like concat('%',#{rnName},'%')
+            </if>
+            <if test="mainStName!=null and mainStName!=''">
+                AND main_st_name like concat('%',#{mainStName},'%')
+            </if>
+            <if test="bas!=null and bas!=''">
+                AND bas like concat('%',#{bas},'%')
+            </if>
+            <if test="adcd!=null and adcd!=''">
+                AND area_code like concat(substr(#{adcd},1,6),'%')
+            </if>
+        </where>
+        <if test="orderSql != null and orderSql != ''">
+            ${orderSql}
+        </if>
+    </select>
+
+</mapper>

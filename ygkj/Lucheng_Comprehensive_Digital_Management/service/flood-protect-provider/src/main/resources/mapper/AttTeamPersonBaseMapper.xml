@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.AttTeamPersonBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.flood.vo.response.AttTeamPersonResVo" >
+        <result column="id" property="id" />
+        <result column="person_name" property="personName" />
+        <result column="person_phone" property="personPhone" />
+        <result column="person_job" property="personJob" />
+        <result column="team_id" property="teamId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                person_name,
+                office_phone,
+                person_phone,
+                person_job,
+                team_id
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.flood.model.AttTeamPersonBase">
+        INSERT INTO att_team_person_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != personName'>
+                person_name,
+            </if>
+            <if test="null != officePhone and '' != officePhone">
+                office_phone,
+            </if>
+            <if test ='null != personPhone'>
+                person_phone,
+            </if>
+            <if test ='null != personJob'>
+                person_job,
+            </if>
+            <if test ='null != teamId'>
+                team_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != personName'>
+                #{personName},
+            </if>
+            <if test="null != officePhone and '' != officePhone">
+                #{officePhone},
+            </if>
+            <if test ='null != personPhone'>
+                #{personPhone},
+            </if>
+            <if test ='null != personJob'>
+                #{personJob},
+            </if>
+            <if test ='null != teamId'>
+                #{teamId},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="batchInsert">
+        INSERT INTO att_team_person_base (
+                id,
+                person_name,
+                office_phone,
+                person_phone,
+                person_job,
+                team_id)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.personName},#{item.officePhone},#{item.personPhone},#{item.personJob},#{item.teamId})
+        </foreach>
+    </insert>
+
+    <delete id="deletePersons" >
+        UPDATE att_team_person_base SET del_flag = 1 WHERE id in
+        <foreach item="item"  collection="list"
+                 open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByTeamId">
+        UPDATE att_team_person_base SET del_flag = 1 WHERE team_id = #{teamId}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.flood.model.AttTeamPersonBase">
+        UPDATE att_team_person_base
+        <set>
+            <if test ='null != personName'>person_name = #{personName},</if>
+            <if test="null != officePhone and '' != officePhone">office_phone = #{officePhone},</if>
+            <if test ='null != personPhone'>person_phone = #{personPhone},</if>
+            <if test ='null != personJob'>person_job = #{personJob},</if>
+            <if test ='null != teamId'>team_id = #{teamId},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_team_person_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_team_person_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_team_person_base
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_team_person_base
+        WHERE del_flag = 0
+        <if test="teamId != null and teamId != ''">
+            AND team_id = #{teamId}
+        </if>
+        <if test="id != null and id != ''">
+            AND id = #{id}
+        </if>
+        <if test="personName != null and personName != ''">
+            AND person_name LIKE CONCAT('%',#{personName},'%')
+        </if>
+    </select>
+
+</mapper>

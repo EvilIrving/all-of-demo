@@ -1,0 +1,70 @@
+<script>
+export default {
+  name: "CapsuleTabs",
+  props: {
+    value: { type: Number, default: 0 },
+    tabs: { type: Array, default: () => [] }
+  },
+  data() {
+    return {
+      activeIndex: 0
+    };
+  },
+  watch: {
+    value: {
+      deep: true,
+      immediate: true,
+      handler: function (val, oldVal) {
+        this.activeIndex = val;
+      }
+    }
+  },
+  render() {
+    let tabList = this.tabs.map((item, index) => {
+      let tabClass = ["capsule-tabs__item", index == this.activeIndex && "active"];
+      return (
+        <div
+          class={tabClass}
+          onClick={() => {
+            if (item.disabled) return;
+            this.activeIndex = index;
+            this.$emit("input", index);
+            this.$emit("change", index);
+          }}
+          style={{ cursor: item.disabled && "not-allowed" }, 'text-align: center'}
+        >
+          <span>{item.label || item}</span>
+        </div>
+      );
+    });
+    return <div class="capsule-tabs">{tabList}</div>;
+  }
+};
+</script>
+
+<style lang="scss" scpoed>
+.capsule-tabs {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  .capsule-tabs__item {
+    float: left;
+    min-width: 60px;
+    white-space: nowrap;
+    height: 24px;
+    line-height: 24px;
+    cursor: pointer;
+    user-select: none;
+    padding: 0 12px;
+    border-radius: 16px;
+    color: #fff;
+    margin: 10px 10px 10px 0;
+    &.active {
+      background-image: linear-gradient(180deg, #36c0e4 20%, #0639ff 100%);
+    }
+    &:last-child {
+      clear: right;
+    }
+  }
+}
+</style>

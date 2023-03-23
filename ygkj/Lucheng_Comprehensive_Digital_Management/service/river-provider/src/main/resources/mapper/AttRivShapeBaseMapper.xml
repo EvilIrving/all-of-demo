@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttRivShapeBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttRivShapeBase">
+        <result column="river_no" property="riverNo"/>
+        <result column="river_name" property="riverName"/>
+        <result column="river_path" property="riverPath"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        river_no,
+        river_name,
+        river_path,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.AttRivShapeBase">
+        INSERT INTO att_riv_shape_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != riverNo'>
+                river_no,
+            </if>
+            <if test='null != riverName'>
+                river_name,
+            </if>
+            <if test='null != riverPath'>
+                river_path,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != riverNo'>
+                #{riverNo},
+            </if>
+            <if test='null != riverName'>
+                #{riverName},
+            </if>
+            <if test='null != riverPath'>
+                #{riverPath},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_riv_shape_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.AttRivShapeBase">
+        UPDATE att_riv_shape_base
+        <set>
+            <if test='null != riverNo'>river_no = #{riverNo},</if>
+            <if test='null != riverName'>river_name = #{riverName},</if>
+            <if test='null != riverPath'>river_path = #{riverPath},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_shape_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_shape_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_riv_shape_base
+    </select>
+
+    <select id="selectByCondition" resultType="com.ygkj.river.vo.response.RiverCoordinateResVo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_shape_base
+        <where>
+            <if test="true">
+                and del_flag=0
+            </if>
+            <if test="riverNo!=null and riverNo!=''">
+                and river_no=#{riverNo}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByRiverNo" resultType="com.ygkj.river.model.AttRivShapeBase">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_shape_base where del_flag = 0 and river_no = #{riverNo}
+    </select>
+
+</mapper>

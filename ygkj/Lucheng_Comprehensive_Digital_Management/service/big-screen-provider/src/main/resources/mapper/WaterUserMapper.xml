@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.WaterUserMapper">
+
+    <select id="getWiuInfos" resultType="com.ygkj.big.screen.vo.response.WuWaterUserMapRespVo">
+        SELECT
+        wiu.wiu_code,
+        wiu.wiu_name,
+        wpt.wpermitsize * 10000 wpermitsize,
+        wiu.wiu_long,
+        wiu.wiu_lat,
+        case
+        when wpt.int_dl > now() then 1
+        else 2
+        end status
+        FROM
+        att_wiu_base wiu
+        LEFT JOIN att_wpt_base wpt ON wpt.wr_org_code = wiu.wiu_code and wpt.del_flag = 0
+        WHERE
+        wiu.del_flag = 0
+        <if test='"1".equals(type)'>
+            and wpt.type_qslx like '%工业%'
+        </if>
+        <if test='"2".equals(type)'>
+            and wpt.type_qslx like '%电%'
+        </if>
+        <if test='"3".equals(type)'>
+            and wpt.type_qslx like '%生活%'
+        </if>
+        <if test='"4".equals(type)'>
+            and wpt.type_qslx like '%农业%'
+        </if>
+        <if test='"5".equals(type)'>
+            and wpt.type_qslx like '%其他%'
+        </if>
+    </select>
+    <select id="getWiuUseMonths" resultType="com.ygkj.big.screen.model.WiuUseMonth">
+        select wiu_code, wat_use, `month` from wiu_use_month where `year` = #{year}
+        <if test="wiuCode != null and wiuCode != ''">
+            and wiu_code = #{wiuCode}
+        </if>
+    </select>
+
+    <select id="getAdcdWptStats" resultType="java.util.Map">
+        select adcd, sum(wpermitsize) num from att_wpt_base where del_flag = 0 group by adcd
+    </select>
+
+    <select id="wptQslxStatistics" resultType="com.ygkj.big.screen.vo.response.WuWptQslxStatsRespVo">
+        select '工业取水' qslx, count(1) num from att_wpt_base where del_flag = 0 and type_qslx like '%工业%'
+        <if test="adcd != null and adcd != ''">
+            and adcd = #{adcd}
+        </if>
+        union all
+        select '水利发电' qslx, count(1) num from att_wpt_base where del_flag = 0 and type_qslx like '%电%'
+        <if test="adcd != null and adcd != ''">
+            and adcd = #{adcd}
+        </if>
+        union all
+        select '公共供水' qslx, count(1) num from att_wpt_base where del_flag = 0 and type_qslx like '%生活%'
+        <if test="adcd != null and adcd != ''">
+            and adcd = #{adcd}
+        </if>
+        union all
+        select '农业取水' qslx, count(1) num from att_wpt_base where del_flag = 0 and type_qslx like '%农业%'
+        <if test="adcd != null and adcd != ''">
+            and adcd = #{adcd}
+        </if>
+        union all
+        select '其他' qslx, count(1) num from att_wpt_base where del_flag = 0 and type_qslx like '%其他%'
+        <if test="adcd != null and adcd != ''">
+            and adcd = #{adcd}
+        </if>
+    </select>
+
+    <select id="adcdWiuStats" resultType="java.util.Map">
+        select wiu_loc adcd, count(1) num from att_wiu_base where del_flag = 0 group by wiu_loc
+    </select>
+
+    <select id="wiuUseCurve" resultType="com.ygkj.big.screen.vo.response.WuWiuUseCurveRespVo">
+        select `month`, sum(wat_use) total_use from wiu_use_month where `year` = #{year} group by `month`
+    </select>
+
+    <select id="getWiuNum" resultType="java.lang.Integer">
+        select count(1) num from att_wiu_base where del_flag = 0
+    </select>
+    <select id="getDocNum" resultType="java.lang.Integer">
+        select count(1) num from
+        (select wiu_code from bus_wiu_doc where del_flag = 0 group by wiu_code) t
+    </select>
+</mapper>

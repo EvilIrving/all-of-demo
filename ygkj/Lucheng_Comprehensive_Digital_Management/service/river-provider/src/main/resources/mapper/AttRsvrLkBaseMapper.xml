@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttRsvrLkBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttRsvrLkBase">
+        <result column="id" property="id"/>
+        <result column="reservoir_no" property="reservoirNo"/>
+        <result column="reservoir_type" property="reservoirType"/>
+        <result column="reservoir_name" property="reservoirName"/>
+        <result column="level" property="level"/>
+        <result column="watershed_name" property="watershedName"/>
+        <result column="reservoir_area" property="reservoirArea"/>
+        <result column="reservoir_depth" property="reservoirDepth"/>
+        <result column="type" property="type"/>
+        <result column="area_path" property="areaPath"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        reservoir_no,
+        reservoir_type,
+        reservoir_name,
+        level,
+        watershed_name,
+        reservoir_area,
+        reservoir_depth,
+        type,
+        area_path,
+        area_code,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.AttRsvrLkBase">
+        INSERT INTO att_rsvr_lk_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != reservoirNo'>
+                reservoir_no,
+            </if>
+            <if test='null != reservoirType'>
+                reservoir_type,
+            </if>
+            <if test='null != reservoirName'>
+                reservoir_name,
+            </if>
+            <if test='null != level'>
+                level,
+            </if>
+            <if test='null != watershedName'>
+                watershed_name,
+            </if>
+            <if test='null != reservoirArea'>
+                reservoir_area,
+            </if>
+            <if test='null != reservoirDepth'>
+                reservoir_depth,
+            </if>
+            <if test='null != type'>
+                type,
+            </if>
+            <if test='null != areaPath'>
+                area_path,
+            </if>
+            <if test='null != areaCode'>
+                area_code,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != reservoirNo'>
+                #{reservoirNo},
+            </if>
+            <if test='null != reservoirType'>
+                #{reservoirType},
+            </if>
+            <if test='null != reservoirName'>
+                #{reservoirName},
+            </if>
+            <if test='null != level'>
+                #{level},
+            </if>
+            <if test='null != watershedName'>
+                #{watershedName},
+            </if>
+            <if test='null != reservoirArea'>
+                #{reservoirArea},
+            </if>
+            <if test='null != reservoirDepth'>
+                #{reservoirDepth},
+            </if>
+            <if test='null != type'>
+                #{type},
+            </if>
+            <if test='null != areaPath'>
+                #{areaPath},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_rsvr_lk_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.AttRsvrLkBase">
+        UPDATE att_rsvr_lk_base
+        <set>
+            <if test='null != reservoirNo'>reservoir_no = #{reservoirNo},</if>
+            <if test='null != reservoirType'>reservoir_type = #{reservoirType},</if>
+            <if test='null != reservoirName'>reservoir_name = #{reservoirName},</if>
+            <if test='null != level'>level = #{level},</if>
+            <if test='null != watershedName'>watershed_name = #{watershedName},</if>
+            <if test='null != reservoirArea'>reservoir_area = #{reservoirArea},</if>
+            <if test='null != reservoirDepth'>reservoir_depth = #{reservoirDepth},</if>
+            <if test='null != type'>type = #{type},</if>
+            <if test='null != areaPath'>area_path = #{areaPath},</if>
+            <if test='null != areaCode'>area_code = #{areaCode},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_rsvr_lk_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_rsvr_lk_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_rsvr_lk_base
+    </select>
+</mapper>

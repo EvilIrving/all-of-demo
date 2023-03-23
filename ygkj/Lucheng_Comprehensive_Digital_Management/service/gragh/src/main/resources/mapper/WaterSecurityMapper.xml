@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.WaterSecurityMapper">
+
+
+    <select id="listKpakma" resultType="com.ygkj.gragh.vo.response.KpakmaBaseResVo"
+            parameterType="com.ygkj.gragh.vo.request.KpakmaReqVo">
+        SELECT
+        akb.kpakma_code,akb.kpakma_name
+        FROM
+        att_kpakma_base akb
+        LEFT JOIN rel_kpakma_bas bas ON akb.kpakma_code = bas.kpakma_code
+        <where>
+            <if test="areaCode != null and areaCode != ''">
+                <if test="type == 1">
+                    akb.kpakma_loc LIKE CONCAT(#{areaCode},'%')
+                </if>
+                <if test="type == 2">
+                    bas.bas_code = #{areaCode}
+                </if>
+            </if>
+            <if test="codeOrName != null and codeOrName != ''">
+                AND akb.kpakma_name LIKE CONCAT('%',#{codeOrName},'%')
+            </if>
+        </where>
+        GROUP BY
+        akb.kpakma_code
+    </select>
+
+    <select id="listKpakmaYear" resultType="com.ygkj.gragh.vo.response.KpakmaResVo">
+        SELECT
+        kpakma_code,kpakma_aera,
+        kpakma_degree,kpakma_range
+        FROM
+        kpakma_loss
+        WHERE
+        `year` = #{year}
+    </select>
+
+    <select id="listWiu" resultType="com.ygkj.gragh.vo.response.WiuResVo"
+            parameterType="com.ygkj.gragh.vo.request.WainReqVo">
+        SELECT
+        awb.wiu_code,awb.wiu_name,
+        awb.wiu_long,awb.wiu_lat,
+        aab.city_adnm,aab.country_adnm
+        FROM
+        att_wiu_base awb
+        LEFT JOIN rel_wiu_bas rwb ON awb.wiu_code = rwb.wiu_code
+        LEFT JOIN att_adcd_base aab ON aab.adcd = awb.wiu_loc
+        <where>
+            <if test="areaCode != null and areaCode != ''">
+                <if test="type == 1">
+                    awb.wiu_loc LIKE CONCAT(#{areaCode},'%')
+                </if>
+                <if test="type == 2">
+                    rwb.bas_code = #{areaCode}
+                </if>
+            </if>
+            <if test="codeOrName != null and codeOrName != ''">
+                AND (awb.wiu_code = #{codeOrName} OR awb.wiu_name LIKE CONCAT('%',#{codeOrName},'%'))
+            </if>
+        </where>
+        GROUP BY
+        awb.wiu_code
+    </select>
+
+    <select id="listWiuUse" resultType="com.ygkj.gragh.vo.response.WiuUseResVo">
+        SELECT
+        wu.*,plan.wat_plan
+        FROM
+        wiu_use wu
+        LEFT JOIN wiu_plan plan ON wu.wiu_code = plan.wiu_code AND plan.year = #{year}
+        WHERE
+        wu.year = #{year}
+        AND wu.wiu_code IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY wu.update_time DESC
+    </select>
+
+    <select id="listWain" resultType="com.ygkj.gragh.vo.response.WainResVo"
+            parameterType="com.ygkj.gragh.vo.request.WainReqVo">
+        SELECT
+        awb.wain_code,awb.wain_name,
+        awb.wain_long,awb.wain_lat
+        FROM
+        att_wain_base awb
+        LEFT JOIN rel_wain_bas bas ON awb.wain_code = bas.wain_code
+        <where>
+            <if test="areaCode != null and areaCode != ''">
+                <if test="type == 1">
+                    awb.wain_loc LIKE CONCAT(#{areaCode},'%')
+                </if>
+                <if test="type == 2">
+                    bas.bas_code = #{areaCode}
+                </if>
+            </if>
+            <if test="codeOrName != null and codeOrName != ''">
+                AND (awb.wain_code = #{codeOrName} OR awb.wain_name LIKE CONCAT('%',#{codeOrName},'%'))
+            </if>
+        </where>
+        GROUP BY
+        awb.wain_code
+    </select>
+
+    <select id="listSwhs" resultType="com.ygkj.gragh.vo.response.SwhsResVo"
+            parameterType="com.ygkj.gragh.vo.request.WainReqVo">
+        SELECT
+        asb.swhs_code,asb.swhs_name,
+        asb.swhs_long,asb.swhs_lat,
+        asb.wain_waso_type,asb.des_ann_wasu_pop,
+        asb.date_max_wat
+        FROM
+        att_swhs_base asb
+        LEFT JOIN rel_swhs_bas bas ON asb.swhs_code = bas.swhs_code
+        <where>
+            <if test="areaCode != null and areaCode != ''">
+                <if test="type == 1">
+                    asb.swhs_loc LIKE CONCAT(#{areaCode},'%')
+                </if>
+                <if test="type == 2">
+                    bas.bas_code = #{areaCode}
+                </if>
+            </if>
+            <if test="codeOrName != null and codeOrName != ''">
+                AND (asb.swhs_code = #{codeOrName} OR asb.swhs_name LIKE CONCAT('%',#{codeOrName},'%'))
+            </if>
+        </where>
+        GROUP BY
+        asb.swhs_code
+    </select>
+
+    <select id="wiuBase" resultType="com.ygkj.gragh.vo.response.WiuBaseResVo">
+        SELECT
+        base.wiu_code,base.wiu_name,wpt.type_qslx wiuType,
+        base.wr_org_code,wpt.int_bd,wpt.int_dl,wpt.wpermitsize watPlan
+        FROM
+        att_wiu_base base
+        LEFT JOIN att_wpt_base wpt ON base.wiu_code = wpt.wr_org_code
+        WHERE
+        base.wiu_code = #{wiuCode}
+        ORDER BY int_dl DESC
+        LIMIT 1
+    </select>
+
+    <select id="listWiuUseByTime" resultType="com.ygkj.gragh.model.WiuUse">
+        SELECT
+        *
+        FROM
+        wiu_use
+        WHERE
+        wiu_code =#{wiuCode}
+        AND update_time > #{time}
+        ORDER BY
+        update_time
+    </select>
+
+    <select id="wiuPlan" resultType="com.ygkj.gragh.model.WiuPlan" parameterType="com.ygkj.gragh.vo.request.WiuReqVo">
+        SELECT
+        *
+        FROM
+        wiu_plan
+        WHERE
+        wiu_code = #{wiuCode}
+        ORDER BY `year` DESC
+    </select>
+
+    <select id="wiuWpt" resultType="com.ygkj.gragh.vo.response.WiuWptResVo">
+        SELECT
+        *
+        FROM
+        att_wpt_base
+        WHERE
+        wr_org_code = #{wiuCode}
+        ORDER BY
+        int_dl DESC
+        LIMIT 1
+    </select>
+
+    <select id="wiuRecord" resultType="com.ygkj.gragh.vo.response.WiuRecordResVo">
+        SELECT * FROM wiu_record WHERE wiu_code = #{wiuCode} ORDER BY update_time DESC
+    </select>
+
+    <select id="wiuUse" resultType="com.ygkj.gragh.model.WiuUse" parameterType="com.ygkj.gragh.vo.request.WiuReqVo">
+        SELECT
+        *
+        FROM
+        wiu_use
+        WHERE
+        wiu_code = #{wiuCode}
+        <if test="startYear != null and startYear != ''">
+            AND `year` &gt;= #{startYear}
+        </if>
+        <if test="endYear != null and endYear != ''">
+            AND `year` &lt;= #{endYear}
+        </if>
+        ORDER BY update_time DESC
+    </select>
+
+    <select id="wainBase" resultType="com.ygkj.gragh.vo.response.WainBaseResVo">
+        SELECT
+        base.wain_name,base.wain_waso_type,
+        base.wain_type,base.main_wain_use,
+        att.city_adnm,att.country_adnm,wiu.wiu_name
+        FROM
+        att_wain_base base
+        LEFT JOIN att_adcd_base att ON base.wain_loc = att.adcd
+        LEFT JOIN att_wiu_base wiu ON wiu.wiu_code = base.wiu_code
+        WHERE
+        base.wain_code = #{wainCode}
+        LIMIT 1
+    </select>
+
+    <select id="swhsBase" resultType="com.ygkj.gragh.vo.response.SwhsBaseResVo">
+        SELECT
+        base.swhs_code,base.swhs_name,att.town_adnm,
+        base.wain_waso_type,base.date_max_wat,base.des_ann_wasu_pop,
+        base.master,base.master_phone,att.city_adnm,
+        att.country_adnm
+        FROM
+        att_swhs_base base
+        LEFT JOIN att_adcd_base att ON base.swhs_loc = att.adcd
+        WHERE
+        base.swhs_code = #{swhsCode}
+        LIMIT 1
+    </select>
+
+    <select id="listSwhsFile" resultType="java.lang.String">
+        SELECT
+        file_id
+        FROM
+        rel_swhs_sign
+        WHERE
+        swhs_code = #{swhsCode}
+    </select>
+
+    <select id="queryWiuUse" resultType="java.math.BigDecimal">
+        SELECT wat_use FROM wiu_use WHERE wiu_code = #{wiuCode} AND `year` = #{year}
+    </select>
+
+    <select id="kpakmaBase" resultType="com.ygkj.gragh.vo.response.KpakmaBaseResVo">
+        SELECT
+        base.kpakma_code,base.kpakma_name,
+        ad.city_adnm,ad.country_adnm
+        FROM
+        att_kpakma_base base
+        LEFT JOIN att_adcd_base ad ON base.kpakma_loc = ad.adcd
+        WHERE
+        base.kpakma_code = #{kpakmaCode}
+    </select>
+
+    <select id="listKpakmaLoss" resultType="com.ygkj.gragh.vo.response.KpakmaBaseResVo">
+        SELECT
+        kpakma_aera,kpakma_degree
+        FROM
+        kpakma_loss
+        WHERE
+        kpakma_code = #{kpakmaCode}
+        AND `year` = #{year}
+        LIMIT 1
+    </select>
+
+</mapper>

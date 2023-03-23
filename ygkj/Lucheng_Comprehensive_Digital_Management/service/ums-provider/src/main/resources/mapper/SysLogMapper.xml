@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.SysLogMapper">
+    <resultMap id="BaseResultMap" type="com.ygkj.entity.SysLog">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="operation" jdbcType="VARCHAR" property="operation"/>
+        <result column="time" jdbcType="INTEGER" property="time"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="params" jdbcType="VARCHAR" property="params"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="region" jdbcType="VARCHAR" property="region"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, username, `operation`,`module`, `time`, `method`, params, ip, create_time, region
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_log
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from sys_log
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.ygkj.entity.SysLog">
+        insert into sys_log (id, user_id, username,
+        `operation`,`module`, `time`, `method`,
+        params, ip, create_time,region
+        )
+        values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
+        #{operation,jdbcType=VARCHAR},#{module,jdbcType=VARCHAR}, #{time,jdbcType=INTEGER}, #{method,jdbcType=VARCHAR},
+        #{params,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{region,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.ygkj.entity.SysLog">
+        insert into sys_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="operation != null">
+                `operation`,
+            </if>
+            <if test="module != null">
+                `module`,
+            </if>
+            <if test="time != null">
+                `time`,
+            </if>
+            <if test="method != null">
+                `method`,
+            </if>
+            <if test="params != null">
+                params,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="region != null">
+                region,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="operation != null">
+                #{operation,jdbcType=VARCHAR},
+            </if>
+            <if test="module != null">
+                #{module,jdbcType=VARCHAR},
+            </if>
+            <if test="time != null">
+                #{time,jdbcType=INTEGER},
+            </if>
+            <if test="method != null">
+                #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="params != null">
+                #{params,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="region != null">
+                #{region,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ygkj.entity.SysLog">
+        update sys_log
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="operation != null">
+                `operation` = #{operation,jdbcType=VARCHAR},
+            </if>
+            <if test="module != null">
+                `module` = #{module,jdbcType=VARCHAR},
+            </if>
+            <if test="time != null">
+                `time` = #{time,jdbcType=INTEGER},
+            </if>
+            <if test="method != null">
+                `method` = #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="params != null">
+                params = #{params,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="region != null">
+                region = #{region,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ygkj.entity.SysLog">
+        update sys_log
+        set user_id = #{userId,jdbcType=VARCHAR},
+        username = #{username,jdbcType=VARCHAR},
+        `operation` = #{operation,jdbcType=VARCHAR},
+        `module` = #{module,jdbcType=VARCHAR},
+        `time` = #{time,jdbcType=INTEGER},
+        `method` = #{method,jdbcType=VARCHAR},
+        params = #{params,jdbcType=VARCHAR},
+        ip = #{ip,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        region = #{region,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_log
+        <where>
+            user_id != '61fe30e6ffb64e7288d9f2cdb79e6658'
+            <if test="username!=null and username!=''">
+                AND username LIKE concat('%',#{username},'%')
+            </if>
+            <if test="operation!=null and operation!=''">
+                AND operation LIKE concat('%',#{operation},'%')
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                AND create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                AND create_time &lt;= #{endTime}
+            </if>
+            <if test="userId!=null and userId!='' ">
+                AND user_id=#{userId}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+
+    <delete id="batchDeletedLog">
+        delete
+        from sys_log
+        where id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="loadLoginLogs" parameterType="com.ygkj.platform.management.vo.request.SysLoginLogPage" resultType="com.ygkj.platform.management.model.SysLoginLog">
+        select * from sys_login_log
+        <where>
+            <if test="userName!=null and userName!=''">
+                AND user_name LIKE concat('%',#{userName},'%')
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                AND login_time &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                AND login_time &lt;= #{endTime}
+            </if>
+            <if test="department!=null and department!='' ">
+                AND department LIKE concat('%',#{department},'%')
+            </if>
+        </where>
+        order by login_time desc
+    </select>
+</mapper>

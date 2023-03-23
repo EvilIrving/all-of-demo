@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.ExchangeMapper">
+
+    <insert id="batchInsertDuty" parameterType="com.ygkj.lcsyn.model.BhDutyRecord">
+        INSERT INTO bh_duty_record
+            ( duty_date,pid,leader,mgt_day,mgt_night,
+              bq_a, bq_b, bf_a, bf_b, tm_a,
+              tm_b, dh_a, dh_b, cd_a, cd_b,
+              resume,week,id, fs_a,fs_b,
+              mid_leader,mgt_night_phone,mgt_night_id,patrol_type,affair,
+              manager, manager_n,run_qin,duty_cap,leader_n,
+              run_qin_n,duty_cap_n,leader_a,run_qin_a,duty_cap_a,
+              manager_a,mgt_afternoon,device_patrol_uid, property_patrol_uid,duty_phone)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                ( #{item.dutyDate},#{item.pid},#{item.leader},#{item.mgtDay},#{item.mgtNight},
+                #{item.bqA},#{item.bqB},#{item.bfA},#{item.bfB},#{item.tmA},
+                #{item.tmB},#{item.dhA},#{item.dhB},#{item.cdA},#{item.cdB},
+                #{item.resume},#{item.week},#{item.id},#{item.fsA},#{item.fsB},
+                #{item.midLeader},#{item.mgtNightPhone},#{item.mgtNightId},#{item.patrolType},#{item.affair},
+                #{item.manager},#{item.managerN},#{item.runQin},#{item.dutyCap},#{item.leaderN},
+                #{item.runQinN},#{item.dutyCapN},#{item.leaderA},#{item.runQinA},#{item.dutyCapA},
+                #{item.managerA},#{item.mgtAfternoon},#{item.devicePatrolUid},#{item.propertyPatrolUid},#{item.dutyPhone})
+            </foreach>
+    </insert>
+
+    <insert id="batchReplacePatrol" parameterType="com.ygkj.lcsyn.model.BhSlPatrolGis">
+        REPLACE INTO bh_sl_patrol_gis
+            ( id, skid, patrol_begintime, patrol_endtime,
+            hidden_trouble_count, u_id, patrol_type, propose_id,
+            verify_id, is_complete)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                ( #{item.id},#{item.skid},#{item.patrolBegintime},#{item.patrolEndtime},
+                #{item.hiddenTroubleCount},#{item.uId},#{item.patrolType},#{item.proposeId},
+                #{item.verifyId},#{item.isComplete})
+            </foreach>
+    </insert>
+
+    <insert id="batchReplacePatrolPosition" parameterType="com.ygkj.lcsyn.model.BhSlPatrolGisPosition">
+        REPLACE INTO bh_sl_patrol_gis_position
+            ( id,skid,gid,project_position,userrid,
+            patrol_tm,issafe,hidden_trouble,hidden_trouble_propose,
+            hidden_trouble_status,lgtd,lttd,propose_tm,
+            before_pic,after_pic,verify_time,assign_uid,
+            checkpoint_save_id,checkpoint_hidden_id,cell_id,patrol_type)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            ( #{item.id},#{item.skid},#{item.gid},#{item.projectPosition},#{item.userrid},
+            #{item.patrolTm},#{item.issafe},#{item.hiddenTrouble}, #{item.hiddenTroublePropose},
+            #{item.hiddenTroubleStatus},#{item.lgtd},#{item.lttd},#{item.proposeTm},
+            #{item.beforePic},#{item.afterPic},#{item.verifyTime},#{item.assignUid},
+            #{item.checkpointSaveId},#{item.checkpointHiddenId},#{item.cellId},#{item.patrolType})
+        </foreach>
+    </insert>
+
+    <insert id="batchReplaceDanger" parameterType="com.ygkj.lcsyn.model.BhLgPrjHideDanger">
+        REPLACE INTO bh_lg_prj_hide_danger
+            (id,abbreviation,position,description,
+            foundtime,foundmethod,picaid,disposalmethod,
+            plan_comp_tm,personliable,actl_comp_tm,afteraid,
+            pid,phone,position_id,is_device_patrol,
+            is_upload_success,upload_errormsg,upload_key,is_upload_success_deal,
+            manage_desc,is_upload,upload_tm)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            ( #{item.id},#{item.abbreviation},#{item.position},#{item.description},
+            #{item.foundtime}, #{item.foundmethod},#{item.picaid},#{item.disposalmethod},
+            #{item.planCompTm},#{item.personliable},#{item.actlCompTm},#{item.afteraid},
+            #{item.pid},#{item.phone},#{item.positionId},#{item.isDevicePatrol},
+            #{item.isUploadSuccess},#{item.uploadErrormsg},#{item.uploadKey},#{item.isUploadSuccessDeal},
+            #{item.manageDesc},#{item.isUpload},#{item.uploadTm})
+        </foreach>
+    </insert>
+
+    <insert id="batchReplaceYearCheck" parameterType="com.ygkj.lcsyn.model.BhLgMpAc">
+        REPLACE INTO bh_lg_mp_ac
+            (id,aid,pid,tm,
+             check_uid,join_uid,hid_count,check_pic)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.id},#{item.aid},#{item.pid},#{item.tm},
+                #{item.checkUid},#{item.joinUid},#{item.hidCount}, #{item.checkPic})
+            </foreach>
+    </insert>
+
+    <insert id="batchReplaceFloodCheck" parameterType="com.ygkj.lcsyn.model.BhLgMpFc">
+        REPLACE INTO bh_lg_mp_fc
+            (id,aid,pid,tm,
+            af_flood_rpt,af_flood_tm,termite_check_rpt,
+            termite_check_tm,check_uid,join_uid,
+            hid_count,check_pic)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.aid},#{item.pid},#{item.tm},
+            #{item.afFloodRpt},#{item.afFloodTm},#{item.termiteCheckRpt},
+            #{item.termiteCheckTm},#{item.checkUid},#{item.joinUid},
+            #{item.hidCount}, #{item.checkPic})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertDanger" parameterType="com.ygkj.lcsyn.model.BhLgPrjHideDanger">
+        INSERT INTO bh_lg_prj_hide_danger
+        (id,abbreviation,position,description,
+        foundtime,foundmethod,picaid,disposalmethod,
+        plan_comp_tm,personliable,actl_comp_tm,afteraid,
+        pid,phone,position_id,is_device_patrol,
+        is_upload_success,upload_errormsg,upload_key,is_upload_success_deal,
+        manage_desc,is_upload,upload_tm)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            ( #{item.id},#{item.abbreviation},#{item.position},#{item.description},
+            #{item.foundtime}, #{item.foundmethod},#{item.picaid},#{item.disposalmethod},
+            #{item.planCompTm},#{item.personliable},#{item.actlCompTm},#{item.afteraid},
+            #{item.pid},#{item.phone},#{item.positionId},#{item.isDevicePatrol},
+            #{item.isUploadSuccess},#{item.uploadErrormsg},#{item.uploadKey},#{item.isUploadSuccessDeal},
+            #{item.manageDesc},#{item.isUpload},#{item.uploadTm})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertPatrol" parameterType="com.ygkj.lcsyn.model.BhSlPatrolGis">
+        INSERT INTO bh_sl_patrol_gis
+        ( id, skid, patrol_begintime, patrol_endtime,
+        hidden_trouble_count, u_id, patrol_type, propose_id,
+        verify_id, is_complete)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            ( #{item.id},#{item.skid},#{item.patrolBegintime},#{item.patrolEndtime},
+            #{item.hiddenTroubleCount},#{item.uId},#{item.patrolType},#{item.proposeId},
+            #{item.verifyId},#{item.isComplete})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertPatrolPosition" parameterType="com.ygkj.lcsyn.model.BhSlPatrolGisPosition">
+        INSERT INTO bh_sl_patrol_gis_position
+        ( id,skid,gid,project_position,userrid,
+        patrol_tm,issafe,hidden_trouble,hidden_trouble_propose,
+        hidden_trouble_status,lgtd,lttd,propose_tm,
+        before_pic,after_pic,verify_time,assign_uid,
+        checkpoint_save_id,checkpoint_hidden_id,cell_id,patrol_type)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            ( #{item.id},#{item.skid},#{item.gid},#{item.projectPosition},#{item.userrid},
+            #{item.patrolTm},#{item.issafe},#{item.hiddenTrouble}, #{item.hiddenTroublePropose},
+            #{item.hiddenTroubleStatus},#{item.lgtd},#{item.lttd},#{item.proposeTm},
+            #{item.beforePic},#{item.afterPic},#{item.verifyTime},#{item.assignUid},
+            #{item.checkpointSaveId},#{item.checkpointHiddenId},#{item.cellId},#{item.patrolType})
+        </foreach>
+    </insert>
+
+
+    <delete id="delDuty" parameterType="Date">
+        DELETE FROM bh_duty_record WHERE DUTY_DATE &gt;= #{date} AND SOURCE_TYPE = 1
+    </delete>
+
+    <delete id="delPatrolPosition2" parameterType="Integer">
+        DELETE FROM bh_sl_patrol_gis_position WHERE id IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

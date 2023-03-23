@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.RiskDetailsHiddendangerMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.RiskDetailsHiddendanger">
+        <result column="id" property="id"/>
+        <result column="sb_id" property="sbId"/>
+        <result column="proj_name" property="projName"/>
+        <result column="proj_type" property="projType"/>
+        <result column="property" property="property"/>
+        <result column="address" property="address"/>
+        <result column="quantities" property="quantities"/>
+        <result column="report_person" property="reportPerson"/>
+        <result column="report_time" property="reportTime"/>
+        <result column="check_person" property="checkPerson"/>
+        <result column="danger_type" property="dangerType"/>
+        <result column="rec_condition" property="recCondition"/>
+        <result column="sb_sign" property="sbSign"/>
+        <result column="danger_des" property="dangerDes"/>
+        <result column="duty_unit" property="dutyUnit"/>
+        <result column="duty_person" property="dutyPerson"/>
+        <result column="duty_phone" property="dutyPhone"/>
+        <result column="regulators" property="regulators"/>
+        <result column="regul_person" property="regulPerson"/>
+        <result column="regul_phone" property="regulPhone"/>
+        <result column="fileinfo_list_sb" property="fileinfoListSb"/>
+        <result column="sbpictext" property="sbpictext"/>
+        <result column="scraps" property="scraps"/>
+        <result column="river_basin" property="riverBasin"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="rec_expiration_date" property="recExpirationDate"/>
+        <result column="rec_plan_describe" property="recPlanDescribe"/>
+        <result column="programme_plan" property="programmePlan"/>
+        <result column="rec_supervise_measures" property="recSuperviseMeasures"/>
+        <result column="rec_implement_situation" property="recImplementSituation"/>
+        <result column="recplanfile" property="recplanfile"/>
+        <result column="sb_hide_danger_items" property="sbHideDangerItems"/>
+        <result column="rec_complete_describe" property="recCompleteDescribe"/>
+        <result column="rec_complete_file" property="recCompleteFile"/>
+        <result column="rec_plan_file" property="recPlanFile"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        sb_id,
+        proj_name,
+        proj_type,
+        property,
+        address,
+        quantities,
+        report_person,
+        report_time,
+        check_person,
+        danger_type,
+        rec_condition,
+        sb_sign,
+        danger_des,
+        duty_unit,
+        duty_person,
+        duty_phone,
+        regulators,
+        regul_person,
+        regul_phone,
+        fileinfo_list_sb,
+        sbpictext,
+        scraps,
+        river_basin,
+        city,
+        county,
+        rec_expiration_date,
+        rec_plan_describe,
+        programme_plan,
+        rec_supervise_measures,
+        rec_implement_situation,
+        recplanfile,
+        sb_hide_danger_items,
+        rec_complete_describe,
+        rec_complete_file,
+        rec_plan_file
+    </sql>
+    <select id="cancellationHiddenDangerStatic" resultType="com.ygkj.big.screen.vo.response.RiskHiddenDangerStaticResp">
+        SELECT rec_condition reccondition,COUNT(1) num FROM `risk_details_hiddendanger` GROUP BY rec_condition
+    </select>
+
+    <select id="findDetailsHiddenDangerBySbId"
+            resultType="com.ygkj.big.screen.vo.response.RiskDetailsHiddenDangerResp">
+        SELECT rdh.*,brl.lng,brl.lat,concat_ws('-',rdh.city,rdh.county) adminDivision,rdh.rec_plan_describe
+        "makeRectificationPlan.recPlanDescribe"
+        ,rdh.rec_supervise_measures "makeRectificationPlan.recSuperviseMeasures",rdh.rec_supervise_measures
+        "makeRectificationPlan.recSuperviseMeasures",rdh.rec_implement_situation
+        "makeRectificationPlan.recImplementSituation",
+        rdh.rec_complete_describe "rectificationCompletedResp.recCompleteDescribe",rdh.check_person
+        "rectificationCompletedResp.firstCheckPerson",rdh.check_person "rectificationCompletedResp.finalCheckPerson"
+        FROM `risk_details_hiddendanger` rdh
+        LEFT JOIN bus_risk_list brl ON rdh.sb_id = brl.sb_id where rdh.sb_id = #{sbId}
+    </select>
+
+
+</mapper>

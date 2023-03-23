@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.BhLgMpFcMapper">
+
+
+    <select id="selectBhLgMpFcList" resultType="com.ygkj.project.vo.response.BhLgMpFcResVo">
+        select id,tm,join_uid,hid_count,aid,check_pic,source_type,problem_type,run_action_record,proj_check_record from bh_lg_mp_fc
+        <where>
+            <if test="reqVo.pid != null and reqVo.pid != ''">
+                and pid = #{reqVo.pid}
+            </if>
+            <if test="reqVo.date != null and reqVo.date != ''">
+                and tm = #{reqVo.date}
+            </if>
+            <if test="reqVo.id != null and reqVo.id != ''">
+                and id = #{reqVo.id}
+            </if>
+        </where>
+        order by tm desc 
+    </select>
+
+
+</mapper>

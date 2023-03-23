@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.visualization.mapper.WaveFieldMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.visualization.model.WaveField" >
+        <result column="id" property="id" />
+        <result column="predict_time" property="predictTime" />
+        <result column="data_json" property="dataJson" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                predict_time,
+                data_json
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.visualization.model.WaveField">
+        INSERT INTO wave_field
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != predictTime'>
+                predict_time,
+            </if>
+            <if test ='null != dataJson'>
+                data_json
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != predictTime'>
+                #{predictTime},
+            </if>
+            <if test ='null != dataJson'>
+                #{dataJson}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM wave_field
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.visualization.model.WaveField">
+        UPDATE wave_field
+        <set>
+            <if test ='null != predictTime'>predict_time = #{predictTime},</if>
+            <if test ='null != dataJson'>data_json = #{dataJson}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultType="com.ygkj.visualization.model.WindFarm">
+        SELECT <include refid="Base_Column_List" />
+        FROM wave_field
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM wave_field
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM wave_field
+    </select>
+
+    <select id="selectTimes" resultType="java.lang.String">
+        SELECT DISTINCT(predict_time) FROM wave_field
+    </select>
+
+    <select id="selectWithoutDetail" resultType="java.util.Map">
+        SELECT id,predict_time FROM wave_field WHERE predict_time >= NOW()
+    </select>
+
+</mapper>

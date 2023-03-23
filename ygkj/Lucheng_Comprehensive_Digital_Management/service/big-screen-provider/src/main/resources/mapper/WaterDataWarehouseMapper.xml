@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.WaterDataWarehouseMapper">
+
+    <select id="riverLakeStats" resultType="com.ygkj.big.screen.vo.response.WuWiuStatsRespVo">
+        select '河道' `text`, count(1) num from att_river_base where del_flag = 0
+        union all
+        select '湖泊' `text`, count(1) num from att_lk_base where del_flag = 0
+    </select>
+
+    <select id="waterAndRainStaStats" resultType="com.ygkj.big.screen.vo.response.WuWiuStatsRespVo">
+        select t.st_type `text`, count(1) num from
+        (select
+        case st_type
+        when 'RR' then '水位测站'
+        when 'ZZ' then '水位测站'
+        when 'PP' then '雨量测站'
+        else st_type
+        end st_type
+        from att_st_base where st_type in ('RR', 'PP', 'ZZ')) t group by t.st_type
+    </select>
+
+    <select id="waterFunctionAndUseStats" resultType="com.ygkj.big.screen.vo.response.WuWiuStatsRespVo">
+        select '水功能区' `text`, count(1) num from att_wfz_base
+        union all
+        select '取水户' `text`, count(1) num from att_wiu_base where del_flag = 0
+    </select>
+
+    <select id="wcbdStats" resultType="com.ygkj.big.screen.vo.response.WuWiuStatsRespVo">
+        select system_type `text`, count(1) num from bus_data_divide group by system_type
+    </select>
+
+    <select id="dataCheckStats" resultType="com.ygkj.big.screen.vo.response.WuWiuStatsRespVo">
+        select status `text`, count(1) num from bus_data_examine group by status
+    </select>
+
+    <select id="apiInvokeStats" resultType="com.ygkj.big.screen.vo.response.DataStatisticsInfo">
+        select t.tm, count(1) num from
+        (select date_format(invoke_time, '%Y/%m/%d') tm from bus_api_invoke_log where invoke_time &gt;= date_sub(now(),
+        interval 7 day)) t
+        group by t.tm
+    </select>
+
+    <select id="dataPersistentStats" resultType="com.ygkj.big.screen.vo.response.DataStatisticsInfo">
+        select persistent_date tm, sum(data_number) num from bus_data_persistent where persistent_date &gt;=
+        date_sub(now(), interval 7 day)
+        group by persistent_date
+    </select>
+
+    <select id="apiCategoryStats" resultType="com.ygkj.big.screen.vo.response.DataStatisticsInfo">
+        select api_category txt, count(1) num from bus_api_base where del_flag = 0 group by api_category
+    </select>
+
+    <select id="apiErrorStats" resultType="com.ygkj.big.screen.vo.response.DataStatisticsInfo">
+        select t.txt, t.num from
+        (select api_name txt, count(1) num
+        from bus_api_invoke_log
+        where invoke_time &gt;= date_sub(now(), interval 1 month) and code not in ('0', '200')
+        group by api_id) t order by t.num desc limit 5
+    </select>
+
+    <select id="apiList" resultType="com.ygkj.big.screen.model.BusApiBase">
+        select id,
+        api_name,
+        request_method,
+        api_category,
+        api_state,
+        sign_up_department,
+        data_source_department,
+        release_method,
+        source_url,
+        description,
+        response_format,
+        request_format,
+        response_example,
+        api_document_id,
+        status,
+        responsible_id,
+        responsible,
+        responsible_mobile,
+        apply_number,
+        create_time,
+        update_time
+        from bus_api_base where del_flag = 0 order by create_time desc
+    </select>
+
+    <select id="apiInvokeTimeStats" resultType="com.ygkj.big.screen.vo.response.DataStatisticsInfo">
+        select api_name txt, count(1) num
+        from bus_api_invoke_log
+        where invoke_time &gt;= date_sub(now(), interval 15 day) group by api_id
+    </select>
+</mapper>

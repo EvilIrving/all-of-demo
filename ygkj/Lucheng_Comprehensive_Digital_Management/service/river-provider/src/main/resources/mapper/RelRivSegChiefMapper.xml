@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.RelRivSegChiefMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.RelRivSegChief">
+        <result column="riv_seg_id" property="rivSegId"/>
+        <result column="chief_id" property="chiefId"/>
+        <result column="type" property="type"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        riv_seg_id,
+        chief_id,
+        type,
+        remark
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.RelRivSegChief">
+        INSERT INTO rel_riv_seg_chief
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != rivSegId'>
+                riv_seg_id,
+            </if>
+            <if test='null != chiefId'>
+                chief_id,
+            </if>
+            <if test='null != type'>
+                type,
+            </if>
+            <if test='null != remark'>
+                remark
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != rivSegId'>
+                #{rivSegId},
+            </if>
+            <if test='null != chiefId'>
+                #{chiefId},
+            </if>
+            <if test='null != type'>
+                #{type},
+            </if>
+            <if test='null != remark'>
+                #{remark}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM rel_riv_seg_chief
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.RelRivSegChief">
+        UPDATE rel_riv_seg_chief
+        <set>
+            <if test='null != rivSegId'>riv_seg_id = #{rivSegId},</if>
+            <if test='null != chiefId'>chief_id = #{chiefId},</if>
+            <if test='null != type'>type = #{type},</if>
+            <if test='null != remark'>remark = #{remark}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM rel_riv_seg_chief
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM rel_riv_seg_chief
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM rel_riv_seg_chief
+    </select>
+
+</mapper>

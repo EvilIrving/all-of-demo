@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.AncillaryBuildingMapper">
+    <select id="selectAncillaryBuilding" resultType="java.util.Map">
+        SELECT pro.name,adcd.city_adnm as cityadnm,
+        adcd.country_adnm countryAdnm,
+        pro.project_scale,
+        pro.LGTD,
+        pro.LTTD,
+        pro.supervise_level,
+        pro.project_category,
+        pro.NAME as proName,
+        pro.PRCD as pprcd,
+        pro.ADCD,
+        tbl.* FROM bm_prcd_accprcd tbl
+        LEFT JOIN bm_project pro on pro.prcd = tbl.acc_prcd
+        LEFT JOIN att_adcd_base adcd on pro.adcd= adcd.adcd
+        WHERE tbl.DEL_FLAG=0 and pro.DEL_FLAG = 0
+        <if test="null!=prcd and ''!=prcd">
+            and tbl.PRCD=#{prcd}
+        </if>
+        <if test="null!=projectCategory and ''!=projectCategory">
+            and pro.project_category =#{projectCategory}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.BsDrillCaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.BsDrillCase">
+        <result column="id" property="id"/>
+        <result column="case_name" property="caseName"/>
+        <result column="unit_id" property="unitId"/>
+        <result column="unit_name" property="unitName"/>
+        <result column="caseType" property="caseType"/>
+        <result column="drill_state" property="drillState"/>
+        <result column="hour_num" property="hourNum"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="year" property="year"/>
+        <result column="case_description" property="caseDescription"/>
+        <result column="case_rel_id" property="caseRelId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        case_name,
+        unit_id,
+        unit_name,
+        case_type,
+        drill_state,
+        hour_num,
+        start_time,
+        end_time,
+        `year`,
+        case_description,
+        case_rel_id
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.big.screen.model.BsDrillCase">
+        INSERT INTO bs_drill_case
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != caseName'>
+                case_name,
+            </if>
+            <if test='null != unitId'>
+                unit_id,
+            </if>
+            <if test='null != unitName'>
+                unit_name,
+            </if>
+            <if test='null != caseType'>
+                case_type,
+            </if>
+            <if test='null != drillState'>
+                drill_state,
+            </if>
+            <if test='null != hourNum'>
+                hour_num,
+            </if>
+            <if test='null != startTime'>
+                start_time,
+            </if>
+            <if test='null != endTime'>
+                end_time,
+            </if>
+            <if test='null != year'>
+                year,
+            </if>
+            <if test='null != caseDescription'>
+                case_description,
+            </if>
+            <if test='null != caseRelId'>
+                caseRelId
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != caseName'>
+                #{caseName},
+            </if>
+            <if test='null != unitId'>
+                #{unitId},
+            </if>
+            <if test='null != unitName'>
+                #{unitName},
+            </if>
+            <if test='null != caseType'>
+                #{caseType},
+            </if>
+            <if test='null != drillState'>
+                #{drillState},
+            </if>
+            <if test='null != hourNum'>
+                #{hourNum},
+            </if>
+            <if test='null != startTime'>
+                #{startTime},
+            </if>
+            <if test='null != endTime'>
+                #{endTime},
+            </if>
+            <if test='null != year'>
+                #{year},
+            </if>
+            <if test='null != caseDescription'>
+                #{caseDescription},
+            </if>
+            <if test='null != caseRelId'>
+                #{caseRelId}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM bs_drill_case
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.big.screen.model.BsDrillCase">
+        UPDATE bs_drill_case
+        <set>
+            <if test='null != caseName'>case_name = #{caseName},</if>
+            <if test='null != unitId'>unit_id = #{unitId},</if>
+            <if test='null != unitName'>unit_name = #{unitName},</if>
+            <if test='null != caseType'>case_type = #{caseType},</if>
+            <if test='null != drillState'>drill_state = #{drillState},</if>
+            <if test='null != hourNum'>hour_num = #{hourNum},</if>
+            <if test='null != startTime'>start_time = #{startTime},</if>
+            <if test='null != endTime'>end_time = #{endTime},</if>
+            <if test='null != year'>`year` = #{year},</if>
+            <if test='null != caseDescription'>case_description = #{caseDescription},</if>
+            <if test='null != caseDescription'>case_rel_id = #{caseRelId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_case
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_case
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM bs_drill_case
+    </select>
+
+    <select id="loadByAffairId" resultMap="BaseResultMap">
+        SELECT bs_drill_case.*
+        FROM bs_drill_case
+        inner join bs_drill_affair on bs_drill_case.id=bs_drill_affair.drill_case_id
+        where bs_drill_affair.drill_affair_id=#{affairId}
+        limit 1
+    </select>
+
+    <select id="loadIdByAffairId" resultType="string">
+        SELECT bs_drill_case.id
+        FROM bs_drill_case
+        inner join bs_drill_affair on bs_drill_case.id=bs_drill_affair.drill_case_id
+        where bs_drill_affair.drill_affair_id=#{affairId}
+        limit 1
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_case
+        <where>
+            <if test='null != caseName'>AND case_name = #{caseName}</if>
+            <if test='null != unitId'>AND unit_id = #{unitId}</if>
+            <if test='null != unitName'>AND unit_name = #{unitName}</if>
+            <if test='null != caseType'>AND case_type = #{caseType}</if>
+            <if test='null != drillState'>AND drill_state = #{drillState}</if>
+            <if test='null != hourNum'>AND hour_num = #{hourNum}</if>
+            <if test='null != startTime'>AND start_time = #{startTime}</if>
+            <if test='null != endTime'>AND end_time = #{endTime}</if>
+            <if test='null != endTime'>AND end_time = #{endTime}</if>
+            <if test='null != year'>AND `year` = #{year}</if>
+            <if test='null != caseDescription'>AND case_description = #{caseDescription}</if>
+            <if test='null != caseDescription'>AND case_rel_id = #{caseRelId}</if>
+        </where>
+    </select>
+
+
+</mapper>

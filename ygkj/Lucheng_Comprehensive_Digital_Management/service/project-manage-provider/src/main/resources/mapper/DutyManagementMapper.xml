@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ygkj.water.project.mapper.DutyManagementMapper">
+    <insert id="batchInsert" parameterType="com.ygkj.project.model.DutyManagement">
+        INSERT INTO duty_management
+        (id,duty_date,duty_time,week,leader,leader_name,manager,manager_name,ngiht_manager,ngiht_manager_name,duty_chief,duty_chief_name)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.dutyDate},#{item.dutyTime},#{item.week},#{item.leader},#{item.leaderName},#{item.manager},
+            #{item.managerName},#{item.ngihtManager},#{item.ngihtManagerName},#{item.dutyChief},#{item.dutyChiefName})
+        </foreach>
+    </insert>
+
+
+    <select id="loadPage" resultType="com.ygkj.project.model.DutyManagement">
+        select * from duty_management
+        <where>
+            <if test="yearAndMonth != null and yearAndMonth != ''">
+                and duty_date like concat( #{yearAndMonth},'%' )
+            </if>
+            <if test="userName != null and userName != ''">
+                and CONCAT( IFNULL(leader_name,''), IFNULL(manager_name,''), IFNULL(ngiht_manager_name,''), IFNULL(duty_chief_name,'')) like CONCAT('%', #{userName}, '%')
+            </if>
+        </where>
+        order by duty_date
+    </select>
+
+</mapper>

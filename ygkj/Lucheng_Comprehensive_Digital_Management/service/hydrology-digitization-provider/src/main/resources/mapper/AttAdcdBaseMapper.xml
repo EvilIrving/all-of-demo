@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.AttAdcdBaseMapper">
+    <select id="selectAdnmByAdcdList" resultType="com.ygkj.gragh.model.AttAdcdBase">
+        SELECT adcd,adnm
+        FROM att_adcd_base
+        <where>
+            <if test="adcdList != null and adcdList.size != 0">
+                adcd in
+                <foreach collection="adcdList" separator="," open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="selectAdnmByAdcd" resultType="string">
+        SELECT adnm
+        FROM att_adcd_base where adcd=#{adcd}
+    </select>
+</mapper>

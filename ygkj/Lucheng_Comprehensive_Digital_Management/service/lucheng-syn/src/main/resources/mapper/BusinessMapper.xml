@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.BusinessMapper">
+
+
+    <insert id="replacePp">
+        REPLACE INTO ${tableName}(`MGSTCD`,`STCD`,`TM`,`DRP`)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.mgstcd},#{item.stcd},#{item.tm},#{item.drp})
+        </foreach>
+    </insert>
+
+    <insert id="replaceRiver">
+        REPLACE INTO ${tableName}(`MGSTCD`,`STCD`,`TM`,`Z`)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.mgstcd},#{item.stcd},#{item.tm},#{item.z})
+        </foreach>
+    </insert>
+
+    <insert id="replaceRsvr">
+        REPLACE INTO ${tableName}(`MGSTCD`,`STCD`,`TM`,`rz`)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.mgstcd},#{item.stcd},#{item.tm},#{item.rz})
+        </foreach>
+    </insert>
+
+    <insert id="replaceTide">
+        REPLACE INTO ${tableName}(`MGSTCD`,`STCD`,`TM`,`tdz`)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.mgstcd},#{item.stcd},#{item.tm},#{item.tdz})
+        </foreach>
+    </insert>
+
+    <insert id="replaceWas">
+        REPLACE INTO ${tableName}(`MGSTCD`,`STCD`,`TM`,`UPZ`,`DWZ`,`MXGTQ`,`OVS`,`LL`)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.mgstcd},#{item.stcd},#{item.tm},#{item.upz},#{item.dwz},#{item.mxgtq},#{item.ovs},#{item.ll})
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertProvinceData">
+        INSERT INTO province_data_record
+            (url,`describe`,tm,
+             `result`,res,param)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.url},#{item.describe},#{item.tm},
+                #{item.result},#{item.res},#{item.param})
+            </foreach>
+    </insert>
+
+    <insert id="insertTyphoon" parameterType="com.ygkj.lcsyn.model.RealTyphoonData">
+        REPLACE INTO real_typhoon_data
+            (name,begin_time,end_time,land,code,points,year,feature)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.name},#{item.beginTime},#{item.endTime},#{item.land},#{item.code},#{item.points},#{item.year},#{item.feature})
+            </foreach>
+    </insert>
+
+    <insert id="replaceReportFlood" parameterType="com.ygkj.lcsyn.model.RsvrReportFlood">
+        REPLACE INTO rsvr_report_flood
+        (res_code,origin_res_name,tm,inflow,outflow,water_level)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.resCode},#{item.originResName},#{item.tm},#{item.inflow},#{item.outflow},#{item.waterLevel})
+        </foreach>
+    </insert>
+
+    <update id="updateTyphoon" parameterType="com.ygkj.lcsyn.model.RealTyphoonData">
+        UPDATE real_typhoon_data SET end_time = #{endTime},points = #{points},`feature` = #{feature} WHERE id = #{id}
+    </update>
+
+    <select id="selectTyphoons" resultType="com.ygkj.lcsyn.model.RealTyphoonData">
+        SELECT  id,
+                name,
+                begin_time,
+                end_time,
+                land,
+                code,
+                points,
+            year,
+            affected_area
+        FROM real_typhoon_data
+    </select>
+
+</mapper>

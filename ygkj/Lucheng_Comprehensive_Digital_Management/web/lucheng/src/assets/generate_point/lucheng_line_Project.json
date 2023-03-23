@@ -1,0 +1,10 @@
+{"type":"FeatureCollection", "features": [
+{"type":"Feature","geometry":{"type":"LineString","coordinates":[[120.55241130130219,28.062693911775487],[120.5750400049313,28.062600998976958]]},"properties":{"Id":0,"name":"瓯江"}},
+{"type":"Feature","geometry":{"type":"LineString","coordinates":[[120.55474334243178,28.062684508861235],[120.55472130329416,28.05839198479102]]},"properties":{"Id":1,"name":"萌溪小流域"}},
+{"type":"Feature","geometry":{"type":"LineString","coordinates":[[120.55790296961116,28.062671705883762],[120.5578807556544,28.058369633883075]]},"properties":{"Id":1,"name":"戍浦江"}},
+{"type":"Feature","geometry":{"type":"LineString","coordinates":[[120.57069755208431,28.062619118151673],[120.57067485397147,28.058321830447568]]},"properties":{"Id":1,"name":"温瑞塘河"}},
+{"type":"Feature","geometry":{"type":"LineString","coordinates":[[120.57365800921421,28.062606780346535],[120.57363519337206,28.058309494861113]]},"properties":{"Id":1,"name":"七都内河"}},
+{"type":"Feature","geometry":{"type":"LineString","coordinates":[[120.55863101728244,28.057211063470525],[120.56986405954477,28.057164904106884]]},"properties":{"Id":0,"name":"丰门河"}},
+{"type":"Feature","geometry":{"type":"LineString","coordinates":[[120.5619184358976,28.06265533007393],[120.56189005352431,28.057197765911273]]},"properties":{"Id":0,"name":"仰义河"}},
+{"type":"Feature","geometry":{"type":"LineString","coordinates":[[120.56592313706727,28.06263888119565],[120.56589455244304,28.0571813207896]]},"properties":{"Id":1,"name":"卧旗大河"}}
+]}

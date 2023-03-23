@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.ProjectMapper">
+
+    <select id="selectReservoirByCondition" resultType="com.ygkj.gragh.model.AttResBase">
+        SELECT * FROM att_res_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND res_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="type != null and type != ''">
+                AND res_type = #{type}
+            </if>
+            <if test="code != null and code != ''">
+                AND res_code = #{code}
+            </if>
+            <if test="true">
+                AND del_flag=0
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPumpByCondition" resultType="com.ygkj.gragh.model.AttPustBase">
+        SELECT * FROM att_pust_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND pust_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND pust_code = #{code}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectWagaByCondition" resultType="com.ygkj.gragh.model.AttWagaBase">
+        SELECT * FROM att_waga_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND waga_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND waga_code = #{code}
+            </if>
+            AND (start_long IS NOT NULL AND start_lat IS NOT NULL)
+        </where>
+    </select>
+
+    <select id="selectSeawallByCondition" resultType="com.ygkj.gragh.model.AttSeawallBase">
+        SELECT * FROM att_seawall_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND seawall_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND seawall_code = #{code}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDikeByCondition" resultType="com.ygkj.gragh.model.AttDikeBase">
+        SELECT * FROM att_dike_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND dike_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND dike_code = #{code}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectMountainPoolByCondition" resultType="com.ygkj.gragh.model.AttMnpdBase">
+        SELECT * FROM att_mnpd_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND mnpd_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND mnpd_code = #{code}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectHydristByCondition" resultType="com.ygkj.gragh.model.AttHystBase">
+        SELECT * FROM att_hyst_base
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND hyst_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <!--            <if test="areaCode != null and areaCode != ''">-->
+            <!--                AND area_code = #{areaCode}-->
+            <!--            </if>-->
+            <if test="areaCode != null and areaCode != ''">
+                AND hyst_loc = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND hyst_code = #{code}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectWaterSupplyProjectByCondition" resultType="com.ygkj.gragh.model.WaterSupplyProject">
+        SELECT * FROM water_supply_project
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND project_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND adcd = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND project_code = #{code}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBuildingProjectByCondition" resultType="com.ygkj.gragh.model.BuildingProject">
+        SELECT * FROM building_project
+        <where>
+            <if test="projectName != null and projectName != ''">
+                AND project_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="code != null and code != ''">
+                AND project_code = #{code}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectRiverProject" resultType="com.ygkj.gragh.model.AttProjBase">
+        SELECT * FROM att_proj_base
+        <where>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                AND project_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="projectCode != null and projectCode != ''">
+                AND project_code = #{code}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateSeawall" parameterType="com.ygkj.gragh.model.AttSeawallBase">
+        UPDATE att_seawall_base
+        <set>
+            <if test='null != seawallName'>seawall_name = #{seawallName},</if>
+            <if test='null != seawallType'>seawall_type = #{seawallType},</if>
+            <if test='null != seawallLevel'>seawall_level = #{seawallLevel},</if>
+            <if test='null != tideStationCode'>tide_station_code = #{tideStationCode},</if>
+            <if test='null != projectCompletion'>project_completion = #{projectCompletion},</if>
+            <if test='null != startDate'>start_date = #{startDate},</if>
+            <if test='null != completionDate'>completion_date = #{completionDate},</if>
+            <if test='null != seawallLength'>seawall_length = #{seawallLength},</if>
+            <if test='null != startLocation'>start_location = #{startLocation},</if>
+            <if test='null != startPileNo'>start_pile_no = #{startPileNo},</if>
+            <if test='null != seawallStartLatitude'>seawall_start_latitude = #{seawallStartLatitude},</if>
+            <if test='null != seawallStartLongitude'>seawall_start_longitude = #{seawallStartLongitude},</if>
+            <if test='null != finalLocation'>final_location = #{finalLocation},</if>
+            <if test='null != finalPileNo'>final_pile_no = #{finalPileNo},</if>
+            <if test='null != seawallFinalLatitude'>seawall_final_latitude = #{seawallFinalLatitude},</if>
+            <if test='null != seawallFinalLongitude'>seawall_final_longitude = #{seawallFinalLongitude},</if>
+            <if test='null != startCrestAltitude'>start_crest_altitude = #{startCrestAltitude},</if>
+            <if test='null != finalCrestAltitude'>final_crest_altitude = #{finalCrestAltitude},</if>
+            <if test='null != designTiddeStandard'>design_tidde_standard = #{designTiddeStandard},</if>
+            <if test='null != preventTideStandard'>prevent_tide_standard = #{preventTideStandard},</if>
+            <if test='null != sluiceCount'>sluice_count = #{sluiceCount},</if>
+            <if test='null != protectionPopulation'>protection_population = #{protectionPopulation},</if>
+            <if test='null != protectionKeyFacility'>protection_key_facility = #{protectionKeyFacility},</if>
+            <if test='null != tideStationName'>tide_station_name = #{tideStationName},</if>
+            <if test='null != tideStationBlueLevel'>tide_station_blue_level = #{tideStationBlueLevel},</if>
+            <if test='null != tideStationYellowLevel'>tide_station_yellow_level = #{tideStationYellowLevel},</if>
+            <if test='null != tideStationOrangeLevel'>tide_station_orange_level = #{tideStationOrangeLevel},</if>
+            <if test='null != tideStationRedLevel'>tide_station_red_level = #{tideStationRedLevel},</if>
+            <if test='null != finishTime'>finish_time = #{finishTime},</if>
+            <if test='null != reachStandardLength'>reach_standard_length = #{reachStandardLength},</if>
+            <if test='null != designTideStandard'>design_tide_standard = #{designTideStandard},</if>
+            <if test='null != isComplete'>is_complete = #{isComplete},</if>
+            <if test='null != averageAltitude'>average_altitude = #{averageAltitude},</if>
+            <if test='null != protectionArea'>protection_area = #{protectionArea},</if>
+            <if test='null != village'>village = #{village},</if>
+            <if test='null != modifyTime'>modify_time = #{modifyTime},</if>
+            <if test='null != longitude'>longitude = #{longitude},</if>
+            <if test='null != latitude'>latitude = #{latitude},</if>
+            <if test='null != areaCode'>area_code = #{areaCode},</if>
+            <if test='null != govermentChargeId'>goverment_charge_id = #{govermentChargeId},</if>
+            <if test='null != waterDepartmentChargeId'>water_department_charge_id = #{waterDepartmentChargeId},</if>
+            <if test='null != competentDepartmentChargeId'>competent_department_charge_id =
+                #{competentDepartmentChargeId},
+            </if>
+            <if test='null != manageDepartmentChargeId'>manage_department_charge_id = #{manageDepartmentChargeId},</if>
+            <if test='null != points'>points = #{points},</if>
+            <if test='null != technologyChargeId'>technology_charge_id = #{technologyChargeId},</if>
+            <if test='null != patrolChargeId'>patrol_charge_id = #{patrolChargeId},</if>
+            <if test='null != bas'>bas = #{bas},</if>
+            <if test='null != coastalCode'>coastal_code = #{coastalCode},</if>
+            <if test='null != coorpot'>coorpot = #{coorpot}</if>
+        </set>
+        WHERE seawall_code = #{seawallCode}
+    </update>
+
+    <update id="updateRsvr" parameterType="com.ygkj.gragh.model.AttResBase">
+        UPDATE att_res_base
+        <set>
+            <if test='null != safetyTime'>safety_time = #{safetyTime},</if>
+            <if test='null != safetyConclusion'>safety_conclusion = #{safetyConclusion},</if>
+            <if test='null != reinforce'>reinforce = #{reinforce}</if>
+        </set>
+        WHERE res_code = #{resCode}
+    </update>
+</mapper>

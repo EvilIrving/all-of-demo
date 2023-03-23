@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.visualization.mapper.DisasterStatisticMapper">
+    <resultMap id="BaseResultMap" type="com.ygkj.visualization.model.DisasterStatistic" >
+        <result column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="disaster_name" property="disasterName" />
+        <result column="disaster_code" property="disasterCode" />
+        <result column="year" property="year" />
+        <result column="affected_population" property="affectedPopulation" />
+        <result column="economic_losses" property="economicLosses" />
+        <result column="description" property="description" />
+        <result column="file_id" property="fileId" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+    </resultMap>
+
+    <resultMap id="unionMap" type="com.ygkj.visualization.model.DisasterStatistic" extends="BaseResultMap">
+        <association property="fileUrl" fetchType="lazy" column="file_id"
+                     select="com.ygkj.visualization.mapper.DisasterStatisticMapper.selectFileUrl"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+                id,
+                type,
+                disaster_name,
+                disaster_code,
+                year,
+                affected_population,
+                economic_losses,
+                description,
+                file_id,
+                start_time,
+                end_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.visualization.model.DisasterStatistic">
+        INSERT INTO disaster_statistic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != type'>
+                type,
+            </if>
+            <if test ='null != disasterName'>
+                disaster_name,
+            </if>
+            <if test ='null != disasterCode'>
+                disaster_code,
+            </if>
+            <if test ='null != year'>
+                year,
+            </if>
+            <if test ='null != affectedPopulation'>
+                affected_population,
+            </if>
+            <if test ='null != economicLosses'>
+                economic_losses,
+            </if>
+            <if test ='null != description'>
+                description,
+            </if>
+            <if test ='null != fileId'>
+                file_id,
+            </if>
+            <if test ='null != startTime'>
+                start_time,
+            </if>
+            <if test ='null != endTime'>
+                end_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != type'>
+                #{type},
+            </if>
+            <if test ='null != disasterName'>
+                #{disasterName},
+            </if>
+            <if test ='null != disasterCode'>
+                #{disasterCode},
+            </if>
+            <if test ='null != year'>
+                #{year},
+            </if>
+            <if test ='null != affectedPopulation'>
+                #{affectedPopulation},
+            </if>
+            <if test ='null != economicLosses'>
+                #{economicLosses},
+            </if>
+            <if test ='null != description'>
+                #{description},
+            </if>
+            <if test ='null != fileId'>
+                #{fileId},
+            </if>
+            <if test ='null != startTime'>
+                #{startTime},
+            </if>
+            <if test ='null != endTime'>
+                #{endTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM disaster_statistic
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.visualization.model.DisasterStatistic">
+        UPDATE disaster_statistic
+        <set>
+            <if test ='null != type'>type = #{type},</if>
+            <if test ='null != disasterName'>disaster_name = #{disasterName},</if>
+            <if test ='null != disasterCode'>disaster_code = #{disasterCode},</if>
+            <if test ='null != year'>year = #{year},</if>
+            <if test ='null != affectedPopulation'>affected_population = #{affectedPopulation},</if>
+            <if test ='null != economicLosses'>economic_losses = #{economicLosses},</if>
+            <if test ='null != description'>description = #{description},</if>
+            <if test ='null != fileId'>file_id = #{fileId},</if>
+            <if test ='null != startTime'>start_time = #{startTime},</if>
+            <if test ='null != endTime'>end_time = #{endTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="unionMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM disaster_statistic
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM disaster_statistic
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM disaster_statistic
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM disaster_statistic
+        <where>
+            <if test="name != null and name != ''">
+                AND disaster_name LIKE CONCAT(#{name},'%')
+            </if>
+            <if test="year != null">
+                AND year = #{year}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectFileUrl" resultType="string">
+        SELECT file_url FROM `main_db`.sys_file WHERE id = #{id} AND deleted = 0
+    </select>
+
+</mapper>

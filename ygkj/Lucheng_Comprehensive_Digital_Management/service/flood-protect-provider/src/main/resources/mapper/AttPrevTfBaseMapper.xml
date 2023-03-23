@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.AttPrevTfBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.flood.model.AttPrevTfBase">
+        <result column="id" property="id"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="town" property="town"/>
+        <result column="avi" property="avi"/>
+        <result column="nvi" property="nvi"/>
+        <result column="area" property="area"/>
+        <result column="tho" property="tho"/>
+        <result column="tpo" property="tpo"/>
+        <result column="lon" property="lon"/>
+        <result column="lat" property="lat"/>
+        <result column="rec_type" property="recType"/>
+        <result column="risk_type" property="riskType"/>
+        <result column="charger_name" property="chargerName"/>
+        <result column="charger_phone" property="chargerPhone"/>
+        <result column="lvl" property="lvl"/>
+        <result column="area_points" property="areaPoints"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        city,
+        county,
+        town,
+        avi,
+        nvi,
+        area,
+        tho,
+        tpo,
+        lon,
+        lat,
+        rec_type,
+        risk_type,
+        charger_name,
+        charger_phone,
+        lvl,
+        area_points
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.flood.model.AttPrevTfBase">
+        INSERT INTO att_prev_tf_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != city'>
+                city,
+            </if>
+            <if test='null != county'>
+                county,
+            </if>
+            <if test='null != town'>
+                town,
+            </if>
+            <if test='null != avi'>
+                avi,
+            </if>
+            <if test='null != nvi'>
+                nvi,
+            </if>
+            <if test='null != area'>
+                area,
+            </if>
+            <if test='null != tho'>
+                tho,
+            </if>
+            <if test='null != tpo'>
+                tpo,
+            </if>
+            <if test='null != lon'>
+                lon,
+            </if>
+            <if test='null != lat'>
+                lat,
+            </if>
+            <if test='null != recType'>
+                rec_type,
+            </if>
+            <if test='null != riskType'>
+                risk_type,
+            </if>
+            <if test='null != chargerName'>
+                charger_name,
+            </if>
+            <if test='null != chargerPhone'>
+                charger_phone,
+            </if>
+            <if test='null != lvl'>
+                lvl,
+            </if>
+            <if test='null != areaPoints'>
+                area_points
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != city'>
+                #{city},
+            </if>
+            <if test='null != county'>
+                #{county},
+            </if>
+            <if test='null != town'>
+                #{town},
+            </if>
+            <if test='null != avi'>
+                #{avi},
+            </if>
+            <if test='null != nvi'>
+                #{nvi},
+            </if>
+            <if test='null != area'>
+                #{area},
+            </if>
+            <if test='null != tho'>
+                #{tho},
+            </if>
+            <if test='null != tpo'>
+                #{tpo},
+            </if>
+            <if test='null != lon'>
+                #{lon},
+            </if>
+            <if test='null != lat'>
+                #{lat},
+            </if>
+            <if test='null != recType'>
+                #{recType},
+            </if>
+            <if test='null != riskType'>
+                #{riskType},
+            </if>
+            <if test='null != chargerName'>
+                #{chargerName},
+            </if>
+            <if test='null != chargerPhone'>
+                #{chargerPhone},
+            </if>
+            <if test='null != lvl'>
+                #{lvl},
+            </if>
+            <if test='null != areaPoints'>
+                #{areaPoints}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_prev_tf_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.flood.model.AttPrevTfBase">
+        UPDATE att_prev_tf_base
+        <set>
+            <if test='null != city'>city = #{city},</if>
+            <if test='null != county'>county = #{county},</if>
+            <if test='null != town'>town = #{town},</if>
+            <if test='null != avi'>avi = #{avi},</if>
+            <if test='null != nvi'>nvi = #{nvi},</if>
+            <if test='null != area'>area = #{area},</if>
+            <if test='null != tho'>tho = #{tho},</if>
+            <if test='null != tpo'>tpo = #{tpo},</if>
+            <if test='null != lon'>lon = #{lon},</if>
+            <if test='null != lat'>lat = #{lat},</if>
+            <if test='null != recType'>rec_type = #{recType},</if>
+            <if test='null != riskType'>risk_type = #{riskType},</if>
+            <if test='null != chargerName'>charger_name = #{chargerName},</if>
+            <if test='null != chargerPhone'>charger_phone = #{chargerPhone},</if>
+            <if test='null != lvl'>lvl = #{lvl},</if>
+            <if test='null != areaPoints'>area_points = #{areaPoints}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_prev_tf_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_prev_tf_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_prev_tf_base
+    </select>
+
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_prev_tf_base
+        <where>
+            <if test="recType!=null and recType!=''">
+                and rec_type=#{recType}
+            </if>
+            <if test="id!=null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="true">
+                and area_points is not null
+            </if>
+        </where>
+    </select>
+
+</mapper>

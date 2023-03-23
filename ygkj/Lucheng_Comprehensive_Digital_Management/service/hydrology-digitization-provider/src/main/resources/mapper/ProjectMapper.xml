@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.ProjectMapper">
+
+    <select id="selectReservoirs" resultType="com.ygkj.digitization.vo.response.ReservoirResVo">
+        SELECT res_code,res_name,eng_scal,main_stcd,mei_flood_limit_water_level,yphoon_flood_llimit_water_level,wat_shed_area,upp_lev_flco,norm_wat_lev
+         FROM att_res_base
+        WHERE del_flag = 0
+        <if test="name != null and name != ''">
+            AND res_name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="code != null and code != ''">
+            AND res_code = #{code}
+        </if>
+    </select>
+
+    <select id="selectPumps" resultType="com.ygkj.digitization.vo.response.GateStationResVo">
+         SELECT a.pust_code AS code ,a.pust_name AS name,a.area_code,b.adnm AS area_name
+         FROM att_res_base a
+         LEFT JOIN att_adcd_base b ON a.area_code = b.adcd
+        WHERE a.del_flag = 0
+    </select>
+    <select id="selectSluice" resultType="com.ygkj.digitization.vo.response.GateStationResVo">
+         SELECT a.waga_code AS code ,a.waga_name AS name,a.area_code,b.adnm AS area_name
+         FROM att_waga_base a
+         LEFT JOIN att_adcd_base b ON a.area_code = b.adcd
+        WHERE a.del_flag = 0
+    </select>
+
+    <select id="listCws" resultType="com.ygkj.digitization.vo.response.CwsResVo">
+        SELECT
+            cws.cws_code,cws.cws_name,cws.cws_long,
+            cws.cws_lat,st.station_code
+        FROM att_cws_base cws
+        LEFT JOIN att_cwsstation_base st ON cws.cws_code = st.project_code
+        <where>
+            <if test="projectName != null and projectName != ''">
+                cws.cws_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+            <if test="adcd != null and adcd != ''">
+                AND cws.citycode LIKE #{adcd}
+            </if>
+            <if test="bas != null and bas != ''">
+                AND cws.river_name = #{bas}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCwsStationCode" resultType="java.lang.String">
+        SELECT station_code FROM att_cwsstation_base WHERE project_code = #{stationCode}
+    </select>
+
+</mapper>

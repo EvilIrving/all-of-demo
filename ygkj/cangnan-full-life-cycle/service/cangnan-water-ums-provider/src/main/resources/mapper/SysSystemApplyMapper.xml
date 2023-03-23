@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.SysSystemApplyMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.auth.api.thirdPartSystem.model.SysSystemApply" >
+        <result column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="system_id" property="systemId" />
+        <result column="status" property="status" />
+        <result column="deleted" property="deleted" />
+        <result column="create_id" property="createId" />
+        <result column="update_id" property="updateId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                user_id,
+                system_id,
+                status,
+                deleted,
+                create_id,
+                update_id,
+                create_time,
+                update_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.auth.api.thirdPartSystem.model.SysSystemApply">
+        INSERT INTO sys_system_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != userId'>
+                user_id,
+            </if>
+            <if test ='null != systemId'>
+                system_id,
+            </if>
+            <if test ='null != status'>
+                status,
+            </if>
+            <if test ='null != deleted'>
+                deleted,
+            </if>
+            <if test ='null != createId'>
+                create_id,
+            </if>
+            <if test ='null != updateId'>
+                update_id,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != updateTime'>
+                update_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != userId'>
+                #{userId},
+            </if>
+            <if test ='null != systemId'>
+                #{systemId},
+            </if>
+            <if test ='null != status'>
+                #{status},
+            </if>
+            <if test ='null != deleted'>
+                #{deleted},
+            </if>
+            <if test ='null != createId'>
+                #{createId},
+            </if>
+            <if test ='null != updateId'>
+                #{updateId},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM sys_system_apply
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.auth.api.thirdPartSystem.model.SysSystemApply">
+        UPDATE sys_system_apply
+        <set>
+            <if test ='null != userId'>user_id = #{userId},</if>
+            <if test ='null != systemId'>system_id = #{systemId},</if>
+            <if test ='null != status'>status = #{status},</if>
+            <if test ='null != deleted'>deleted = #{deleted},</if>
+            <if test ='null != createId'>create_id = #{createId},</if>
+            <if test ='null != updateId'>update_id = #{updateId},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_system_apply
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_system_apply
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM sys_system_apply
+    </select>
+
+</mapper>

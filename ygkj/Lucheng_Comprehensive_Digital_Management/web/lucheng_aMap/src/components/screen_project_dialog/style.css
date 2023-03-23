@@ -1,0 +1,42 @@
+.project-dialog {
+  padding: 16px;
+  padding-top: 0;
+}
+
+.project-dialog .project-tabs {
+  margin-bottom: 16px;
+}
+
+.project-dialog .project-tabs .project-tabs-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.project-dialog .project-tabs .project-tabs-list .project-tabs-item {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  margin-right: 20px;
+  cursor: pointer;
+  color: #fff;
+  padding: 5px 12px;
+  border: 1px solid #285c9e;
+}
+
+.project-dialog .project-tabs .project-tabs-list .project-tabs-item:hover, .project-dialog .project-tabs .project-tabs-list .project-tabs-item.active {
+  border: 1px solid #168aa7;
+  -webkit-box-shadow: 0 0 20px #168aa746 inset;
+          box-shadow: 0 0 20px #168aa746 inset;
+}
+
+.project-dialog .project-content {
+  width: 100%;
+  padding-top: 8px;
+}
+
+.project-dialog .project-content .project-info {
+  height: 450px;
+}
+/*# sourceMappingURL=style.css.map */

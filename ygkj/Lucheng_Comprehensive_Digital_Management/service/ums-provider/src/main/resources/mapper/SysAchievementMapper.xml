@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.SysAchievementMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.auth.api.achievement.model.SysAchievement">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="file_ids" property="fileIds"/>
+        <result column="deleted" property="deleted"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_id" property="updateId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deport_ids" property="deportIds"/>
+        <result column="user_ids" property="userIds"/>
+        <result column="achi_path" property="achiPath"/>
+        <result column="admin_id" property="adminId"/>
+        <result column="admin_name" property="adminName"/>
+        <result column="status" property="status"/>
+        <result column="allow_null" property="allowNull"/>
+        <result column="project_code" property="projectCode"/>
+        <collection property="children" column="id" ofType="com.ygkj.auth.api.achievement.model.SysAchievement"
+                    select="selectByParentId"/>
+    </resultMap>
+
+    <resultMap id="treeMap" type="com.ygkj.auth.api.achievement.model.SysAchievement" extends="BaseResultMap">
+        <association property="fileList" fetchType="lazy" column="file_ids"
+                     select="com.ygkj.mapper.SysFileMapper.load"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id,
+        name,
+        parent_id,
+        file_ids,
+        deleted,
+        create_id,
+        update_id,
+        create_time,
+        update_time,
+        user_ids,
+        deport_ids,
+        sort,
+        deport_ids,
+        user_ids,
+        achi_path,
+        admin_id,
+        admin_name,
+        status,
+        allow_null,
+        project_code
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="false" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.auth.api.achievement.model.SysAchievement">
+        INSERT INTO sys_achievement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != name'>
+                name,
+            </if>
+            <if test='null != parentId'>
+                parent_id,
+            </if>
+            <if test='null != fileIds'>
+                file_ids,
+            </if>
+            <if test='null != deleted'>
+                deleted,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != sort'>
+                sort,
+            </if>
+            <if test='null != deportIds'>
+                deport_ids,
+            </if>
+            <if test='null != userIds'>
+                user_ids,
+            </if>
+            <if test='null != achiPath'>
+                achi_path,
+            </if>
+            <if test='null != adminId'>
+                admin_id,
+            </if>
+            <if test='null != adminName'>
+                admin_name,
+            </if>
+            <if test='null != status'>
+                status,
+            </if>
+            <if test='null != allowNull'>
+                allow_null
+            </if>
+            <if test='null != projectCode'>
+                project_code
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != name'>
+                #{name},
+            </if>
+            <if test='null != parentId'>
+                #{parentId},
+            </if>
+            <if test='null != fileIds'>
+                #{fileIds},
+            </if>
+            <if test='null != deleted'>
+                #{deleted},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != sort'>
+                #{sort},
+            </if>
+            <if test='null != deportIds'>
+                #{deportIds},
+            </if>
+            <if test='null != userIds'>
+                #{userIds},
+            </if>
+            <if test='null != achiPath'>
+                #{achiPath},
+            </if>
+            <if test='null != adminId'>
+                #{adminId},
+            </if>
+            <if test='null != adminName'>
+                #{adminName},
+            </if>
+            <if test='null != status'>
+                #{status},
+            </if>
+            <if test='null != allowNull'>
+                #{allowNull},
+            </if>
+            <if test='null != projectCode'>
+                #{projectCode}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        update sys_achievement set deleted =1
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.auth.api.achievement.model.SysAchievement">
+        UPDATE sys_achievement
+        <set>
+            <if test='null != name and ""!=name'>name = #{name},</if>
+            <if test='null != parentId and ""!=parentId'>parent_id = #{parentId},</if>
+            <if test='null != fileIds and ""!=fileIds'>file_ids = #{fileIds},</if>
+            <if test='null != deleted and ""!=deleted'>deleted = #{deleted},</if>
+            <if test='null != createId and ""!=createId'>create_id = #{createId},</if>
+            <if test='null != updateId and ""!=updateId'>update_id = #{updateId},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != sort and ""!=sort'>sort = #{sort},</if>
+            <if test='null != deportIds and ""!=deportIds'>deport_ids = #{deportIds},</if>
+            <if test='null != userIds and ""!=userIds'>user_ids = #{userIds},</if>
+            <if test='null != achiPath and ""!=achiPath'>achi_path = #{achiPath},</if>
+            <if test='null != adminId and ""!=adminId'>admin_id = #{adminId},</if>
+            <if test='null != adminName and ""!=adminName'>admin_name = #{adminName},</if>
+            <if test='null != status and ""!=status'>status = #{status},</if>
+            <if test='null != allowNull and ""!=allowNull'>allow_null = #{allowNull},</if>
+            <if test='null != projectCode and ""!=projectCode'>project_code = #{projectCode}</if>
+        </set>
+        WHERE FIND_IN_SET(id,#{id})
+    </update>
+
+
+    <select id="load" resultMap="treeMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_achievement
+        WHERE id = #{id} AND deleted = 0
+    </select>
+
+    <!-- 查询所有，使用resultMap返回结果集，将数据组装成树形结构 -->
+    <select id="selectByParentId" resultMap="treeMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_achievement WHERE deleted = 0 AND parent_id = #{parentId}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_achievement
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM sys_achievement
+    </select>
+
+    <select id="selectAll" resultMap="treeMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_achievement
+        where deleted = 0
+        AND parent_id IS not NULL
+        <if test="null!=projectCode and ''!=projectCode">
+            AND project_code=#{projectCode} OR parent_id='-1'
+        </if>
+    </select>
+
+    <select id="selectAllByName" resultMap="treeMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_achievement
+        where deleted = 0
+        AND name = #{name}
+    </select>
+
+    <select id="statisticsTotalArchives" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT tbl.name,(SELECT COUNT(id) FROM `sys_file` where deleted = 0 AND FIND_IN_SET(id,tbl.file_ids)) num
+        FROM `sys_achievement` tbl where tbl.deleted = 0 ORDER BY num DESC
+    </select>
+
+    <select id="findAchievementByFileId" resultType="com.ygkj.auth.api.achievement.model.SysAchievement">
+        SELECT * FROM `sys_achievement` WHERE deleted = 0 AND FIND_IN_SET(#{fileId},file_ids)
+    </select>
+
+    <select id="selectDataAll" resultType="com.ygkj.auth.api.achievement.model.SysAchievement">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_achievement
+        where deleted = 0
+        <if test="fileName!=null and fileName!=''">
+            AND name LIKE concat('%',#{fileName},'%')
+        </if>
+        <if test="parentId!=null and parentId!=''">
+            AND parent_id = #{parentId}
+        </if>
+        <if test="id!=null and id!=''">
+            AND id = #{id}
+        </if>
+        <if test="projectCode!=null and projectCode!=''">
+            AND project_code = #{projectCode}
+        </if>
+        order by sort
+    </select>
+
+    <select id="selectAll2" resultType="com.ygkj.auth.api.achievement.model.SysAchievement">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_achievement
+        where deleted = 0
+        AND parent_id IS not NULL
+        AND (
+            <if test="list != null and list.size > 0">
+                project_code IN
+                <foreach collection="list" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+                OR
+            </if>
+            parent_id='-1' )
+    </select>
+
+    <select id="getFolders" resultType="com.ygkj.auth.api.achievement.model.SysAchievement">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_achievement WHERE deleted = 0
+        <if test="parentId != null and parentId != ''">
+            and FIND_IN_SET(parent_id,#{parentId})
+        </if>
+        <if test="year != null and year != ''">
+            and FIND_IN_SET(DATE_FORMAT(create_time,'%Y'),#{year})
+        </if>
+        <if test="keyWord != null and keyWord != ''">
+            and name LIKE concat('%',#{keyWord},'%')
+        </if>
+        <if test="projectType != null and projectType != ''">
+            and achi_path LIKE concat('%',#{projectType},'%')
+        </if>
+    </select>
+</mapper>

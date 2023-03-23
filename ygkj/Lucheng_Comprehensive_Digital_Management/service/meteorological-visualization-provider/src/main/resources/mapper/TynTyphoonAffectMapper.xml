@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.visualization.mapper.TynTyphoonAffectMapper">
+
+    <select id="getTyphoonAffects" resultType="com.ygkj.visualization.model.TynTyphoonAffect" parameterType="com.ygkj.visualization.vo.request.TyphoonAffectReqVo">
+        select t.* from tyn_typhoon_affect t where t.del_flag = 0
+        <if test="id != null and id != ''">
+            and t.id = #{id}
+        </if>
+        <if test="adcd != null and adcd != ''">
+            and t.adcd = #{adcd}
+        </if>
+        <if test="adnm != null and adnm != ''">
+            and t.adnm = #{adnm}
+        </if>
+        <if test="year != null and year != ''">
+            and t.year = #{year}
+        </if>
+        <if test="name != null and name != ''">
+            and t.typhoon_name like concat('%', #{name}, '%')
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.visualization.mapper.RealTyphoonDataMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.visualization.vo.response.RealTyphoonDataResVo" >
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="begin_time" property="beginTime" />
+        <result column="end_time" property="endTime" />
+        <result column="code" property="code" />
+        <result column="year" property="year" />
+        <result column="land_power" property="landPower" />
+        <result column="english_name" property="englishName" />
+        <result column="affected_area" property="affectedArea" />
+        <result column="land_time" property="landTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                name,
+                begin_time,
+                end_time,
+                code,
+                year,
+                land_power,
+                english_name,
+                affected_area,
+                land_time,
+                `feature`
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.visualization.model.RealTyphoonData">
+        INSERT INTO real_typhoon_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != name'>
+                name,
+            </if>
+            <if test ='null != beginTime'>
+                begin_time,
+            </if>
+            <if test ='null != endTime'>
+                end_time,
+            </if>
+            <if test ='null != land'>
+                land,
+            </if>
+            <if test ='null != code'>
+                code,
+            </if>
+            <if test ='null != points'>
+                points,
+            </if>
+            <if test ='null != year'>
+                year
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != name'>
+                #{name},
+            </if>
+            <if test ='null != beginTime'>
+                #{beginTime},
+            </if>
+            <if test ='null != endTime'>
+                #{endTime},
+            </if>
+            <if test ='null != land'>
+                #{land},
+            </if>
+            <if test ='null != code'>
+                #{code},
+            </if>
+            <if test ='null != points'>
+                #{points},
+            </if>
+            <if test ='null != year'>
+                #{year}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM real_typhoon_data
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.visualization.model.RealTyphoonData">
+        UPDATE real_typhoon_data
+        <set>
+            <if test ='null != name'>name = #{name},</if>
+            <if test ='null != beginTime'>begin_time = #{beginTime},</if>
+            <if test ='null != endTime'>end_time = #{endTime},</if>
+            <if test ='null != land'>land = #{land},</if>
+            <if test ='null != code'>code = #{code},</if>
+            <if test ='null != points'>points = #{points},</if>
+            <if test ='null != year'>year = #{year},</if>
+            <if test ='null != windExtremum'>wind_extremum = #{windExtremum}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultType="com.ygkj.visualization.model.RealTyphoonData">
+        SELECT <include refid="Base_Column_List" />,points,land
+        FROM real_typhoon_data
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM real_typhoon_data
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM real_typhoon_data
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM real_typhoon_data
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="code != null and code != ''">
+                AND code = #{code}
+            </if>
+            <if test="year != null">
+                AND DATE_FORMAT(begin_time,'%Y') = #{year}
+            </if>
+            <if test="codes != null and codes != ''">
+                AND find_in_set(code , #{codes})
+            </if>
+            <if test="begin != null and begin != '' and end != null and end != ''">
+                AND (DATE_FORMAT(begin_time,'%Y-%m') BETWEEN #{begin} AND #{end})
+            </if>
+            <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+                AND (end_time BETWEEN #{startTime} AND #{endTime})
+            </if>
+            <if test="minLandingLevel != null and minLandingLevel != '' and maxLandingLevel != null and maxLandingLevel != ''">
+                AND (land_power BETWEEN ${minLandingLevel} AND ${maxLandingLevel})
+            </if>
+            <if test="affectedArea!=null">
+                <choose>
+                    <when test="affectedArea">
+                        AND affected_area IS NOT NULL
+                    </when>
+                    <otherwise>
+                        AND affected_area IS  NULL
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="minWindExtremum != null  and maxWindExtremum != null ">
+                AND (wind_extremum BETWEEN ${minWindExtremum} AND ${maxWindExtremum})
+            </if>
+        </where>
+        ORDER BY end_time DESC
+    </select>
+
+    <!-- 20210719 发现code有重复, -->
+    <select id="selectDetail" resultType="com.ygkj.visualization.model.RealTyphoonData">
+        SELECT <include refid="Base_Column_List" />,points,land FROM real_typhoon_data WHERE code = #{code} limit 1
+    </select>
+
+    <select id="selectNewestTyphoon" resultType="com.ygkj.visualization.model.RealTyphoonData">
+        SELECT <include refid="Base_Column_List" />,points,land
+        from real_typhoon_data
+        where id=
+        ( select id from real_typhoon_data where ISNULL(end_time) or LENGTH(trim(end_time)) &lt; 1
+        union all
+        (select id from real_typhoon_data where !ISNULL(end_time) and LENGTH(trim(end_time)) &gt;=1  ORDER BY end_time desc limit 1) limit 1
+        )
+    </select>
+
+</mapper>

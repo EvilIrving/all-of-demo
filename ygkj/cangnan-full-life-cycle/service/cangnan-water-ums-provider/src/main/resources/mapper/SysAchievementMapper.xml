@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.SysAchievementMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.auth.api.achievement.model.SysAchievement" >
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="parent_id" property="parentId" />
+        <result column="file_ids" property="fileIds" />
+        <result column="deleted" property="deleted" />
+        <result column="create_id" property="createId" />
+        <result column="update_id" property="updateId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <collection property="children" column="id" ofType="com.ygkj.entity.SysAchievement" select="selectByParentId" />
+    </resultMap>
+
+    <resultMap id="treeMap" type="com.ygkj.auth.api.achievement.model.SysAchievement" extends="BaseResultMap">
+        <association property="fileList" fetchType="lazy" column="file_ids"
+                     select="com.ygkj.mapper.SysFileMapper.load"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id,
+        name,
+        parent_id,
+        file_ids,
+        deleted,
+        create_id,
+        update_id,
+        create_time,
+        update_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="false" keyColumn="id" keyProperty="id" parameterType="com.ygkj.auth.api.achievement.model.SysAchievement">
+        INSERT INTO sys_achievement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != name'>
+                name,
+            </if>
+            <if test ='null != parentId'>
+                parent_id,
+            </if>
+            <if test ='null != fileIds'>
+                file_ids,
+            </if>
+            <if test ='null != deleted'>
+                deleted,
+            </if>
+            <if test ='null != createId'>
+                create_id,
+            </if>
+            <if test ='null != updateId'>
+                update_id,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != updateTime'>
+                update_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != name'>
+                #{name},
+            </if>
+            <if test ='null != parentId'>
+                #{parentId},
+            </if>
+            <if test ='null != fileIds'>
+                #{fileIds},
+            </if>
+            <if test ='null != deleted'>
+                #{deleted},
+            </if>
+            <if test ='null != createId'>
+                #{createId},
+            </if>
+            <if test ='null != updateId'>
+                #{updateId},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM sys_achievement
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.auth.api.achievement.model.SysAchievement">
+        UPDATE sys_achievement
+        <set>
+            <if test ='null != name'>name = #{name},</if>
+            <if test ='null != parentId'>parent_id = #{parentId},</if>
+            <if test ='null != fileIds'>file_ids = #{fileIds},</if>
+            <if test ='null != deleted'>deleted = #{deleted},</if>
+            <if test ='null != createId'>create_id = #{createId},</if>
+            <if test ='null != updateId'>update_id = #{updateId},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime}</if>
+        </set>
+        WHERE FIND_IN_SET(id,#{id})
+    </update>
+
+
+    <select id="load" resultMap="treeMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_achievement
+        WHERE id = #{id} AND deleted = 0
+    </select>
+
+    <!-- 查询所有，使用resultMap返回结果集，将数据组装成树形结构 -->
+    <select id="selectByParentId" resultMap="treeMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_achievement WHERE deleted = 0 AND parent_id = #{parentId}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_achievement
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM sys_achievement
+    </select>
+
+    <select id="selectAll" resultMap="treeMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_achievement
+        where deleted = 0
+        AND parent_id IS NULL
+    </select>
+
+    <select id="selectAllByName" resultMap="treeMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_achievement
+        where deleted = 0
+        AND name = #{name}
+    </select>
+
+</mapper>

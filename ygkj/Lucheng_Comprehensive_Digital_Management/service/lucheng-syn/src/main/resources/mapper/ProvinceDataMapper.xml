@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.ProvinceDataMapper">
+
+
+    <insert id="replaceDefenObject" parameterType="com.ygkj.lcsyn.model.PvDefenObject">
+        REPLACE INTO pv_defen_object (`defen_code`,`objtp`,`contact`,`contacttel`,`pcount`,`tcharger`,`tchargertel`,`tong_time`,`adcd`)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.defenCode} ,#{item.objtp},#{item.contact},#{item.contacttel},#{item.pcount},#{item.tcharger},#{item.tchargertel},#{item.tongTime},#{item.adcd})
+        </foreach>
+    </insert>
+
+
+
+    <insert id="replaceDefenObjectBase" parameterType="com.ygkj.lcsyn.model.PvDefenObjectBase">
+        REPLACE INTO pv_defen_object_base (`defen_code`,`ad_code`,`admin_adnm`,`natural_adnm`,`defen_obj`,`from_date`,
+        `to_date`,`orig_code`,`geo_code`, `tong_time`,`op`,`adcd`,`modify_time`,`is_lock`,`check_id`,`is_data_official`,
+        `data_official_time`, `check_status`,`check_reason`)
+        VALUE
+        <foreach collection="list" item="i" separator=",">
+            (#{i.defenCode},#{i.adCode},#{i.adminAdnm},#{i.naturalAdnm},#{i.defenObj},#{i.fromDate},#{i.toDate},#{i.origCode},
+            #{i.geoCode},#{i.tongTime},#{i.op},#{i.adcd},#{i.modifyTime},#{i.isLock},#{i.checkId},#{i.isDataOfficial},
+            #{i.dataOfficialTime},#{i.checkStatus},#{i.checkReason})
+        </foreach>
+    </insert>
+
+
+    <insert id="replacePvPchargeInfo" parameterType="com.ygkj.lcsyn.model.PvPchargeInfo">
+        REPLACE INTO pv_pcharge_info (`pcharge_code`,`pcharge_name`,`mobile`,`dept_name`,`unit`,`position`,`remarks`,`modify_time`,`adcd`,`tong_time`)
+        VALUE
+        <foreach collection="list" item="i" separator=",">
+            (#{i.pchargeCode},#{i.pchargeName},#{i.mobile},#{i.deptName},#{i.unit},#{i.position},#{i.remarks},#{i.modifyTime},#{i.adcd},#{i.tongTime})
+        </foreach>
+    </insert>
+
+
+    <insert id="replacePvPchargeBase" parameterType="com.ygkj.lcsyn.model.PvPchargeBase">
+        REPLACE INTO pv_pcharge_base (`pcharge_code`,`ad_code`,`admin_adnm`,`natural_adnm`,`charge_type`,`charge_level`,
+        `from_date`,`to_date`,`orig_code`,`geo_code`,`tong_time`,`op`,`adcd`,`modify_time`,`is_lock`,`check_id`,
+        `is_data_official`,`data_official_time`,`check_status`,`check_reason`)
+        VALUE
+        <foreach collection="list" item="i" separator=",">
+            (#{i.pchargeCode},#{i.adCode},#{i.adminAdnm},#{i.naturalAdnm},#{i.chargeType},#{i.chargeLevel},#{i.fromDate},
+            #{i.toDate},#{i.origCode},#{i.geoCode},#{i.tongTime},#{i.op},#{i.adcd},#{i.modifyTime},#{i.isLock},#{i.checkId}
+            ,#{i.isDataOfficial},#{i.dataOfficialTime},#{i.checkStatus},#{i.checkReason})
+        </foreach>
+    </insert>
+
+
+    <insert id="replacePvAffectPopulation" parameterType="com.ygkj.lcsyn.model.PvFloodAffectPopulation">
+        REPLACE INTO pv_flood_affect_population (`prev_code`,`adcd`,`admin_adnm`,`natural_adnm`,`defen_obj`,`objtp`,
+        `contact`,`contacttel`,`pcount`,`town_name`,`county_name`,`city_name`,`tong_time`)
+        VALUE
+        <foreach collection="list" item="i" separator=",">
+            (#{i.prevCode},#{i.adcd},#{i.adminAdnm},#{i.naturalAdnm},#{i.defenObj},#{i.objtp},#{i.contact},#{i.contacttel},
+            #{i.pcount},#{i.townName},#{i.countyName},#{i.cityName},#{i.tongTime})
+        </foreach>
+    </insert>
+
+
+    <insert id="replacePvPrevObjInfo" parameterType="com.ygkj.lcsyn.model.PvPrevObjInfo">
+        REPLACE INTO pv_prev_obj_info (`prev_code`,`fldarea`,`htcount`,`pcount`,`lgtd`,`lttd`,`prevtp`,`risktp`,`remarks`,
+        `modify_time`,`adcd`,`tong_time`)
+        VALUE
+        <foreach collection="list" item="i" separator=",">
+            (#{i.prevCode},#{i.fldarea},#{i.htcount},#{i.pcount},#{i.lgtd},#{i.lttd},#{i.prevtp},#{i.risktp},#{i.remarks},
+            #{i.modifyTime},#{i.adcd},#{i.tongTime})
+        </foreach>
+    </insert>
+
+
+    <insert id="replacePvPrevObjBase" parameterType="com.ygkj.lcsyn.model.PvPrevObjInfo">
+        REPLACE INTO pv_prev_obj_base (`prev_code`,`ad_code`,`admin_adnm`,`natural_adnm`,`is_added`,`from_date`,`to_date`,
+        `orig_code`,`geo_code`,`tong_time`,`op`,`modify_time`,`adcd`)
+        VALUE
+        <foreach collection="list" separator="," item="i">
+            (#{i.prevCode},#{i.adCode},#{i.adminAdnm},#{i.naturalAdnm},#{i.isAdded},#{i.fromDate},#{i.toDate},#{i.origCode},
+            #{i.geoCode},#{i.tongTime},#{i.op},#{i.modifyTime},#{i.adcd})
+        </foreach>
+    </insert>
+
+
+    <insert id="replacePvFloodWarningTarget" parameterType="com.ygkj.lcsyn.model.PvFloodWarningTarget">
+        REPLACE INTO pv_flood_warning_target (`prev_windex_code`,`rtransfer`,`itransfer`,`soilmstprn`,`criticalval`,`method`,`remarks`,`modify_time`,
+        `adcd`,`tong_time`,`tech_is_enable`)
+        VALUE
+        <foreach collection="list" separator="," item="i">
+            (#{i.prevWindexCode},#{i.rtransfer},#{i.itransfer},#{i.soilmstprn},#{i.criticalval},#{i.method},#{i.remarks},#{i.modifyTime},#{i.adcd},
+            #{i.tongTime},#{i.techIsEnable})
+        </foreach>
+    </insert>
+
+    <insert id="replacePvFloodWarningTargetDirectory" parameterType="com.ygkj.lcsyn.model.PvFloodWarningTargetDirectory">
+        REPLACE INTO pv_flood_warning_target_directory (`prev_windex_code`,`ad_code`,`admin_adnm`,`natural_adnm`,`indextp`,`period`,`from_date`,`to_date`,
+        `tong_time`,`op`,`modify_time`,`is_lock`,`check_id`,`is_data_official`,`data_official_time`,`check_status`,`check_reason`,`tech_is_enable`)
+        VALUE
+        <foreach collection="list" separator="," item="i">
+            (#{i.prevWindexCode},#{i.adCode},#{i.adminAdnm},#{i.naturalAdnm},#{i.indextp},#{i.period},#{i.fromDate},#{i.toDate},#{i.tongTime},
+            #{i.op},#{i.modifyTime},#{i.isLock},#{i.checkId},#{i.isDataOfficial},#{i.dataOfficialTime},#{i.checkStatus},#{i.checkReason},#{i.techisEnable})
+        </foreach>
+    </insert>
+
+    <insert id="replacePvFloodInfo" parameterType="com.ygkj.lcsyn.model.PvFloodInfo">
+        REPLACE INTO pv_flood_info (`record_code`,`adcd`,`warn_type`,`warn_time`,`warn_grade`,`waen_value`,`period`,`windex`,
+        `town_name`,`country_name`,`city_name`,`prev_code`,`admin_adnm`,`natural_adnm`,`tong_time`)
+        VALUE
+        <foreach collection="list" separator="," item="i">
+            (#{i.recordCode},#{i.adcd},#{i.warnType},#{i.warnTime},#{i.warnGrade},#{i.waenValue},#{i.period},#{i.windex},#{i.townName},
+            #{i.countryName},#{i.cityName},#{i.prevCode},#{i.adminAdnm},#{i.naturalAdnm},#{i.tongTime})
+        </foreach>
+    </insert>
+
+    <insert id="replaceMountainPondWarn" parameterType="com.ygkj.lcsyn.model.MountainPondWarnResponse">
+        REPLACE INTO mountain_pond_warn_response (`mnpd_code`,`orig_code`,`mnpd_name`,`mnpd_type_name`,`city_name`,`county_name`,
+`tow_village_name`,`super_unit_name`,`super_charger_name`,`super_charger_position`,`super_charger_phone`,`super_basic_name`,
+`super_basic_phone`,`manage_unit_name`,`manage_charger_name`,`manage_charger_position`,`manage_charger_phone`,`manage_patrol_name`,
+`manage_patrol_phone`,`owner_credit_code`,`supervision_dept`,`supervision_credit_code`,`remark`,`insert_time`,`adcd`,`tong_time`)
+        VALUE
+        <foreach collection="list" separator="," item="i">
+            ( #{i.mnpdCode},
+            #{i.origCode},
+            #{i.mnpdName},
+            #{i.mnpdTypeName},
+            #{i.cityName},
+            #{i.countyName},
+            #{i.towVillageName},
+            #{i.superUnitName},
+            #{i.superChargerName},
+            #{i.superChargerPosition},
+            #{i.superChargerPhone},
+            #{i.superBasicName},
+            #{i.superBasicPhone},
+            #{i.manageUnitName},
+            #{i.manageChargerName},
+            #{i.manageChargerPosition},
+            #{i.manageChargerPhone},
+            #{i.managePatrolName},
+            #{i.managePatrolPhone},
+            #{i.ownerCreditCode},
+            #{i.supervisionDept},
+            #{i.supervisionCreditCode},
+            #{i.remark},
+            #{i.insertTime},
+            #{i.adcd},
+            #{i.tongTime} )
+        </foreach>
+    </insert>
+
+    <insert id="replaceSubAdcd" parameterType="com.ygkj.lcsyn.model.SubAdcd">
+        REPLACE INTO sub_adcd (`adcd`,`ad_name`,`ad_code`)
+        VALUE
+        <foreach collection="list" separator="," item="i">
+            (#{i.adcd},#{i.adName},#{i.adCode})
+        </foreach>
+    </insert>
+</mapper>

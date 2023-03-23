@@ -1,0 +1,30 @@
+.project-dialog {
+	padding: 16px;
+	padding-top: 0;
+	.project-tabs {
+		margin-bottom: 16px;
+		.project-tabs-list {
+			display: flex;
+			.project-tabs-item {
+				user-select: none;
+				margin-right: 20px;
+				cursor: pointer;
+				color: #fff;
+				padding: 5px 12px;
+				border: 1px solid #285c9e;
+				&:hover,
+				&.active {
+					border: 1px solid #168aa7;
+					box-shadow: 0 0 20px #168aa746 inset;
+				}
+			}
+		}
+	}
+	.project-content {
+		width: 100%;
+		padding-top: 8px;
+		.project-info {
+			height: 450px;
+		}
+	}
+}

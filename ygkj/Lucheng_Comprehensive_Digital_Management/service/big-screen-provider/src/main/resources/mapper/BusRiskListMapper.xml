@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.BusRiskListMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.BusRiskList">
+        <result column="id" property="id"/>
+        <result column="proj_name" property="projName"/>
+        <result column="proj_type" property="projType"/>
+        <result column="report_person" property="reportPerson"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="adcd_duty" property="adcdDuty"/>
+        <result column="sb_sign" property="sbSign"/>
+        <result column="check_person" property="checkPerson"/>
+        <result column="check_time" property="checkTime"/>
+        <result column="danger_des" property="dangerDes"/>
+        <result column="property" property="property"/>
+        <result column="danger_type" property="dangerType"/>
+        <result column="river_basin" property="riverBasin"/>
+        <result column="rec_condition" property="recCondition"/>
+        <result column="duty_unit" property="dutyUnit"/>
+        <result column="lat" property="lat"/>
+        <result column="lng" property="lng"/>
+        <result column="sb_id" property="sbId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        proj_name,
+        proj_type,
+        report_person,
+        city,
+        county,
+        adcd_duty,
+        sb_sign,
+        check_person,
+        check_time,
+        danger_des,
+        property,
+        danger_type,
+        river_basin,
+        rec_condition,
+        duty_unit,
+        lat,
+        lng,
+        sb_id
+    </sql>
+
+    <select id="busRiskListPage" resultType="com.ygkj.big.screen.vo.response.BusRiskListResp">
+        SELECT tbl.* FROM `bus_risk_list` tbl where 1=1
+        <if test="projName != null and projName != ''">
+            and tbl.proj_name like CONCAT('%',#{projName}, '%')
+        </if>
+        <if test="projType != null and projType != ''">
+            and tbl.proj_type = #{projType}
+        </if>
+        <if test="sbSign != null and sbSign != ''">
+            and tbl.sb_sign = #{sbSign}
+        </if>
+        <if test="adcdDuty != null and adcdDuty != ''">
+            and tbl.adcd_duty = #{adcdDuty}
+        </if>
+        <if test="property != null and property != ''">
+            and tbl.property = #{property}
+        </if>
+        <if test="riverBasin != null and riverBasin != ''">
+            and tbl.river_basin = #{riverBasin}
+        </if>
+        <if test="property != null and property != ''">
+            and tbl.property = #{property}
+        </if>
+        <if test="recCondition != null and recCondition != ''">
+            and tbl.rec_condition = #{recCondition}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            and tbl.report_time &gt;= CONCAT(#{startTime}, ' 00:00:00')
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and tbl.report_time &lt;= CONCAT(#{endTime}, ' 23:59:59')
+        </if>
+        <if test="reportTime != null and reportTime != ''">
+            and DATE_FORMAT(tbl.report_time,'%Y-%m-%d') = #{reportTime}
+        </if>
+    </select>
+
+    <select id="riskTypeStatistics" resultType="com.ygkj.big.screen.vo.response.RiskTypeStaResp">
+        SELECT COUNT(1) num,sb_sign,CASE sb_sign WHEN '251' THEN '隐患点' WHEN '252' THEN '高风险点' ELSE '薄弱点'
+        END sbSignName FROM `bus_risk_list` where FIND_IN_SET(sb_sign,'251,252,253') GROUP BY sb_sign
+    </select>
+
+</mapper>

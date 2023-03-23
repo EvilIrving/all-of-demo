@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.AttSeawallMapper">
+
+    <select id="warnTimes" resultType="com.ygkj.entity.SingletonMap">
+        select count(1) as `value`,seawall_code as `key`
+        from seawall_warn_record
+        <where>
+            <if test="dataTime!=null">
+                and tm &lt;=#{dataTime}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertWarnRecord" parameterType="com.ygkj.project.model.SeawallWarnRecord">
+        REPLACE INTO seawall_warn_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != seawallCode'>
+                seawall_code,
+            </if>
+            <if test ='null != warnTm'>
+                warn_tm,
+            </if>
+            <if test ='null != tdz'>
+                tdz,
+            </if>
+            <if test ='null != warnState'>
+                warn_state,
+            </if>
+            <if test ='null != tdzTm'>
+                tdz_tm
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != seawallCode'>
+                #{seawallCode},
+            </if>
+            <if test ='null != warnTm'>
+                #{warnTm},
+            </if>
+            <if test ='null != tdz'>
+                #{tdz},
+            </if>
+            <if test ='null != warnState'>
+                #{warnState},
+            </if>
+            <if test ='null != tdzTm'>
+                #{tdzTm}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="candidateSeawallWarnRecord" resultType="com.ygkj.project.model.SeawallWarnRecord">
+        SELECT a.* FROM
+        (SELECT seawall_code,warn_tm, tdz,warn_state,tdz_tm
+        FROM seawall_warn_record
+        <where>
+            <if test="seawallCodeList!=null and seawallCodeList.size!=0">
+                and seawall_code IN
+                <foreach collection="seawallCodeList" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND warn_tm &lt;= #{dataTime} and warn_tm &gt;= DATE_SUB(#{dataTime},INTERVAL #{pastMinutes} MINUTE)
+                </when>
+                <otherwise>
+                    AND warn_tm &lt;= NOW() and warn_tm &gt;= DATE_SUB(NOW(),INTERVAL #{pastMinutes} MINUTE)
+                </otherwise>
+            </choose>
+        </where>
+         HAVING 1 ORDER BY warn_tm DESC) a
+        GROUP BY a.seawall_code
+    </select>
+
+    <select id="selectForecastHighestTdz" resultType="com.ygkj.digitization.model.AttTideFcstValBase">
+        SELECT a.* FROM
+        (select * from att_tide_fcst_val_base
+        <where>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm &gt;= #{dataTime} and tm &lt;= DATE_ADD(#{dataTime},INTERVAL #{futureMinutes} MINUTE)
+                </when>
+                <otherwise>
+                    AND tm &gt;= NOW() and tm &lt;= DATE_ADD(NOW(),INTERVAL #{futureMinutes} MINUTE)
+                </otherwise>
+            </choose>
+            <if test="stcdList!=null and stcdList.size!=0">
+                and st_code IN
+                <foreach collection="stcdList" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        HAVING 1 ORDER BY tdz DESC) a
+        GROUP BY a.st_code
+    </select>
+
+    <select id="listSt" resultType="com.ygkj.project.vo.response.AttStResVo" parameterType="String">
+        SELECT
+            asb.st_code,asb.st_type,asb.st_name,asb.st_long,asb.st_lat
+        FROM
+            att_seawall_base sb
+            INNER JOIN att_st_base asb ON sb.tide_station_code = asb.st_code
+        WHERE
+            sb.seawall_code = #{seawallCode}
+    </select>
+
+    <select id="selectByCode" resultType="com.ygkj.gragh.model.AttSeawallBase">
+        SELECT * FROM att_seawall_base
+        <where>
+            <if test="seawallCode != null and seawallCode !='' ">
+                seawall_code = #{seawallCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="listSeawallPoint" resultType="com.ygkj.project.vo.response.SeawallPointResVo" parameterType="String">
+        SELECT longitude,latitude,seawall_code,seawall_name FROM att_seawall_base
+        <where>
+            <if test="seawallCode != null and seawallCode !='' ">
+                seawall_code = #{seawallCode}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

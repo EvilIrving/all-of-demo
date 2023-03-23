@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.DroughtAnalysisMapper">
+    <insert id="batchInsert">
+        INSERT INTO st_pptn_r_day
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.stcd},#{item.date},#{item.drp})
+            </foreach>
+    </insert>
+
+
+    <select id="listRainfall" resultType="com.ygkj.digitization.vo.response.RainfallResVo">
+        SELECT
+            SUM( drp ) drp,stcd,
+            DATE_FORMAT( DATE_ADD( tm, INTERVAL - 8 HOUR ), '%Y-%m-%d' ) `date`
+        FROM
+             <foreach collection="tableList" open="(" close=") a " separator=" UNION ALL " item="item">
+                 SELECT drp,tm,stcd
+                 FROM
+                    ${item}
+                 WHERE
+                    tm BETWEEN #{startTime} AND #{endTime}
+                     <if test="stcdList != null and stcdList.size > 0">
+                         AND stcd IN
+                         <foreach collection="stcdList" open="(" separator="," item="item" close=")">
+                             #{item}
+                         </foreach>
+                     </if>
+             </foreach>
+        GROUP BY
+            stcd,`date`
+    </select>
+
+    <select id="listRainSt" resultType="com.ygkj.digitization.vo.response.StResVo">
+        SELECT
+            st_code,st_long,st_lat
+        FROM
+            att_st_base
+        WHERE
+            st_type = 'PP'
+            AND !ISNULL(st_long)
+            AND st_long != 0
+            AND !ISNULL(st_lat)
+            AND st_lat != 0
+    </select>
+
+    <select id="listRainfallNew" resultType="com.ygkj.digitization.vo.response.RainfallResVo">
+        SELECT
+            stcd,`date`,drp
+        FROM
+            st_pptn_r_day
+        WHERE
+            `date` BETWEEN #{startDate} AND #{endDate}
+            <if test="stcdList != null and stcdList.size > 0">
+                AND stcd IN
+                <foreach collection="stcdList" open="(" separator="," item="item" close=")">
+                    #{item}
+                </foreach>
+            </if>
+    </select>
+
+
+    <select id="findRainAvarge" resultType="java.lang.Double">
+        select sum(drp) from att_daily_rainfall
+        <where>
+            <choose>
+                <when test="flag">
+                    date between concat('2020-' ,#{beginTime}) and concat('2020-',#{endTime})
+                </when>
+                <otherwise>
+                    date <![CDATA[ >= ]]> concat('2020-' ,#{beginTime}) or date <![CDATA[ <= ]]> concat('2020-' ,#{endTime})
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    
+    <select id="list30DayRain" resultType="com.ygkj.digitization.vo.response.DayRainResVo">
+        SELECT SUM(drp) drp,`date` FROM
+             <foreach collection="tables" open="(" item="item" separator=" UNION ALL " close=") a ">
+                 SELECT
+                    SUM(drp) drp,DATE_FORMAT(DATE_SUB(tm,INTERVAL 8 HOUR),'%Y-%m-%d') date
+                 FROM
+                    ${item}
+                 WHERE
+                    stcd IN
+                    <foreach collection="stList" open="(" item="item" separator="," close=")">
+                        #{item}
+                    </foreach>
+                    AND tm >= #{date}
+                 GROUP BY DATE_FORMAT(DATE_SUB(tm,INTERVAL 8 HOUR),'%Y-%m-%d')
+             </foreach>
+        GROUP BY `date`
+    </select>
+
+
+</mapper>

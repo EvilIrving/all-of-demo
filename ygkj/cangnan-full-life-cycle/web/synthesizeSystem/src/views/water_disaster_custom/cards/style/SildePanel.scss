@@ -1,0 +1,142 @@
+/* 表格样式及修复 */
+
+::v-deep .el-table {
+    /* <el-table-column />的align 属性不知道为什么不正确 只能自己增加 */
+    .is-left {
+        .cell {
+            text-align: left;
+        }
+    }
+}
+
+::v-deep .cell-padding-0 {
+    .cell {
+        padding: 0 2px;
+    }
+}
+
+::v-deep .cell-has-wrap {
+    .cell {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        vertical-align: middle;
+        line-height: 14px !important;
+        padding: 0 2px;
+        overflow: hidden;
+    }
+}
+
+.sidebar-list {
+    color: #fff;
+    height: 100%;
+    margin-top: 10px;
+     ::v-deep.el-carousel--horizontal {
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+     ::v-deep.el-carousel__indicators {
+        bottom: -12px;
+        .el-carousel__indicator {
+            &.is-active button {
+                background-color: #1ef8f2;
+            }
+        }
+    }
+     ::v-deep.el-carousel__button {
+        padding: 0;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+    }
+}
+//适配拉伸大屏
+.is-big-screen {
+    transform: scaleX(0.5);
+}
+
+.icon-sty {
+    margin-right: 10px;
+    vertical-align: text-bottom;
+    color: #00c1ff;
+}
+
+.rainfall-style {
+    color: #fff;
+    width: 100%;
+    // margin: 12px 0;
+    display: flex;
+    font-size: 18px;
+    padding: 10px;
+    justify-content: center;
+    background: url(~assets/images/WaterDisastersImage/rainfall-bg.png) no-repeat top center;
+    background-size: 100% 100%;
+    >div {
+        .number {
+            color: #1ef8f2;
+            font-size: 22px;
+        }
+    }
+    >p{
+        >span{
+            font-size: 26px;
+            color: #1CFFF5;
+        }
+    }
+}
+
+.reservoir-sty {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    >p {
+        font-size: 16px;
+        margin: 12px 0;
+        display: flex;
+        color: #fff;
+        width: 50%;
+        line-height: 40px;
+        justify-content: center;
+    }
+    >p:nth-child(1) {
+        >span {
+            font-size: 28px;
+            color: #00c1ff;
+            padding: 0 5px;
+        }
+        margin-right: 30px;
+        background: url(~assets/images/WaterDisastersImage/rainfall-bg.png) no-repeat top center;
+        background-size: 100% 100%;
+    }
+    >p:nth-child(2) {
+        >span {
+            font-size: 28px;
+            color: #eec80b;
+            padding: 0 5px;
+        }
+        background: url(~assets/images/WaterDisastersImage/rainfall-bg.png) no-repeat top center;
+        background-size: 100% 100%;
+    }
+}
+
+.area-style {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    background-image: linear-gradient(90deg, rgba(0, 193, 255, 0.2) 0%, rgba(249, 249, 249, 0) 100%);
+    // background-image: linear-gradient(to right, rgba(19, 113, 235, 0.2), rgba(0, 0, 0, 0));
+    >p:nth-child(1) {
+        >i {
+            vertical-align: text-top;
+        }
+    }
+    >p {
+        color: #00c1ff;
+        >span {
+            margin: 0 10px;
+            color: #fff;
+        }
+    }
+}

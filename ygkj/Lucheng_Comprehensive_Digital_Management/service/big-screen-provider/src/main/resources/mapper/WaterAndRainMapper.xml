@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.WaterAndRainMapper">
+
+    <select id="selectNewestRsvrWaterLevel" resultType="com.ygkj.big.screen.model.StRsvrR">
+        SELECT a.* FROM
+        (select * from (
+        <foreach collection="tables" item="table" separator="UNION ALL">
+            (SELECT stcd, tm, rz FROM ${table}
+            WHERE
+            tm BETWEEN DATE_ADD(now(),INTERVAL -1 hour) and now()
+            <if test="stcds!=null and stcds.size!=0">
+                and stcd in
+                <foreach collection="stcds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
+        </foreach>
+        ) as b HAVING 1 ORDER BY b.tm DESC ) as a GROUP BY a.stcd
+    </select>
+
+    <select id="selectRecentRsvrWaterLevelByDate" resultType="com.ygkj.big.screen.model.StRsvrR">
+        SELECT a.* FROM
+        (select * from (
+        <foreach collection="tables" item="table" separator="UNION ALL">
+            (SELECT stcd, tm, rz FROM ${table}
+            WHERE
+            tm BETWEEN DATE_ADD(#{date},INTERVAL -1 hour) and #{date}
+            <if test="stcds!=null and stcds.size!=0">
+                and stcd in
+                <foreach collection="stcds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
+        </foreach>
+        ) as b HAVING 1 ORDER BY b.tm DESC ) as a GROUP BY a.stcd
+    </select>
+
+    <select id="selectSumRainfall" resultType="com.ygkj.big.screen.model.StPptnR">
+        select a.mgstcd, #{end} as tm, sum(a.drp) as drp from (
+        <foreach collection="tables" item="table" separator="UNION ALL">
+            (SELECT mgstcd, drp FROM ${table}
+            WHERE tm BETWEEN #{start} and #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd in
+                <foreach collection="stcds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
+        </foreach>
+        ) as a GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectPastHoursRainfall" resultType="com.ygkj.big.screen.model.StPptnR">
+        SELECT
+        mgstcd,
+        tm,
+        SUM(drp) AS drp
+        FROM
+        ${table}
+        <where>
+            <if test="codes != null and codes.size > 0">
+                AND mgstcd IN (
+                <foreach collection="codes" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            AND tm &gt; DATE_ADD(#{endTime},INTERVAL -${hour} HOUR) and tm &lt;= #{endTime}
+        </where>
+        group by mgstcd
+    </select>
+
+    <select id="findLastRsvrFloodData" resultType="java.lang.Double">
+        SELECT flow FROM `rsvr_flood_predict` WHERE `res_code` = '330381021000005' ORDER BY `forecast_time` DESC LIMIT 1
+    </select>
+</mapper>

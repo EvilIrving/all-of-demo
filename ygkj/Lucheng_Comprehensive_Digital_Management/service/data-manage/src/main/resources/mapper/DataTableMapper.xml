@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcy.datamanage.biz.mapper.DataTableMapper">
+
+    <insert id="replaceAll" parameterType="com.dcy.datamanage.api.model.BusDataTable">
+        REPLACE INTO bus_data_table (id,data_source_id,`table_name`,custom_table_name)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.dataSourceId},#{item.tableName},#{item.customTableName})
+        </foreach>
+    </insert>
+
+
+    <select id="listTableExtend" resultType="com.dcy.datamanage.api.model.BusDataTable">
+        SELECT
+            *
+        FROM
+            bus_data_table
+        WHERE
+            data_source_id = #{dataSourceId}
+            AND `table_name` IN
+            <foreach collection="tableNameList" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+
+</mapper>

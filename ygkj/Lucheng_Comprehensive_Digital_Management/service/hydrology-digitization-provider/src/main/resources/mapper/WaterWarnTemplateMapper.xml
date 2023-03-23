@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.WaterWarnTemplateMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.WaterWarnTemplate" >
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="content" property="content" />
+        <result column="create_time" property="createTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="creator_id" property="creatorId" />
+        <result column="create_name" property="createName" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        name,
+        content,
+        create_time,
+        del_flag,
+        creator_id,
+        create_name
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.WaterWarnTemplate">
+        INSERT INTO water_warn_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != name'>
+                name,
+            </if>
+            <if test ='null != content'>
+                content,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != creatorId'>
+                creator_id,
+            </if>
+            <if test ='null != createName'>
+                create_name
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != name'>
+                #{name},
+            </if>
+            <if test ='null != content'>
+                #{content},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != creatorId'>
+                #{creatorId},
+            </if>
+            <if test ='null != createName'>
+                #{createName}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        update water_warn_template set del_flag =1 WHERE id = #{id}
+    </delete>
+
+    <select id="loadPage" resultType="com.ygkj.digitization.vo.response.WaterWarnTemplateRespVo">
+        select tbl.* from water_warn_template tbl where tbl.del_flag = 0
+        <if test ='null != name and "" != name'>
+            and tbl.name like CONCAT('%',#{name},'%')
+        </if>
+        <if test ='null != id and "" != id'>
+            and tbl.id = #{id}
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.WaterWarnTemplate">
+        UPDATE water_warn_template
+        <set>
+            <if test ='null != name'>name = #{name},</if>
+            <if test ='null != content'>content = #{content},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != creatorId'>creator_id = #{creatorId},</if>
+            <if test ='null != createName'>create_name = #{createName}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+
+</mapper>

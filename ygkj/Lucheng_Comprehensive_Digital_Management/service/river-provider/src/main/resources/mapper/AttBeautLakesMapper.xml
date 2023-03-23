@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttBeautLakesMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.vo.response.AttBeautLakesRespVo">
+        <result column="id" property="id"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="progress" property="progress"/>
+        <result column="project_name" property="projectName"/>
+        <result column="project_status" property="projectStatus"/>
+        <result column="river_system" property="riverSystem"/>
+        <result column="section_name" property="sectionName"/>
+        <result column="start_location" property="startLocation"/>
+        <result column="end_location" property="endLocation"/>
+        <result column="river_manager_name" property="riverManagerName"/>
+        <result column="river_manager_position" property="riverManagerPosition"/>
+        <result column="lake_type" property="lakeType"/>
+        <result column="project_overview" property="projectOverview"/>
+        <result column="plan_invest" property="planInvest"/>
+        <result column="complete_investment" property="completeInvestment"/>
+        <result column="investment_proportion" property="investmentProportion"/>
+        <result column="plan_scale" property="planScale"/>
+        <result column="complete_scale" property="completeScale"/>
+        <result column="scale_ratio" property="scaleRatio"/>
+        <result column="overall_progress" property="overallProgress"/>
+        <result column="task_status" property="taskStatus"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        city,
+        county,
+        progress,
+        project_name,
+        project_status,
+        river_system,
+        section_name,
+        start_location,
+        end_location,
+        river_manager_name,
+        river_manager_position,
+        lake_type,
+        project_overview,
+        plan_invest,
+        complete_investment,
+        investment_proportion,
+        plan_scale,
+        complete_scale,
+        scale_ratio,
+        overall_progress,
+        task_status,
+        start_lng,
+        start_lat
+    </sql>
+
+    <select id="loadPage" resultType="com.ygkj.river.vo.response.AttBeautLakesRespVo">
+        SELECT tbl.* FROM `att_beaut_lakes` tbl where 1=1 and tbl.county != '温州市'
+        <if test='null != id and "" != id'>
+            and tbl.id = #{id}
+        </if>
+        <if test='null != county and "" != county'>
+            and tbl.county = #{county}
+        </if>
+        <if test='null != projectStatus and "" != projectStatus'>
+            and tbl.project_status = #{projectStatus}
+        </if>
+        <if test='null != projectName and "" != projectName'>
+            and tbl.project_name like CONCAT('%',#{projectName},'%')
+        </if>
+        <!--        <if test ='"1".toString() != containWenzhou'>-->
+        <!--            tbl.county = '温州市'-->
+        <!--        </if>-->
+    </select>
+
+    <select id="eachProjectStatistics" resultType="cn.hutool.json.JSONObject">
+        SELECT tbl.project_status,COUNT(1) num FROM `att_beaut_lakes` tbl WHERE tbl.county != '温州市' GROUP BY
+        tbl.project_status
+    </select>
+
+    <select id="attSmallMediumRiverService" resultType="cn.hutool.json.JSONObject">
+        SELECT tbl.project_status,COUNT(1) num FROM `att_small_medium_river` tbl WHERE tbl.county != '温州市' GROUP BY
+        tbl.project_status
+    </select>
+
+
+</mapper>

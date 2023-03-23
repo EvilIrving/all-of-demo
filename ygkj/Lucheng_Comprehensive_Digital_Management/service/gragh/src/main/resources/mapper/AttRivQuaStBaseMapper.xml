@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.AttRivQuaStBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.gragh.model.AttRivQuaStBase">
+        <result column="site_no" property="siteNo"/>
+        <result column="site_name" property="siteName"/>
+        <result column="level" property="level"/>
+        <result column="river_names" property="riverNames"/>
+        <result column="is_bicovering" property="isBicovering"/>
+        <result column="area_path" property="areaPath"/>
+        <result column="functional_grade" property="functionalGrade"/>
+        <result column="location" property="location"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        site_no,
+        site_name,
+        level,
+        river_names,
+        is_bicovering,
+        area_path,
+        functional_grade,
+        location,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.gragh.model.AttRivQuaStBase">
+        INSERT INTO att_riv_qua_st_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != siteNo'>
+                site_no,
+            </if>
+            <if test='null != siteName'>
+                site_name,
+            </if>
+            <if test='null != level'>
+                level,
+            </if>
+            <if test='null != riverNames'>
+                river_names,
+            </if>
+            <if test='null != isBicovering'>
+                is_bicovering,
+            </if>
+            <if test='null != areaPath'>
+                area_path,
+            </if>
+            <if test='null != functionalGrade'>
+                functional_grade,
+            </if>
+            <if test='null != location'>
+                location,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != siteNo'>
+                #{siteNo},
+            </if>
+            <if test='null != siteName'>
+                #{siteName},
+            </if>
+            <if test='null != level'>
+                #{level},
+            </if>
+            <if test='null != riverNames'>
+                #{riverNames},
+            </if>
+            <if test='null != isBicovering'>
+                #{isBicovering},
+            </if>
+            <if test='null != areaPath'>
+                #{areaPath},
+            </if>
+            <if test='null != functionalGrade'>
+                #{functionalGrade},
+            </if>
+            <if test='null != location'>
+                #{location},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_riv_qua_st_base
+        WHERE site_no = #{siteNo}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.gragh.model.AttRivQuaStBase">
+        UPDATE att_riv_qua_st_base
+        <set>
+            <if test='null != siteNo'>site_no = #{siteNo},</if>
+            <if test='null != siteName'>site_name = #{siteName},</if>
+            <if test='null != level'>level = #{level},</if>
+            <if test='null != riverNames'>river_names = #{riverNames},</if>
+            <if test='null != isBicovering'>is_bicovering = #{isBicovering},</if>
+            <if test='null != areaPath'>area_path = #{areaPath},</if>
+            <if test='null != functionalGrade'>functional_grade = #{functionalGrade},</if>
+            <if test='null != location'>location = #{location},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_qua_st_base
+        WHERE site_no = #{siteNo}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_qua_st_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_riv_qua_st_base
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select *
+        from att_riv_qua_st_base
+        <where>
+            <if test="true">
+                and del_flag=0
+            </if>
+            <if test="areaCode!=null and areaCode!=''">
+                and area_code=#{areaCode}
+            </if>
+            <if test="siteName!=null and siteName!=''">
+                and site_name like concat('%',#{siteName},'%')
+            </if>
+            <if test="siteNo!=null and siteNo!=''">
+                and site_no=#{siteNo}
+            </if>
+            <if test="riverName!=null and riverName!=''">
+                and river_name like concat('%',#{riverName},'%')
+            </if>
+            <if test="level!=null">
+                and `level`=#{level}
+            </if>
+            <if test="isBicovering!=null">
+                and is_bicovering=#{isBicovering}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectNewestValueBySiteName" resultType="com.ygkj.gragh.vo.response.RivQuaResVo">
+        select a.* from
+        (select *
+        from st_riv_qua
+        <where>
+            <if test="siteNames!=null and siteNames!=''">
+                and FIND_IN_SET(site_name,#{siteNames})
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    and tm &gt;= DATE_SUB(#{dataTime},INTERVAL 3 MONTH ) and tm &lt;=#{dataTime}
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+        </where>
+        having 1 order by tm desc)as a group by a.site_name
+    </select>
+
+    <select id="selectRecentMonthValueBySiteName" resultType="com.ygkj.gragh.vo.response.RivQuaResVo">
+        select *
+        from st_riv_qua
+        <where>
+            <if test="siteNames!=null and siteNames!=''">
+                and FIND_IN_SET(site_name,#{siteNames})
+            </if>
+            <if test="true">
+                and tm >= DATE_SUB(NOW(),INTERVAL #{month} MONTH )
+            </if>
+        </where>
+    </select>
+
+    <select id="selectValueByTimeInterval" resultType="com.ygkj.gragh.vo.response.RivQuaResVo">
+        select *
+        from st_riv_qua
+        <where>
+            <if test="siteName!=null and siteName!=''">
+                and site_name=#{siteName}
+            </if>
+            <if test="true">
+                and tm between #{start} and #{end}
+            </if>
+        </where>
+        order by tm asc
+    </select>
+
+</mapper>

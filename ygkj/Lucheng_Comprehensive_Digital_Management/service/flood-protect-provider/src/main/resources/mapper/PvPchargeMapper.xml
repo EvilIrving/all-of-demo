@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.PvPchargeMapper">
+
+
+    <select id="pvPchargeListByConfition" resultType="com.ygkj.flood.vo.response.PvPchargeResVo">
+        select
+               a.pcharge_code,a.admin_adnm,a.natural_adnm,a.charge_type,a.charge_level,b.pcharge_name,b.mobile,b.unit,b.position,ad.ad_name
+        from (select * from  pv_pcharge_base where to_date is null) a
+        left join pv_pcharge_info b on a.pcharge_code = b.pcharge_code
+        left join sub_adcd ad on a.ad_code = ad.ad_code
+        <where>
+            <if test="true">
+                and a.del_flag = 0 and b.del_flag = 0
+            </if>
+            <if test="id != null and id != ''">
+                and a.pcharge_code = #{id}
+            </if>
+            <if test="key != null and key != ''">
+                and concat(IFNULL(a.admin_adnm,''),IFNULL(a.natural_adnm,''),IFNULL(a.charge_type,''),IFNULL(b.pcharge_name,'') ) like concat('%',#{key},'%')
+            </if>
+            <if test="naturalAdnm != null and naturalAdnm !=''">
+                and a.natural_adnm = #{naturalAdnm}
+            </if>
+        </where>
+        order by a.create_time desc
+    </select>
+
+
+    <update id="updatePchargeBase" parameterType="com.ygkj.flood.vo.response.PvPchargeResVo">
+        UPDATE pv_pcharge_base
+        <set>
+            <if test='null != adminAdnm and "" != adminAdnm'>admin_adnm = #{adminAdnm},</if>
+            <if test='null != naturalAdnm and "" != naturalAdnm'>natural_adnm = #{naturalAdnm},</if>
+            <if test='null != chargeType and "" != chargeType'> charge_type = #{chargeType},</if>
+            <if test='null != chargeLevel and "" != chargeLevel'>charge_level = #{chargeLevel},</if>
+            <if test="true">op = 'update'</if>
+        </set>
+        WHERE pcharge_code = #{pchargeCode}
+    </update>
+
+
+    <insert id="insertPvPchargeBase" parameterType="com.ygkj.flood.vo.response.PvPchargeResVo">
+        INSERT INTO pv_pcharge_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != pchargeCode'>
+                pcharge_code,
+            </if>
+            <if test ='null != adminAdnm'>
+                admin_adnm,
+            </if>
+            <if test ='null != naturalAdnm'>
+                natural_adnm,
+            </if>
+            <if test ='null != chargeType'>
+                charge_type,
+            </if>
+            <if test ='null != chargeLevel'>
+                `charge_level`
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != pchargeCode'>
+                #{pchargeCode},
+            </if>
+            <if test ='null != adminAdnm'>
+                #{adminAdnm},
+            </if>
+            <if test ='null != naturalAdnm'>
+                #{naturalAdnm},
+            </if>
+            <if test ='null != chargeType'>
+                #{chargeType},
+            </if>
+            <if test ='null != chargeLevel'>
+                #{chargeLevel}
+            </if>
+        </trim>
+    </insert>
+
+
+
+
+    <update id="updatePchargeInfo" parameterType="com.ygkj.flood.vo.response.PvPchargeResVo">
+        UPDATE pv_pcharge_info
+        <set>
+            <if test='null != pchargeName and "" != pchargeName'>pcharge_name = #{pchargeName},</if>
+            <if test='null != mobile and "" != mobile'>mobile = #{mobile},</if>
+            <if test='null != unit and "" != unit'>unit = #{unit},</if>
+            <if test='null != position and "" != position'>`position` = #{position}</if>
+        </set>
+        WHERE pcharge_code = #{pchargeCode}
+    </update>
+
+
+    <insert id="insertPvPchargeInfo" parameterType="com.ygkj.flood.vo.response.PvPchargeResVo">
+        INSERT INTO pv_pcharge_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != pchargeCode'>
+                pcharge_code,
+            </if>
+            <if test ='null != pchargeName'>
+                pcharge_name,
+            </if>
+            <if test ='null != mobile'>
+                mobile,
+            </if>
+            <if test ='null != unit'>
+                unit,
+            </if>
+            <if test ='null != position'>
+                `position`
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != pchargeCode'>
+                #{pchargeCode},
+            </if>
+            <if test ='null != pchargeName'>
+                #{pchargeName},
+            </if>
+            <if test ='null != mobile'>
+                #{mobile},
+            </if>
+            <if test ='null != unit'>
+                #{unit},
+            </if>
+            <if test ='null != position'>
+                #{position}
+            </if>
+        </trim>
+    </insert>
+
+
+</mapper>

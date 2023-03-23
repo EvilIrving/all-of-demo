@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.AttTeamDeviceBaseMapper">
+    <select id="selectteamDevice" parameterType="com.ygkj.flood.vo.request.AttTeamDeviceBaseReqVo" resultType="com.ygkj.flood.vo.response.AttTeamDeviceBaseRespVo">
+        SELECT * FROM att_team_device_base WHERE del_flag=0
+        <if test="null != name and '' != name">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="null != type and '' != type">
+            AND type LIKE CONCAT('%',#{type},'%')
+        </if>
+        <if test="null != teamId and '' != teamId">
+            AND team_id = #{teamId}
+        </if>
+        <if test="null != id">
+            AND id = #{id}
+        </if>
+    </select>
+
+    <insert id="insertteamDevice" parameterType="com.ygkj.flood.vo.request.AttTeamDeviceBaseReqVo">
+        INSERT INTO att_team_device_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != name and '' != name">
+                name,
+            </if>
+            <if test="null != type and '' != type">
+                type,
+            </if>
+            <if test="null != teamId and '' != teamId">
+                team_id,
+            </if>
+            <if test="null != num and '' != num">
+                num,
+            </if>
+            <if test="null != measure and '' != measure">
+                measure,
+            </if>
+            <if test="null != createTime ">
+                create_time,
+            </if>
+            <if test="null != createId and '' != createId">
+                create_id,
+            </if>
+            <if test="null != updateTime">
+                update_time,
+            </if>
+            <if test="null != updateId and '' != updateId">
+                update_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != name and '' != name">
+                #{name},
+            </if>
+            <if test="null != type and '' != type">
+                #{type},
+            </if>
+            <if test="null != teamId and '' != teamId">
+                #{teamId},
+            </if>
+            <if test="null != num and '' != num">
+                #{num},
+            </if>
+            <if test="null != measure and '' != measure">
+                #{measure},
+            </if>
+            <if test="null != createTime">
+                #{createTime},
+            </if>
+            <if test="null != createId and '' != createId">
+                #{createId},
+            </if>
+            <if test="null != updateTime">
+                #{updateTime},
+            </if>
+            <if test="null != updateId and '' != updateId">
+                #{updateId},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateteamDevice" parameterType="com.ygkj.flood.vo.request.AttTeamDeviceBaseReqVo">
+        UPDATE att_team_device_base
+        <set>
+            <if test="null != name and '' != name">name = #{name},</if>
+            <if test="null != type and '' != type">type = #{type},</if>
+            <if test="null != teamId and '' != teamId">team_id = #{teamId},</if>
+            <if test="null != num and '' != num">num = #{num},</if>
+            <if test="null != measure and '' != measure">measure = #{measure},</if>
+            <if test="null != createTime ">create_time = #{createTime},</if>
+            <if test="null != createId and '' != createId">create_id = #{createId},</if>
+            <if test="null != updateTime">update_time = #{updateTime},</if>
+            <if test="null != updateId and '' != updateId">update_id = #{updateId},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteteamDevice">
+        UPDATE att_team_device_base SET del_flag=1 WHERE id in
+        <foreach item="item"  collection="list"
+                 open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.AttRiverBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.gragh.model.AttRiverBase">
+        <result column="id" property="id"/>
+        <result column="river_name" property="riverName"/>
+        <result column="river_level" property="riverLevel"/>
+        <result column="river_length" property="riverLength"/>
+        <result column="river_area" property="riverArea"/>
+        <result column="basin" property="basin"/>
+        <result column="mountain_plains" property="mountainPlains"/>
+        <result column="distrinct_name" property="distrinctName"/>
+        <result column="distrinct_adcd" property="distrinctAdcd"/>
+        <result column="cxsd" property="cxsd"/>
+        <result column="upper_bound_position" property="upperBoundPosition"/>
+        <result column="lower_bound_position" property="lowerBoundPosition"/>
+        <result column="upper_drainage_area" property="upperDrainageArea"/>
+        <result column="lower_drainage_area" property="lowerDrainageArea"/>
+        <result column="branch_type" property="branchType"/>
+        <result column="river_segment_amount" property="riverSegmentAmount"/>
+        <result column="center_longitude" property="centerLongitude"/>
+        <result column="center_latitude" property="centerLatitude"/>
+        <result column="start_coordinates" property="startCoordinates"/>
+        <result column="end_coordinates" property="endCoordinates"/>
+        <result column="geom" property="geom"/>
+        <result column="center_coordinates" property="centerCoordinates"/>
+        <result column="sort" property="sort"/>
+        <result column="policy" property="policy"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="goverment_charge_id" property="govermentChargeId"/>
+        <result column="water_department_charge_id" property="waterDepartmentChargeId"/>
+        <result column="competent_department_charge_id" property="competentDepartmentChargeId"/>
+        <result column="manage_department_charge_id" property="manageDepartmentChargeId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        river_name,
+        river_level,
+        river_length,
+        river_area,
+        basin,
+        mountain_plains,
+        distrinct_name,
+        distrinct_adcd,
+        cxsd,
+        upper_bound_position,
+        lower_bound_position,
+        upper_drainage_area,
+        lower_drainage_area,
+        branch_type,
+        river_segment_amount,
+        center_longitude,
+        center_latitude,
+        start_coordinates,
+        end_coordinates,
+        geom,
+        center_coordinates,
+        sort,
+        policy,
+        area_code,
+        water_department_charge_id,
+        goverment_charge_id,
+        competent_department_charge_id,
+        manage_department_charge_id
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.gragh.model.AttRiverBase">
+        INSERT INTO att_river_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != riverName'>
+                river_name,
+            </if>
+            <if test='null != riverLevel'>
+                river_level,
+            </if>
+            <if test='null != riverLength'>
+                river_length,
+            </if>
+            <if test='null != riverArea'>
+                river_area,
+            </if>
+            <if test='null != watershed'>
+                watershed,
+            </if>
+            <if test='null != mountainPlains'>
+                mountain_plains,
+            </if>
+            <if test='null != distrinctName'>
+                distrinct_name,
+            </if>
+            <if test='null != distrinctAdcd'>
+                distrinct_adcd,
+            </if>
+            <if test='null != cxsd'>
+                cxsd,
+            </if>
+            <if test='null != upperBoundPosition'>
+                upper_bound_position,
+            </if>
+            <if test='null != lowerBoundPosition'>
+                lower_bound_position,
+            </if>
+            <if test='null != upperDrainageArea'>
+                upper_drainage_area,
+            </if>
+            <if test='null != lowerDrainageArea'>
+                lower_drainage_area,
+            </if>
+            <if test='null != branchType'>
+                branch_type,
+            </if>
+            <if test='null != riverSegmentAmount'>
+                river_segment_amount,
+            </if>
+            <if test='null != centerLongitude'>
+                center_longitude,
+            </if>
+            <if test='null != centerLatitude'>
+                center_latitude,
+            </if>
+            <if test='null != startCoordinates'>
+                start_coordinates,
+            </if>
+            <if test='null != endCoordinates'>
+                end_coordinates,
+            </if>
+            <if test='null != geom'>
+                geom,
+            </if>
+            <if test='null != centerCoordinates'>
+                center_coordinates,
+            </if>
+            <if test='null != sort'>
+                sort,
+            </if>
+            <if test='null != policy'>
+                policy,
+            </if>
+            <if test='null != areaCode'>
+                area_code
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != riverName'>
+                #{riverName},
+            </if>
+            <if test='null != riverLevel'>
+                #{riverLevel},
+            </if>
+            <if test='null != riverLength'>
+                #{riverLength},
+            </if>
+            <if test='null != riverArea'>
+                #{riverArea},
+            </if>
+            <if test='null != watershed'>
+                #{watershed},
+            </if>
+            <if test='null != mountainPlains'>
+                #{mountainPlains},
+            </if>
+            <if test='null != distrinctName'>
+                #{distrinctName},
+            </if>
+            <if test='null != distrinctAdcd'>
+                #{distrinctAdcd},
+            </if>
+            <if test='null != cxsd'>
+                #{cxsd},
+            </if>
+            <if test='null != upperBoundPosition'>
+                #{upperBoundPosition},
+            </if>
+            <if test='null != lowerBoundPosition'>
+                #{lowerBoundPosition},
+            </if>
+            <if test='null != upperDrainageArea'>
+                #{upperDrainageArea},
+            </if>
+            <if test='null != lowerDrainageArea'>
+                #{lowerDrainageArea},
+            </if>
+            <if test='null != branchType'>
+                #{branchType},
+            </if>
+            <if test='null != riverSegmentAmount'>
+                #{riverSegmentAmount},
+            </if>
+            <if test='null != centerLongitude'>
+                #{centerLongitude},
+            </if>
+            <if test='null != centerLatitude'>
+                #{centerLatitude},
+            </if>
+            <if test='null != startCoordinates'>
+                #{startCoordinates},
+            </if>
+            <if test='null != endCoordinates'>
+                #{endCoordinates},
+            </if>
+            <if test='null != geom'>
+                #{geom},
+            </if>
+            <if test='null != centerCoordinates'>
+                #{centerCoordinates},
+            </if>
+            <if test='null != sort'>
+                #{sort},
+            </if>
+            <if test='null != policy'>
+                #{policy},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_river_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.gragh.model.AttRiverBase">
+        UPDATE att_river_base
+        <set>
+            <if test='null != riverName'>river_name = #{riverName},</if>
+            <if test='null != riverLevel'>river_level = #{riverLevel},</if>
+            <if test='null != riverLength'>river_length = #{riverLength},</if>
+            <if test='null != riverArea'>river_area = #{riverArea},</if>
+            <if test='null != watershed'>watershed = #{watershed},</if>
+            <if test='null != mountainPlains'>mountain_plains = #{mountainPlains},</if>
+            <if test='null != distrinctName'>distrinct_name = #{distrinctName},</if>
+            <if test='null != distrinctAdcd'>distrinct_adcd = #{distrinctAdcd},</if>
+            <if test='null != cxsd'>cxsd = #{cxsd},</if>
+            <if test='null != upperBoundPosition'>upper_bound_position = #{upperBoundPosition},</if>
+            <if test='null != lowerBoundPosition'>lower_bound_position = #{lowerBoundPosition},</if>
+            <if test='null != upperDrainageArea'>upper_drainage_area = #{upperDrainageArea},</if>
+            <if test='null != lowerDrainageArea'>lower_drainage_area = #{lowerDrainageArea},</if>
+            <if test='null != branchType'>branch_type = #{branchType},</if>
+            <if test='null != riverSegmentAmount'>river_segment_amount = #{riverSegmentAmount},</if>
+            <if test='null != centerLongitude'>center_longitude = #{centerLongitude},</if>
+            <if test='null != centerLatitude'>center_latitude = #{centerLatitude},</if>
+            <if test='null != startCoordinates'>start_coordinates = #{startCoordinates},</if>
+            <if test='null != endCoordinates'>end_coordinates = #{endCoordinates},</if>
+            <if test='null != geom'>geom = #{geom},</if>
+            <if test='null != centerCoordinates'>center_coordinates = #{centerCoordinates},</if>
+            <if test='null != sort'>sort = #{sort},</if>
+            <if test='null != policy'>policy = #{policy},</if>
+            <if test='null != areaCode'>area_code = #{areaCode}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_river_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_river_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_river_base
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_river_base
+        <where>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code = #{areaCode}
+            </if>
+            <if test="policy != null and policy != ''">
+                AND policy = #{policy}
+            </if>
+            <if test="riverName != null and riverName != ''">
+                AND river_name LIKE CONCAT('%',#{riverName},'%')
+            </if>
+            <if test="year != null and year != ''">
+                AND cxsd = #{year}
+            </if>
+            <if test="id != null and id != ''">
+                AND id = #{id}
+            </if>
+        </where>
+    </select>
+
+</mapper>

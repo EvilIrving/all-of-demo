@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.RainfallMigrateMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.RainfallMigrate" >
+        <result column="mgstcd" property="mgstcd" />
+        <result column="stcd" property="stcd" />
+        <result column="stnm" property="stnm" />
+        <result column="tm" property="tm" />
+        <result column="drp" property="drp" />
+        <result column="intv" property="intv" />
+        <result column="upload_time" property="uploadTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                mgstcd,
+                stcd,
+                stnm,
+                tm,
+                drp,
+                intv,
+                upload_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.RainfallMigrate">
+        INSERT INTO rainfall_migrate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != mgstcd'>
+                mgstcd,
+            </if>
+            <if test ='null != stcd'>
+                stcd,
+            </if>
+            <if test ='null != stnm'>
+                stnm,
+            </if>
+            <if test ='null != tm'>
+                tm,
+            </if>
+            <if test ='null != drp'>
+                drp,
+            </if>
+            <if test ='null != intv'>
+                intv,
+            </if>
+            <if test ='null != uploadTime'>
+                upload_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != mgstcd'>
+                #{mgstcd},
+            </if>
+            <if test ='null != stcd'>
+                #{stcd},
+            </if>
+            <if test ='null != stnm'>
+                #{stnm},
+            </if>
+            <if test ='null != tm'>
+                #{tm},
+            </if>
+            <if test ='null != drp'>
+                #{drp},
+            </if>
+            <if test ='null != intv'>
+                #{intv},
+            </if>
+            <if test ='null != uploadTime'>
+                #{uploadTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM rainfall_migrate
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.RainfallMigrate">
+        UPDATE rainfall_migrate
+        <set>
+            <if test ='null != mgstcd'>mgstcd = #{mgstcd},</if>
+            <if test ='null != stcd'>stcd = #{stcd},</if>
+            <if test ='null != stnm'>stnm = #{stnm},</if>
+            <if test ='null != tm'>tm = #{tm},</if>
+            <if test ='null != drp'>drp = #{drp},</if>
+            <if test ='null != intv'>intv = #{intv},</if>
+            <if test ='null != uploadTime'>upload_time = #{uploadTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM rainfall_migrate
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM rainfall_migrate
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM rainfall_migrate
+    </select>
+
+    <insert id="insertMany">
+        INSERT INTO rainfall_migrate
+        (<include refid="Base_Column_List"/>)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.mgstcd},
+            #{item.stcd},
+            #{item.stnm},
+            #{item.tm},
+            #{item.drp},
+            #{item.intv},
+            #{item.uploadTime})
+        </foreach>
+    </insert>
+
+    <select id="selectByTmStcd" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM rainfall_migrate
+        where tm=#{tm}
+        <if test="list!=null and list.size!=0">
+            and stcd in
+            <foreach collection="list" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

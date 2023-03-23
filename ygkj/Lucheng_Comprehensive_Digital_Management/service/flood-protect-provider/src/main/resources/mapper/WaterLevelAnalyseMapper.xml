@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.WaterLevelAnalyseMapper">
+
+    <sql id="Base_Column_List">
+        st_code,
+        st_name,
+        st_type,
+        st_long,
+        st_lat,
+        st_loc,
+        st_year_mon,
+        beg_repo_year_mon,
+        bank,
+        st_dir,
+        cat_area,
+        moni_item,
+        dtm_name,
+        dtm_elev,
+        types,
+        attr,
+        staff,
+        estuary_distance,
+        obs_env,
+        river_state,
+        note,
+        eff_date,
+        expr_date,
+        limit_level,
+        guarantee_level,
+        warning_level,
+        proj_code,
+        area_code
+    </sql>
+
+    <select id="getHisHighestWaterLevels" resultType="com.ygkj.flood.vo.response.WlaHisHighestWaterLevelRespVo">
+        select st_code, st_name, st_type, highest_level, appear_time, st_long, st_lat from att_st_base
+        <where>
+            <choose>
+                <when test="stType != null and stType != ''">
+                    and st_type = #{stType}
+                </when>
+                <otherwise>
+                    and st_type in ('RR', 'ZZ', 'DD')
+                </otherwise>
+            </choose>
+            <if test="scale != null and scale != ''">
+                and res_grade = #{scale}
+            </if>
+            <if test="stName != null and stName != ''">
+                and st_name like concat('%', #{stName}, '%')
+            </if>
+            <if test="stCode != null and stCode != ''">
+                and st_code = #{stCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="warnNumStatistics" resultType="com.ygkj.flood.vo.response.WlaWarnNumStatisticsRespVo">
+        select s.st_type, count(1) num from
+        (select t.st_code, a.st_type from
+        (select st_code from warning_record
+        where del_flag = 0 and warning_time &gt;= date_format(now(), '%Y-%m-%d 00:00:00') group by st_code) t
+        left join att_st_base a on t.st_code = a.st_code) s
+        group by s.st_type
+    </select>
+
+    <select id="floatWinWaterLevel" resultType="com.ygkj.flood.vo.response.WlaFloatWinWaterLevelRespVo">
+        select a.st_code, a.st_name, a.st_type, a.st_long, a.st_lat, a.limit_level, a.flood_level from att_st_base a
+        <where>
+            <if test="stType != null and stType != ''">
+                AND find_in_set(a.st_type, #{stType})
+            </if>
+            <if test="scale != null and scale != ''">
+                AND a.res_grade = #{scale}
+            </if>
+            <if test="name != null and name != ''">
+                and a.st_name like concat('%', #{name}, '%')
+            </if>
+            <if test="adcd != null and adcd != ''">
+                and a.area_code = #{adcd}
+            </if>
+            <if test="stCode != null and stCode != ''">
+                and a.st_code = #{stCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="getRealWaterLevel" resultType="com.ygkj.flood.model.StRiverRYyyymm">
+        select t.stcd, t.tm, t.z from
+        (select stcd, tm, rz z from ${tableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by tm
+        desc) t
+        group by t.stcd
+    </select>
+
+    <select id="selectTodayWarningStation" resultType="com.ygkj.flood.vo.response.WarningStationResVo">
+        ( SELECT
+        t.st_code,
+        a.st_type,
+        a.st_lat,
+        a.st_long,
+        a.st_name
+        FROM
+        ( SELECT st_code FROM warning_record WHERE del_flag = 0 AND warning_time >= date_format( now(), '%Y-%m-%d
+        00:00:00' ) GROUP BY st_code ) t
+        LEFT JOIN att_st_base a ON t.st_code = a.st_code)
+    </select>
+
+    <select id="stBases" resultType="com.ygkj.flood.model.StBase"
+            parameterType="com.ygkj.flood.vo.request.WaterLevelReqVo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_st_base
+        <where>
+            <if test="stationType != null and stationType != ''">
+                AND FIND_IN_SET(st_type,#{stationType}) and res_grade = '大中型水库'
+            </if>
+            <if test="stationName != null and stationName != ''">
+                AND st_name LIKE CONCAT('%',#{stationName},'%')
+            </if>
+            <if test="areaCode != null and areaCode != ''">
+                AND area_code LIKE CONCAT('%',#{areaCode},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getRealRiverWaterLevel" resultType="com.ygkj.flood.model.StRiverRYyyymm">
+        select t.stcd, t.tm, t.z from
+        (select stcd, tm, z from ${riverTableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by tm
+        desc) t
+        group by t.stcd
+    </select>
+
+    <select id="stBasesByCodeList" resultType="com.ygkj.flood.model.StBase">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_st_base
+        <where>
+            <if test="stName != null and stName != ''">
+                AND st_name LIKE CONCAT('%',#{stName},'%')
+            </if>
+            <if test="stCodeList!=null and stCodeList.size!=0">
+                and st_code in
+                <foreach collection="stCodeList" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getRiverRealWaterLevelByStCodeList" resultType="com.ygkj.flood.model.StRiverRYyyymm">
+        select t.stcd, t.tm, t.z from
+        (select stcd, tm, z from ${tableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by tm desc)
+        t
+        <if test="stCodeList!=null and stCodeList.size!=0">
+            where t.stcd in
+            <foreach collection="stCodeList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by t.stcd
+    </select>
+    <select id="getGateRealWaterLevelByStCodeList" resultType="com.ygkj.flood.model.StRiverRYyyymm">
+        select t.stcd, t.tm, t.z from
+        (select stcd, tm, UPZ z from ${tableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by tm
+        desc) t
+        <if test="stCodeList!=null and stCodeList.size!=0">
+            where t.stcd in
+            <foreach collection="stCodeList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by t.stcd
+    </select>
+
+    <select id="getTideRealWaterLevelByStCodeList" resultType="com.ygkj.flood.model.StRiverRYyyymm">
+        select t.stcd, t.tm, t.z from
+        (select stcd, tm, TDZ z from ${tableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by tm
+        desc) t
+        <if test="stCodeList!=null and stCodeList.size!=0">
+            where t.stcd in
+            <foreach collection="stCodeList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by t.stcd
+    </select>
+
+    <select id="getRsvrRealWaterLevelByStCodeList" resultType="com.ygkj.flood.model.StRiverRYyyymm">
+        select t.stcd, t.tm, t.z from
+        (select stcd, tm, rz z from ${tableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by tm
+        desc) t
+        <if test="stCodeList!=null and stCodeList.size!=0">
+            where t.stcd in
+            <foreach collection="stCodeList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by t.stcd
+    </select>
+</mapper>

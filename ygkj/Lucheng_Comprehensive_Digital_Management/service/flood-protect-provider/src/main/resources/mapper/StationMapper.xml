@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.StationMapper">
+
+    <select id="load" resultType="com.ygkj.flood.vo.response.WarningStationResVo">
+        SELECT st_code,st_long,st_lat,st_name,st_type FROM att_st_base WHERE st_code = #{stationCode}
+    </select>
+
+    <select id="loadStByCondtion" resultType="com.ygkj.flood.model.StBase">
+        select st_code,st_name,st_type,st_long,st_lat,
+        limit_level,flood_level,guarantee_level,warning_level,proj_code,area_code,bas
+        from att_st_base
+        <where>
+            <if test="stCode!=null and stCode!=''">
+                AND st_code=#{stCode}
+            </if>
+            <if test="projCodes!=null and projCodes!=''">
+                AND FIND_IN_SET(proj_code,#{projCodes})
+            </if>
+            <if test="stName!=null and stName!=''">
+                AND st_name like concat('%',#{stName},'%'}
+            </if>
+            <if test="stType!=null and stType!=''">
+                AND st_type=#{stType}
+            </if>
+            <if test="bas!=null and bas!=''">
+                AND bas like concat('%',#{bas},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="loadStByMark" resultType="com.ygkj.flood.model.StBase">
+        select a.st_code,a.st_name,a.st_type,a.st_long,a.st_lat,
+        a.limit_level,a.flood_level,a.guarantee_level,a.warning_level,a.proj_code,a.area_code,a.bas
+        from att_st_base as a
+        INNER JOIN att_st_mark_base as b on b.st_code=a.st_code
+        <where>
+            <if test="mark!=null and mark!=''">
+                and b.mark=#{mark}
+            </if>
+            <if test="stName!=null and stName!=''">
+                and a.st_name like concat('%',#{stName},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

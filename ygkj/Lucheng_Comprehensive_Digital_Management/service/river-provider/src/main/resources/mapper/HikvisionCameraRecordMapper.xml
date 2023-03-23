@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.HikvisionCameraRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.HikvisionCameraRecord">
+        <result column="camera_index_code" property="cameraIndexCode"/>
+        <result column="camera_name" property="cameraName"/>
+        <result column="device_index_code" property="deviceIndexCode"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
+        <result column="altitude" property="altitude"/>
+        <result column="camera_type" property="cameraType"/>
+        <result column="camera_type_name" property="cameraTypeName"/>
+        <result column="channel_type" property="channelType"/>
+        <result column="channel_type_name" property="channelTypeName"/>
+        <result column="region_index_code" property="regionIndexCode"/>
+        <result column="sync_time" property="syncTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator_id" property="creatorId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="updator_id" property="updatorId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="source" property="source"/>
+        <result column="preview_url" property="previewUrl"/>
+        <result column="status" property="status"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="project_code" property="projectCode"/>
+        <result column="out_line_number" property="outLineNumber"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        camera_index_code,
+        camera_name,
+        device_index_code,
+        longitude,
+        latitude,
+        altitude,
+        camera_type,
+        camera_type_name,
+        channel_type,
+        channel_type_name,
+        region_index_code,
+        sync_time,
+        create_time,
+        creator_id,
+        update_time,
+        updator_id,
+        del_flag,
+        source,
+        preview_url,
+        status,
+        area_code,
+        project_code,
+        out_line_number
+    </sql>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM hikvision_camera_record
+        WHERE camera_index_code = #{cameraIndexCode}
+    </select>
+
+    <select id="loadMany" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM hikvision_camera_record
+        WHERE FIND_IN_SET(camera_index_code,#{cameraCodes})
+    </select>
+
+    <select id="cameraOfRiver" resultMap="BaseResultMap">
+        SELECT a.*
+        FROM hikvision_camera_record as a
+        inner join rel_river_camera as b on a.camera_index_code=b.camera_code
+        where b.river_code=#{riverCode}
+        order by b.sequence asc
+    </select>
+</mapper>

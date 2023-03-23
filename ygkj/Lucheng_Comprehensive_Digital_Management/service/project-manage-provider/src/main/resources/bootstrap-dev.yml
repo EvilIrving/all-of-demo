@@ -1,0 +1,142 @@
+
+server:
+  port: 8998
+  undertow:
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+    io-threads: 4
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+    worker-threads: 20
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分
+    buffer-size: 1024
+    # 是否分配的直接内存
+    direct-buffers: true
+  compression:
+    enabled: true
+    mime-types: application/javascript,text/css,application/json,application/xml,text/html,text/xml,text/plain
+
+spring:
+  redis:
+    timeout: PT10S
+    password: xB239MCfg3321Pq002
+    lettuce:
+      pool:
+        max-active: 100
+        min-idle: 1
+        max-wait: PT10S
+        max-idle: 30
+    database: 12
+    port: 6379
+    host: 192.168.2.130
+  cloud:
+    nacos:
+      discovery:
+#        server-addr: 192.168.0.106:8848
+        server-addr: localhost:8848
+        namespace: public
+  application:
+    name: project-manage
+#  datasource:
+#    druid:
+#      url: jdbc:mysql://192.168.2.116:3306/soft-database?useUnicode=true&characterEncoding=utf-8&useSSL=false
+##      url: jdbc:mysql://127.0.0.1:3306/soft-database?useUnicode=true&characterEncoding=utf-8&useSSL=false
+#      username: root
+#      password: root
+#      driver-class-name: com.mysql.jdbc.Driver
+#      keep-alive: true
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  datasource:
+    dynamic:
+      primary: basic
+      strict: false
+      datasource:
+        basic:
+          url: jdbc:mysql://192.168.2.130:3306/lc_basic_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&useAffectedRows=true
+          username: lc_plt
+          password: GXvJaDjeuyPCZSKO
+          driver-class-name: com.mysql.jdbc.Driver
+        business:
+          url: jdbc:mysql://192.168.2.130:3306/lc_business_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: lc_plt
+          password: GXvJaDjeuyPCZSKO
+          driver-class-name: com.mysql.jdbc.Driver
+        exchange:
+          url: jdbc:mysql://192.168.2.130:3306/lc_exchange_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: lc_plt
+          password: GXvJaDjeuyPCZSKO
+          driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 20
+      min-idle: 10
+      max-active: 30
+      max-wait: 30000
+      min-evictable-idle-time-millis: 180000
+#  AbstractType: com.alibaba.druid.pool.DruidDataSource
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+
+
+#rocketmq:
+#  name-server: 192.168.2.188:9876   #rocketMQ服务的地址
+#  producer:
+#    group: soft-data # 生产者组
+
+
+## 日志输出配置
+logging:
+  file:
+    name: ${logging.file.path}/${spring.application.name}.log
+    path: log
+  level:
+    com.ygkj: debug
+
+jwt:
+  secretKey: 78944878877848fg)
+  accessTokenExpireTime: PT2H
+  refreshTokenExpireTime: PT8H
+  refreshTokenExpireAppTime: P30D
+  issuer: yingxue.com
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    call-setters-on-nulls: true
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+feign:
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        # 设置Fegin的超时时间
+        connectTimeout: 300000
+        readTimeout: 300000
+
+dict:
+#  basin: 瓯江,鳌江,飞云江,椒江,其他
+  basin: 瓯江,鳌江,飞云江,其他
+  scale: 大（Ⅰ）型,大（Ⅱ）型,中型,小（Ⅰ）型,小（Ⅱ）型
+  grad: 1,2,3,4,5
+  meiLimitRange: "04-15,07-14"
+  typhoonLimitRange: "07-15,10-15"
+
+access:
+  key: azFNTFdVbEpnMWRCeXhIYg
+  secret: bHNQT01IZFJ0VlFPOFZKRQ
+
+oversee:
+  template:
+    msg: 【鹿城区水利局】%s海塘，于%s时间发生%s问题，请于%s时间完成处置。链接：%s。
+    url: http://192.168.2.212:8082/lucheng-mobile?id=%s&phone=%s
+    codemsg: 【鹿城区水利局】验证码：%s（有效期10分钟）请勿泄露给他人，如非本人操作，请忽略次短信。
+  work:
+    url: http://192.168.2.212:8080/lucheng/seawallPrevent/supervision?workId=%s&overseeId=%s
+    mobileurl: http://192.168.2.212:8080/lucheng/seawallPrevent/supervision?workId=%s&overseeId=%s
+
+snowflake:
+  dataCenterId: 08
+  machineId: 11

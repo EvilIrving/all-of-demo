@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.PrecedeAffectRainfallMapper">
+
+    <insert id="insert" parameterType="com.ygkj.gragh.model.PrecedeAffectRainfall">
+        REPLACE INTO precede_affect_rainfall
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != areaCode'>
+                area_code,
+            </if>
+            <if test='null != date'>
+                date,
+            </if>
+            <if test='null != drp'>
+                drp
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test='null != date'>
+                #{date},
+            </if>
+            <if test='null != drp'>
+                #{drp}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectNewest" resultType="com.ygkj.gragh.model.PrecedeAffectRainfall">
+        SELECT a.* FROM
+        (SELECT * FROM precede_affect_rainfall
+        WHERE `date` >= DATE_SUB(NOW(),INTERVAL 31 DAY ) HAVING 1 ORDER BY `date` DESC ) a
+        GROUP BY a.area_code
+    </select>
+
+    <select id="selectByAreaCodeTimeInterval" resultType="com.ygkj.gragh.model.PrecedeAffectRainfall">
+        select * from precede_affect_rainfall
+        <where>
+            <if test="areaCode!=null and areaCode!=''">
+                and area_code=#{areaCode}
+            </if>
+            <if test="start!=null and end!=null">
+                and `date` &gt;=#{start} and `date` &lt;#{end}
+            </if>
+        </where>
+        order by `date` asc
+    </select>
+
+    <select id="selectByAreaCodeListTime" resultType="com.ygkj.gragh.model.PrecedeAffectRainfall">
+        select * from precede_affect_rainfall
+        <where>
+            <if test="areaCodeList != null and areaCodeList.size > 0">
+                AND area_code IN
+                <foreach collection="areaCodeList" open="(" separator="," item="item" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="date!=null">
+                and `date` =#{date}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByAreaCodeListTimeInterval" resultType="com.ygkj.gragh.model.PrecedeAffectRainfall">
+        select * from precede_affect_rainfall
+        <where>
+            <if test="areaCodeList != null and areaCodeList.size > 0">
+                AND area_code IN
+                <foreach collection="areaCodeList" open="(" separator="," item="item" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="start!=null and end!=null">
+                and `date` &gt;=#{start} and `date` &lt;=#{end}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAvgDayRainfall" resultType="java.math.BigDecimal">
+        select avg(drp) from st_pptn_r_day
+        <where>
+            <if test="stcdList != null and stcdList.size > 0">
+                AND stcd IN
+                <foreach collection="stcdList" open="(" separator="," item="item" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="date != null">
+                AND `date` =#{date}
+            </if>
+        </where>
+    </select>
+</mapper>

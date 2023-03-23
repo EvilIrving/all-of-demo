@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.BsUnitSceneMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.BsUnitScene">
+        <result column="scene_id" property="sceneId"/>
+        <result column="unit_id" property="unitId"/>
+        <result column="unit_scene_property" property="unitSceneProperty"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        scene_id,
+        unit_id,
+        unit_scene_property
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.big.screen.model.BsUnitScene">
+        INSERT INTO lc_meta_db.bs_unit_scene
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != sceneId'>
+                scene_id,
+            </if>
+            <if test='null != unitId'>
+                unit_id,
+            </if>
+            <if test='null != unitSceneProperty'>
+                unit_scene_property
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != sceneId'>
+                #{sceneId},
+            </if>
+            <if test='null != unitId'>
+                #{unitId},
+            </if>
+            <if test='null != unitSceneProperty'>
+                #{unitSceneProperty}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM lc_meta_db.bs_unit_scene
+        <where>
+            <if test="sceneId!=null and sceneId!=''">
+                and scene_id=#{sceneId}
+            </if>
+            <if test="unitId!=null and unitId!=''">
+                and unit_id=#{unitId}
+            </if>
+        </where>
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.big.screen.model.BsUnitScene">
+        UPDATE lc_meta_db.bs_unit_scene
+        <set>
+            <if test='null != unitSceneProperty'>unit_scene_property = #{unitSceneProperty}</if>
+        </set>
+        WHERE scene_id = #{sceneId} and unit_id = #{unitId}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_unit_scene
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_unit_scene
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM bs_unit_scene
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM lc_meta_db.bs_unit_scene
+        <where>
+            <if test="sceneId!=null and sceneId!=''">
+                and scene_id=#{sceneId}
+            </if>
+            <if test="unitId!=null and unitId!=''">
+                and unit_id=#{unitId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.SectionStormMapper">
+    <insert id="replaceAll" parameterType="com.ygkj.project.model.SectionStorm">
+        REPLACE INTO section_storm(section_id,tm,h1,h2,h13)
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.sectionId},#{item.tm},#{item.h1},#{item.h2},#{item.h13})
+        </foreach>
+    </insert>
+
+    <select id="selectHourTide" resultType="com.ygkj.gragh.model.StTideR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT MGSTCD,STCD, TM,TDZ FROM ${item}
+            <where>
+                <if test="start != null and end != null">
+                    and (tm between #{start} AND #{end})
+                </if>
+                <if test="stationCode != null">
+                    AND MGSTCD = #{stationCode}
+                </if>
+            </where>
+            AND RIGHT(tm,5)='00:00'
+            ORDER BY tm DESC
+            )
+        </foreach>
+    </select>
+</mapper>

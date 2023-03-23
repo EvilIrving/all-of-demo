@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.FloodControlDispatchingMapper">
+
+    <select id="selectRiverStationWaterLevel" resultType="com.ygkj.gragh.model.StRiverR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT stcd, tm, z FROM ${item} WHERE tm between #{start} AND #{end} AND mgstcd = #{stationCode}
+            AND RIGHT(tm,5)='00:00' ORDER BY tm DESC)
+        </foreach>
+    </select>
+</mapper>

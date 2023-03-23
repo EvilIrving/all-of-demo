@@ -1,0 +1,17 @@
+<div class="request-url mb-3">
+    {%- assign flag = page.tag[2] | append: '-' | append: page.tag[3] -%}
+    {% for item in site.data.dev.api-endpoint[flag].endpoint %}
+    {%- case page.tag[2] -%}
+        {%- when "geo" -%}
+        <pre><code>{{ site.links.geoapi }}{{ item.path }}?[{{- site.data.t[page.lang].rp }}]</code></pre>
+        {%- else -%}
+        {%- if forloop.length > 1 -%}
+        <span class="my-3 d-block text-bold">{{- item.name[page.lang] -}}</span>    
+        {%- endif -%}
+        <pre><code>{{ site.links.api }}{{ item.path }}?[{{- site.data.t[page.lang].rp }}]</code></pre>
+    {%- endcase -%}
+    {% endfor %}
+    {%- if include.dev == true -%}
+    {{ site.data.t[page.lang].api-url-note | markdownify }}    
+    {%- endif -%}
+</div>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.lcsyn.mapper.WzMapper">
+
+    <select id="list" resultType="com.ygkj.lcsyn.model.RsvrReportFlood" parameterType="String">
+        SELECT * FROM rsvr_report_flood WHERE res_code IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        AND tm > DATE_SUB(NOW(),INTERVAL 10 DAY)
+    </select>
+
+</mapper>

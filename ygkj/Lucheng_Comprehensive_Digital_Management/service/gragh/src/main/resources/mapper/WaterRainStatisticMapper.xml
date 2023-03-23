@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.WaterRainStatisticMapper">
+    <select id="statisticStationNumByAdcd" resultType="map">
+        select count(area_code) as num,area_code from att_st_base where
+        <if test="stTypeList!=null and stTypeList.size!=0">
+            st_type in
+            <foreach collection="stTypeList" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY area_code
+    </select>
+</mapper>

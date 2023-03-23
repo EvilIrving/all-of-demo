@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.SectionInformationMapper">
+
+    <select id="selectRiverByTimeCode" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, z FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm >= DATE_FORMAT(DATE_SUB(#{dataTime},INTERVAL 1 DAY),'%Y-%m-%d %H:%i:00' ) HAVING 1 ORDER BY tm DESC
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d %H:%i:00' ) HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectRsvrWaterLevelByTimeCode" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, rz FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm >= DATE_FORMAT(DATE_SUB(#{dataTime},INTERVAL 1 DAY),'%Y-%m-%d %H:%i:00') HAVING 1 ORDER BY tm DESC
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d %H:%i:00') HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectTideByTimeCode" resultType="com.ygkj.gragh.model.StTideR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,TDZ FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm >= DATE_FORMAT(DATE_SUB(#{dataTime},INTERVAL 1 DAY),'%Y-%m-%d %H:%i:00') HAVING 1 ORDER BY tm DESC
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d %H:%i:00') HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectRiverHighestLevel" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT b.* from (SELECT a.* FROM (
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd,tm,z FROM ${item}
+            WHERE STCD IN
+            <foreach collection="stcds" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            <if test="startTime != null">
+                and TM &gt;=#{startTime}
+            </if>
+            <if test="endTime != null">
+                and TM &lt;=#{endTime}
+            </if>
+            )
+        </foreach>
+        )a having 1 order by z desc ) b group by b.mgstcd
+    </select>
+
+    <select id="selectRsvrHighestLevel" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT b.* from (SELECT a.* FROM (
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd,tm,rz FROM ${item}
+            WHERE STCD IN
+            <foreach collection="stcds" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            <if test="startTime != null">
+                and TM &gt;=#{startTime}
+            </if>
+            <if test="endTime != null">
+                and TM &lt;=#{endTime}
+            </if>
+            )
+        </foreach>
+        )a  having 1 order by rz desc ) b group by b.mgstcd
+    </select>
+
+    <select id="selectTideHighestLevel" resultType="com.ygkj.gragh.model.StTideR">
+        SELECT b.* from (SELECT a.* FROM (
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd,tm,tdz FROM ${item}
+            WHERE STCD IN
+            <foreach collection="stcds" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            <if test="startTime != null">
+                and TM &gt;=#{startTime}
+            </if>
+            <if test="endTime != null">
+                and TM &lt;=#{endTime}
+            </if>
+            )
+        </foreach>
+        )a  having 1 order by tdz desc ) b group by b.mgstcd
+    </select>
+</mapper>

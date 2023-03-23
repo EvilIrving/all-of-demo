@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.RiverProtectionMapper">
+
+    <select id="getWzAdcds" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select adcd, adnm from att_adcd_base
+        where del_flag = 0 and parent_adcd = '330300000000' and adcd not in (
+        '330351000000',
+        '330353000000',
+        '330354000000',
+        '330355000000')
+    </select>
+
+    <select id="riverNumStatistics" resultType="com.ygkj.big.screen.vo.response.RpRiverNumStatitstcsRespVo">
+        select m.river_level, m.num, round(m.num/n.total_num, 4) rate from
+        (select river_level, count(1) num from att_river_base where del_flag = 0
+        <if test="adcd != null and adcd != ''">
+            and area_code = #{adcd}
+        </if>
+        group by river_level) m,
+        (select count(1) total_num from att_river_base where del_flag = 0
+        <if test="adcd != null and adcd != ''">
+            and area_code = #{adcd}
+        </if>) n
+    </select>
+
+    <select id="getZZStations" resultType="com.ygkj.big.screen.vo.response.RpWaterLevelsRespVo">
+        select st_code, st_name, limit_level, warning_level from att_st_base where st_type = 'ZZ'
+    </select>
+    <select id="getRealWaterLevels" resultType="java.util.Map">
+        select t.stcd, t.z from
+        (select stcd, z from ${tableName} where tm &gt;= date_sub(now(), interval 7 day) having 1 order by tm desc) t
+        group by t.stcd
+    </select>
+
+    <select id="problemStatistics" resultType="com.ygkj.big.screen.vo.response.RpProblemStatsRespVo">
+        <if test='"1".equals(type)'>
+            select adcd, adnm, count(1) num from wt_dyn_problem where del_flag = 0
+            group by adcd
+        </if>
+        <if test='"2".equals(type)'>
+            select pro_type, count(1) num from wt_dyn_problem where del_flag = 0
+            group by pro_type
+        </if>
+        <if test='"3".equals(type)'>
+            select status, count(1) num from wt_dyn_problem where del_flag = 0
+            group by status
+        </if>
+    </select>
+
+    <select id="getRainStations" resultType="com.ygkj.big.screen.vo.response.RpRailfallInfo">
+        select a.st_code, a.st_name, ifnull(a.bas, '瓯江') bas, a.area_code, b.adnm from att_st_base a
+        left join att_adcd_base b on a.area_code = b.adcd
+        where a.st_type = 'PP'
+        <if test="null != adcd and '' != adcd">
+            and a.area_code = #{adcd}
+        </if>
+    </select>
+
+    <select id="getRealRainfall" resultType="com.ygkj.big.screen.model.StPptnR">
+        select stcd, tm, drp from lc_business_db.${tableName} where tm &gt;= date_sub(now(), interval 72 hour)
+    </select>
+
+    <select id="getSwshs" resultType="com.ygkj.big.screen.model.AttSwhsBase">
+        select swhs_code,
+        swhs_name,
+        swhs_long,
+        swhs_lat,
+        swhs_loc,
+        wain_waso_type,
+        wat_area,
+        wain_num,
+        main_wain_use,
+        wasu_obj_type,
+        wasu_town_name,
+        des_ann_wain,
+        des_ann_wasu_pop,
+        run_year,
+        waqu_goal,
+        note,
+        eff_date,
+        expr_date,
+        date_max_wat,
+        master,
+        master_phone from att_swhs_base
+        where 1 = 1
+        <if test="id != null and id != ''">
+            and swhs_code = #{id}
+        </if>
+    </select>
+    <select id="getResBases" resultType="com.ygkj.big.screen.model.AttResBase">
+        select * from att_res_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and res_code = #{id}
+        </if>
+    </select>
+    <select id="getCwsStas" resultType="com.ygkj.big.screen.model.AttCwsstationBase">
+        select id,
+        station_name,
+        station_code,
+        village,
+        town,
+        street,
+        river_id,
+        address,
+        phone,
+        administer,
+        project_code,
+        org_id,
+        del_flag,
+        latitude,
+        longitude,
+        village_name,
+        town_name,
+        street_name,
+        river_name,
+        is_report,
+        report_name from att_cwsstation_base where del_flag = 0
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+    </select>
+    <select id="getWaterStas" resultType="com.ygkj.big.screen.model.AttStBase">
+        select * from att_st_base where st_type in ('RR', 'ZZ')
+        <if test="id != null and id != ''">
+            and st_code = #{id}
+        </if>
+    </select>
+    <select id="getRainStas" resultType="com.ygkj.big.screen.model.AttStBase">
+        select * from att_st_base where st_type = 'PP'
+        <if test="id != null and id != ''">
+            and st_code = #{id}
+        </if>
+    </select>
+    <select id="getRuInfos" resultType="com.ygkj.big.screen.model.RiverUnionInfo">
+        select a.id,
+        a.name,
+        a.type,
+        a.area_name,
+        a.basin,
+        a.longitude,
+        a.latitude,
+        a.description,
+        a.file_ids,
+        a.river_id,
+        a.river_name from river_union_info a where type = '河道河景' and del_flag = 0
+        <if test="id != null and id != ''">
+            and a.id = #{id}
+        </if>
+    </select>
+    <select id="getCameraRecords" resultType="com.ygkj.big.screen.model.HikvisionCameraRecord">
+        select * from hikvision_camera_record where del_flag = 0
+        <if test="id != null and id != ''">
+            and camera_index_code = #{id}
+        </if>
+    </select>
+    <select id="getDynProblems" resultType="com.ygkj.big.screen.model.WtDynProblem">
+        select id,
+        name,
+        pro_source,
+        report_level,
+        process_limit,
+        water_area,
+        water_type,
+        river,
+        river_level,
+        river_chief,
+        adcd,
+        adnm,
+        lng,
+        lat,
+        addr,
+        pro_type,
+        severity,
+        pro_desc,
+        live_pic,
+        remark,
+        occupy_area,
+        dept_id,
+        user_id,
+        start_date,
+        end_date,
+        rectify_desc,
+        report_time,
+        event_source,
+        status from wt_dyn_problem
+        where del_flag = 0
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+    </select>
+
+    <select id="getCwsStaCodes" resultType="com.ygkj.big.screen.vo.response.RpCwsStasRealDataInfo">
+        select station_code from att_cwsstation_base where del_flag = 0 group by station_code
+    </select>
+    <select id="getCwsStaRealDatas" resultType="com.ygkj.big.screen.vo.response.RpCwsStasRealDataInfo">
+        select t.stationCode, t.pH, t.turbidity, t.freeChlorine from
+        (select stationCode, pH, turbidity, freeChlorine from syn_waterquality where dt &gt;= date_sub(now(), interval 7
+        day) having 1 order by tm desc) t
+        group by t.stationCode
+    </select>
+
+    <select id="getAdcdStStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select adcd, count(1) num from att_st_base where FIND_IN_SET(st_type, #{stType}) group by adcd
+    </select>
+    <select id="getAdcdCwsStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select t.adcd, count(1) num from
+        (select b.parent_adcd adcd from att_cwsstation_base a
+        left join att_adcd_base b on a.town = b.adcd
+        where a.del_flag = 0) t group by t.adcd
+    </select>
+    <select id="getAdcdCameraStats" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select area_code adcd, count(1) num from hikvision_camera_record where del_flag = 0 group by area_code
+    </select>
+
+    <select id="getAdcdRiverNum" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select area_code adcd, count(1) num from att_river_base where del_flag = 0 group by area_code
+    </select>
+    <select id="getAdcdLakeNum" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select adcd, count(1) num from att_river_base where del_flag = 0 group by adcd
+    </select>
+    <select id="getAdcdResNum" resultType="com.ygkj.big.screen.vo.response.WzAdcdInfo">
+        select area_code adcd, count(1) num from att_res_base where del_flag = 0 group by area_code
+    </select>
+
+</mapper>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.WaterRainAnalysisMapper">
+
+
+    <select id="selectMaxRainfallOver24Hours" resultType="com.ygkj.gragh.model.StPptnR">
+        select stcd,sum(drp) drp from (
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT stcd, tm, sum(drp) drp FROM ${item}
+            where tm BETWEEN DATE_ADD(now(),INTERVAL -24 hour) and now()
+            GROUP BY stcd ORDER BY drp DESC)
+        </foreach>
+        ) as a GROUP BY a.stcd ORDER BY a.drp DESC limit 1
+    </select>
+
+
+    <select id="selectHourSumRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        select stcd,sum(drp) drp from (
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT stcd, tm, sum(drp) drp FROM ${item}
+            where tm BETWEEN DATE_ADD(now(),INTERVAL -#{hour} hour) and now()
+            GROUP BY stcd ORDER BY drp DESC)
+        </foreach>
+        ) as a GROUP BY a.stcd ORDER BY a.drp DESC
+    </select>
+
+    <select id="selectRainfallExtrem" resultType="map">
+        select * from extrem_rainfall
+        <if test="stName!=null and stName!=''">
+            where st_name like concat('%',concat(#{stName},'%'))
+        </if>
+    </select>
+
+    <select id="selectWaterExtrem" resultType="map">
+        select * from extrem_water
+        <if test="stName!=null and stName!=''">
+            where st_name like concat('%',concat(#{stName},'%'))
+        </if>
+    </select>
+
+    <select id="selectNewestReserviorWaterLevel1Hour" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT a.* FROM
+        (SELECT stcd, tm, rz FROM ${table}
+        WHERE
+        tm BETWEEN DATE_ADD(now(),INTERVAL -1 hour) and now()
+        <if test="stCodeList!=null and stCodeList.size!=0">
+            and stcd in
+            <foreach collection="stCodeList" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        HAVING 1 ORDER BY tm DESC ) a
+        GROUP BY a.stcd
+    </select>
+
+    <select id="selectStcdStName" resultType="map">
+        select st_code ,st_name from att_st_base where
+        st_code in
+        <foreach collection="stCodeList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="insertExtremWater" parameterType="com.ygkj.gragh.model.ExtremWater">
+        INSERT INTO extrem_water
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != stCode'>
+                st_code,
+            </if>
+            <if test='null != stName'>
+                st_name,
+            </if>
+            <if test='null != tm'>
+                tm,
+            </if>
+            <if test='null != rz'>
+                rz,
+            </if>
+            <if test='null != stLong'>
+                st_long,
+            </if>
+            <if test='null != stLat'>
+                st_lat,
+            </if>
+            <if test='null != areaCode'>
+                area_code,
+            </if>
+            <if test='null != bas'>
+                bas
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != stCode'>
+                #{stCode},
+            </if>
+            <if test='null != stName'>
+                #{stName},
+            </if>
+            <if test='null != tm'>
+                #{tm},
+            </if>
+            <if test='null != rz'>
+                #{rz},
+            </if>
+            <if test='null != stLong'>
+                #{stLong},
+            </if>
+            <if test='null != stLat'>
+                #{stLat},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test='null != bas'>
+                #{bas}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertExtremRainfall" parameterType="com.ygkj.gragh.model.ExtremRainfall">
+        INSERT INTO extrem_rainfall
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != stCode'>
+                st_code,
+            </if>
+            <if test='null != stName'>
+                st_name,
+            </if>
+            <if test='null != tm'>
+                tm,
+            </if>
+            <if test='null != drp'>
+                drp,
+            </if>
+            <if test='null != drcd'>
+                drcd,
+            </if>
+            <if test='null != stLong'>
+                st_long,
+            </if>
+            <if test='null != stLat'>
+                st_lat,
+            </if>
+            <if test='null != areaCode'>
+                area_code,
+            </if>
+            <if test='null != bas'>
+                bas
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != stCode'>
+                #{stCode},
+            </if>
+            <if test='null != stName'>
+                #{stName},
+            </if>
+            <if test='null != tm'>
+                #{tm},
+            </if>
+            <if test='null != drp'>
+                #{drp},
+            </if>
+            <if test='null != drcd'>
+                #{drcd},
+            </if>
+            <if test='null != stLong'>
+                #{stLong},
+            </if>
+            <if test='null != stLat'>
+                #{stLat},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test='null != bas'>
+                #{bas}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectNewestRiverLevel1Hour" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT a.* FROM
+        (SELECT stcd, tm, z FROM ${table}
+        WHERE
+        tm BETWEEN DATE_ADD(now(),INTERVAL -1 hour) and now()
+        <if test="stCodeList!=null and stCodeList.size!=0">
+            and stcd in
+            <foreach collection="stCodeList" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        HAVING 1 ORDER BY tm DESC ) a
+        GROUP BY a.stcd
+    </select>
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.AttWasBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.gragh.model.AttWasBase">
+        <result column="id" property="id"/>
+        <result column="station_code" property="stationCode"/>
+        <result column="name" property="name"/>
+        <result column="longitude" property="longitude"/>
+        <result column="latitude" property="latitude"/>
+        <result column="waga_code" property="wagaCode"/>
+        <result column="area_code" property="areaCode"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        station_code,
+        name,
+        longitude,
+        latitude,
+        waga_code,
+        area_code
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.gragh.model.AttWasBase">
+        INSERT INTO att_was_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != stationCode'>
+                station_code,
+            </if>
+            <if test='null != name'>
+                name,
+            </if>
+            <if test='null != longitude'>
+                longitude,
+            </if>
+            <if test='null != latitude'>
+                latitude,
+            </if>
+            <if test='null != wagaCode'>
+                waga_code,
+            </if>
+            <if test='null != areaCode'>
+                area_code
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != stationCode'>
+                #{stationCode},
+            </if>
+            <if test='null != name'>
+                #{name},
+            </if>
+            <if test='null != longitude'>
+                #{longitude},
+            </if>
+            <if test='null != latitude'>
+                #{latitude},
+            </if>
+            <if test='null != wagaCode'>
+                #{wagaCode},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_was_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.gragh.model.AttWasBase">
+        UPDATE att_was_base
+        <set>
+            <if test='null != stationCode'>station_code = #{stationCode},</if>
+            <if test='null != name'>name = #{name},</if>
+            <if test='null != longitude'>longitude = #{longitude},</if>
+            <if test='null != latitude'>latitude = #{latitude},</if>
+            <if test='null != wagaCode'>waga_code = #{wagaCode},</if>
+            <if test='null != areaCode'>area_code = #{areaCode}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_was_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_was_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_was_base
+    </select>
+
+</mapper>

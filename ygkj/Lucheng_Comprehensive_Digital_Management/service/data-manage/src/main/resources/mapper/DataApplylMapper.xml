@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcy.datamanage.biz.mapper.DataApplyMapper">
+
+
+    <select id="countPending" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM `bus_data_apply`
+        WHERE
+            data_source_id = #{dto.dataSourceId}
+            AND `table_name` = #{dto.tableName}
+            AND dept_id = #{dto.operateDeptId}
+            AND apply_status = 0
+            AND (
+                    (
+                        apply_type = 2 AND
+                        <foreach collection="colValList" item="item" separator="AND">
+                            data_object->'$.data.${item.colName}' = #{item.colVal}
+                        </foreach>
+                    )
+
+                    OR
+                    (
+                        apply_type = 3 AND
+                        <foreach collection="colValList" item="item" separator="AND">
+                            data_object->'$.oldData.${item.colName}' = #{item.colVal}
+                        </foreach>
+                    )
+                )
+    </select>
+
+
+</mapper>

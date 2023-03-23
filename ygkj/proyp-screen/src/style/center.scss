@@ -1,0 +1,43 @@
+/* 已知宽高的元素的垂直水平居中 */
+.vertical-horizontal-center__known-size {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+/* 未知宽高的元素的垂直水平居中 */
+.vertical-horizontal-center__unknown-size {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 使图片垂直水平居中的外部容器 */
+.vertical-horizontal-center__img-wrapper {
+  text-align: center;
+
+  &::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+
+  >img {
+    vertical-align: middle;
+  }
+}
+
+/* 使多行文本垂直水平居中的外部容器 */
+.vertical-horizontal-center__multiline-text-wrapper {
+  display: table;
+
+  >span {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}

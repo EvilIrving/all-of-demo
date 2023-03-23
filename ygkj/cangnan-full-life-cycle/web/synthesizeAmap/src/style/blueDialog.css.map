@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "blueDialog.scss",
+        "theme.scss"
+    ],
+    "names": [],
+    "file": "blueDialog.css"
+}

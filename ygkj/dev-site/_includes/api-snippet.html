@@ -1,0 +1,8 @@
+<div class="api-snippets">
+        {{ site.data.t[page.lang].api-response-note | markdownify }}
+        {%- assign flag = page.tag[2] | append: '-' | append: page.tag[3] -%}
+        {% assign code = site.snippets | where: "title", flag %}
+        {% for sample in code %}
+        {{ sample.content | markdownify }}
+        {% endfor %}
+</div>

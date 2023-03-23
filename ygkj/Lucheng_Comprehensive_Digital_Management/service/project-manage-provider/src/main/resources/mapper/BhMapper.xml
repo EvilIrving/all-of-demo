@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.BhMapper">
+
+    <select id="introduction" resultType="java.lang.String" parameterType="String">
+        SELECT `describe` FROM  bh_sl_project_info WHERE pjcd = #{seawallCode}
+    </select>
+
+    <select id="organization" resultType="com.ygkj.project.vo.response.JobSettingResVo" parameterType="String">
+        SELECT
+            dj.JobType,bd.val jobTypeName,dj.PJCD
+        FROM
+            `bh_dep_jobsettinginfo` dj
+            INNER JOIN bh_dict bd ON bd.table_name = 'bh_dep_jobsettinginfo' AND bd.col_name = 'JobType' AND bd.code = dj.JobType
+        WHERE
+            dj.PJCD = #{seawallCode}
+        GROUP BY dj.JobType
+    </select>
+
+    <select id="organizationDetail" resultType="com.ygkj.project.vo.response.JobSettingDetailResVo" parameterType="com.ygkj.project.vo.request.JobSettingReqVo">
+        SELECT
+            dj.ID,dj.JobName,dp.`name`,dp.telphone,
+            dj.AlsoHappening,dj.IsProperty,dj.PersonCredentials,
+            dj.JouCount,dj.EntryRequirement,dj.JobDuty
+        FROM
+            `bh_dep_jobsettinginfo` dj
+            LEFT JOIN bh_dep_prosoninfo dp ON dj.PJCD = dp.pjcd AND FIND_IN_SET(dj.ID,dp.jobs)
+        WHERE
+            dj.PJCD = #{pjcd}
+            AND dj.JobType = #{jobType}
+    </select>
+
+    <select id="listPeople" resultType="com.ygkj.project.vo.response.JobPersonResVo" parameterType="com.ygkj.project.vo.request.JobPersonReqVo">
+        SELECT
+            dp.`name`,dp.telphone, dp.duty,group_concat(dj.JobName) JobName,
+            dp.jobtitle,dp.id_card,dp.education,dp.profession,dp.id
+        FROM
+            bh_dep_prosoninfo dp
+            LEFT JOIN `bh_dep_jobsettinginfo` dj ON dj.PJCD = dp.pjcd AND FIND_IN_SET(dj.ID,dp.jobs)
+        <where>
+            <if test="id != null and id != ''">
+                dp.id = #{id}
+            </if>
+            <if test="seawallCode != null and seawallCode != ''">
+                AND dp.PJCD = #{seawallCode}
+            </if>
+            <if test="name != null and name != ''">
+                AND dp.name LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+        GROUP BY dp.ID
+    </select>
+
+    <select id="personTrain" resultType="com.ygkj.project.vo.response.PersonTrainResVo" parameterType="com.ygkj.project.vo.request.PersonTrainReqVo">
+        SELECT
+            id,YEAR(time) `year`,content,fund,time,person,aid
+        FROM
+            bh_dep_persontrain
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+            <if test="seawallCode != null and seawallCode != ''">
+                AND pjcd = #{seawallCode}
+            </if>
+            <if test="year != null">
+                AND YEAR(time) = #{year}
+            </if>
+        </where>
+        ORDER BY time DESC
+    </select>
+
+    <select id="managefund" resultType="com.ygkj.project.vo.response.ManageFundResVo" parameterType="com.ygkj.project.vo.request.ManageFundReqVo">
+        SELECT foud_total,foud_fulfil,CONCAT(IFNULL(quarter,'1'),'季度') quarter FROM `bh_dep_managefund`
+        WHERE PJCD = #{seawallCode} AND year = #{year} ORDER BY `quarter`
+    </select>
+
+    <select id="manageinstitution" resultType="com.ygkj.project.vo.response.ManageinstitutionResVo" parameterType="String">
+        SELECT
+            name,group_concat(aid) aid
+        FROM
+            bh_dep_manageinstitution
+        WHERE PJCD = #{seawallCode}
+        GROUP BY name
+    </select>
+
+    <select id="mfpm" resultType="com.ygkj.project.vo.response.MfpmResVo" parameterType="com.ygkj.project.vo.request.MfpmReqVo">
+        SELECT
+            lm.*,bd.val mfTypeName
+        FROM
+            bh_lg_mfpm lm
+            LEFT JOIN bh_dict bd ON bd.table_name = 'bh_lg_mfpm' AND bd.col_name = 'MF_TYPE' AND lm.MF_TYPE = bd.`code`
+        WHERE
+            lm.PID = #{seawallCode}
+            <if test="mfType != null and mfType != ''">
+                AND lm.mf_type = #{mfType}
+            </if>
+    </select>
+
+    <select id="mfd" resultType="com.ygkj.project.vo.response.MfdResVo" parameterType="com.ygkj.project.vo.request.MfdReqVo">
+        SELECT * FROM `bh_lg_mfd`
+        WHERE
+            <if test="seawallCode != null and seawallCode != ''">
+                AND PID = #{seawallCode}
+            </if>
+            <if test="year != null">
+                AND year = #{year}
+            </if>
+        ORDER BY YEAR DESC
+    </select>
+
+    <select id="mfu" resultType="com.ygkj.project.vo.response.MfuResVo" parameterType="com.ygkj.project.vo.request.MfuReqVo">
+        SELECT
+            lm.*,bd.val mfTypeName,bu.real_name
+        FROM
+            bh_lg_mfu lm
+            LEFT JOIN bh_dict bd ON bd.table_name = 'bh_lg_mfpm' AND bd.col_name = 'MF_TYPE' AND lm.MF_TYPE = bd.`code`
+            LEFT JOIN bh_user bu ON bu.u_id = lm.PERSON
+        WHERE
+            PID = #{seawallCode}
+            <if test="year != null">
+                AND lm.year = #{year}
+            </if>
+            <if test="mfType != null and mfType != ''">
+                AND lm.mf_type = #{mfType}
+            </if>
+        ORDER BY lm.ST_TM DESC
+    </select>
+
+
+    <select id="selectBhUserListByReqVo" resultType="com.ygkj.project.vo.response.BhUserResVo">
+        select u_id,real_name,depart_id,role_ids,sex,order_id,telphone from bh_user
+        <where>
+            <if test="reqVo.name != null and reqVo.name != ''">
+                and real_name like concat( '%',#{reqVo.name},'%')
+            </if>
+            <if test="true">
+                and isdelete = 0
+            </if>
+            <if test="reqVo.deptId != null and reqVo.deptId != ''">
+                and depart_id = #{reqVo.deptId}
+            </if>
+            <if test="reqVo.roleId != null and reqVo.roleId != ''">
+                and role_ids like concat( '%',#{reqVo.roleId},'%')
+            </if>
+        </where>
+        order by  order_id
+    </select>
+
+    <select id="selectBhDeptListByReqVo" resultType="com.alibaba.fastjson.JSONObject">
+        select DEPID,DNAME,PARENTID,ORDERID from bh_sys_department
+        <where>
+            <if test="reqVo.name != null and reqVo.name != ''">
+                and DNAME like concat('%',#{reqVo.name},'%')
+            </if>
+        </where>
+        order by ORDERID
+    </select>
+
+</mapper>

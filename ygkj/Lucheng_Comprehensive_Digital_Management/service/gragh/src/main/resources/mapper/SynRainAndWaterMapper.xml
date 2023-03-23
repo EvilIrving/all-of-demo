@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.gragh.mapper.SynRainAndWaterMapper">
+
+    <select id="selectNewestReserviorWaterLevelFromTable" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT a.* FROM
+        (SELECT stcd, tm, rz FROM ${table}
+        WHERE tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 10000 ) a
+        GROUP BY a.stcd
+    </select>
+
+    <select id="selectRsvrWaterLevelByTimeCode" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, rz FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY) AND DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectYjRsvrWaterLevelByTime" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT a.* FROM
+        (SELECT mgstcd,tm, rz FROM st_rsvr_r_yongjia
+        <where>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY) AND DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectNewestRiverLevelFromTable" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT a.* FROM
+        (SELECT stcd, tm, z FROM ${table}
+        WHERE tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 10000 ) a
+        GROUP BY a.stcd
+    </select>
+
+    <select id="selectRiverByTimeCode" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, z FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY) AND DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00' ) HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectResStationWaterLevel" resultType="com.ygkj.gragh.model.StRsvrR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT stcd, tm, rz FROM ${item} WHERE tm between #{start} AND #{end} AND mgstcd = #{stationCode}
+            AND RIGHT(tm,5)='00:00' ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectRiverStationWaterLevel" resultType="com.ygkj.gragh.model.StRiverR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT stcd, tm, z FROM ${item} WHERE tm between #{start} AND #{end} AND mgstcd = #{stationCode}
+            AND RIGHT(tm,5)='00:00' ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectNewestStationRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT a.* FROM
+        (SELECT stcd, tm, drp FROM ${table}
+        WHERE tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 10000 ) a
+        GROUP BY a.stcd
+    </select>
+
+    <select id="selectNewestWas" resultType="com.ygkj.gragh.model.StWasR">
+        SELECT a.* FROM
+        (SELECT stcd, tm,UPZ,DWZ,MXGTQ,OVS,LL FROM ${table}
+        WHERE tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 10000 ) a
+        GROUP BY a.stcd
+    </select>
+
+    <select id="selectWasByTimeCode" resultType="com.ygkj.gragh.model.StWasR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm,UPZ,DWZ,MXGTQ,OVS,LL FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY) AND DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectNewestTide" resultType="com.ygkj.gragh.model.StTideR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,TDZ FROM ${table}
+        WHERE TM >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY TM DESC LIMIT 10000 ) a
+        GROUP BY a.STCD
+    </select>
+
+    <select id="selectTideByTimeCode" resultType="com.ygkj.gragh.model.StTideR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,TDZ FROM ${table}
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY) AND DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectAstrotdByTimeCode" resultType="com.ygkj.gragh.model.StAstrotdR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,TDZ FROM st_astrotd_r
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND YMDH between DATE_SUB(#{dataTime},INTERVAL 1 DAY) AND DATE_ADD(#{dataTime},INTERVAL 1 DAY)
+                    ORDER BY ABS(timestampdiff(second ,YMDH, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND YMDH >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectPustByTimeCode" resultType="com.ygkj.gragh.model.StPustR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,num_1,num_2,num_3,num_4,num_5,jsk_z,jsc_z,csc_z,`sum` FROM st_pust_r
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND TM between DATE_SUB(#{dataTime},INTERVAL 1 DAY) AND DATE_ADD(#{dataTime},INTERVAL 1 DAY)
+                    ORDER BY ABS(timestampdiff(second ,YMDH, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND TM >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 YEAR),'%Y-%m-%d 00:00:00') HAVING 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectRainfallByCondition" resultType="com.ygkj.gragh.model.StPptnR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT mgstcd, tm,
+            <choose>
+                <when test="queryVo.needSum == true">
+                    SUM(drp) as drp
+                </when>
+                <otherwise>
+                    drp
+                </otherwise>
+            </choose>
+            FROM ${item}
+            <if test="queryVo.start != null and queryVo.end != null">
+                FORCE INDEX(index_sort_tm)
+            </if>
+            <where>
+                <if test="queryVo.codes != null and queryVo.codes.size() > 0">
+                    and mgstcd IN (
+                    <foreach collection="queryVo.codes" item="item" separator=",">
+                        #{item}
+                    </foreach>
+                    )
+                </if>
+                <if test="queryVo.start != null and queryVo.end != null">
+                    and (tm between #{queryVo.start} AND #{queryVo.end})
+                </if>
+                <!--                <if test="queryVo.min != null and queryVo.max != null">-->
+                <!--                    and (drp between #{queryVo.min} AND #{queryVo.max})-->
+                <!--                </if>-->
+                <if test="queryVo.stationCode != null and queryVo.stationCode != null">
+                    and (mgstcd = #{queryVo.stationCode})
+                </if>
+            </where>
+            <if test="queryVo.needSum == true">
+                group by mgstcd
+            </if>
+            )
+        </foreach>
+    </select>
+
+    <select id="selectHourRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT mgstcd, DATE_FORMAT(tm,'%Y-%m-%d %H:00:00') tm,SUM(drp) drp FROM ${item}
+            <where>
+                <if test="queryVo.stationCode != null">
+                    AND mgstcd = #{queryVo.stationCode}
+                </if>
+                <if test="queryVo.start != null and queryVo.end != null">
+                    and (tm between #{queryVo.start} AND #{queryVo.end})
+                </if>
+            </where>
+            GROUP BY DATE_FORMAT(tm,'%Y-%m-%d %H')
+            ORDER BY tm DESC
+            )
+        </foreach>
+    </select>
+
+    <select id="selectYJStationRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT
+        CONCAT('YJ_',stcd) AS mgstcd,
+        stcd,
+        tm,
+        sub_val AS drp
+        FROM
+        yongjia_st_pptn_r0
+        <where>
+            <if test="queryVo.stationCode != null">
+                AND stcd = #{queryVo.stationCode}
+            </if>
+            <if test="queryVo.start != null and queryVo.end != null">
+                and (tm > #{queryVo.start} AND tm &lt;= #{queryVo.end})
+            </if>
+        </where>
+    </select>
+
+    <select id="selectHourWas" resultType="com.ygkj.gragh.model.StWasR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT stcd,tm,UPZ,DWZ,MXGTQ,OVS,LL FROM ${item}
+            <where>
+                <if test="start != null and end != null">
+                    and (tm between #{start} AND #{end})
+                </if>
+                <if test="stationCode != null">
+                    AND stcd = #{stationCode}
+                </if>
+            </where>
+            ORDER BY tm DESC
+            )
+        </foreach>
+    </select>
+
+
+    <select id="selectHourTide" resultType="com.ygkj.gragh.model.StTideR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT MGSTCD,STCD, TM,TDZ FROM ${item}
+            <where>
+                <if test="start != null and end != null">
+                    and (tm between #{start} AND #{end})
+                </if>
+                <if test="stationCode != null">
+                    AND MGSTCD = #{stationCode}
+                </if>
+            </where>
+            AND RIGHT(tm,5)='00:00'
+            ORDER BY tm DESC
+            )
+        </foreach>
+    </select>
+
+
+    <insert id="insertRainfall" parameterType="com.ygkj.gragh.model.StPptnR">
+        INSERT INTO ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != mgstcd'>
+                MGSTCD,
+            </if>
+            <if test='null != stcd'>
+                STCD,
+            </if>
+            <if test='null != tm'>
+                TM,
+            </if>
+            <if test='null != drp'>
+                DRP,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != mgstcd'>
+                #{mgstcd},
+            </if>
+            <if test='null != stcd'>
+                #{mgstcd},
+            </if>
+            <if test='null != tm'>
+                #{tm},
+            </if>
+            <if test='null != drp'>
+                #{drp},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertReservoirWaterLevel" parameterType="com.ygkj.gragh.model.StRsvrR">
+        INSERT INTO ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != mgstcd'>
+                MGSTCD,
+            </if>
+            <if test='null != stcd'>
+                STCD,
+            </if>
+            <if test='null != tm'>
+                TM,
+            </if>
+            <if test='null != rz'>
+                RZ,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != mgstcd'>
+                #{mgstcd},
+            </if>
+            <if test='null != stcd'>
+                #{mgstcd},
+            </if>
+            <if test='null != tm'>
+                #{tm},
+            </if>
+            <if test='null != rz'>
+                #{rz},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectPastHoursRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT
+        mgstcd,
+        tm,
+        SUM(drp) AS drp
+        FROM
+        ${table}
+        <if test="forceTimeIndex == true">
+            FORCE INDEX(index_sort_tm)
+        </if>
+        <where>
+            <if test="codes != null and codes.size > 0">
+                AND mgstcd IN (
+                <foreach collection="codes" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            AND tm &gt; DATE_ADD(#{endTime},INTERVAL -${hour} HOUR) and tm &lt;= #{endTime}
+        </where>
+        group by mgstcd
+    </select>
+
+    <select id="selectYJPastHoursRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT
+        CONCAT('YJ_',stcd) AS mgstcd,
+        stcd,
+        tm,
+        SUM(sub_val) AS drp
+        FROM
+        yongjia_st_pptn_r0
+        <where>
+            <if test="codes != null and codes.size > 0">
+                AND stcd IN (
+                <foreach collection="codes" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND tm &gt; DATE_ADD(#{endTime},INTERVAL -${hour} HOUR) and tm &lt;= #{endTime}
+            </if>
+        </where>
+        group by stcd
+    </select>
+
+    <select id="selectSumRainfallByTimeInterval" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT
+        a.mgstcd,
+        a.tm,
+        SUM(a.drp) AS drp
+        FROM
+        (
+        <foreach collection="tables" item="table" separator="UNION ALL">
+            (SELECT
+            mgstcd,
+            tm,
+            drp
+            FROM
+            ${table}
+            <where>
+                <if test="codes != null and codes.size > 0">
+                    AND mgstcd IN (
+                    <foreach collection="codes" item="item" separator=",">
+                        #{item}
+                    </foreach>
+                    )
+                </if>
+                AND tm BETWEEN #{startTime} AND #{endTime}
+            </where>
+            )
+        </foreach>
+        ) as a
+        group by a.mgstcd
+    </select>
+
+    <select id="selectYjSumRainfallByTimeInterval" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT
+        CONCAT('YJ_',stcd) AS mgstcd,
+        stcd,
+        tm,
+        SUM(sub_val) AS drp
+        FROM
+        yongjia_st_pptn_r0
+        <where>
+            <if test="codes != null and codes.size > 0">
+                AND stcd IN (
+                <foreach collection="codes" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            AND tm BETWEEN #{startTime} AND #{endTime}
+        </where>
+        group by stcd
+    </select>
+
+    <select id="selectNewestOneHourRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT
+        mgstcd,
+        tm,
+        SUM(drp) AS drp
+        FROM
+        ${table}
+        <where>
+            <if test="codes != null and codes.size > 0">
+                AND mgstcd IN (
+                <foreach collection="codes" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            AND tm &gt; #{startTime} AND tm <![CDATA[ <= ]]> NOW()
+        </where>
+        group by mgstcd
+    </select>
+
+    <select id="selectYJNewestOneHourRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT
+        CONCAT('YJ_',stcd) AS mgstcd,
+        stcd,
+        tm,
+        SUM(sub_val) AS drp
+        FROM
+        yongjia_st_pptn_r0
+        <where>
+            tm &gt; DATE_FORMAT(#{startTime} ,'%Y-%m-%d %H:00:00') AND tm <![CDATA[ <= ]]> #{startTime}
+        </where>
+        group by stcd
+    </select>
+
+    <select id="selectNewestOneHourRainfallByPastTime" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT
+        mgstcd,
+        stcd,
+        tm,
+        SUM(drp) AS drp
+        FROM
+        ${table}
+        <where>
+            <if test="codes != null and codes.size > 0">
+                AND mgstcd IN (
+                <foreach collection="codes" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            AND tm > DATE_FORMAT(#{endTime},'%Y-%m-%d %H:00:00') AND tm <![CDATA[ <= ]]> #{endTime}
+        </where>
+        group by mgstcd
+    </select>
+
+    <select id="selectRsvrByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd, tm, rz FROM ${item} WHERE tm between #{start} AND #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectWasByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd, tm,UPZ,DWZ,MXGTQ,OVS,LL FROM ${item}
+            WHERE tm between #{start} AND #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectRiverByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd, tm, z FROM ${item}
+            WHERE tm between #{start} AND #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectTideByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd,stcd, tm, tdz FROM ${item}
+            WHERE tm between #{start} AND #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectRainfallByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        <foreach collection="tables" item="item" separator="UNION ALL">
+            (SELECT mgstcd, stcd, tm, drp FROM ${item}
+            WHERE tm between #{start} AND #{end}
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            ORDER BY tm DESC)
+        </foreach>
+    </select>
+
+    <select id="selectAstrotdByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        SELECT mgstcd, stcd, YMDH as tm, TDZ FROM st_astrotd_r
+        WHERE YMDH between #{start} AND #{end}
+        <if test="stcds!=null and stcds.size!=0">
+            and mgstcd IN
+            <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY YMDH ASC
+    </select>
+
+    <select id="selectPustByTimeInterval" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo">
+        SELECT MGSTCD,STCD, TM,num_1,num_2,num_3,num_4,num_5,jsk_z,jsc_z,csc_z,`sum` FROM st_pust_r
+        WHERE TM between #{start} AND #{end}
+        <if test="stcds!=null and stcds.size!=0">
+            and mgstcd IN
+            <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY TM ASC
+    </select>
+
+    <select id="selectYongJiaRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT * FROM
+        (
+        SELECT mgstcd,stcd,tm,drp FROM st_pptn_r_yj
+        <where>
+
+            mgstcd IN
+            (
+            <foreach collection="codes" item="item" separator=",">
+                #{item}
+            </foreach>
+            )
+            <if test="min != null and max != null">
+                and (drp between #{min} AND #{max})
+            </if>
+        </where>
+        ORDER BY tm DESC LIMIT 1000
+        ) a GROUP BY mgstcd
+    </select>
+
+    <select id="selectNewestOneHourMaxRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT a.mgstcd,a.drp FROM
+        ( SELECT mgstcd, tm, SUM( drp ) AS drp FROM ${table}
+        WHERE
+        <if test='codes != null and codes.size() > 0'>
+            mgstcd IN (
+            <foreach collection='codes' item='item' separator=','>
+                #{item}
+            </foreach>
+            )
+        </if>
+        AND tm >= DATE_FORMAT(#{startTime} ,'%Y-%m-%d %H:00:00')
+        <if test="drill == true">
+            AND tm &lt;= #{startTime}
+        </if>
+        <if test="drill == false">
+            AND tm &lt;= NOW()
+        </if>
+        GROUP BY mgstcd ORDER BY drp desc) a LIMIT 1
+    </select>
+
+    <select id="selectMaxRainfallBetweenPastHours" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT a.mgstcd,a.drp FROM
+        ( SELECT mgstcd, tm, SUM( drp ) AS drp FROM ${table} FORCE INDEX(index_sort_tm)
+        WHERE
+        <if test='codes != null and codes.size() > 0'>
+            mgstcd IN (
+            <foreach collection='codes' item='item' separator=','>
+                #{item}
+            </foreach>
+            )
+        </if>
+        AND tm > DATE_ADD(#{endTime},INTERVAL -${hour} HOUR) AND tm &lt;= #{endTime} GROUP BY mgstcd ORDER BY drp desc)
+        a LIMIT 1
+    </select>
+
+    <select id="findSoliRLastNewData" resultType="com.ygkj.gragh.model.StSoliR">
+        SELECT
+        a.*
+        FROM
+        (
+        SELECT
+        mgstcd,
+        tm,
+        slm10,
+        slm20,
+        slm30
+        FROM
+        st_soli_r
+        WHERE 1=1 and
+        <if test='codes != null and codes.size() > 0'>
+            mgstcd IN (
+            <foreach collection='codes' item='item' separator=','>
+                #{item}
+            </foreach>
+            )
+        </if>
+        ORDER BY
+        tm DESC
+        LIMIT 20000
+        ) a
+        GROUP BY
+        a.mgstcd
+    </select>
+
+    <select id="selectSoliRByTime" resultType="com.ygkj.gragh.model.StSoliR">
+        SELECT
+        a.*
+        FROM
+        (
+        SELECT
+        mgstcd,
+        tm,
+        slm10,
+        slm20,
+        slm30
+        FROM
+        st_soli_r
+        <where>
+            <if test='codes != null and codes.size() > 0'>
+                mgstcd IN (
+                <foreach collection='codes' item='item' separator=','>
+                    #{item}
+                </foreach>
+                )
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY) AND DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    ORDER BY
+                    tm DESC
+                    LIMIT 20000
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY
+        a.mgstcd
+    </select>
+
+    <select id="findSoliRListData" resultType="com.ygkj.gragh.vo.response.StSoliRRespVo">
+        SELECT * FROM `st_soli_r` where 1=1
+        <if test="null != stationCode and '' != stationCode">
+            and mgstcd = #{stationCode}
+        </if>
+        <if test="null != startTime and '' != startTime">
+            and tm &gt;= #{startTime}
+        </if>
+        <if test="null != endTime and '' != endTime">
+            and tm &lt;= #{endTime}
+        </if>
+        order by tm asc
+    </select>
+
+    <select id="selectHourWasLevel" resultType="com.ygkj.gragh.model.StWasR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT * FROM (SELECT MGSTCD,STCD, TM,UPZ,DWZ,OVS,LL FROM ${item}
+            <where>
+                <if test="start != null and end != null">
+                    and (tm between #{start} AND #{end})
+                </if>
+                <if test="stationCode != null">
+                    AND stcd = #{stationCode}
+                </if>
+            </where>
+            ORDER BY TM) a GROUP BY LEFT(a.TM,13)
+            )
+        </foreach>
+    </select>
+
+    <select id="ProjStRel" resultType="string">
+        SELECT
+        sb.st_code
+        FROM
+        att_st_base sb
+        LEFT JOIN sl_proj_st_r sr ON sb.st_code = sr.stcd
+        LEFT JOIN att_real_all_project_base pb ON sr.project_code = pb.project_code
+        WHERE
+        sr.project_code = #{prcd}
+        <choose>
+            <when test="type == 'PP'">
+                AND sb.is_rain_station = '1' AND sr.is_main = '2'
+            </when>
+            <otherwise>
+                AND sb.st_type = #{type} AND sr.is_main = '1'
+            </otherwise>
+        </choose>
+        LIMIT 1
+    </select>
+
+    <select id="listFcstVal" resultType="com.ygkj.gragh.vo.response.StPrrwtResVo" parameterType="com.ygkj.gragh.vo.request.WaterLevelQueryVo">
+        SELECT
+            st_code mgstcd,st_code stcd, tm, tdz
+        FROM
+            `att_tide_fcst_val_base`
+        WHERE
+            fcst_id = #{fcstId}
+            AND tm BETWEEN #{startTime} AND #{endTime}
+            AND MINUTE(tm) = 0
+            <if test="stationCode != null and stationCode != ''">
+                AND st_code = #{stationCode}
+            </if>
+        ORDER BY tm
+    </select>
+
+    <!--
+    <select id="selectNoRainRecord" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT
+	    a.tm,
+	    a.drp
+        FROM
+	    ( SELECT date AS tm, sum( drp ) AS drp FROM st_pptn_r_day GROUP BY date ) a
+        WHERE
+	    a.drp = 0
+        ORDER BY
+	    a.tm DESC
+    </select>
+    -->
+</mapper>
+

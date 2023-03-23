@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.BhDutyRecordMapper">
+
+
+    <select id="getList" resultType="com.ygkj.project.model.BhDutyRecord">
+        SELECT a.id, pro.pjnm, a.DUTY_DATE, a.DUTY_PHONE, a.LEADER, b.real_name LEADER_NAME,
+        a.MGT_DAY,(SELECT GROUP_CONCAT(real_name) FROM bh_user WHERE FIND_IN_SET(u_id,a.MGT_DAY)) MGT_DAY_NAME,
+        a.MGT_NIGHT_ID,(SELECT GROUP_CONCAT(real_name) FROM bh_user WHERE FIND_IN_SET(u_id,a.MGT_NIGHT_ID)) MGT_NIGHT_NAME,
+        (SELECT GROUP_CONCAT(telphone) FROM bh_user WHERE FIND_IN_SET(u_id,a.MGT_NIGHT_ID)) MGT_NIGHT_PHONE,
+        a.device_patrol_uid,(SELECT GROUP_CONCAT(real_name) FROM bh_user WHERE FIND_IN_SET(u_id,a.device_patrol_uid)) device_patrol_name,
+        (SELECT GROUP_CONCAT(telphone) FROM bh_user WHERE FIND_IN_SET(u_id,a.device_patrol_uid)) device_patrol_phone,a.patrol_type,a.source_type
+        FROM bh_duty_record a
+        LEFT JOIN bh_user b ON a.LEADER = b.u_id
+        LEFT JOIN bh_sl_project_info pro ON a.PID = pro.pjcd
+        WHERE 1=1
+        <if test="bhDutyRecord.timeYm != null and bhDutyRecord.timeYm != ''">
+            AND LEFT (a.DUTY_DATE, 7) = #{bhDutyRecord.timeYm}
+        </if>
+        <if test="bhDutyRecord.pid != null and bhDutyRecord.pid != ''">
+            AND a.pid = #{bhDutyRecord.pid}
+        </if>
+        <if test="bhDutyRecord.id != null and bhDutyRecord.id != ''">
+            AND a.id = #{bhDutyRecord.id}
+        </if>
+        ORDER BY a.DUTY_DATE DESC
+    </select>
+
+</mapper>

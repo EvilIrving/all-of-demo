@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.ProcessCustomizeMapper">
+
+    <select id="queryAllWaterUsers" resultType="com.ygkj.vo.resp.OperatorRespVo">
+        select id, username from sys_user
+        where user_type = '1' and deleted = 1
+        order by convert(username using gbk) collate gbk_chinese_ci asc
+    </select>
+
+    <select id="queryAllWaterCompanyUsers" resultType="com.ygkj.vo.resp.OperatorRespVo">
+        select id, username from sys_user
+        where user_type = '2' and deleted = 1
+        order by convert(username using gbk) collate gbk_chinese_ci asc
+    </select>
+
+    <select id="getAssignees" resultType="java.lang.String">
+        select operator from sys_process_customize where is_deleted = 1 and step = #{step}
+    </select>
+
+    <select id="getProcessCustomize" parameterType="java.lang.Integer"
+            resultType="com.ygkj.entity.ProcessCustomize">
+        select id, step, operator from sys_process_customize where is_deleted = 1 and step = #{step}
+    </select>
+
+    <insert id="addOperator" parameterType="com.ygkj.entity.ProcessCustomize">
+        insert into sys_process_customize (
+        id,
+        step,
+        operator
+        ) values(
+        #{id},
+        #{step},
+        #{operator}
+        )
+    </insert>
+
+    <update id="updateOperator" parameterType="com.ygkj.entity.ProcessCustomize">
+        update sys_process_customize
+        <set>
+            <if test='null != operator'>operator = #{operator},</if>
+            update_time = now()
+        </set>
+        where step = #{step}
+    </update>
+
+    <select id="getUsers" parameterType="java.util.List" resultType="com.ygkj.vo.resp.OperatorRespVo">
+        select id, username from sys_user
+        where id in
+        <foreach item="item" collection="list" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

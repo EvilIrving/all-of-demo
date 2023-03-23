@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.RelationshipMapper">
+
+    <insert id="save" parameterType="com.ygkj.digitization.vo.request.RelBaseReqVo">
+        INSERT INTO att_rel_base (id,rel_name,remark,dept_id,`type`)
+        VALUES (#{id},#{relName},#{remark},#{deptId},#{type})
+    </insert>
+
+    <insert id="saveRel" parameterType="com.ygkj.digitization.vo.request.RelBaseReqVo">
+        INSERT INTO rel_rel_ps (id,rel_id,ps_code)
+        VALUE
+            <foreach collection="list" item="item" separator=",">
+                (#{item.id},#{item.relId},#{item.psCode})
+            </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.ygkj.digitization.vo.request.RelBaseReqVo">
+        UPDATE
+            att_rel_base
+        SET
+            rel_name = #{relName},
+            remark = #{remark}
+        WHERE
+            id = #{id}
+    </update>
+
+    <update id="updateSeawallByStCode">
+        UPDATE att_seawall_base SET tide_station_code = NULL WHERE FIND_IN_SET(tide_station_code,#{stCodes})
+    </update>
+
+    <update id="saveSeawallRel">
+        UPDATE
+            att_seawall_base
+        SET
+            tide_station_code = #{stCode}
+        WHERE
+            FIND_IN_SET(seawall_code,#{seawallCodes})
+    </update>
+
+    <update id="updateStRemark">
+        UPDATE
+            att_st_base
+        SET
+            seawall_remark = #{remark}
+        WHERE
+            FIND_IN_SET(st_code,#{stCode})
+    </update>
+
+    <delete id="delRel" parameterType="String">
+        DELETE FROM rel_rel_ps WHERE rel_id = #{relId}
+    </delete>
+
+    <delete id="del">
+        UPDATE
+            att_rel_base
+        SET
+            del_flag = 1
+        WHERE
+              id IN
+            <foreach collection="list" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+    </delete>
+
+    <select id="list" resultType="com.ygkj.digitization.vo.response.RelBaseResVo">
+        SELECT
+            id,rel_name,remark
+        FROM
+            att_rel_base
+        WHERE
+            del_flag = 0
+            <if test="name != null">
+                AND rel_name LIKE CONCAT('%',#{name},'%')
+            </if>
+    </select>
+
+    <select id="selectResName" resultType="com.ygkj.digitization.vo.response.RelBaseResVo">
+        SELECT
+            GROUP_CONCAT( arb.res_name ) ps_name,rrp.rel_id id
+        FROM
+            rel_rel_ps rrp
+            LEFT JOIN att_res_base arb ON rrp.ps_code = arb.res_code
+        WHERE rrp.rel_id IN
+        <foreach collection="list" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY rrp.rel_id
+    </select>
+
+    <select id="selectStName" resultType="com.ygkj.digitization.vo.response.RelBaseResVo">
+        SELECT
+            GROUP_CONCAT( arb.st_name ) ps_name,rrp.rel_id id
+        FROM
+            rel_rel_ps rrp
+            LEFT JOIN att_st_base arb ON rrp.ps_code = arb.st_code
+        WHERE rrp.rel_id IN
+            <foreach collection="list" open="(" item="item" separator="," close=")">
+                #{item}
+            </foreach>
+        GROUP BY rrp.rel_id
+    </select>
+
+    <select id="selectRes" resultType="com.ygkj.digitization.vo.response.RelDetailResVo">
+        SELECT
+            rrp.rel_id,arb.res_code ps_code,arb.res_name ps_name,
+            arb.bas,aab.adcd,aab.adnm
+        FROM
+            rel_rel_ps rrp
+            LEFT JOIN att_res_base arb ON rrp.ps_code = arb.res_code
+            LEFT JOIN att_adcd_base aab ON arb.res_loc = aab.adcd
+        WHERE
+            rrp.rel_id = #{id}
+    </select>
+
+    <select id="selectSt" resultType="com.ygkj.digitization.vo.response.RelDetailResVo">
+        SELECT
+            rrp.rel_id,arb.st_code ps_code,arb.st_name ps_name,
+            arb.bas,aab.adcd,aab.adnm
+        FROM
+            rel_rel_ps rrp
+            LEFT JOIN att_st_base arb ON rrp.ps_code = arb.st_code
+            LEFT JOIN att_adcd_base aab ON arb.area_code = aab.adcd
+        WHERE
+            rrp.rel_id = #{id}
+    </select>
+
+    <select id="listRes" resultType="com.ygkj.digitization.vo.response.ResResVo">
+        SELECT
+            res.res_code project_code,res.res_name project_name,
+            res.low_left_long,res.low_left_lat,res.tot_cap,
+            res.bas,aab.adcd,aab.adnm
+        FROM
+            att_res_base res
+            LEFT JOIN att_adcd_base aab ON res.res_loc = aab.adcd
+        WHERE
+            res.del_flag = 0
+            <if test="adcd != null and adcd != ''">
+                AND aab.adcd LIKE #{adcd}
+            </if>
+            <if test="bas != null and bas != ''">
+                AND res.bas = #{bas}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                AND res.res_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+    </select>
+
+    <select id="listSeawall" resultType="com.ygkj.digitization.vo.response.SeawallResVo">
+        SELECT
+            res.seawall_code project_code,res.seawall_name project_name,
+            res.seawall_length,res.points,res.bas,
+            aab.adcd,aab.adnm
+        FROM
+            att_seawall_base res
+            LEFT JOIN att_adcd_base aab ON res.area_code = aab.adcd
+        WHERE
+            res.del_flag = 0
+            <if test="adcd != null and adcd != ''">
+                AND aab.adcd LIKE #{adcd}
+            </if>
+            <if test="bas != null and bas != ''">
+                AND res.bas = #{bas}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                AND res.seawall_name LIKE CONCAT('%',#{projectName},'%')
+            </if>
+    </select>
+
+    <select id="listSt" resultType="com.ygkj.digitization.vo.response.StResVo">
+        SELECT
+            st.st_code,st.st_type,st.st_name,st.bas,
+            aab.adcd,aab.adnm,st.st_long,st.st_lat
+        FROM
+            att_st_base st
+            LEFT JOIN att_adcd_base aab ON st.area_code = aab.adcd
+        <where>
+            <if test="stType != null and stType !=''">
+                st_type = #{stType}
+            </if>
+            <if test="stName != null and stName !=''">
+                AND st_name LIKE CONCAT('%',#{stName},'%')
+            </if>
+            <if test="adcd != null and adcd != ''">
+                AND aab.adcd LIKE #{adcd}
+            </if>
+            <if test="bas != null and bas != ''">
+                AND st.bas = #{bas}
+            </if>
+        </where>
+    </select>
+
+    <select id="listTide" resultType="com.ygkj.digitization.vo.response.RelSeawallListResVo">
+        SELECT
+            st.st_code,st.st_name,st.seawall_remark
+        FROM
+            att_st_base st
+        WHERE
+            st_type  = 'TT'
+            AND EXISTS (SELECT seawall_code FROM att_seawall_base WHERE st.st_code = tide_station_code)
+            <if test="name != null and name != ''">
+                AND st.st_name LIKE CONCAT('%',#{name},'%')
+            </if>
+    </select>
+
+    <select id="selectSeawallName" resultType="com.ygkj.digitization.vo.response.RelSeawallListResVo">
+        SELECT
+            GROUP_CONCAT( seawall_name ) seawall_names,tide_station_code st_code
+        FROM
+            att_seawall_base
+        WHERE
+            tide_station_code IN
+            <foreach collection="list" open="(" separator="," item="item" close=")">
+                #{item}
+            </foreach>
+        GROUP BY tide_station_code
+    </select>
+
+    <select id="selectTide" resultType="com.ygkj.digitization.vo.response.RelSeawallDetailResVo">
+        SELECT
+            sea.seawall_code,sea.seawall_name,sea.bas,
+            aab.adcd,aab.adnm
+        FROM
+            att_seawall_base sea
+            LEFT JOIN att_adcd_base aab ON sea.area_code = aab.adcd
+        WHERE
+            sea.tide_station_code = #{stCode}
+    </select>
+
+</mapper>

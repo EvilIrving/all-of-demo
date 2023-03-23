@@ -1,0 +1,21 @@
+/* 顺时针旋转 */
+@keyframes clockwiseRotation {
+  from {
+    transform: rotateZ(0);
+  }
+
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+/* 逆时针旋转 */
+@keyframes counterClockwiseRotation {
+  from {
+    transform: rotateZ(0);
+  }
+
+  to {
+    transform: rotateZ(-360deg);
+  }
+}

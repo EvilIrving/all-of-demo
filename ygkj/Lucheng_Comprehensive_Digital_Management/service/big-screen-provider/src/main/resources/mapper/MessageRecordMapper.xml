@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.MessageRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.MessageRecord">
+        <result column="id" property="id"/>
+        <result column="message_content" property="messageContent"/>
+        <result column="batch_id" property="batchId"/>
+        <result column="receive_phone" property="receivePhone"/>
+        <result column="receive_person" property="receivePerson"/>
+        <result column="send_time" property="sendTime"/>
+        <result column="send_type" property="sendType"/>
+        <result column="send_status" property="sendStatus"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        message_content,
+        batch_id,
+        receive_phone,
+        receive_person,
+        send_time,
+        send_type,
+        send_status
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.big.screen.model.MessageRecord">
+        INSERT INTO message_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != messageContent'>
+                message_content,
+            </if>
+            <if test='null != batchId'>
+                batch_id,
+            </if>
+            <if test='null != receivePhone'>
+                receive_phone,
+            </if>
+            <if test='null != receivePerson'>
+                receive_person,
+            </if>
+            <if test='null != sendTime'>
+                send_time,
+            </if>
+            <if test='null != sendType'>
+                send_type,
+            </if>
+            <if test='null != sendStatus'>
+                send_status
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != messageContent'>
+                #{messageContent},
+            </if>
+            <if test='null != batchId'>
+                #{batchId},
+            </if>
+            <if test='null != receivePhone'>
+                #{receivePhone},
+            </if>
+            <if test='null != receivePerson'>
+                #{receivePerson},
+            </if>
+            <if test='null != sendTime'>
+                #{sendTime},
+            </if>
+            <if test='null != sendType'>
+                #{sendType},
+            </if>
+            <if test='null != sendStatus'>
+                #{sendStatus}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM message_record
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.big.screen.model.MessageRecord">
+        UPDATE message_record
+        <set>
+            <if test='null != messageContent'>message_content = #{messageContent},</if>
+            <if test='null != batchId'>batch_id = #{batchId},</if>
+            <if test='null != receivePhone'>receive_phone = #{receivePhone},</if>
+            <if test='null != receivePerson'>receive_person = #{receivePerson},</if>
+            <if test='null != sendTime'>send_time = #{sendTime},</if>
+            <if test='null != sendType'>send_type = #{sendType},</if>
+            <if test='null != sendStatus'>send_status = #{sendStatus}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM message_record
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM message_record
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM message_record
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM message_record
+        <where>
+            <if test="content != null and content != ''">
+                AND message_content LIKE CONCAT('%',#{content},'%')
+            </if>
+            <if test="sendType != null and sendType != ''">
+                AND send_type = #{sendType}
+            </if>
+            <if test="sendStatus != null and sendStatus != ''">
+                AND send_status = #{sendStatus}
+            </if>
+            <if test="start != null and end != null">
+                AND send_time between #{start} AND {end}
+            </if>
+        </where>
+    </select>
+
+    <insert id="batchInsert">
+        INSERT INTO message_record
+        (message_content,batch_id,receive_phone,receive_person,send_time,send_type,send_status)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.messageContent},#{item.batchId},#{item.receivePhone},#{item.receivePerson},#{item.sendTime},#{item.sendType},#{item.sendStatus})
+        </foreach>
+    </insert>
+
+</mapper>

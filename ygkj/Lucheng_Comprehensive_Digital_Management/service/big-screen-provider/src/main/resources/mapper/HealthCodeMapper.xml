@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.HealthCodeMapper">
+
+    <insert id="saveWeight" parameterType="com.ygkj.big.screen.model.HealthCodeWeight">
+        REPLACE INTO health_code_weight
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.prcd},#{item.parentId},#{item.category},#{item.score},#{item.sort})
+        </foreach>
+    </insert>
+
+    <insert id="saveColor" parameterType="com.ygkj.big.screen.model.HealthCodeColor">
+        REPLACE INTO health_code_color
+        VALUE
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.prcd},#{item.category},#{item.minVal},#{item.maxVal})
+        </foreach>
+    </insert>
+
+    <select id="listHealthCodeWeight" resultType="com.ygkj.big.screen.model.HealthCodeWeight">
+        SELECT id,prcd,parent_id,category,score,sort FROM health_code_weight WHERE prcd = #{seawallCode} ORDER BY parent_id,sort
+    </select>
+
+    <select id="listSubWeight" resultType="com.ygkj.big.screen.model.HealthCodeWeight">
+        SELECT id,prcd,parent_id,category,score FROM health_code_weight WHERE parent_id = #{parentId}
+    </select>
+
+    <select id="listColor" resultType="com.ygkj.big.screen.model.HealthCodeColor">
+        SELECT id,prcd,category,min_val,max_val FROM health_code_color WHERE prcd = #{prcd}
+    </select>
+
+
+</mapper>

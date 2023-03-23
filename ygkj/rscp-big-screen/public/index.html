@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" href="./waterIcon.png">
+    <title>工程运管</title>
+    <script>
+     
+      !(function (c, i, e, b) {
+        if (window.location.hostname != "sk.zjwater.com") return;
+        var h = i.createElement("script");
+        var f = i.getElementsByTagName("script")[0];
+        h.type = "text/javascript";
+        h.crossorigin = true;
+        h.onload = function () {
+          try {
+            c[b] || (c[b] = new c.wpkReporter({
+              bid: '33-yg-gcyg-5pwnkvyy',
+              spa: true,
+              uid: JSON.parse(localStorage.getItem('userInfo_obj')).id || 'no userId',
+              rel: 'v1.0.0',
+              plugins: []
+            }));
+            c[b].installAll();
+          } catch (e) {
+            console.error('init wpkReporter fail', e);
+          }
+        };
+        f.parentNode.insertBefore(h, f);
+        h.src = e
+      })(window, document, "https://g.alicdn.com/woodpeckerx/jssdk??wpkReporter.js", "__wpk");
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but 工程运管 doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <script src="./unicomLive.min.js"></script>
+  </body>
+</html>
+<script>
+  if (window.location.hostname == "sk.zjwater.com") {
+    window.__wpk.setConfig({ uid: JSON.parse(localStorage.getItem('userInfo_obj')).id }) // 设置uid
+  };
+</script>

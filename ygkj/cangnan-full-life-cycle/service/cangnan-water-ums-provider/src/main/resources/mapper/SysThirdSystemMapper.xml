@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.mapper.SysThirdPartySystemMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.auth.api.thirdPartSystem.model.SysThirdPartySystem" >
+        <result column="id" property="id" />
+        <result column="system_name" property="systemName" />
+        <result column="url" property="url" />
+        <result column="deleted" property="deleted" />
+        <result column="create_id" property="createId" />
+        <result column="update_id" property="updateId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                system_name,
+                url,
+                deleted,
+                create_id,
+                update_id,
+                create_time,
+                update_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.auth.api.thirdPartSystem.model.SysThirdPartySystem">
+        INSERT INTO sys_third_party_system
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != systemName'>
+                system_name,
+            </if>
+            <if test ='null != url'>
+                url,
+            </if>
+            <if test ='null != deleted'>
+                deleted,
+            </if>
+            <if test ='null != createId'>
+                create_id,
+            </if>
+            <if test ='null != updateId'>
+                update_id,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != updateTime'>
+                update_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != systemName'>
+                #{systemName},
+            </if>
+            <if test ='null != url'>
+                #{url},
+            </if>
+            <if test ='null != deleted'>
+                #{deleted},
+            </if>
+            <if test ='null != createId'>
+                #{createId},
+            </if>
+            <if test ='null != updateId'>
+                #{updateId},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        <!--DELETE FROM sys_third_party_system-->
+            UPDATE sys_third_party_system SET deleted = 1
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.auth.api.thirdPartSystem.model.SysThirdPartySystem">
+        UPDATE sys_third_party_system
+        <set>
+            <if test ='null != systemName'>system_name = #{systemName},</if>
+            <if test ='null != url'>url = #{url},</if>
+            <if test ='null != deleted'>deleted = #{deleted},</if>
+            <if test ='null != createId'>create_id = #{createId},</if>
+            <if test ='null != updateId'>update_id = #{updateId},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_third_party_system
+        WHERE id = #{id} AND deleted = 0
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_third_party_system WHERE deleted = 0
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM sys_third_party_system
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_third_party_system WHERE deleted = 0
+        <if test="systemName != null and systemName != ''">
+            AND system_name = #{systemName}
+        </if>
+    </select>
+
+</mapper>

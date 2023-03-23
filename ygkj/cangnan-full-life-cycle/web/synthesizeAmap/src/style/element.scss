@@ -1,0 +1,43 @@
+@import "../style/theme.scss";
+
+.plTableBox .el-table__fixed-right::before,
+.plTableBox .el-table__fixed::before {
+  background: rgba(0, 0, 0, 0);
+}
+.plTableBox .el-table--border::after,
+.plTableBox .el-table--group::after,
+.plTableBox .el-table::before {
+  background: rgba(0, 0, 0, 0);
+}
+.plTableBox .el-table--striped .el-table__body tr.el-table__row--striped td{
+  background: rgba(0, 0, 0, 0.2);
+}
+.plTableBox .el-table--striped .el-table__body tr.el-table__row--striped.current-row td,
+.plTableBox .el-table__body tr.current-row>td{
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.plTableBox {
+  .el-table {
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0);
+    border: 0;
+    tr {
+      background: rgba(0, 0, 0, 0);
+      th {
+        background: rgba(0, 0, 0, 0);
+        border: 0;
+      }
+      td {
+        background: rgba(0, 0, 0, 0);
+        border: 0;
+        padding:0;
+      }
+      &.hover-row {
+        td {
+          background: rgba(0, 0, 0, 0);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.RiskDetailsHighriskMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.RiskDetailsHighrisk">
+        <result column="id" property="id"/>
+        <result column="sb_id" property="sbId"/>
+        <result column="proj_name" property="projName"/>
+        <result column="proj_type" property="projType"/>
+        <result column="property" property="property"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="address" property="address"/>
+        <result column="report_person" property="reportPerson"/>
+        <result column="check_person" property="checkPerson"/>
+        <result column="report_time" property="reportTime"/>
+        <result column="sb_sign" property="sbSign"/>
+        <result column="color_grade" property="colorGrade"/>
+        <result column="danger_des" property="dangerDes"/>
+        <result column="risk_plan" property="riskPlan"/>
+        <result column="duty_unit" property="dutyUnit"/>
+        <result column="duty_person" property="dutyPerson"/>
+        <result column="duty_phone" property="dutyPhone"/>
+        <result column="file_info_list_sb" property="fileInfoListSb"/>
+        <result column="cancel_pic_text" property="cancelPicText"/>
+        <result column="rec_complete_date" property="recCompleteDate"/>
+        <result column="rec_complete_describe" property="recCompleteDescribe"/>
+        <result column="rec_complete_file" property="recCompleteFile"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        sb_id,
+        proj_name,
+        proj_type,
+        property,
+        city,
+        county,
+        address,
+        report_person,
+        check_person,
+        report_time,
+        sb_sign,
+        color_grade,
+        danger_des,
+        risk_plan,
+        duty_unit,
+        duty_person,
+        duty_phone,
+        file_info_list_sb,
+        cancel_pic_text,
+        rec_complete_date,
+        rec_complete_describe,
+        rec_complete_file
+    </sql>
+
+    <select id="findDetailsHighriskBySbId"
+            resultType="com.ygkj.big.screen.vo.response.RiskDetailsHighriskResp">
+        SELECT rdh.*,brl.lng,brl.lat,brl.river_basin riverBasin,concat_ws('-',rdh.city,rdh.county)
+        adminDivision,brl.rec_condition recCondition
+        from risk_details_highrisk rdh
+        LEFT JOIN bus_risk_list brl ON rdh.sb_id = brl.sb_id where rdh.sb_id = #{sbId}
+    </select>
+
+    <select id="cancellationHiddenDangerStatic" resultType="com.ygkj.big.screen.vo.response.RiskHiddenDangerStaticResp">
+        SELECT brl.rec_condition reccondition,COUNT(rdh.sb_sign) num FROM `risk_details_highrisk` rdh
+        LEFT JOIN bus_risk_list brl ON rdh.sb_id = brl.sb_id where rdh.sb_sign = "253" GROUP BY brl.rec_condition
+    </select>
+</mapper>

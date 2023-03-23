@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.WaterAndRainMapper">
+
+    <select id="candidateRainfall" resultType="com.ygkj.gragh.model.StPptnR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, drp FROM ${table}
+        WHERE mgstcd IN
+        <foreach collection="codes" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00')
+        ORDER BY tm DESC LIMIT 20 ) a
+        GROUP BY a.stcd
+    </select>
+
+    <select id="candidateReservoirWaterLevel" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT a.* FROM
+        (SELECT trim(mgstcd) mgstcd, trim(stcd) stcd, tm, rz FROM ${table}
+        WHERE mgstcd IN
+        <foreach collection="codes" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC) a
+        GROUP BY a.mgstcd
+        <if test="limit !=null ">
+            LIMIT #{limit}
+        </if>
+    </select>
+
+    <select id="candidateReservoirWaterLevelWithTime" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT a.* FROM
+        (SELECT trim(mgstcd) mgstcd, trim(stcd) stcd, tm, rz FROM ${table}
+        WHERE mgstcd IN
+        <foreach collection="codes" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        AND tm between DATE_SUB(#{tm},INTERVAL 1 DAY) AND DATE_ADD(#{tm},INTERVAL 1 DAY)
+        ORDER BY ABS(timestampdiff(second ,tm, #{tm})) asc) a
+        GROUP BY a.mgstcd
+        <if test="limit !=null ">
+            LIMIT #{limit}
+        </if>
+    </select>
+
+    <select id="candidateYjReservoirWaterLevelWithTime" resultType="com.ygkj.gragh.model.StRsvrR">
+        SELECT a.* FROM
+        (SELECT mgstcd,tm, rz FROM st_rsvr_r_yongjia
+        <where>
+            <choose>
+                <when test="dataTime!=null">
+                    AND tm between DATE_SUB(#{dataTime},INTERVAL 2 DAY)  AND  DATE_ADD(#{dataTime},INTERVAL 2 DAY)
+                    ORDER BY ABS(timestampdiff(second ,tm, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+
+
+    <select id="candidateRsvrWaterLevelWithTimeInternal" resultType="com.ygkj.gragh.model.StRsvrR">
+        <foreach collection="tables" item="table" separator="UNION ALL">
+            (SELECT mgstcd,stcd, tm, rz FROM ${table}
+            WHERE
+            tm BETWEEN #{start} and #{end}
+            <if test="codes!=null and codes.size!=0">
+                and mgstcd in
+                <foreach collection="codes" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
+        </foreach>
+    </select>
+
+    <select id="candidateRiverWaterLevel" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, z FROM ${table}
+        WHERE mgstcd IN
+        <foreach collection="codes" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC) a
+        GROUP BY a.mgstcd
+        <if test="limit !=null ">
+            LIMIT #{limit}
+        </if>
+    </select>
+
+    <select id="candidateRiverWaterLevelWithTime" resultType="com.ygkj.gragh.model.StRiverR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm, z FROM ${table}
+        WHERE mgstcd IN
+        <foreach collection="codes" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        AND tm between DATE_SUB(#{tm},INTERVAL 1 DAY) AND DATE_ADD(#{tm},INTERVAL 1 DAY)
+        ORDER BY ABS(timestampdiff(second ,tm, #{tm})) asc) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="candidateTide" resultType="com.ygkj.gragh.model.StTideR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,TDZ FROM ${table}
+        WHERE MGSTCD IN
+        <foreach collection="codes" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        AND TM >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY TM DESC LIMIT 10000 ) a
+        GROUP BY a.STCD
+    </select>
+
+    <select id="candidateTideWithTime" resultType="com.ygkj.gragh.model.StTideR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,TDZ FROM ${table}
+        WHERE MGSTCD IN
+        <foreach collection="codes" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        AND tm between DATE_SUB(#{tm},INTERVAL 1 DAY) AND DATE_ADD(#{tm},INTERVAL 1 DAY)
+        ORDER BY ABS(timestampdiff(second ,tm, #{tm})) asc) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="candidateSluiceWaterLevel" resultType="com.ygkj.gragh.model.StWasR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm,UPZ,DWZ,MXGTQ,OVS,LL FROM ${table}
+        WHERE MGSTCD IN
+        <foreach collection="codes" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 10000 ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="candidateSluiceWaterLevelWithTime" resultType="com.ygkj.gragh.model.StWasR">
+        SELECT a.* FROM
+        (SELECT mgstcd,stcd, tm,UPZ,DWZ,MXGTQ,OVS,LL FROM ${table}
+        <where>
+            <if test="codes!=null and codes.size!=0">
+                and mgstcd IN
+                <foreach collection="codes" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="tm!=null">
+                    AND tm between DATE_SUB(#{tm},INTERVAL #{hours} HOUR) AND DATE_ADD(#{tm},INTERVAL #{hours} HOUR) having 1
+                    ORDER BY ABS(timestampdiff(second ,tm, #{tm})) asc
+                </when>
+                <otherwise>
+                    AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL #{hours} HOUR),'%Y-%m-%d 00:00:00') having 1 ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+
+    <select id="candidateSluiceWaterLevelWithTimeInternal" resultType="com.ygkj.gragh.model.StWasR">
+        <foreach collection="tables" item="table" separator="UNION ALL">
+            (SELECT mgstcd,stcd, tm,UPZ,DWZ,MXGTQ,OVS,LL FROM ${table}
+            WHERE
+            tm BETWEEN #{start} and #{end}
+            <if test="codes!=null and codes.size!=0">
+                and mgstcd in
+                <foreach collection="codes" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
+        </foreach>
+    </select>
+
+    <select id="candidateWaterQuality" resultType="com.ygkj.gragh.vo.response.BswqResVo">
+        SELECT a.* FROM
+        (
+        SELECT * FROM st_bswq_r WHERE `code` IN
+        <foreach collection="codes" open="(" item="item" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY time desc
+        ) a
+        GROUP BY `code` HAVING 1
+    </select>
+
+    <select id="selectNewestRsvrFloodPredict" resultType="com.ygkj.project.model.RsvrFloodPredict">
+        SELECT a.* FROM
+        (SELECT * FROM rsvr_flood_predict
+        <where>
+            <if test="resCodes!=null and resCodes.size!=0">
+                and res_code IN
+                <foreach collection="resCodes" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="true">
+                AND forecast_time >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d 00:00:00') ORDER BY forecast_time DESC
+            </if>
+        </where>
+        ) a
+        GROUP BY a.res_code
+    </select>
+
+    <select id="selectNewestRsvrReportFlood" resultType="com.ygkj.project.model.RsvrReportFlood">
+        SELECT a.* FROM
+        (SELECT * FROM rsvr_report_flood
+        <where>
+            <if test="resCodes!=null and resCodes.size!=0">
+                and res_code IN
+                <foreach collection="resCodes" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="true">
+                AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 2 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+            </if>
+        </where>
+        ) a
+        GROUP BY a.res_code
+    </select>
+
+
+    <select id="selectPustByTimeCode" resultType="com.ygkj.gragh.model.StPustR">
+        SELECT a.* FROM
+        (SELECT MGSTCD,STCD, TM,num_1,num_2,num_3,num_4,num_5,jsk_z,jsc_z,csc_z FROM st_pust_r
+        <where>
+            <if test="stcds!=null and stcds.size!=0">
+                and mgstcd IN
+                <foreach collection="stcds" open="(" item="item" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <choose>
+                <when test="dataTime!=null">
+                    AND TM between DATE_SUB(#{dataTime},INTERVAL 1 DAY)  AND  DATE_ADD(#{dataTime},INTERVAL 1 DAY)
+                    ORDER BY ABS(timestampdiff(second ,YMDH, #{dataTime})) asc
+                </when>
+                <otherwise>
+                    AND TM >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 YEAR),'%Y-%m-%d 00:00:00') ORDER BY tm DESC
+                </otherwise>
+            </choose>
+        </where>
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+
+</mapper>

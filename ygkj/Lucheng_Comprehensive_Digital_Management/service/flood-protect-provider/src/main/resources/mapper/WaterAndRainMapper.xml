@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.flood.mapper.WaterAndRainMapper">
+
+    <select id="selectNewestRsvrWaterLevel" resultType="com.ygkj.flood.model.StRsvrR">
+        SELECT a.* FROM
+        (select * from (
+        <foreach collection="tables" item="table" separator="UNION ALL">
+            (SELECT stcd, tm, rz FROM ${table}
+            WHERE
+            tm BETWEEN DATE_ADD(now(),INTERVAL -1 hour) and now()
+            <if test="stcds!=null and stcds.size!=0">
+                and stcd in
+                <foreach collection="stcds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
+        </foreach>
+        ) as b HAVING 1 ORDER BY b.tm DESC ) as a GROUP BY a.stcd
+    </select>
+
+
+    <select id="selectNewestRiverLevel" resultType="com.ygkj.flood.model.StRiverR">
+        SELECT a.* FROM
+        (select * from (
+        <foreach collection="tables" item="table" separator="UNION ALL">
+            (SELECT stcd, tm, z FROM ${table}
+            WHERE
+            tm BETWEEN DATE_ADD(now(),INTERVAL -1 hour) and now()
+            <if test="stcds!=null and stcds.size!=0">
+                and stcd in
+                <foreach collection="stcds" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+            )
+        </foreach>
+        ) as b HAVING 1 ORDER BY b.tm DESC ) as a GROUP BY a.stcd
+    </select>
+
+    <select id="selectNewestLargeMidReservoirWaterLevel" resultType="com.ygkj.flood.model.StRsvrR">
+        SELECT a.* FROM
+        (SELECT mgstcd, tm, rz FROM ${table}
+        WHERE
+        mgstcd IN (
+        <foreach collection="stcds" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+        AND
+        tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 10000
+        ) a
+        GROUP BY a.mgstcd
+    </select>
+
+    <select id="selectNewestWagaWaterLevel" resultType="com.ygkj.flood.model.StWasR">
+        SELECT a.* FROM
+        (SELECT stcd, tm,UPZ,DWZ,MXGTQ,OVS FROM ${table}
+        WHERE
+        mgstcd IN (
+        <foreach collection="stcds" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+        AND tm >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y-%m-%d 00:00:00') ORDER BY tm DESC LIMIT 10000 ) a
+        GROUP BY a.stcd
+    </select>
+
+    <select id="findLargeAndMidReservoirStation" resultType="com.ygkj.flood.model.StBase">
+        SELECT a.st_code,a.st_name,a.st_type,a.proj_code,a.st_long,a.st_lat,b.res_name,b.mei_flood_limit_water_level
+        FROM att_st_base a
+        LEFT JOIN att_res_base b ON a.proj_code = b.res_code
+        WHERE a.res_grade = '大中型水库'
+        <if test="basin!=null and basin!=''">
+            AND b.bas=#{basin}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcy.datamanage.biz.mapper.DataResourceMapper">
+
+
+    <select id="list" resultType="com.dcy.datamanage.biz.dto.output.BusDataResourceOutputDTO" parameterType="com.dcy.datamanage.biz.dto.input.BusDataResourceSearchInputDTO">
+        SELECT
+            *
+        FROM
+            bus_data_resource
+        WHERE
+            del_flag = 0
+            <if test="!tree">
+                <choose>
+                    <when test="parentId != null and parentId != ''">
+                        AND parent_id = #{parentId}
+                    </when>
+                    <otherwise>
+                        AND parent_id IN NULL
+                    </otherwise>
+                </choose>
+            </if>
+    </select>
+</mapper>

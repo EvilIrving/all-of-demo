@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.RiverProblemMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.RiverProblem">
+        <result column="id" property="id"/>
+        <result column="label" property="label"/>
+        <result column="content" property="content"/>
+        <result column="problem_type" property="problemType"/>
+        <result column="river_name" property="riverName"/>
+        <result column="level" property="level"/>
+        <result column="real_name" property="realName"/>
+        <result column="area_path" property="areaPath"/>
+        <result column="state" property="state"/>
+        <result column="create_date" property="createDate"/>
+        <result column="deadline" property="deadline"/>
+        <result column="address" property="address"/>
+        <result column="location" property="location"/>
+        <result column="pic_path" property="picPath"/>
+        <result column="area_code" property="areaCode"/>
+        <result column="area_name" property="areaName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        label,
+        content,
+        problem_type,
+        river_name,
+        level,
+        real_name,
+        area_path,
+        state,
+        create_date,
+        deadline,
+        address,
+        location,
+        pic_path,
+        area_code,
+        area_name
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.RiverProblem">
+        INSERT INTO river_problem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != label'>
+                label,
+            </if>
+            <if test='null != content'>
+                content,
+            </if>
+            <if test='null != problemType'>
+                problem_type,
+            </if>
+            <if test='null != riverName'>
+                river_name,
+            </if>
+            <if test='null != level'>
+                level,
+            </if>
+            <if test='null != realName'>
+                real_name,
+            </if>
+            <if test='null != areaPath'>
+                area_path,
+            </if>
+            <if test='null != state'>
+                state,
+            </if>
+            <if test='null != createDate'>
+                create_date,
+            </if>
+            <if test='null != deadline'>
+                deadline,
+            </if>
+            <if test='null != address'>
+                address,
+            </if>
+            <if test='null != location'>
+                location,
+            </if>
+            <if test='null != picPath'>
+                pic_path,
+            </if>
+            <if test='null != areaCode'>
+                area_code,
+            </if>
+            <if test='null != areaName'>
+                area_name
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != label'>
+                #{label},
+            </if>
+            <if test='null != content'>
+                #{content},
+            </if>
+            <if test='null != problemType'>
+                #{problemType},
+            </if>
+            <if test='null != riverName'>
+                #{riverName},
+            </if>
+            <if test='null != level'>
+                #{level},
+            </if>
+            <if test='null != realName'>
+                #{realName},
+            </if>
+            <if test='null != areaPath'>
+                #{areaPath},
+            </if>
+            <if test='null != state'>
+                #{state},
+            </if>
+            <if test='null != createDate'>
+                #{createDate},
+            </if>
+            <if test='null != deadline'>
+                #{deadline},
+            </if>
+            <if test='null != address'>
+                #{address},
+            </if>
+            <if test='null != location'>
+                #{location},
+            </if>
+            <if test='null != picPath'>
+                #{picPath},
+            </if>
+            <if test='null != areaCode'>
+                #{areaCode},
+            </if>
+            <if test='null != areaName'>
+                #{areaName}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM river_problem
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.RiverProblem">
+        UPDATE river_problem
+        <set>
+            <if test='null != label'>label = #{label},</if>
+            <if test='null != content'>content = #{content},</if>
+            <if test='null != problemType'>problem_type = #{problemType},</if>
+            <if test='null != riverName'>river_name = #{riverName},</if>
+            <if test='null != level'>level = #{level},</if>
+            <if test='null != realName'>real_name = #{realName},</if>
+            <if test='null != areaPath'>area_path = #{areaPath},</if>
+            <if test='null != state'>state = #{state},</if>
+            <if test='null != createDate'>create_date = #{createDate},</if>
+            <if test='null != deadline'>deadline = #{deadline},</if>
+            <if test='null != address'>address = #{address},</if>
+            <if test='null != location'>location = #{location},</if>
+            <if test='null != picPath'>pic_path = #{picPath},</if>
+            <if test='null != areaCode'>area_code = #{areaCode},</if>
+            <if test='null != areaName'>area_name = #{areaName}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_problem
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_problem
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM river_problem
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM river_problem
+        <where>
+            <if test="level!=null">
+                and level=#{level}
+            </if>
+            <if test="state!=null">
+                and state=#{state}
+            </if>
+            <if test="areaCode!=null and areaCode!=''">
+                and area_code=#{areaCode}
+            </if>
+            <if test="endTime!=null and startTime!=null">
+                and create_date between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="countByLevelWithCondition" resultType="com.ygkj.entity.SingletonMap">
+        select concat(level,'') as `key` ,count(1) as value
+        from river_problem
+        <where>
+            <if test="level!=null">
+                and level=#{level}
+            </if>
+            <if test="state!=null">
+                and state=#{state}
+            </if>
+            <if test="areaCode!=null and areaCode!=''">
+                and area_code=#{areaCode}
+            </if>
+            <if test="endTime!=null and startTime!=null">
+                and create_date between #{startTime} and #{endTime}
+            </if>
+        </where>
+        group by level
+    </select>
+
+    <select id="totalNum" resultType="java.lang.Long">
+        select count(1)
+        from river_problem
+        <where>
+            <if test="level!=null">
+                and level=#{level}
+            </if>
+            <if test="state!=null">
+                and state=#{state}
+            </if>
+            <if test="areaCode!=null and areaCode!=''">
+                and area_code=#{areaCode}
+            </if>
+            <if test="endTime!=null and startTime!=null">
+                and create_date between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

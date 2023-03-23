@@ -1,0 +1,210 @@
+$sidebarHeight: 650px;
+$tdHeight: 37px;
+
+.left-sidebar-style {
+    position: absolute;
+    padding-left: 20px;
+    top: 15%;
+    height: 80%;
+    .bg-image {
+        height: 80%;
+        padding: 16px;
+        background: url(~assets/images/WaterDisastersImage/bg-image.png) no-repeat no-repeat;
+        background-size: 100% 100%;
+        .title-bg {
+            @include flexbox;
+            @include flexflow(row, nowrap);
+            @include flexJC(space-between);
+            color: #00C1FF;
+            padding-left: 45px;
+            width: 100%;
+            height: 30px;
+            font-size: 16px;
+            line-height: 30px;
+            background: url(~assets/images/WaterDisastersImage/title-bg.png) no-repeat no-repeat;
+            background-size: 100% 100%;
+            .title-left {
+                @include flexbox;
+                @include flexAC;
+                font-size: 16px;
+                color:#00C1FF;
+                font-weight: 600;
+                padding-left: 15px;
+                i {
+                    margin-right: 6px;
+                }
+            }
+        }
+    }
+    .btn-bg-image {
+        position: absolute;
+        top: 360px;
+        height: 30px;
+        padding: 30px 20px;
+        background: url(~assets/images/WaterDisastersImage/btn-bg-image.png) no-repeat no-repeat;
+        background-size: 100% 100%;
+    }
+    .btn-bg-image1 {
+        background: url(~assets/images/WaterDisastersImage/btn-bg-image1.png) no-repeat no-repeat;
+        background-size: 100% 100%;
+    }
+    .sidebar-list {
+        margin-top: 10px;
+        width: 100%;
+        ::v-deep.el-table__body-wrapper::-webkit-scrollbar {
+            width: 0px;
+        }
+        ::v-deep .el-table__body-wrapper::-webkit-scrollbar {
+            height: 6px; // 纵向滚动条 必写
+        }
+        // 滚动条的滑块
+        ::v-deep .el-table__body-wrapper::-webkit-scrollbar-thumb {
+            background-color: #3a89eaa6;
+            border-radius: 3px;
+        }
+        ::v-deep.sidebar-list .el-table .cell {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        ::v-deep .el-table {
+            .cell {
+                height: $tdHeight;
+                line-height: $tdHeight;
+            }
+            .el-checkbox__inner {
+                border: 0.0625rem solid #00C1FF;
+                background-color: #00C1FF;
+                // opacity: 0;
+                background: rgba($color: #000000, $alpha: 0);
+            }
+            .el-table__body tr.current-row>td {
+                background-color: rgba(41,147,180,0.3);
+            }
+            th,
+            td {
+                padding: 0;
+                font-size: 14px;
+                color: #fff;
+            }
+            th {
+                padding: 3px 0;
+                font-size: 14px;
+                background-color: rgba(41,147,180,0.10);
+                font-weight: bold;
+                color: #00C1FF;
+            }
+        }
+    }
+    .fade-enter, .fade-leave-to {
+		transform: translateX(-100%);
+	}
+	.fade-enter-active, .fade-leave-active {
+		transition: all 0.5s linear;
+	}
+}
+// 右侧边栏
+.right-sidebar-style {
+    position: absolute;
+    top: 15%;
+    // width: 100%;
+    // left: 65%;
+    right: -10px;
+    height:  80%;
+    .bg-image {
+        height: 80%;
+        padding: 16px;
+        background: url(~assets/images/WaterDisastersImage/bg-image.png) no-repeat no-repeat;
+        background-size: 100% 100%;
+        .title-bg {
+            @include flexbox;
+            @include flexflow(row, nowrap);
+            @include flexJC(space-between);
+            color: #00C1FF;
+            padding-left: 45px;
+            width: 100%;
+            height: 30px;
+            font-size: 16px;
+            line-height: 30px;
+            background: url(~assets/images/WaterDisastersImage/title-bg.png) no-repeat no-repeat;
+            background-size: 100% 100%;
+            .title-left {
+                @include flexbox;
+                @include flexAC;
+                font-size: 16px;
+                color:#00C1FF;
+                font-weight: 600;
+                padding-left: 15px;
+                i {
+                    margin-right: 6px;
+                }
+            }
+        }
+    }
+    .right-btn-image {
+        position: absolute;
+        margin-top: 360px;
+        right: 500px;
+        height: 30px;
+        padding: 30px 20px;
+        background: url(~assets/images/WaterDisastersImage/right-btn-image.png) no-repeat no-repeat;
+        background-size: 100% 100%;
+    }
+    .right-btn-image1 {
+        background: url(~assets/images/WaterDisastersImage/right-btn-image1.png) no-repeat no-repeat;
+        background-size: 100% 100%;
+    }
+    .sidebar-list {
+        margin-top: 10px;
+        width: 100%;
+        ::v-deep.el-table__body-wrapper::-webkit-scrollbar {
+            width: 0px;
+        }
+        ::v-deep .el-table__body-wrapper::-webkit-scrollbar {
+            height: 6px; // 纵向滚动条 必写
+        }
+        // 滚动条的滑块
+        ::v-deep .el-table__body-wrapper::-webkit-scrollbar-thumb {
+            background-color: #3a89eaa6;
+            border-radius: 3px;
+        }
+        ::v-deep.sidebar-list .el-table .cell {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        ::v-deep .el-table {
+            .cell {
+                height: $tdHeight;
+                line-height: $tdHeight;
+                
+            }
+            .el-checkbox__inner {
+                border: 0.0625rem solid #00C1FF;
+                background-color: #00C1FF;
+                // opacity: 0;
+                background: rgba($color: #000000, $alpha: 0);
+            }
+            .el-table__body tr.current-row>td {
+                background-color: rgba(41,147,180,0.3);
+            }
+            th,
+            td {
+                padding: 0;
+                font-size: 14px;
+                color: #fff;
+            }
+            th {
+                padding: 3px 0;
+                font-size: 14px;
+                background-color: rgba(41,147,180,0.10);
+                font-weight: bold;
+                color: #00C1FF;
+            }
+        }
+    }
+    .fade-enter, .fade-leave-to {
+		transform: translateX(-100%);
+	}
+	.fade-enter-active, .fade-leave-active {
+		transition: all 0.5s linear;
+	}
+}

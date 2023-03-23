@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ygkj.water.project.mapper.AssessmentInspectionMapper">
+    <select id="load" parameterType="com.ygkj.project.vo.request.AssessmentInspectionReqVo" resultType="com.ygkj.project.model.AssessmentInspection">
+        select * from (select tbl.*,t1.project_name projectName,t2.company_name responsibleUnitName,t3.username
+        responsiblePeopleName,t4.username createName from assessment_inspection tbl
+        left join att_real_all_project_base t1 on tbl.supervision_project = t1.project_code
+        left join professional_company t2 on tbl.responsible_unit = t2.id
+        left join sys_user t3 on tbl.responsible_people = t3.id
+        left join sys_user t4 on tbl.create_id = t4.id
+        where tbl.del_flag=0
+        <if test="id != null and '' != id">
+            and tbl.id = #{id}
+        </if>
+        <if test="year != null and '' != year">
+            and tbl.year = #{year}
+        </if>
+        <if test="projectName != null and '' != projectName">
+            and t1.project_name like concat('%',#{projectName},'%')
+        </if>
+        <if test="currentUserId != null and '' != currentUserId">
+            and tbl.create_id = #{currentUserId}
+        </if>
+        <if test="archivingStatus != null and '' != archivingStatus">
+            and tbl.archiving_status = #{archivingStatus}
+        </if>
+        <if test="handlingStatus != null and '' != handlingStatus">
+            and tbl.handling_status = #{handlingStatus}
+        </if>
+        <if test="supervisionStatus != null and '' != supervisionStatus">
+            and tbl.supervision_status = #{supervisionStatus}
+        </if>
+        <if test="evaluationStatus != null and '' != evaluationStatus">
+            and tbl.evaluation_status = #{evaluationStatus}
+        </if>
+        union
+        select tbl.*,t1.project_name projectName,t2.company_name responsibleUnitName,t3.username
+        responsiblePeopleName,t4.username createName from assessment_inspection tbl
+        left join att_real_all_project_base t1 on tbl.supervision_project = t1.project_code
+        left join professional_company t2 on tbl.responsible_unit = t2.id
+        left join sys_user t3 on tbl.responsible_people = t3.id
+        left join sys_user t4 on tbl.create_id = t4.id
+        where tbl.del_flag=0
+        <if test="id != null and '' != id">
+            and tbl.id = #{id}
+        </if>
+        <if test="year != null and '' != year">
+            and tbl.year = #{year}
+        </if>
+        <if test="projectName != null and '' != projectName">
+            and t1.project_name like concat('%',#{projectName},'%')
+        </if>
+        <if test="currentUserId != null and '' != currentUserId">
+            and tbl.responsible_people = #{currentUserId}
+        </if>
+        <if test="archivingStatus != null and '' != archivingStatus">
+            and tbl.archiving_status = #{archivingStatus}
+        </if>
+        <if test="handlingStatus != null and '' != handlingStatus">
+            and tbl.handling_status = #{handlingStatus}
+        </if>
+        <if test="supervisionStatus != null and '' != supervisionStatus">
+            and tbl.supervision_status = #{supervisionStatus}
+        </if>
+        <if test="evaluationStatus != null and '' != evaluationStatus">
+            and tbl.evaluation_status = #{evaluationStatus}
+        </if>
+        ) t
+        order by t.create_time
+    </select>
+
+    <select id="load1" parameterType="com.ygkj.project.vo.request.AssessmentInspectionReqVo" resultType="com.ygkj.project.model.AssessmentInspection">
+        select tbl.*,t1.project_name projectName,t2.company_name responsibleUnitName,t3.username responsiblePeopleName,t4.username createName from assessment_inspection tbl
+        left join att_real_all_project_base t1 on tbl.supervision_project = t1.project_code
+        left join professional_company t2 on tbl.responsible_unit = t2.id
+        left join sys_user t3 on tbl.responsible_people = t3.id
+        left join sys_user t4 on tbl.create_id = t4.id
+        where tbl.del_flag=0
+        <if test="id != null and '' != id">
+            and tbl.id = #{id}
+        </if>
+        <if test="year != null and '' != year">
+            and tbl.year = #{year}
+        </if>
+        <if test="projectName != null and '' != projectName">
+            and t1.project_name like concat('%',#{projectName},'%')
+        </if>
+        and tbl.create_id =#{currentUserId}
+        order by tbl.create_time
+    </select>
+
+    <select id="load2" parameterType="com.ygkj.project.vo.request.AssessmentInspectionReqVo" resultType="com.ygkj.project.model.AssessmentInspection">
+        select tbl.*,t1.project_name projectName,t2.company_name responsibleUnitName,t3.username responsiblePeopleName,t4.username createName from assessment_inspection tbl
+        left join att_real_all_project_base t1 on tbl.supervision_project = t1.project_code
+        left join professional_company t2 on tbl.responsible_unit = t2.id
+        left join sys_user t3 on tbl.responsible_people = t3.id
+        left join sys_user t4 on tbl.create_id = t4.id
+        where tbl.del_flag=0
+        <if test="id != null and '' != id">
+            and tbl.id = #{id}
+        </if>
+        <if test="year != null and '' != year">
+            and tbl.year = #{year}
+        </if>
+        <if test="projectName != null and '' != projectName">
+            and t1.project_name like concat('%',#{projectName},'%')
+        </if>
+        and tbl.responsible_people =#{currentUserId}
+        order by tbl.create_time
+    </select>
+</mapper>

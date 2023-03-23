@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.WarnUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.WarnUser" >
+        <result column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="phone" property="phone" />
+        <result column="duty" property="duty" />
+        <result column="dept_id" property="deptId" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        user_name,
+        phone,
+        duty,
+        dept_id,
+        del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.WarnUser">
+        INSERT INTO warn_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != userName'>
+                user_name,
+            </if>
+            <if test ='null != phone'>
+                phone,
+            </if>
+            <if test ='null != duty'>
+                duty,
+            </if>
+            <if test ='null != deptId'>
+                dept_id,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != userName'>
+                #{userName},
+            </if>
+            <if test ='null != phone'>
+                #{phone},
+            </if>
+            <if test ='null != duty'>
+                #{duty},
+            </if>
+            <if test ='null != deptId'>
+                #{deptId},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="batchInsert">
+        INSERT INTO warn_user
+        (id,user_name,phone,duty,dept_id)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.userName},#{item.phone},#{item.duty},#{item.deptId})
+        </foreach>
+    </insert>
+
+    <delete id="delete" >
+        update warn_user set del_flag = 1 WHERE id = #{id}
+    </delete>
+
+    <select id="loadPage" resultType="com.ygkj.digitization.vo.response.WarnUserRespVo">
+        SELECT tbl.* FROM `warn_user` tbl LEFT JOIN warn_dept tb2 ON tb2.id = tbl.dept_id where tbl.del_flag = 0 AND tb2.del_flag = 0
+        <if test ='null != userName and "" != userName'>
+            and tbl.user_name like CONCAT('%',#{userName},'%')
+        </if>
+        <if test ='null != deptId and "" != deptId'>
+            and tbl.dept_id = #{deptId}
+        </if>
+    </select>
+
+    <select id="findUserList" resultType="com.ygkj.digitization.vo.response.WarnUserRespVo">
+        select * from warn_user where del_flag = 0 and FIND_IN_SET(id,#{peopleIds})
+    </select>
+
+    <select id="countPeopleNum" resultType="java.lang.Integer">
+        SELECT COUNT(1) peopleNum FROM warn_user tbl WHERE tbl.del_flag = 0 AND FIND_IN_SET(tbl.id,#{peopleIds})
+    </select>
+
+    <select id="findWenZhouWaterUser" resultType="com.ygkj.project.model.SysUser">
+        SELECT * FROM `sys_user` WHERE `deleted` = '1' and phone = #{phone}
+    </select>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.WarnUser">
+        UPDATE warn_user
+        <set>
+            <if test ='null != userName'>user_name = #{userName},</if>
+            <if test ='null != phone'>phone = #{phone},</if>
+            <if test ='null != duty'>duty = #{duty},</if>
+            <if test ='null != deptId'>dept_id = #{deptId},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>

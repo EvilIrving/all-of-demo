@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.MonitorInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.MonitorInfo" >
+        <result column="id" property="id" />
+        <result column="monitor_date" property="monitorDate" />
+        <result column="dbld_id" property="dbldId" />
+        <result column="dbld_name" property="dbldName" />
+        <result column="zbry_id" property="zbryId" />
+        <result column="zbry_name" property="zbryName" />
+        <result column="fbry_id" property="fbryId" />
+        <result column="fbry_name" property="fbryName" />
+        <result column="create_time" property="createTime" />
+        <result column="create_id" property="createId" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_id" property="updateId" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                id,
+                monitor_date,
+                dbld_id,
+                dbld_name,
+                zbry_id,
+                zbry_name,
+                fbry_id,
+                fbry_name,
+                create_time,
+                create_id,
+                update_time,
+                update_id,
+                del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.MonitorInfo">
+        INSERT INTO monitor_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != monitorDate'>
+                monitor_date,
+            </if>
+            <if test ='null != dbldId'>
+                dbld_id,
+            </if>
+            <if test ='null != dbldName'>
+                dbld_name,
+            </if>
+            <if test ='null != zbryId'>
+                zbry_id,
+            </if>
+            <if test ='null != zbryName'>
+                zbry_name,
+            </if>
+            <if test ='null != fbryId'>
+                fbry_id,
+            </if>
+            <if test ='null != fbryName'>
+                fbry_name,
+            </if>
+            <if test ='null != createTime'>
+                create_time,
+            </if>
+            <if test ='null != createId'>
+                create_id,
+            </if>
+            <if test ='null != updateTime'>
+                update_time,
+            </if>
+            <if test ='null != updateId'>
+                update_id,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != monitorDate'>
+                #{monitorDate},
+            </if>
+            <if test ='null != dbldId'>
+                #{dbldId},
+            </if>
+            <if test ='null != dbldName'>
+                #{dbldName},
+            </if>
+            <if test ='null != zbryId'>
+                #{zbryId},
+            </if>
+            <if test ='null != zbryName'>
+                #{zbryName},
+            </if>
+            <if test ='null != fbryId'>
+                #{fbryId},
+            </if>
+            <if test ='null != fbryName'>
+                #{fbryName},
+            </if>
+            <if test ='null != createTime'>
+                #{createTime},
+            </if>
+            <if test ='null != createId'>
+                #{createId},
+            </if>
+            <if test ='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test ='null != updateId'>
+                #{updateId},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM monitor_info
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.MonitorInfo">
+        UPDATE monitor_info
+        <set>
+            <if test ='null != monitorDate'>monitor_date = #{monitorDate},</if>
+            <if test ='null != dbldId'>dbld_id = #{dbldId},</if>
+            <if test ='null != dbldName'>dbld_name = #{dbldName},</if>
+            <if test ='null != zbryId'>zbry_id = #{zbryId},</if>
+            <if test ='null != zbryName'>zbry_name = #{zbryName},</if>
+            <if test ='null != fbryId'>fbry_id = #{fbryId},</if>
+            <if test ='null != fbryName'>fbry_name = #{fbryName},</if>
+            <if test ='null != createTime'>create_time = #{createTime},</if>
+            <if test ='null != createId'>create_id = #{createId},</if>
+            <if test ='null != updateTime'>update_time = #{updateTime},</if>
+            <if test ='null != updateId'>update_id = #{updateId},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM monitor_info
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM monitor_info
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM monitor_info
+    </select>
+
+    <select id="selectByMonitorDate" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM monitor_info
+        WHERE  del_flag= 0 and monitor_date = #{monitorDate}
+    </select>
+
+    <select id="selectByMonitorDateStartEnd" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM monitor_info
+        WHERE  del_flag= 0 and monitor_date between #{startDate} and #{endDate}
+    </select>
+
+    <update id="deleteById">
+        update monitor_info set del_flag=1 where id=#{infoId}
+    </update>
+
+    <select id="checkRecordExistByDate" resultType="integer">
+        select 1 from monitor_info WHERE  del_flag= 0 and monitor_date = #{monitorDate}
+    </select>
+
+</mapper>

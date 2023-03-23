@@ -1,0 +1,51 @@
+@import "./theme.scss";
+@import "./base.scss";
+.el-dropdown {
+  font-size: 1rem;
+  color: #fff;
+  vertical-align: middle;
+}
+
+.deal_box {
+  text-align: center;
+  .deal_btn {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0 8px;
+  }
+  .deal_btn:last-child {
+    border-right: 0;
+  }
+  .deal_btn_up {
+    color: #26c6c4;
+  }
+  .deal_btn_up:hover {
+    color: #26c6d4;
+  }
+  .deal_btn_look {
+    color: #1492ff;
+  }
+  .deal_btn_look:hover {
+    color: #1492ff;
+  }
+  .blue {
+    color: #1492ff;
+  }
+  .deal_btn_edit {
+    color: #ffd364;
+  }
+  .deal_btn_edit:hover {
+    color: #fde4a3;
+  }
+  .deal_btn_del {
+    color: #f5513b;
+  }
+  .deal_btn_del:hover {
+    color: #f38888;
+  }
+  .deal_btn_connot {
+    color: #ccc;
+  }
+}

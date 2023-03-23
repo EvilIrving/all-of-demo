@@ -1,0 +1,115 @@
+server:
+  port: 9001
+
+spring:
+  redis:
+    timeout: PT10S
+    lettuce:
+      pool:
+        max-active: 100
+        min-idle: 1
+        max-wait: PT10S
+        max-idle: 30
+    database: 12
+    port: 6379
+    host: 127.0.0.1
+  application:
+    name: data-synchronized
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  datasource:
+    dynamic:
+      primary: business
+      strict: false
+      datasource:
+        business:
+          url: jdbc:mysql://10.37.89.42:33061/lc_business_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: root
+          password: OMcpBgCxvAdZ8317
+          driver-class-name: com.mysql.jdbc.Driver
+        sichuang:
+          url: jdbc:sqlserver://192.168.3.42:4133;DatabaseName=StrongWater_2015
+          username: DSJ_1cslread
+          password: LcnL02SLj_2021w#1
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+        bh:
+          url: jdbc:sqlserver://117.149.227.48:51433;DatabaseName=StrongMain_LCQ_BZH
+          username: LCd_read#
+          password: LCslj061_876N
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#        bh:
+#          url: jdbc:sqlserver://10.36.178.24:1433;DatabaseName=StrongMain_LCQ_BZH
+#          username: LCd_read#
+#          password: LCslj061_876N
+#          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+        exchange:
+          url: jdbc:mysql://10.37.89.42:33061/lc_exchange_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: root
+          password: OMcpBgCxvAdZ8317
+          driver-class-name: com.mysql.jdbc.Driver
+        basic:
+          url: jdbc:mysql://10.37.89.42:33061/lc_basic_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: root
+          password: OMcpBgCxvAdZ8317
+          driver-class-name: com.mysql.jdbc.Driver
+        wz:
+          url: jdbc:mysql://0tpn865y.dongtaiyuming.net:30314/wz_business_data_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+          username: wz_sljsgl
+          password: 3GsBf3h_s5m8
+          driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 20
+      min-idle: 10
+      max-active: 40
+      max-wait: 30000
+      min-evictable-idle-time-millis: 180000
+  task:
+    # springboot自定义任务调度线程池配置
+    scheduling:
+      pool:
+        size: 24 # 线程数量
+      thread-name-prefix: myscheduler-   # 线程名称前缀
+      shutdown:
+        await-termination: true # 是否等线程完成后再关闭，默认false
+        await-termination-period: 10S # 等待线程完成的最大等待时间，上面配置为true时需要配置此参数
+    # springboot自定义线程池配置
+    execution:
+      pool:
+        core-size: 24 # 核心线程数，默认：8
+        keep-alive: 60S # 空闲线程存活时间
+        max-size: 48 # 最大线程数，默认：Integer.MAX_VALUE
+        queue-capacity: 100 # 等待线程队列数量，默认：Integer.MAX_VALUE
+      thread-name-prefix: mytask-  # 线程名称前缀
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    call-setters-on-nulls: true
+#    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+logging:
+  file:
+    path: logs
+    name: ${logging.file.path}/${spring.application.name}.log
+  level:
+    com:
+      ygkj:
+        lcsyn:
+          dao: debug
+
+wzapi:
+  key: dq/IKkr+aZxuRv1ATYmdoQ==
+  secret: /HBnCSAMEkb72GTlo7vPXZbd0QbGx1Nb0gkXkF6T7cI=
+
+watermanage:
+  appkey: 8c05a6fcf3964e238f35f2069dfc67e4
+  appsecret: 8f46f2b126ba4279
+  tokenkey: DC_ACCESS_TOKEN
+  appsymbol: 114
+
+access:
+  key: azFNTFdVbEpnMWRCeXhIYg
+  secret: bHNQT01IZFJ0VlFPOFZKRQ
+  url: https://sk.zjwater.com
+
+
+weather:
+  syn-rain-path: C:\\develop\\rain-data

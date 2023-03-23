@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.AttCwsBaseWcpMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.project.model.AttCwsBaseWcp" >
+        <result column="cws_code" property="cwsCode" />
+        <result column="cws_name" property="cwsName" />
+        <result column="dfc_proc" property="dfcProc" />
+        <result column="note" property="note" />
+        <result column="have_ams" property="haveAms" />
+        <result column="have_ol_mon" property="haveOlMon" />
+        <result column="tong_time" property="tongTime" />
+        <result column="wasu_rang_advilct" property="wasuRangAdvilct" />
+        <result column="cws_long" property="cwsLong" />
+        <result column="have_vld_apvl" property="haveVldApvl" />
+        <result column="natural_adnm" property="naturalAdnm" />
+        <result column="expr_date" property="exprDate" />
+        <result column="tre_proc" property="treProc" />
+        <result column="exec_pri" property="execPri" />
+        <result column="act_wasu_scal" property="actWasuScal" />
+        <result column="cws_lat" property="cwsLat" />
+        <result column="have_entr_mgt" property="haveEntrMgt" />
+        <result column="eff_date" property="effDate" />
+        <result column="pip_lgth" property="pipLgth" />
+        <result column="modify_time" property="modifyTime" />
+        <result column="admin_adnm" property="adminAdnm" />
+        <result column="wasu_rang_vilct" property="wasuRangVilct" />
+        <result column="op_pri" property="opPri" />
+        <result column="have_heal_cert" property="haveHealCert" />
+        <result column="comple_time" property="compleTime" />
+        <result column="des_wasu_scal" property="desWasuScal" />
+        <result column="pic_file" property="picFile" />
+        <result column="low_inake_lvl" property="lowInakeLvl" />
+        <result column="have_ins_veo" property="haveInsVeo" />
+        <result column="eng_scal" property="engScal" />
+        <result column="wasu_rang_vilnm" property="wasuRangVilnm" />
+        <result column="eng_type" property="engType" />
+        <result column="adcd" property="adcd" />
+        <result column="qual_dfc_mod" property="qualDfcMod" />
+        <result column="have_hyg_trng" property="haveHygTrng" />
+        <result column="cws_loc" property="cwsLoc" />
+        <result column="des_wasu_pop" property="desWasuPop" />
+        <result column="wasu_rang_advilnm" property="wasuRangAdvilnm" />
+        <result column="reno_time" property="renoTime" />
+        <result column="have_wtol_mon" property="haveWtolMon" />
+        <result column="have_emer_pla" property="haveEmerPla" />
+        <result column="cst_pri" property="cstPri" />
+        <result column="have_lab" property="haveLab" />
+        <result column="have_dfc_itg" property="haveDfcItg" />
+        <result column="have_auto_dfc" property="haveAutoDfc" />
+        <result column="have_sanlic" property="haveSanlic" />
+        <result column="wasu_type" property="wasuType" />
+        <result column="wasu_rang" property="wasuRang" />
+        <result column="eng_stat" property="engStat" />
+        <result column="wt_pro" property="wtPro" />
+        <result column="df_type" property="dfType" />
+        <result column="sta_man" property="staMan" />
+        <result column="watersupplytype" property="watersupplytype" />
+        <result column="citycode" property="citycode" />
+        <result column="watersourceid" property="watersourceid" />
+        <result column="waterworksid" property="waterworksid" />
+        <result column="watervillages" property="watervillages" />
+        <result column="builderyear" property="builderyear" />
+        <result column="buildermonth" property="buildermonth" />
+        <result column="watercleantype" property="watercleantype" />
+        <result column="watersupplytesttype" property="watersupplytesttype" />
+        <result column="waterpipepic" property="waterpipepic" />
+        <result column="managerunitname" property="managerunitname" />
+        <result column="managerunitcount" property="managerunitcount" />
+        <result column="managermaintype" property="managermaintype" />
+        <result column="rural_resident_population" property="ruralResidentPopulation" />
+        <result column="supply_guaranteed_rate" property="supplyGuaranteedRate" />
+        <result column="water_pressure_qualified_rate" property="waterPressureQualifiedRate" />
+        <result column="leak_break_rate" property="leakBreakRate" />
+        <result column="facility_good_rate" property="facilityGoodRate" />
+        <result column="repair_in_time_rate" property="repairInTimeRate" />
+        <result column="reading_check_rate" property="readingCheckRate" />
+        <result column="yearly_total_water_supply" property="yearlyTotalWaterSupply" />
+        <result column="supply_status" property="supplyStatus" />
+        <result column="start_date" property="startDate" />
+        <result column="comp_date" property="compDate" />
+        <result column="op" property="op" />
+        <result column="cws_town" property="cwsTown" />
+        <result column="wasu_rang_ct" property="wasuRangCt" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        cws_code,
+                cws_name,
+                dfc_proc,
+                note,
+                have_ams,
+                have_ol_mon,
+                tong_time,
+                wasu_rang_advilct,
+                cws_long,
+                have_vld_apvl,
+                natural_adnm,
+                expr_date,
+                tre_proc,
+                exec_pri,
+                act_wasu_scal,
+                cws_lat,
+                have_entr_mgt,
+                eff_date,
+                pip_lgth,
+                modify_time,
+                admin_adnm,
+                wasu_rang_vilct,
+                op_pri,
+                have_heal_cert,
+                comple_time,
+                des_wasu_scal,
+                pic_file,
+                low_inake_lvl,
+                have_ins_veo,
+                eng_scal,
+                wasu_rang_vilnm,
+                eng_type,
+                adcd,
+                qual_dfc_mod,
+                have_hyg_trng,
+                cws_loc,
+                des_wasu_pop,
+                wasu_rang_advilnm,
+                reno_time,
+                have_wtol_mon,
+                have_emer_pla,
+                cst_pri,
+                have_lab,
+                have_dfc_itg,
+                have_auto_dfc,
+                have_sanlic,
+                wasu_type,
+                wasu_rang,
+                eng_stat,
+                wt_pro,
+                df_type,
+                sta_man,
+                watersupplytype,
+                citycode,
+                watersourceid,
+                waterworksid,
+                watervillages,
+                builderyear,
+                buildermonth,
+                watercleantype,
+                watersupplytesttype,
+                waterpipepic,
+                managerunitname,
+                managerunitcount,
+                managermaintype,
+                rural_resident_population,
+                supply_guaranteed_rate,
+                water_pressure_qualified_rate,
+                leak_break_rate,
+                facility_good_rate,
+                repair_in_time_rate,
+                reading_check_rate,
+                yearly_total_water_supply,
+                supply_status,
+                start_date,
+                comp_date,
+                op,
+                cws_town,
+                wasu_rang_ct
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.project.model.AttCwsBaseWcp">
+        INSERT INTO att_cws_base_wcp
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != cwsCode'>
+                cws_code,
+            </if>
+            <if test ='null != cwsName'>
+                cws_name,
+            </if>
+            <if test ='null != dfcProc'>
+                dfc_proc,
+            </if>
+            <if test ='null != note'>
+                note,
+            </if>
+            <if test ='null != haveAms'>
+                have_ams,
+            </if>
+            <if test ='null != haveOlMon'>
+                have_ol_mon,
+            </if>
+            <if test ='null != tongTime'>
+                tong_time,
+            </if>
+            <if test ='null != wasuRangAdvilct'>
+                wasu_rang_advilct,
+            </if>
+            <if test ='null != cwsLong'>
+                cws_long,
+            </if>
+            <if test ='null != haveVldApvl'>
+                have_vld_apvl,
+            </if>
+            <if test ='null != naturalAdnm'>
+                natural_adnm,
+            </if>
+            <if test ='null != exprDate'>
+                expr_date,
+            </if>
+            <if test ='null != treProc'>
+                tre_proc,
+            </if>
+            <if test ='null != execPri'>
+                exec_pri,
+            </if>
+            <if test ='null != actWasuScal'>
+                act_wasu_scal,
+            </if>
+            <if test ='null != cwsLat'>
+                cws_lat,
+            </if>
+            <if test ='null != haveEntrMgt'>
+                have_entr_mgt,
+            </if>
+            <if test ='null != effDate'>
+                eff_date,
+            </if>
+            <if test ='null != pipLgth'>
+                pip_lgth,
+            </if>
+            <if test ='null != modifyTime'>
+                modify_time,
+            </if>
+            <if test ='null != adminAdnm'>
+                admin_adnm,
+            </if>
+            <if test ='null != wasuRangVilct'>
+                wasu_rang_vilct,
+            </if>
+            <if test ='null != opPri'>
+                op_pri,
+            </if>
+            <if test ='null != haveHealCert'>
+                have_heal_cert,
+            </if>
+            <if test ='null != compleTime'>
+                comple_time,
+            </if>
+            <if test ='null != desWasuScal'>
+                des_wasu_scal,
+            </if>
+            <if test ='null != picFile'>
+                pic_file,
+            </if>
+            <if test ='null != lowInakeLvl'>
+                low_inake_lvl,
+            </if>
+            <if test ='null != haveInsVeo'>
+                have_ins_veo,
+            </if>
+            <if test ='null != engScal'>
+                eng_scal,
+            </if>
+            <if test ='null != wasuRangVilnm'>
+                wasu_rang_vilnm,
+            </if>
+            <if test ='null != engType'>
+                eng_type,
+            </if>
+            <if test ='null != adcd'>
+                adcd,
+            </if>
+            <if test ='null != qualDfcMod'>
+                qual_dfc_mod,
+            </if>
+            <if test ='null != haveHygTrng'>
+                have_hyg_trng,
+            </if>
+            <if test ='null != cwsLoc'>
+                cws_loc,
+            </if>
+            <if test ='null != desWasuPop'>
+                des_wasu_pop,
+            </if>
+            <if test ='null != wasuRangAdvilnm'>
+                wasu_rang_advilnm,
+            </if>
+            <if test ='null != renoTime'>
+                reno_time,
+            </if>
+            <if test ='null != haveWtolMon'>
+                have_wtol_mon,
+            </if>
+            <if test ='null != haveEmerPla'>
+                have_emer_pla,
+            </if>
+            <if test ='null != cstPri'>
+                cst_pri,
+            </if>
+            <if test ='null != haveLab'>
+                have_lab,
+            </if>
+            <if test ='null != haveDfcItg'>
+                have_dfc_itg,
+            </if>
+            <if test ='null != haveAutoDfc'>
+                have_auto_dfc,
+            </if>
+            <if test ='null != haveSanlic'>
+                have_sanlic,
+            </if>
+            <if test ='null != wasuType'>
+                wasu_type,
+            </if>
+            <if test ='null != wasuRang'>
+                wasu_rang,
+            </if>
+            <if test ='null != engStat'>
+                eng_stat,
+            </if>
+            <if test ='null != wtPro'>
+                wt_pro,
+            </if>
+            <if test ='null != dfType'>
+                df_type,
+            </if>
+            <if test ='null != staMan'>
+                sta_man,
+            </if>
+            <if test ='null != watersupplytype'>
+                watersupplytype,
+            </if>
+            <if test ='null != citycode'>
+                citycode,
+            </if>
+            <if test ='null != watersourceid'>
+                watersourceid,
+            </if>
+            <if test ='null != waterworksid'>
+                waterworksid,
+            </if>
+            <if test ='null != watervillages'>
+                watervillages,
+            </if>
+            <if test ='null != builderyear'>
+                builderyear,
+            </if>
+            <if test ='null != buildermonth'>
+                buildermonth,
+            </if>
+            <if test ='null != watercleantype'>
+                watercleantype,
+            </if>
+            <if test ='null != watersupplytesttype'>
+                watersupplytesttype,
+            </if>
+            <if test ='null != waterpipepic'>
+                waterpipepic,
+            </if>
+            <if test ='null != managerunitname'>
+                managerunitname,
+            </if>
+            <if test ='null != managerunitcount'>
+                managerunitcount,
+            </if>
+            <if test ='null != managermaintype'>
+                managermaintype,
+            </if>
+            <if test ='null != ruralResidentPopulation'>
+                rural_resident_population,
+            </if>
+            <if test ='null != supplyGuaranteedRate'>
+                supply_guaranteed_rate,
+            </if>
+            <if test ='null != waterPressureQualifiedRate'>
+                water_pressure_qualified_rate,
+            </if>
+            <if test ='null != leakBreakRate'>
+                leak_break_rate,
+            </if>
+            <if test ='null != facilityGoodRate'>
+                facility_good_rate,
+            </if>
+            <if test ='null != repairInTimeRate'>
+                repair_in_time_rate,
+            </if>
+            <if test ='null != readingCheckRate'>
+                reading_check_rate,
+            </if>
+            <if test ='null != yearlyTotalWaterSupply'>
+                yearly_total_water_supply,
+            </if>
+            <if test ='null != supplyStatus'>
+                supply_status,
+            </if>
+            <if test ='null != startDate'>
+                start_date,
+            </if>
+            <if test ='null != compDate'>
+                comp_date,
+            </if>
+            <if test ='null != op'>
+                op,
+            </if>
+            <if test ='null != cwsTown'>
+                cws_town,
+            </if>
+            <if test ='null != wasuRangCt'>
+                wasu_rang_ct
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != cwsCode'>
+                #{cwsCode},
+            </if>
+            <if test ='null != cwsName'>
+                #{cwsName},
+            </if>
+            <if test ='null != dfcProc'>
+                #{dfcProc},
+            </if>
+            <if test ='null != note'>
+                #{note},
+            </if>
+            <if test ='null != haveAms'>
+                #{haveAms},
+            </if>
+            <if test ='null != haveOlMon'>
+                #{haveOlMon},
+            </if>
+            <if test ='null != tongTime'>
+                #{tongTime},
+            </if>
+            <if test ='null != wasuRangAdvilct'>
+                #{wasuRangAdvilct},
+            </if>
+            <if test ='null != cwsLong'>
+                #{cwsLong},
+            </if>
+            <if test ='null != haveVldApvl'>
+                #{haveVldApvl},
+            </if>
+            <if test ='null != naturalAdnm'>
+                #{naturalAdnm},
+            </if>
+            <if test ='null != exprDate'>
+                #{exprDate},
+            </if>
+            <if test ='null != treProc'>
+                #{treProc},
+            </if>
+            <if test ='null != execPri'>
+                #{execPri},
+            </if>
+            <if test ='null != actWasuScal'>
+                #{actWasuScal},
+            </if>
+            <if test ='null != cwsLat'>
+                #{cwsLat},
+            </if>
+            <if test ='null != haveEntrMgt'>
+                #{haveEntrMgt},
+            </if>
+            <if test ='null != effDate'>
+                #{effDate},
+            </if>
+            <if test ='null != pipLgth'>
+                #{pipLgth},
+            </if>
+            <if test ='null != modifyTime'>
+                #{modifyTime},
+            </if>
+            <if test ='null != adminAdnm'>
+                #{adminAdnm},
+            </if>
+            <if test ='null != wasuRangVilct'>
+                #{wasuRangVilct},
+            </if>
+            <if test ='null != opPri'>
+                #{opPri},
+            </if>
+            <if test ='null != haveHealCert'>
+                #{haveHealCert},
+            </if>
+            <if test ='null != compleTime'>
+                #{compleTime},
+            </if>
+            <if test ='null != desWasuScal'>
+                #{desWasuScal},
+            </if>
+            <if test ='null != picFile'>
+                #{picFile},
+            </if>
+            <if test ='null != lowInakeLvl'>
+                #{lowInakeLvl},
+            </if>
+            <if test ='null != haveInsVeo'>
+                #{haveInsVeo},
+            </if>
+            <if test ='null != engScal'>
+                #{engScal},
+            </if>
+            <if test ='null != wasuRangVilnm'>
+                #{wasuRangVilnm},
+            </if>
+            <if test ='null != engType'>
+                #{engType},
+            </if>
+            <if test ='null != adcd'>
+                #{adcd},
+            </if>
+            <if test ='null != qualDfcMod'>
+                #{qualDfcMod},
+            </if>
+            <if test ='null != haveHygTrng'>
+                #{haveHygTrng},
+            </if>
+            <if test ='null != cwsLoc'>
+                #{cwsLoc},
+            </if>
+            <if test ='null != desWasuPop'>
+                #{desWasuPop},
+            </if>
+            <if test ='null != wasuRangAdvilnm'>
+                #{wasuRangAdvilnm},
+            </if>
+            <if test ='null != renoTime'>
+                #{renoTime},
+            </if>
+            <if test ='null != haveWtolMon'>
+                #{haveWtolMon},
+            </if>
+            <if test ='null != haveEmerPla'>
+                #{haveEmerPla},
+            </if>
+            <if test ='null != cstPri'>
+                #{cstPri},
+            </if>
+            <if test ='null != haveLab'>
+                #{haveLab},
+            </if>
+            <if test ='null != haveDfcItg'>
+                #{haveDfcItg},
+            </if>
+            <if test ='null != haveAutoDfc'>
+                #{haveAutoDfc},
+            </if>
+            <if test ='null != haveSanlic'>
+                #{haveSanlic},
+            </if>
+            <if test ='null != wasuType'>
+                #{wasuType},
+            </if>
+            <if test ='null != wasuRang'>
+                #{wasuRang},
+            </if>
+            <if test ='null != engStat'>
+                #{engStat},
+            </if>
+            <if test ='null != wtPro'>
+                #{wtPro},
+            </if>
+            <if test ='null != dfType'>
+                #{dfType},
+            </if>
+            <if test ='null != staMan'>
+                #{staMan},
+            </if>
+            <if test ='null != watersupplytype'>
+                #{watersupplytype},
+            </if>
+            <if test ='null != citycode'>
+                #{citycode},
+            </if>
+            <if test ='null != watersourceid'>
+                #{watersourceid},
+            </if>
+            <if test ='null != waterworksid'>
+                #{waterworksid},
+            </if>
+            <if test ='null != watervillages'>
+                #{watervillages},
+            </if>
+            <if test ='null != builderyear'>
+                #{builderyear},
+            </if>
+            <if test ='null != buildermonth'>
+                #{buildermonth},
+            </if>
+            <if test ='null != watercleantype'>
+                #{watercleantype},
+            </if>
+            <if test ='null != watersupplytesttype'>
+                #{watersupplytesttype},
+            </if>
+            <if test ='null != waterpipepic'>
+                #{waterpipepic},
+            </if>
+            <if test ='null != managerunitname'>
+                #{managerunitname},
+            </if>
+            <if test ='null != managerunitcount'>
+                #{managerunitcount},
+            </if>
+            <if test ='null != managermaintype'>
+                #{managermaintype},
+            </if>
+            <if test ='null != ruralResidentPopulation'>
+                #{ruralResidentPopulation},
+            </if>
+            <if test ='null != supplyGuaranteedRate'>
+                #{supplyGuaranteedRate},
+            </if>
+            <if test ='null != waterPressureQualifiedRate'>
+                #{waterPressureQualifiedRate},
+            </if>
+            <if test ='null != leakBreakRate'>
+                #{leakBreakRate},
+            </if>
+            <if test ='null != facilityGoodRate'>
+                #{facilityGoodRate},
+            </if>
+            <if test ='null != repairInTimeRate'>
+                #{repairInTimeRate},
+            </if>
+            <if test ='null != readingCheckRate'>
+                #{readingCheckRate},
+            </if>
+            <if test ='null != yearlyTotalWaterSupply'>
+                #{yearlyTotalWaterSupply},
+            </if>
+            <if test ='null != supplyStatus'>
+                #{supplyStatus},
+            </if>
+            <if test ='null != startDate'>
+                #{startDate},
+            </if>
+            <if test ='null != compDate'>
+                #{compDate},
+            </if>
+            <if test ='null != op'>
+                #{op},
+            </if>
+            <if test ='null != cwsTown'>
+                #{cwsTown},
+            </if>
+            <if test ='null != wasuRangCt'>
+                #{wasuRangCt}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM att_cws_base_wcp
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.project.model.AttCwsBaseWcp">
+        UPDATE att_cws_base_wcp
+        <set>
+            <if test ='null != cwsCode'>cws_code = #{cwsCode},</if>
+            <if test ='null != cwsName'>cws_name = #{cwsName},</if>
+            <if test ='null != dfcProc'>dfc_proc = #{dfcProc},</if>
+            <if test ='null != note'>note = #{note},</if>
+            <if test ='null != haveAms'>have_ams = #{haveAms},</if>
+            <if test ='null != haveOlMon'>have_ol_mon = #{haveOlMon},</if>
+            <if test ='null != tongTime'>tong_time = #{tongTime},</if>
+            <if test ='null != wasuRangAdvilct'>wasu_rang_advilct = #{wasuRangAdvilct},</if>
+            <if test ='null != cwsLong'>cws_long = #{cwsLong},</if>
+            <if test ='null != haveVldApvl'>have_vld_apvl = #{haveVldApvl},</if>
+            <if test ='null != naturalAdnm'>natural_adnm = #{naturalAdnm},</if>
+            <if test ='null != exprDate'>expr_date = #{exprDate},</if>
+            <if test ='null != treProc'>tre_proc = #{treProc},</if>
+            <if test ='null != execPri'>exec_pri = #{execPri},</if>
+            <if test ='null != actWasuScal'>act_wasu_scal = #{actWasuScal},</if>
+            <if test ='null != cwsLat'>cws_lat = #{cwsLat},</if>
+            <if test ='null != haveEntrMgt'>have_entr_mgt = #{haveEntrMgt},</if>
+            <if test ='null != effDate'>eff_date = #{effDate},</if>
+            <if test ='null != pipLgth'>pip_lgth = #{pipLgth},</if>
+            <if test ='null != modifyTime'>modify_time = #{modifyTime},</if>
+            <if test ='null != adminAdnm'>admin_adnm = #{adminAdnm},</if>
+            <if test ='null != wasuRangVilct'>wasu_rang_vilct = #{wasuRangVilct},</if>
+            <if test ='null != opPri'>op_pri = #{opPri},</if>
+            <if test ='null != haveHealCert'>have_heal_cert = #{haveHealCert},</if>
+            <if test ='null != compleTime'>comple_time = #{compleTime},</if>
+            <if test ='null != desWasuScal'>des_wasu_scal = #{desWasuScal},</if>
+            <if test ='null != picFile'>pic_file = #{picFile},</if>
+            <if test ='null != lowInakeLvl'>low_inake_lvl = #{lowInakeLvl},</if>
+            <if test ='null != haveInsVeo'>have_ins_veo = #{haveInsVeo},</if>
+            <if test ='null != engScal'>eng_scal = #{engScal},</if>
+            <if test ='null != wasuRangVilnm'>wasu_rang_vilnm = #{wasuRangVilnm},</if>
+            <if test ='null != engType'>eng_type = #{engType},</if>
+            <if test ='null != adcd'>adcd = #{adcd},</if>
+            <if test ='null != qualDfcMod'>qual_dfc_mod = #{qualDfcMod},</if>
+            <if test ='null != haveHygTrng'>have_hyg_trng = #{haveHygTrng},</if>
+            <if test ='null != cwsLoc'>cws_loc = #{cwsLoc},</if>
+            <if test ='null != desWasuPop'>des_wasu_pop = #{desWasuPop},</if>
+            <if test ='null != wasuRangAdvilnm'>wasu_rang_advilnm = #{wasuRangAdvilnm},</if>
+            <if test ='null != renoTime'>reno_time = #{renoTime},</if>
+            <if test ='null != haveWtolMon'>have_wtol_mon = #{haveWtolMon},</if>
+            <if test ='null != haveEmerPla'>have_emer_pla = #{haveEmerPla},</if>
+            <if test ='null != cstPri'>cst_pri = #{cstPri},</if>
+            <if test ='null != haveLab'>have_lab = #{haveLab},</if>
+            <if test ='null != haveDfcItg'>have_dfc_itg = #{haveDfcItg},</if>
+            <if test ='null != haveAutoDfc'>have_auto_dfc = #{haveAutoDfc},</if>
+            <if test ='null != haveSanlic'>have_sanlic = #{haveSanlic},</if>
+            <if test ='null != wasuType'>wasu_type = #{wasuType},</if>
+            <if test ='null != wasuRang'>wasu_rang = #{wasuRang},</if>
+            <if test ='null != engStat'>eng_stat = #{engStat},</if>
+            <if test ='null != wtPro'>wt_pro = #{wtPro},</if>
+            <if test ='null != dfType'>df_type = #{dfType},</if>
+            <if test ='null != staMan'>sta_man = #{staMan},</if>
+            <if test ='null != watersupplytype'>watersupplytype = #{watersupplytype},</if>
+            <if test ='null != citycode'>citycode = #{citycode},</if>
+            <if test ='null != watersourceid'>watersourceid = #{watersourceid},</if>
+            <if test ='null != waterworksid'>waterworksid = #{waterworksid},</if>
+            <if test ='null != watervillages'>watervillages = #{watervillages},</if>
+            <if test ='null != builderyear'>builderyear = #{builderyear},</if>
+            <if test ='null != buildermonth'>buildermonth = #{buildermonth},</if>
+            <if test ='null != watercleantype'>watercleantype = #{watercleantype},</if>
+            <if test ='null != watersupplytesttype'>watersupplytesttype = #{watersupplytesttype},</if>
+            <if test ='null != waterpipepic'>waterpipepic = #{waterpipepic},</if>
+            <if test ='null != managerunitname'>managerunitname = #{managerunitname},</if>
+            <if test ='null != managerunitcount'>managerunitcount = #{managerunitcount},</if>
+            <if test ='null != managermaintype'>managermaintype = #{managermaintype},</if>
+            <if test ='null != ruralResidentPopulation'>rural_resident_population = #{ruralResidentPopulation},</if>
+            <if test ='null != supplyGuaranteedRate'>supply_guaranteed_rate = #{supplyGuaranteedRate},</if>
+            <if test ='null != waterPressureQualifiedRate'>water_pressure_qualified_rate = #{waterPressureQualifiedRate},</if>
+            <if test ='null != leakBreakRate'>leak_break_rate = #{leakBreakRate},</if>
+            <if test ='null != facilityGoodRate'>facility_good_rate = #{facilityGoodRate},</if>
+            <if test ='null != repairInTimeRate'>repair_in_time_rate = #{repairInTimeRate},</if>
+            <if test ='null != readingCheckRate'>reading_check_rate = #{readingCheckRate},</if>
+            <if test ='null != yearlyTotalWaterSupply'>yearly_total_water_supply = #{yearlyTotalWaterSupply},</if>
+            <if test ='null != supplyStatus'>supply_status = #{supplyStatus},</if>
+            <if test ='null != startDate'>start_date = #{startDate},</if>
+            <if test ='null != compDate'>comp_date = #{compDate},</if>
+            <if test ='null != op'>op = #{op},</if>
+            <if test ='null != cwsTown'>cws_town = #{cwsTown},</if>
+            <if test ='null != wasuRangCt'>wasu_rang_ct = #{wasuRangCt}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_cws_base_wcp
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM att_cws_base_wcp
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_cws_base_wcp
+    </select>
+
+    <select id="selectByCondition" resultType="com.ygkj.project.model.AttCwsBaseWcp">
+        SELECT
+        <choose>
+            <when test="columnNames!=null and columnNames!=''">
+                ${columnNames}
+            </when>
+            <otherwise>
+                <include refid="Base_Column_List" />
+            </otherwise>
+        </choose>
+        FROM att_cws_base_wcp
+        <where>
+            <if test="adcd!=null and adcd!=''">
+               and adcd like concat(SUBSTR(#{adcd},1,6),'%')
+            </if>
+            <if test="wasuRang!=null and wasuRang!=''">
+               and wasu_rang =#{wasuRang}
+            </if>
+            <if test="engType!=null and engType!=''">
+               and eng_type =#{engType}
+            </if>
+            <if test="cwsName!=null and cwsName!=''">
+               and cws_name like concat ('%',#{cwsName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectNewestVolume" resultType="com.ygkj.project.model.CwsWaterVolume">
+        select * from (
+            select * from cws_water_volume
+        <where>
+            <if test="true">
+                and update_time &gt;= DATE_ADD(NOW(),INTERVAL -2 MONTH )
+            </if>
+            <if test="codeList!=null and codeList.size>0">
+                and water_plant_code in
+                <foreach collection="codeList" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        HAVING 1 ORDER BY update_time DESC
+        ) as a group by a.water_plant_code
+    </select>
+
+    <select id="selectNewestQuality" resultType="com.ygkj.project.model.CwsWaterQuality">
+        select * from (
+        select * from cws_water_quality
+        <where>
+            <if test="true">
+                and time_record &gt;= DATE_ADD(NOW(),INTERVAL -2 MONTH )
+            </if>
+            <if test="codeList!=null and codeList.size>0">
+                and water_plant_code in
+                <foreach collection="codeList" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        HAVING 1 ORDER BY time_record DESC
+        ) as a group by a.water_plant_code
+    </select>
+
+    <select id="selectVolumeByTimeInterval" resultType="com.ygkj.project.model.CwsWaterVolume">
+        select * from cws_water_volume
+        <where>
+            <if test="start !=null and end !=null">
+                and update_time &gt;= #{start} and update_time &lt;= #{end}
+            </if>
+            <if test="cwsCode!=null and cwsCode!=''">
+                and water_plant_code =#{cwsCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectQualityByTimeInterval" resultType="com.ygkj.project.model.CwsWaterQuality">
+        select * from cws_water_quality
+        <where>
+            <if test="start !=null and end !=null">
+                and time_record &gt;= #{start} and time_record &lt;= #{end}
+            </if>
+            <if test="cwsCode!=null and cwsCode!=''">
+                and water_plant_code =#{cwsCode}
+            </if>
+        </where>
+    </select>
+
+</mapper>

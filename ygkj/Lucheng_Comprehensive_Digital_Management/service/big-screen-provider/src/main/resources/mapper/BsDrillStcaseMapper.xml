@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.BsDrillStcaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.BsDrillStcase">
+        <result column="id" property="id"/>
+        <result column="drill_st_code" property="drillStCode"/>
+        <result column="drill_st_name" property="drillStName"/>
+        <result column="drill_st_type" property="drillStType"/>
+        <result column="case_id" property="caseId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        drill_st_code,
+        drill_st_name,
+        drill_st_type,
+        case_id
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.big.screen.model.BsDrillStcase">
+        INSERT INTO bs_drill_stcase
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != drillStCode'>
+                drill_st_code,
+            </if>
+            <if test='null != drillStName'>
+                drill_st_name,
+            </if>
+            <if test='null != drillStType'>
+                drill_st_type,
+            </if>
+            <if test='null != caseId'>
+                case_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != drillStCode'>
+                #{drillStCode},
+            </if>
+            <if test='null != drillStName'>
+                #{drillStName},
+            </if>
+            <if test='null != drillStType'>
+                #{drillStType},
+            </if>
+            <if test='null != caseId'>
+                #{caseId}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM bs_drill_stcase
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.big.screen.model.BsDrillStcase">
+        UPDATE bs_drill_stcase
+        <set>
+            <if test='null != drillStCode'>drill_st_code = #{drillStCode},</if>
+            <if test='null != drillStName'>drill_st_name = #{drillStName},</if>
+            <if test='null != drillStType'>drill_st_type = #{drillStType},</if>
+            <if test='null != caseId'>case_id = #{caseId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_stcase
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_stcase
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM bs_drill_stcase
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bs_drill_stcase
+        <where>
+            <if test="caseId !=null and caseId!=''">
+                and case_id=#{caseId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,143 @@
+@import "@/style/theme.scss";
+
+.main-header {
+    height: 80px;
+    width: 100%;
+    background: url(../../assets/images/header-bg.png) no-repeat;
+    background-size: 100% 100%;
+    padding: 16px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1900;
+    @include flexbox;
+    @include flexAC;
+    @include flexJC(space-between);
+
+    .left-part {
+        @include flexbox;
+        @include flexAC;
+
+        .title-icon {
+            display: inline-block;
+            width: 52px;
+            height: 52px;
+            margin: 0 18px;
+        }
+
+        .title {
+            font-size: 31px;
+            color: #fff;
+            letter-spacing: 2px;
+            line-height: 31px;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .sub-title {
+            width: 350px;
+            color: #fff;
+            padding: 0 10px;
+            font-size: 22px;
+            line-height: 22px;
+            margin-left: 10px;
+            user-select: none;
+            font-weight: normal;
+            letter-spacing: 1.3px;
+            display: inline-block;
+            border-left: solid 2px rgba(255, 255, 255, 0.4);
+        }
+
+        ::v-deep .el-select>.el-input {
+            width: 320px;
+        }
+
+        ::v-deep .el-input--suffix {
+            .el-input__prefix {
+                left: 16px;
+
+                .el-select__caret {
+                    line-height: 48px;
+                    transform: scale(1.4);
+                }
+            }
+
+            .el-input__inner {
+                background: rgba(255, 255, 255, 0);
+                border: none;
+                color: #fff;
+                border-radius: 0;
+                user-select: none;
+                font-size: 22px;
+                font-weight: bold;
+                letter-spacing: 1.3px;
+                line-height: 22px;
+                padding: 0 15px;
+            }
+
+            &:before {
+                content: "";
+                font-size: 22px;
+                border-left: #ffffff88 2px solid;
+                margin-left: 10px;
+            }
+        }
+
+        ::v-deep .el-input .el-select__caret {
+            color: #fff;
+
+        }
+    }
+
+    .main-menu {
+        @include flex(1);
+        margin: 0px 20px;
+        position: absolute;
+        left: 710px;
+        top: 37px;
+
+        ul {
+            @include flexbox;
+
+            li {
+                text-align: center;
+                width: 140px;
+                height: 40px;
+                line-height: 40px;
+                font-size: 18px;
+                color: #ffffff;
+                cursor: pointer;
+                user-select: none;
+
+                &.icon-menu-active {
+                    color: #48fff4;
+                }
+            }
+        }
+    }
+
+    .right-part {
+        @include flexbox;
+        @include flexAC;
+
+        .logout {
+            width: 30px;
+            height: 30px;
+            margin-right: 32px;
+            cursor: pointer;
+        }
+
+        .user-icon {
+            width: 48px;
+            height: 48px;
+            margin-right: 16px;
+        }
+
+        >span {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.88);
+            text-align: center;
+            line-height: 24px;
+        }
+    }
+}

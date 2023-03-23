@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.river.mapper.AttRivLkChiefBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.river.model.AttRivLkChiefBase">
+        <result column="id" property="id"/>
+        <result column="real_name" property="realName"/>
+        <result column="phone" property="phone"/>
+        <result column="post" property="post"/>
+        <result column="level" property="level"/>
+        <result column="rpost" property="rpost"/>
+        <result column="path_str" property="pathStr"/>
+        <result column="river_name" property="riverName"/>
+        <result column="reservoir_name" property="reservoirName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_id" property="createId"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_id" property="updateId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        real_name,
+        phone,
+        post,
+        level,
+        rpost,
+        path_str,
+        river_name,
+        reservoir_name,
+        create_time,
+        create_id,
+        update_time,
+        update_id,
+        del_flag,
+        type
+    </sql>
+
+    <insert id="insert" parameterType="com.ygkj.river.model.AttRivLkChiefBase">
+        INSERT INTO att_riv_lk_chief_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                id,
+            </if>
+            <if test='null != realName'>
+                real_name,
+            </if>
+            <if test='null != phone'>
+                phone,
+            </if>
+            <if test='null != post'>
+                post,
+            </if>
+            <if test='null != level'>
+                level,
+            </if>
+            <if test='null != rpost'>
+                rpost,
+            </if>
+            <if test='null != pathStr'>
+                path_str,
+            </if>
+            <if test='null != riverName'>
+                river_name,
+            </if>
+            <if test='null != reservoirName'>
+                reservoir_name,
+            </if>
+            <if test='null != createTime'>
+                create_time,
+            </if>
+            <if test='null != createId'>
+                create_id,
+            </if>
+            <if test='null != updateTime'>
+                update_time,
+            </if>
+            <if test='null != updateId'>
+                update_id,
+            </if>
+            <if test='null != delFlag'>
+                del_flag,
+            </if>
+            <if test='null != type'>
+                type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test='null != id'>
+                #{id},
+            </if>
+            <if test='null != realName'>
+                #{realName},
+            </if>
+            <if test='null != phone'>
+                #{phone},
+            </if>
+            <if test='null != post'>
+                #{post},
+            </if>
+            <if test='null != level'>
+                #{level},
+            </if>
+            <if test='null != rpost'>
+                #{rpost},
+            </if>
+            <if test='null != pathStr'>
+                #{pathStr},
+            </if>
+            <if test='null != riverName'>
+                #{riverName},
+            </if>
+            <if test='null != reservoirName'>
+                #{reservoirName},
+            </if>
+            <if test='null != createTime'>
+                #{createTime},
+            </if>
+            <if test='null != createId'>
+                #{createId},
+            </if>
+            <if test='null != updateTime'>
+                #{updateTime},
+            </if>
+            <if test='null != updateId'>
+                #{updateId},
+            </if>
+            <if test='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test='null != type'>
+                #{type}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM att_riv_lk_chief_base
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.ygkj.river.model.AttRivLkChiefBase">
+        UPDATE att_riv_lk_chief_base
+        <set>
+            <if test='null != realName'>real_name = #{realName},</if>
+            <if test='null != phone'>phone = #{phone},</if>
+            <if test='null != post'>post = #{post},</if>
+            <if test='null != level'>level = #{level},</if>
+            <if test='null != rpost'>rpost = #{rpost},</if>
+            <if test='null != pathStr'>path_str = #{pathStr},</if>
+            <if test='null != riverName'>river_name = #{riverName},</if>
+            <if test='null != reservoirName'>reservoir_name = #{reservoirName},</if>
+            <if test='null != createTime'>create_time = #{createTime},</if>
+            <if test='null != createId'>create_id = #{createId},</if>
+            <if test='null != updateTime'>update_time = #{updateTime},</if>
+            <if test='null != updateId'>update_id = #{updateId},</if>
+            <if test='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test='null != type'>type = #{type}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_lk_chief_base
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM att_riv_lk_chief_base
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM att_riv_lk_chief_base
+    </select>
+
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.digitization.mapper.WarnDeptMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.digitization.model.WarnDept" >
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="pid" property="pid" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+                name,
+                pid,
+                del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.digitization.model.WarnDept">
+        INSERT INTO warn_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != name'>
+                name,
+            </if>
+            <if test ='null != pid'>
+                pid,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != name'>
+                #{name},
+            </if>
+            <if test ='null != pid'>
+                #{pid},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        update warn_dept set del_flag =1 WHERE id = #{id}
+    </delete>
+
+    <select id="loadPage" resultType="com.ygkj.digitization.vo.response.WarnDeptRespVo">
+        SELECT tbl.*,(SELECT COUNT(u.id) FROM `warn_user` u where u.del_flag = 0 AND u.dept_id = tbl.id) userNum FROM `warn_dept` tbl where tbl.del_flag = 0
+        <if test ='null != name and "" != name'>
+            and tbl.name like CONCAT('%',#{name},'%')
+        </if>
+    </select>
+
+    <update id="update" parameterType="com.ygkj.digitization.model.WarnDept">
+        UPDATE warn_dept
+        <set>
+            <if test ='null != name'>name = #{name},</if>
+            <if test ='null != pid'>pid = #{pid},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,148 @@
+@charset "UTF-8";
+.timeline {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.timeline .timeline-action {
+  color: #fff;
+  padding-top: 18px;
+}
+
+.timeline .timeline-action .el-icon-video-pause,
+.timeline .timeline-action .el-icon-video-play {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.timeline .timeline-action__arrow-left {
+  color: #fff;
+  padding-top: 22px;
+  margin-left: 15px;
+}
+
+.timeline .timeline-action__arrow-left i {
+  cursor: pointer;
+}
+
+.timeline .timeline-action__arrow-right {
+  color: #fff;
+  padding-top: 22px;
+  margin-right: 15px;
+}
+
+.timeline .timeline-action__arrow-right i {
+  cursor: pointer;
+}
+
+.timeline .timeline-content {
+  overflow: hidden;
+}
+
+.timeline .timeline-content .timeline-list {
+  padding-top: 16px;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  z-index: 250;
+  -webkit-transition: all 0.5s linear;
+  transition: all 0.5s linear;
+}
+
+.timeline .timeline-content .timeline-list .timeline-item {
+  position: relative;
+  width: 100px;
+  height: 48px;
+}
+
+.timeline .timeline-content .timeline-list .timeline-item.active .timeline-item__symbol {
+  background-color: #ffffff;
+}
+
+.timeline .timeline-content .timeline-list .timeline-item:first-child {
+  margin-left: -5px;
+}
+
+.timeline .timeline-content .timeline-list .timeline-item:first-child .timeline-item__line {
+  -webkit-transform: scaleX(0.5) translateX(50%);
+          transform: scaleX(0.5) translateX(50%);
+}
+
+.timeline .timeline-content .timeline-list .timeline-item:last-child {
+  margin-right: -5px;
+}
+
+.timeline .timeline-content .timeline-list .timeline-item:last-child .timeline-item__line {
+  -webkit-transform: scaleX(0.5) translateX(-50%);
+          transform: scaleX(0.5) translateX(-50%);
+}
+
+.timeline .timeline-content .timeline-list .timeline-item .timeline-item__line {
+  position: absolute;
+  width: 100%;
+  top: 7px;
+  border-top: 1px solid #e4e7ed33;
+}
+
+.timeline .timeline-content .timeline-list .timeline-item .timeline-item__symbol {
+  cursor: pointer;
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  margin-left: -10px;
+  width: 18px;
+  height: 18px;
+  background-color: #000000;
+  border: 2px #308dcc solid;
+  border-radius: 50%;
+}
+
+.timeline .timeline-content .timeline-list .timeline-item .timeline-item__wrapper {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  text-align: center;
+  height: 100%;
+  line-height: 48px;
+  padding-top: 5px;
+  font-size: 14px;
+}
+
+.timeline.dark .timeline-list .timeline-item .timeline-item__wrapper {
+  color: #fff;
+}
+
+.timeline-bar {
+  position: absolute;
+  width: 100%;
+  bottom: 10%;
+}
+
+.timeline-bar .timeline-bar-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  background: -webkit-gradient(linear, left top, left bottom, from(#35b9e3), to(#5398f6)) left top no-repeat, -webkit-gradient(linear, left top, left bottom, from(#5398f6), to(#608aff)) left top no-repeat, -webkit-gradient(linear, left top, left bottom, from(#35b9e3), to(#5398f6)) right top no-repeat, -webkit-gradient(linear, left top, left bottom, from(#5398f6), to(#608aff)) right top no-repeat, -webkit-gradient(linear, left top, left bottom, from(#5398f6), to(#35b9e3)) left bottom no-repeat, -webkit-gradient(linear, left top, left bottom, from(#608aff), to(#5398f6)) left bottom no-repeat, -webkit-gradient(linear, left top, left bottom, from(#5398f6), to(#35b9e3)) right bottom no-repeat, -webkit-gradient(linear, left top, left bottom, from(#608aff), to(#5398f6)) right bottom no-repeat;
+  background: linear-gradient(to bottom, #35b9e3, #5398f6) left top no-repeat, linear-gradient(to bottom, #5398f6, #608aff) left top no-repeat, linear-gradient(to bottom, #35b9e3, #5398f6) right top no-repeat, linear-gradient(to bottom, #5398f6, #608aff) right top no-repeat, linear-gradient(to bottom, #5398f6, #35b9e3) left bottom no-repeat, linear-gradient(to bottom, #608aff, #5398f6) left bottom no-repeat, linear-gradient(to bottom, #5398f6, #35b9e3) right bottom no-repeat, linear-gradient(to bottom, #608aff, #5398f6) right bottom no-repeat;
+  /*设置大小*/
+  background-size: 18px 2px, 2px 18px;
+  padding: 2px;
+}
+
+.timeline-bar .timeline-bar-wrapper .timeline-bar__content {
+  border: 1px solid #00c1ff;
+  -webkit-box-shadow: inset 0 4px 30px 0 rgba(35, 81, 239, 0.25);
+          box-shadow: inset 0 4px 30px 0 rgba(35, 81, 239, 0.25);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(53, 186, 227, 0.2)), to(rgba(25, 59, 197, 0.2)));
+  background-image: linear-gradient(180deg, rgba(53, 186, 227, 0.2) 0%, rgba(25, 59, 197, 0.2) 100%);
+  padding: 0 16px;
+}
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.big.screen.mapper.AttPrevTfBaseMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.big.screen.model.AttPrevTfBase">
+        <result column="id" property="id"/>
+        <result column="city" property="city"/>
+        <result column="county" property="county"/>
+        <result column="town" property="town"/>
+        <result column="avi" property="avi"/>
+        <result column="nvi" property="nvi"/>
+        <result column="area" property="area"/>
+        <result column="tho" property="tho"/>
+        <result column="tpo" property="tpo"/>
+        <result column="lon" property="lon"/>
+        <result column="lat" property="lat"/>
+        <result column="rec_type" property="recType"/>
+        <result column="risk_type" property="riskType"/>
+        <result column="charger_name" property="chargerName"/>
+        <result column="charger_phone" property="chargerPhone"/>
+        <result column="lvl" property="lvl"/>
+        <result column="area_points" property="areaPoints"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        city,
+        county,
+        town,
+        avi,
+        nvi,
+        area,
+        tho,
+        tpo,
+        lon,
+        lat,
+        rec_type,
+        risk_type,
+        charger_name,
+        charger_phone,
+        lvl,
+        area_points
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.ygkj.big.screen.model.AttPrevTfBase">
+        replace INTO att_prev_tf_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                id,
+            </if>
+            <if test="null != city and '' != city">
+                city,
+            </if>
+            <if test="null != county and '' != county">
+                county,
+            </if>
+            <if test="null != town and '' != town">
+                town,
+            </if>
+            <if test="null != avi and '' != avi">
+                avi,
+            </if>
+            <if test="null != nvi and '' != nvi">
+                nvi,
+            </if>
+            <if test="null != area and '' != area">
+                area,
+            </if>
+            <if test="null != tho and '' != tho">
+                tho,
+            </if>
+            <if test="null != tpo and '' != tpo">
+                tpo,
+            </if>
+            <if test="null != lon and '' != lon">
+                lon,
+            </if>
+            <if test="null != lat and '' != lat">
+                lat,
+            </if>
+            <if test="null != recType and '' != recType">
+                rec_type,
+            </if>
+            <if test="null != riskType and '' != riskType">
+                risk_type,
+            </if>
+            <if test="null != chargerName and '' != chargerName">
+                charger_name,
+            </if>
+            <if test="null != chargerPhone and '' != chargerPhone">
+                charger_phone,
+            </if>
+            <if test="null != lvl and '' != lvl">
+                lvl,
+            </if>
+            <if test="null != stationName and '' != stationName">
+                station_name,
+            </if>
+            <if test="null != stationCode and '' != stationCode">
+                station_code,
+            </if>
+            <if test="null != areaPoints and '' != areaPoints">
+                area_points
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != id and '' != id">
+                #{id},
+            </if>
+            <if test="null != city and '' != city">
+                #{city},
+            </if>
+            <if test="null != county and '' != county">
+                #{county},
+            </if>
+            <if test="null != town and '' != town">
+                #{town},
+            </if>
+            <if test="null != avi and '' != avi">
+                #{avi},
+            </if>
+            <if test="null != nvi and '' != nvi">
+                #{nvi},
+            </if>
+            <if test="null != area and '' != area">
+                #{area},
+            </if>
+            <if test="null != tho and '' != tho">
+                #{tho},
+            </if>
+            <if test="null != tpo and '' != tpo">
+                #{tpo},
+            </if>
+            <if test="null != lon and '' != lon">
+                #{lon},
+            </if>
+            <if test="null != lat and '' != lat">
+                #{lat},
+            </if>
+            <if test="null != recType and '' != recType">
+                #{recType},
+            </if>
+            <if test="null != riskType and '' != riskType">
+                #{riskType},
+            </if>
+            <if test="null != chargerName and '' != chargerName">
+                #{chargerName},
+            </if>
+            <if test="null != chargerPhone and '' != chargerPhone">
+                #{chargerPhone},
+            </if>
+            <if test="null != lvl and '' != lvl">
+                #{lvl},
+            </if>
+            <if test="null != stationName and '' != stationName">
+                #{stationName},
+            </if>
+            <if test="null != stationCode and '' != stationCode">
+                #{stationCode},
+            </if>
+            <if test="null != areaPoints and '' != areaPoints">
+                #{areaPoints}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectList" resultType="com.ygkj.big.screen.model.AttPrevTfBase">
+        SELECT * FROM `att_prev_tf_base` WHERE (rec_type ='重要村落' OR rec_type ='一般村落') AND station_code is not null
+    </select>
+
+    <select id="recentWaterLevelData" resultType="com.ygkj.big.screen.model.StPptnR">
+        SELECT
+        a.*
+        FROM
+        (
+        SELECT
+        mgstcd,
+        stcd,
+        tm,
+        drp
+        FROM
+        ${tableName}
+        WHERE tm &lt;= #{endTime}
+        <if test="stcds.size() > 0">
+            AND mgstcd IN
+            <foreach collection="stcds" open="(" separator="," close=")" item="stcd">
+                #{stcd}
+            </foreach>
+        </if>
+        ORDER BY
+        tm DESC
+        LIMIT 20000
+        ) a
+        GROUP BY
+        a.mgstcd
+    </select>
+
+    <select id="flashFloodDetails" resultType="com.ygkj.big.screen.model.AttPrevTfBase">
+        SELECT atb.* FROM `att_prev_tf_base` atb where atb.nvi = #{nvi} AND atb.avi = #{avi} AND rec_type
+        IN('重要村落','一般村落') LIMIT 1
+    </select>
+
+    <select id="selectHourRainfall" resultType="com.ygkj.big.screen.model.StPptnR">
+        <foreach collection="list" item="item" separator="UNION ALL">
+            (SELECT mgstcd, DATE_FORMAT(tm,'%Y-%m-%d %H:00:00') tm,SUM(drp) drp FROM ${item}
+            <where>
+                <if test="stationCode != null">
+                    AND mgstcd = #{stationCode}
+                </if>
+                <if test="startTime != null and endTime != null">
+                    and (tm between #{startTime} AND #{endTime})
+                </if>
+            </where>
+            GROUP BY DATE_FORMAT(tm,'%Y-%m-%d %H')
+            ORDER BY tm DESC
+            )
+        </foreach>
+    </select>
+
+    <select id="selectByCondition" resultType="com.ygkj.big.screen.vo.response.MountainTorrentDetailResVo">
+        SELECT * FROM `att_prev_tf_base` WHERE (rec_type ='重要村落' OR rec_type ='一般村落') AND station_code is not null
+    </select>
+
+
+</mapper>

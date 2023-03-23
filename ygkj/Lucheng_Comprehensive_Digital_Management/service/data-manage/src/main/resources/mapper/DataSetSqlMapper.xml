@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcy.datamanage.biz.mapper.DataSetSqlMapper">
+
+
+    <select id="selectByDataSetId" resultType="com.dcy.datamanage.biz.dto.output.BusDataSetSqlOutputDTO"
+            parameterType="String">
+        SELECT
+            ss.*,ds.data_base_name
+        FROM
+            bus_data_set_sql ss
+            LEFT JOIN bus_data_source ds ON ss.data_source_id = ds.id
+        WHERE
+            ss.data_set_id = #{dataSetId}
+    </select>
+</mapper>

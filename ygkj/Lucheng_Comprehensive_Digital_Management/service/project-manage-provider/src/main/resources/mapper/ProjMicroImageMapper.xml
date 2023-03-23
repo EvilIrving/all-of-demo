@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.ProjMicroImageMapper">
+
+    <resultMap id="BaseResultMap" type="com.ygkj.project.model.ProjMicroImage" >
+        <result column="id" property="id" />
+        <result column="project_code" property="projectCode" />
+        <result column="unit_project_code" property="unitProjectCode" />
+        <result column="dist_project_code" property="distProjectCode" />
+        <result column="img_ids" property="imgIds" />
+        <result column="upload_time" property="uploadTime" />
+        <result column="upload_id" property="uploadId" />
+        <result column="upload_name" property="uploadName" />
+        <result column="del_flag" property="delFlag" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        project_code,
+        unit_project_code,
+        dist_project_code,
+        img_ids,
+        upload_time,
+        upload_id,
+        upload_name,
+        del_flag,
+        type
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.ygkj.project.model.ProjMicroImage">
+        INSERT INTO proj_micro_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                id,
+            </if>
+            <if test ='null != projectCode'>
+                project_code,
+            </if>
+            <if test ='null != unitProjectCode'>
+                unit_project_code,
+            </if>
+            <if test ='null != distProjectCode'>
+                dist_project_code,
+            </if>
+            <if test ='null != imgIds'>
+                img_ids,
+            </if>
+            <if test ='null != uploadTime'>
+                upload_time,
+            </if>
+            <if test ='null != uploadId'>
+                upload_id,
+            </if>
+            <if test ='null != uploadName'>
+                upload_name,
+            </if>
+            <if test ='null != delFlag'>
+                del_flag,
+            </if>
+            <if test ='null != type'>
+                type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != id'>
+                #{id},
+            </if>
+            <if test ='null != projectCode'>
+                #{projectCode},
+            </if>
+            <if test ='null != unitProjectCode'>
+                #{unitProjectCode},
+            </if>
+            <if test ='null != distProjectCode'>
+                #{distProjectCode},
+            </if>
+            <if test ='null != imgIds'>
+                #{imgIds},
+            </if>
+            <if test ='null != uploadTime'>
+                #{uploadTime},
+            </if>
+            <if test ='null != uploadId'>
+                #{uploadId},
+            </if>
+            <if test ='null != uploadName'>
+                #{uploadName},
+            </if>
+            <if test ='null != delFlag'>
+                #{delFlag},
+            </if>
+            <if test ='null != type'>
+                #{type}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        update proj_micro_image set del_flag = 1 WHERE id = #{id}
+    </delete>
+
+    <select id="findList" resultType="com.ygkj.project.vo.response.ProjMicroImageRespVo">
+        SELECT tbl.* FROM `proj_micro_image` tbl where tbl.del_flag = 0
+        <if test="null != id and '' != id">
+            and tbl.id = #{id}
+        </if>
+        <if test="null != projectCode and '' != projectCode">
+            and tbl.project_code = #{projectCode}
+        </if>
+        <if test="null != unitProjectCode and '' != unitProjectCode">
+            and tbl.unit_project_code = #{unitProjectCode}
+        </if>
+        <if test="null != distProjectCode and '' != distProjectCode">
+            and tbl.dist_project_code = #{distProjectCode}
+        </if>
+        <if test="null != uploadId and '' != uploadId">
+            and tbl.upload_id = #{uploadId}
+        </if>
+        <if test="null != year">
+            and DATE_FORMAT(tbl.upload_time,'%Y') = #{year}
+        </if>
+        <if test="null != type and '' != type">
+            and tbl.type = #{type}
+        </if>
+        order by tbl.upload_time desc
+    </select>
+
+    <select id="yearList" resultType="java.lang.Integer">
+        SELECT DATE_FORMAT(tbl.upload_time,'%Y') year FROM `proj_micro_image` tbl
+        where tbl.del_flag = 0 GROUP BY DATE_FORMAT(tbl.upload_time,'%Y') desc
+    </select>
+
+    <select id="fileList" resultType="com.ygkj.project.model.SysFile">
+        SELECT tbl.* FROM sys_file tbl WHERE FIND_IN_SET(tbl.id , #{ids}) AND tbl.deleted = 0
+    </select>
+
+    <select id="findDataByMonth" resultType="com.ygkj.project.vo.response.ProjMicroImageRespVo">
+        SELECT DATE_FORMAT(upload_time,'%Y-%m-%d') time,GROUP_CONCAT(img_ids) imgIds FROM `proj_micro_image` WHERE del_flag = 0
+        AND DATE_FORMAT(upload_time,'%Y-%m') = #{month} GROUP BY DATE_FORMAT(upload_time,'%Y-%m-%d') ORDER BY DATE_FORMAT(upload_time,'%Y-%m-%d') asc
+    </select>
+
+    <update id="update" parameterType="com.ygkj.project.model.ProjMicroImage">
+        UPDATE proj_micro_image
+        <set>
+            <if test ='null != projectCode'>project_code = #{projectCode},</if>
+            <if test ='null != unitProjectCode'>unit_project_code = #{unitProjectCode},</if>
+            <if test ='null != distProjectCode'>dist_project_code = #{distProjectCode},</if>
+            <if test ='null != imgIds'>img_ids = #{imgIds},</if>
+            <if test ='null != uploadTime'>upload_time = #{uploadTime},</if>
+            <if test ='null != uploadId'>upload_id = #{uploadId},</if>
+            <if test ='null != uploadName'>upload_name = #{uploadName},</if>
+            <if test ='null != delFlag'>del_flag = #{delFlag},</if>
+            <if test ='null != type'>type = #{type}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

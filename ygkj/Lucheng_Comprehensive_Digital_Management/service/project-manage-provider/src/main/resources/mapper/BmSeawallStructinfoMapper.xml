@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygkj.water.project.mapper.BmSeawallStructinfoMapper">
+<!--    <select id="loadPage" resultType="com.ygkj.project.vo.response.BmSeawallStructinfoRespVo" parameterType="com.ygkj.project.vo.request.BmSeawallStructinfoReqVo">-->
+<!--        SELECT tbl.bid_section,tbl.stake,tbl.stake_longitude,tbl.stake_latitude,tbl.section_type,tbl.section,tbl.drawing_no,a.file_url stakeFileURL FROM BM_SEAWALL_STRUCTINFO tbl LEFT JOIN sys_file a on tbl.section =a.ID WHERE tbl.DEL_FLAG=0-->
+<!--        <if test="null!=prcd and ''!=prcd">-->
+<!--            AND tbl.prcd=#{prcd}-->
+<!--        </if>-->
+<!--    </select>-->
+
+    <select id="loadPage" resultType="com.ygkj.project.vo.response.BmSeawallStructinfoRespVo" parameterType="com.ygkj.project.vo.request.BmSeawallStructinfoReqVo">
+        SELECT tbl.*,pro.NAME prnm,a.file_url stakeFileURL FROM bm_seawall_structinfo tbl
+        LEFT JOIN bm_project pro on tbl.prcd=pro.PRCD
+        LEFT JOIN sys_file a on tbl.section =a.ID
+         WHERE tbl.DEL_FLAG=0
+        <if test="null!=prcd and ''!=prcd">
+            AND tbl.prcd=#{prcd}
+        </if>
+    </select>
+</mapper>

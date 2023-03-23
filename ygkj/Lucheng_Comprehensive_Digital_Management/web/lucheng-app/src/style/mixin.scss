@@ -1,0 +1,118 @@
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin flex($values) {
+  -webkit-box-flex: $values;
+  -moz-box-flex: $values;
+  -webkit-flex: $values;
+  -ms-flex: $values;
+  flex: $values;
+}
+
+@mixin flexflow($value) {
+  // $value: row wrap
+  -webkit-flex-flow: $value;
+  -moz-flex-flow: $value;
+  -ms-flex-flow: $value;
+  flex-flow: $value;
+}
+
+@mixin flexJC($value) {
+  -webkit-box-pack: $value;
+  -moz-justify-content: $value;
+  -webkit-justify-content: $value;
+  justify-content: $value;
+}
+
+@mixin flexAI($value) {
+  -webkit-box-align: $value;
+  -moz-align-items: $value;
+  -webkit-align-items: $value;
+  align-items: $value;
+}
+
+@mixin transform($x) {
+  transform: $x;
+  -ms-transform: $x;
+  -moz-transform: $x;
+  -webkit-transform: $x;
+  -o-transform: $x;
+}
+
+// transition动画
+@mixin transition($property, $duration, $timing-function) {
+  // $property all
+  // $duration 0 .5s 1s
+  // $timing-function linear/ease/ease-in/ease-out/ease-in-out/cubic-bezier(n,n,n,n)
+  // $delay 0 .5s 1s
+  transition: $property $duration $timing-function;
+  -ms-transition: $property $duration $timing-function;
+  -moz-transition: $property $duration $timing-function;
+  -webkit-transition: $property $duration $timing-function;
+  -o-transition: $property $duration $timing-function;
+}
+
+// 四周阴影边框
+@mixin shadow($color, $a, $b, $c) {
+  box-shadow: $color $a $b $c;
+  -webkit-box-shadow: $color $a $b $c;
+  -moz-box-shadow: $color $a $b $c;
+  -ms-box-shadow: $color $a $b $c;
+  -o-shadow: $color $a $b $c;
+}
+
+// 白底阴影边框的内容容器
+@mixin contentBox() {
+  background: #fff;
+  @include shadow($color-shadow-white, 0px, 0px, 3px);
+}
+
+// 已知盒子高度垂直水平居中 父元素需设置position: relative;
+@mixin positionCenter($width, $height) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -$width / 2;
+  margin-top: -$height / 2;
+}
+
+//禁用文字选中
+@mixin noSelect() {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+  not supported by any browser */
+}
+
+//禁用文字选中
+@mixin transform($transform) {
+  transform: $transform;
+  -ms-transform: $transform;
+  -moz-transform: $transform;
+  -webkit-transform: $transform;
+  -o-transform: $transform;
+}
+
+@mixin tipsBg($width, $height, $fontSize) {
+  display: inline-block;
+  width: $width;
+  height: $height;
+  background: #eff3fe;
+  font-size: $fontSize;
+  color: #036eff;
+  font-weight: 500;
+  line-height: $height;
+  border-bottom-right-radius: $height / 3 * 2;
+  border-bottom-left-radius: $height / 3 * 2;
+  border-top-left-radius: $height / 8;
+  border-top-right-radius: $height / 8;
+  text-align: center;
+}
