@@ -1,18 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { localData, sessionData } from "../plugins/storage"
-import aMap from './homeRoute/aMap'
-import bigScreen from "./homeRoute/bigScreen";
-import monitor from "./homeRoute/monitor";
-import seawallPrevent from "./homeRoute/seawallPrevent";
-import propertyManage from "./homeRoute/propertyManage";
-import occupyApprove from "./homeRoute/occupyApprove";
-import defenseDispatch from "./homeRoute/defenseDispatch";
-import zzDingApp from "./homeRoute/zzDingApp";
-import dataManage from "./homeRoute/dataManage";
-import projectDetail from "./projectDetail";
-import projectUnitDetail from "./projectUnitDetail";
-import systemManagement from "./homeRoute/systemManagement";
+
 Vue.use(VueRouter);
 
 //解决路由重复点击报错

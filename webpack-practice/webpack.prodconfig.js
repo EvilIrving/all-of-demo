@@ -11,7 +11,7 @@ module.exports = merge(base, {
     ]
 })
 
-
+// 另外一种设置环境变量的方法
 // "dev": "cross-env NODE_ENV webpack-dev-server --config ./webpack.devconfig.js --env development",
 // "build": "webpack --config ./webpack.prodconfig.js --env production"
 

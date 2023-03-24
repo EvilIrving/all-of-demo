@@ -1,15 +1,4 @@
-/*
- * @Author: dengzhao
- * @LastEditTime: 2022-05-05 10:40:04
- * @Description: 
- * @FilePath: \lucheng_project\src\router\projectUnitDetail.js
- */
-/*
- * @Author: hanyu
- * @LastEditTime: 2022-03-07 10:30:21
- * @Description: 海塘详情路由
- * @FilePath: \lucheng_project\src\router\projectDetail.js
- */
+
 import homeView from "@/layouts/HomeView.vue";
 
 // 项目详情
@@ -189,9 +178,9 @@ export default [
         component: resolve => require(['@/views/projectUnitDetail/control/Index.vue',], resolve),
       },
       {
-        path:'/support',
-        name:'support',
-        title:'数字化支撑',
+        path: '/support',
+        name: 'support',
+        title: '数字化支撑',
         redirect: '/support/hardwareMt',
         component: homeView,
         children: [

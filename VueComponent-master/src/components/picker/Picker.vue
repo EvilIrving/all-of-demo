@@ -29,7 +29,7 @@
 import Popup from "../Popup.vue";
 import PickerSlot from "./PickerSlot.vue";
 
-import { PICKER } from "../../assets/js/const";
+import { PICKER } from "../../assets/js/CONST";
 const { TITLE, P, C, R, ZERO, PROVINCES, CITYS, REGIONS } = PICKER;
 export default {
   name: "Picker",
