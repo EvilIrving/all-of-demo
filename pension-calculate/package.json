@@ -1,0 +1,30 @@
+{
+  "name": "pension-calculator",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "tdesign-icons-vue": "^0.1.10",
+    "tdesign-vue": "^1.4.7",
+    "vue": "^2.6.14",
+    "vue-loader": "^17.2.2",
+    "vue-router": "^3.5.1",
+    "vue-template-compiler": "^2.6.14",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "sass": "^1.32.7",
+    "sass-loader": "^12.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
