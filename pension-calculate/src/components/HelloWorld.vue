@@ -5,6 +5,12 @@
       <icon class="" name="info-circle" size="medium" />
     </h2>
     <info-tips type="warning" :isDot="false" :value="0"></info-tips>
+    <breadcrumb separator-class="el-icon-arrow-right">
+      <breadcrumb-item :to="{ path: '/' }">首页</breadcrumb-item>
+      <breadcrumb-item>活动管理</breadcrumb-item>
+      <breadcrumb-item>活动列表</breadcrumb-item>
+      <breadcrumb-item>活动详情</breadcrumb-item>
+    </breadcrumb>
     <t-form :data="formData" :rules="rules" ref="form" resetType='initial' :labelWidth="240" @reset="onReset" @submit="onSubmit">
       <t-form-item label="年龄" name="age">
         <t-input-number theme="normal" align="center" suffix="岁" style="width: 70%" :max="65" :min="1" v-model="formData.age"></t-input-number>
@@ -69,6 +75,8 @@
 </template>
 
 <script>
+import Breadcrumb from './breadcrumb/Breadcrumb.vue';
+import BreadcrumbItem from './breadcrumb/BreadcrumbItem.vue';
 import InfoTips from './info/InfoTips.vue';
 import { calcPension } from "./util";
 const INITIAL_DATA = {
@@ -121,7 +129,7 @@ const MonthSheat = {
   70: 56,
 }
 export default {
-  components: { InfoTips },
+  components: { InfoTips, Breadcrumb, BreadcrumbItem },
   name: 'HelloWorld',
   props: {
     msg: String
