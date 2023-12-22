@@ -48,16 +48,18 @@ export default {
 }
 .el-breadcrumb__item {
   float: left;
-  &:last-child .el-breadcrumb__inner {
-    &:hover,
-    a,
-    a:hover {
-      font-weight: 400;
-      color: #606266;
-      cursor: text;
-    }
+  &:last-child {
     .el-breadcrumb__separator {
       display: none;
+    }
+    .el-breadcrumb__inner {
+      &:hover,
+      a,
+      a:hover {
+        font-weight: 400;
+        color: #606266;
+        cursor: text;
+      }
     }
   }
 }

@@ -1,11 +1,12 @@
 <template>
   <div class="wrapper">
+   <router-view></router-view>
     <h2>
       Pension Calculator
       <icon class="" name="info-circle" size="medium" />
     </h2>
     <info-tips type="warning" :isDot="false" :value="0"></info-tips>
-    <breadcrumb separator-class="el-icon-arrow-right">
+    <breadcrumb separator="/" >
       <breadcrumb-item :to="{ path: '/' }">首页</breadcrumb-item>
       <breadcrumb-item>活动管理</breadcrumb-item>
       <breadcrumb-item>活动列表</breadcrumb-item>
@@ -75,10 +76,10 @@
 </template>
 
 <script>
-import Breadcrumb from './breadcrumb/Breadcrumb.vue';
-import BreadcrumbItem from './breadcrumb/BreadcrumbItem.vue';
-import InfoTips from './info/InfoTips.vue';
-import { calcPension } from "./util";
+import Breadcrumb from '../components/breadcrumb/Breadcrumb.vue';
+import BreadcrumbItem from '../components/breadcrumb/BreadcrumbItem.vue';
+import InfoTips from '../components/info/InfoTips.vue';
+import { calcPension } from "../components/util";
 const INITIAL_DATA = {
   age: 25, // 年龄
   retirementAge: 60, // 预计退休年龄

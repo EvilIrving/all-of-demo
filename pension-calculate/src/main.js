@@ -7,6 +7,12 @@ import { Icon } from 'tdesign-icons-vue';
 
 Vue.component('icon', Icon)
 
+Vue.component('ElButtonGroup', {
+  template: `<div class="el-button-group">
+      <slot></slot>
+    </div>`
+})
+
 // 引入组件库的少量全局样式变量
 import 'tdesign-vue/es/style/index.css';
 

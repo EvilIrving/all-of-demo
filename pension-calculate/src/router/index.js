@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import PensionCalc from '../views/PensionCalc.vue'
 
 Vue.use(VueRouter)
 
@@ -8,11 +8,18 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: PensionCalc,
   },
+  {
+    path: '/comps',
+    name: 'card',
+    component: (resolve) => { require(['../views/Comps.vue'], resolve) },
+  },
+  
 ]
 
 const router = new VueRouter({
+  mode: 'hash',
   routes
 })
 

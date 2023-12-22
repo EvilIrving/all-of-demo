@@ -1,8 +1,18 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
+
+<script type="module" src="">
+export default {
+  watch: {
+    '$route.path': function (newVal, oldVal) {
+      // console.log(newVal, 'oldVal');
+    }
+  },
+}
+</script>
 
 <style lang="scss">
 #app {
